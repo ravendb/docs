@@ -652,7 +652,7 @@ The batch passed to your `run` function (see [Running the worker](#running-the-w
 
 | Method | Return value | Description |
 |--------|--------------|-------------|
-| **open_session(options=None)** | `DocumentSession` | Opens a session that tracks all items and their included items in the current batch.<br />Pass `options` to open the session with the given [session options](../../client-api/session/opening-a-session.mdx#session-options). |
+| **open_session(options=None)** | `DocumentSession` | Opens a session that tracks the batch's documents and included documents.<br />Projected items and revisions are not tracked (see [Processing projected objects](../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#processing-projected-objects)).<br />Pass `options` to open the session with the given [session options](../../client-api/session/opening-a-session.mdx#session-options). |
 
 <Admonition type="note" title="">
 

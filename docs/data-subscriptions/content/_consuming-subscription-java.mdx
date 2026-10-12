@@ -727,7 +727,7 @@ The batch passed to your `run` delegate (see [Running the worker](#running-the-w
 | Method | Return value | Description |
 |--------|--------------|-------------|
 | **getNumberOfIncludes()** | `int` | `1` if the server sent included documents with the batch, `0` if it did not. |
-| **openSession()** | `IDocumentSession` | Opens a session that tracks all items and their included items in the current batch. |
+| **openSession()** | `IDocumentSession` | Opens a session that tracks the batch's documents and included documents.<br />Projected items and revisions are not tracked. |
 | **openSession(SessionOptions options)** | `IDocumentSession` | Opens a session with the given [session options](../../client-api/session/opening-a-session.mdx#options). |
 
 <Admonition type="note" title="">

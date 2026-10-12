@@ -28,6 +28,11 @@ import ContentFrame from "@site/src/components/ContentFrame";
       * [Unsupported RQL features](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#unsupported-rql-features)
       * [Paths in a subscription query](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#paths-in-a-subscription-query)
       * [Compare-exchange values in a subscription query](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#compare-exchange-values-in-a-subscription-query)
+   * [Projections](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#projections)
+      * [Defining a projection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#defining-a-projection)
+      * [Processing projected objects](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#processing-projected-objects)
+      * [Projecting into your own class or record](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#projecting-into-your-own-class-or-record)
+      * [Including documents with a projection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#including-documents-with-a-projection)
    * [Archived documents](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#archived-documents)
    * [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples)
       * [Sending an entire collection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-sending-an-entire-collection)
@@ -35,6 +40,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
       * [Filtering with a regular expression](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-with-a-regular-expression)
       * [Filtering by a compare-exchange value](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-by-a-compare-exchange-value)
       * [Filtering and projecting fields](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-and-projecting-fields)
+      * [Projecting into a record](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-projecting-into-a-record)
       * [Projecting from a related document](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-projecting-from-a-related-document)
       * [Including documents](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-documents)
       * [Including documents with a projection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-documents-with-a-projection)
@@ -95,7 +101,8 @@ subscriptionName = store.Subscriptions.Create<Order>();
 
 <br />
 
-For filtering, projections, and includes, see the [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples) below.  
+For filtering and includes, see the [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples) below.  
+For projections, see [Projections](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#projections).  
 To subscribe to document revisions, see [Revisions support](../../../data-subscriptions/revisions-support.mdx).
 
 <Admonition type="note" title="">
@@ -332,7 +339,7 @@ A subscription query can have these parts:
       * `exists(field)`
       * `intersect(condition, condition, ...)`
    * **JavaScript**: plain JavaScript expressions and calls to declared functions, so you can express complex filtering.
-* **A `select` clause** defining the projection.  
+* **A `select` clause** defining the [projection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#projections).  
   This clause can call functions, allowing complex transformations.  
 * **An `include` clause** defining paths to include.  
 
@@ -407,6 +414,226 @@ A change to the value does not make the server evaluate the query again for docu
 e.g., after you lower a minimum freight, an order that did not exceed the old minimum is sent only when the order is modified.
 
 See [Example: Filtering by a compare-exchange value](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-by-a-compare-exchange-value).
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Projections">
+
+<ContentFrame>
+
+### Defining a projection
+
+By default, a subscription sends each matching document to a worker in full.  
+To send only the data the worker needs (e.g., an order's freight and shipping address), define a projection.  
+The subscription then creates, for each matching document, an object that holds only the data the projection defines, and sends
+this object to the worker in place of the document.  
+Using a projection to send only the needed data also keeps the rest of each document from reaching the worker (see
+[Security considerations](../../../data-subscriptions/overview.mdx#security-considerations)).
+
+You can define a projection in two ways:
+
+* **A raw RQL query**  
+  Add a `select` clause to the subscription's query.
+
+  ```csharp
+  subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions
+  {
+      Query = "from Orders as o select { Freight: o.Freight, ShipTo: o.ShipTo }"
+  });
+  ```
+
+  <br />
+
+  The `select` clause must hold an object literal, as in the example above, or a call to a declared function that returns the
+  projected object (e.g., `select projectOrder(o)`).  
+  A list of fields, which ordinary RQL queries accept in a `select` clause (e.g., `select o.Freight, o.ShipTo`), will fail the
+  creation of the subscription.  
+  The `from` clause of a subscription query with a projection must define an alias for the collection (e.g., `from Orders as o`),
+  or the creation of the subscription will fail.
+
+* **Typed expressions**  
+  Set the `Projection` expression of a [SubscriptionCreationOptions&lt;T&gt;](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes) object.
+
+  ```csharp
+  subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions<Order>
+  {
+      Projection = x => new { x.Freight, x.ShipTo }
+  });
+  ```
+
+  <br />
+
+  The client translates the `Projection` expression into the `select` clause of the subscription's query, and writes the object
+  literal and the alias for you, so the subscription's query meets the `select` and alias rules described above.
+
+A projection can use:
+
+* The document's fields, and values computed from these fields (e.g., an order's total).
+* Data from [related documents](../../../indexes/indexing-related-documents.mdx#what-are-related-documents), loaded using `RavenQuery.Load` in a typed expression, or using `load` in RQL.
+* Counter values, using `counter` in RQL (e.g., `counter(o, 'Likes')`).
+* Compare-exchange values, using `cmpxchg` in RQL
+  (see [Compare-exchange values in a subscription query](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#compare-exchange-values-in-a-subscription-query)).
+
+<Admonition type="note" title="">
+For each document that matches the query's `where` clause, the server creates the projected object and sends the projected
+object to the worker.  
+If the projection returns `null` instead of an object, the server skips the document, as the server skips documents that do not
+match the `where` clause.  
+e.g., if the function you call in the `select` clause returns `null` for orders that have no `ShipTo` field, the worker does not
+receive these orders, although the orders match the `where` clause.
+</Admonition>
+
+See [Example: Filtering and projecting fields](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-and-projecting-fields) and
+[Example: Projecting from a related document](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-projecting-from-a-related-document).
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Processing projected objects
+
+The subscription sends the projected objects to the worker in batches, and each item of a batch holds one projected object
+(see [SubscriptionBatch&lt;T&gt;.Item](../../../data-subscriptions/consuming-subscription.mdx#classes)):
+
+* The item's `Result` property holds the projected object.
+* The item's `Id` property holds the ID of the document the projected object was created from (the **source document**).
+* The item's `Projection` property is `true`.
+
+---
+
+#### Modifying source documents
+
+A session that you open using the batch's `OpenSession` method
+(see [Example: Processing documents in a session](../../../data-subscriptions/consuming-subscription.mdx#example-processing-documents-in-a-session)) tracks the documents
+the batch holds, but does not track projected objects.  
+Changes you make to a projected object are therefore not saved when you call `SaveChanges`.
+
+To modify a source document, load the source document in the session using the item's `Id`, change the loaded document,
+and call `SaveChanges`.  
+Since the session does not hold the source document, loading the source document sends a request to the server.
+
+```csharp
+using (var session = batch.OpenSession())
+{
+    foreach (var item in batch.Items)
+    {
+        // Load the source document of the projected object
+        var order = session.Load<Order>(item.Id);
+        // Set the field that the subscription's query uses to exclude handled orders
+        order.ShippedAt = DateTime.UtcNow;
+    }
+
+    // Save the modified source documents
+    session.SaveChanges();
+}
+```
+
+<br />
+
+<Admonition type="note" title="">
+Saving a modified source document makes the subscription send the document again if the document still matches the
+subscription's query (see [Processing order and re-sending](../../../data-subscriptions/overview.mdx#processing-order-and-re-sending)).  
+To keep the worker from processing the same documents again, define the query to exclude the documents the worker has already
+handled.
+
+e.g., the sample above sets the `ShippedAt` field of each order the worker handles.  
+The following subscription selects only orders whose `ShippedAt` is `null`, so an order that the worker has saved with a
+shipping date no longer matches the subscription's query and is not sent again:
+
+```csharp
+subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions
+{
+    Query = "from Orders as o where o.ShippedAt = null select { Freight: o.Freight }"
+});
+```
+</Admonition>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Projecting into your own class or record
+
+The `Projection` expression of a [SubscriptionCreationOptions&lt;T&gt;](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes) object can create an anonymous object, or an
+object of a class or record you define (e.g., `OrderTotal`).  
+To have the worker receive the projected items as objects of this class or record, pass the class or record as the type parameter
+of `GetSubscriptionWorker` when you [create the worker](../../../data-subscriptions/consuming-subscription.mdx#creating-a-subscription-worker)
+(e.g., `GetSubscriptionWorker<OrderTotal>`).
+
+Projecting into a class or record you define has two advantages over projecting into an anonymous object:
+
+* **Field names checked when you build the application**  
+  The C# compiler checks the worker's use of the projected fields (e.g., `orderTotal.Total`), so a misspelled field name is
+  reported when you build the application.  
+  If the projection creates an anonymous object, the worker can receive the projected items as
+  [dynamic objects](../../../data-subscriptions/consuming-subscription.mdx#example-processing-dynamic-objects), whose field names the C# compiler cannot check, so a misspelled
+  field name is found only when the code runs.
+* **One definition for the projection and the worker**  
+  The projection and the worker both use the class or record, so the projected fields are defined in one place.  
+  With an anonymous object in the projection, a class of your own for the worker (e.g., `GetSubscriptionWorker<OrderSummary>`)
+  defines the fields a second time, so every change must be made in both definitions.
+
+---
+
+#### Creating the object in the projection
+
+To create an object of a class or record you define, use an object initializer, or call a constructor.  
+When you call a constructor, each of its parameters must have the name of a public property of the class or record (case is ignored)
+and a type compatible with the property's type.  
+The client names the fields of the projected object after these properties.
+
+e.g., the constructor parameters of the following class match the class's properties, so a projection can create objects of the
+class by calling the constructor:
+
+```csharp
+public class OrderInfo
+{
+    // The 'orderId' parameter matches the 'OrderId' property (case is ignored)
+    public OrderInfo(string orderId, decimal freight)
+    {
+        OrderId = orderId;
+        Freight = freight;
+    }
+
+    public string OrderId { get; }
+    public decimal Freight { get; }
+}
+```
+
+<br />
+
+```csharp
+subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions<Order>
+{
+    // Create the projected object by calling the constructor
+    Projection = x => new OrderInfo(x.Id, x.Freight)
+});
+```
+
+<br />
+
+The projected object holds the fields `OrderId` and `Freight`.
+
+A positional record (a record whose properties are defined by its constructor's parameters) can be created only by calling the
+record's constructor, and the record's parameters always match its properties.
+
+See [Example: Projecting into a record](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-projecting-into-a-record).
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Including documents with a projection
+
+A subscription can include related documents in the batches it sends (e.g., the `Company` document that an order's `Company`
+field refers to), so the worker can read these documents without requesting them from the server.  
+When the subscription's query has a projection, the server looks for the fields that hold the IDs of the documents to include in
+the projected object, not in the source document.  
+The projection must therefore contain these fields (e.g., `Company`), or the subscription includes no documents.
+
+See [Example: Including documents with a projection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-documents-with-a-projection).
 
 </ContentFrame>
 
@@ -644,7 +871,7 @@ subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
 
               declare function projectOrder(doc) {
                   return {
-                      Id: doc.Id,
+                      Id: id(doc),
                       Total: getOrderLinesSum(doc)
                   };
               }
@@ -657,6 +884,46 @@ subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
 
 </TabItem>
 </Tabs>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Projecting into a record
+
+In this example, the subscription projects each `Order` into an `OrderTotal` positional record by calling the record's
+constructor, and the worker receives each projected item as an `OrderTotal` object (see
+[Projecting into your own class or record](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#projecting-into-your-own-class-or-record)).
+
+```csharp
+// A positional record: its parameters define both its constructor
+// and its properties, which are the projected fields
+public record OrderTotal(string OrderId, decimal Total);
+```
+
+<br />
+
+```csharp
+subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions<Order>
+{
+    Filter = x => x.Lines.Sum(line => line.PricePerUnit * line.Quantity) > 100,
+
+    // Create the projected object using the record's constructor
+    Projection = x => new OrderTotal(x.Id, x.Lines.Sum(line => line.PricePerUnit * line.Quantity))
+});
+
+// Get a worker that receives the projected items as OrderTotal objects
+SubscriptionWorker<OrderTotal> worker = store.Subscriptions.GetSubscriptionWorker<OrderTotal>(subscriptionName);
+
+var subscriptionRuntimeTask = worker.Run(batch =>
+{
+    foreach (var item in batch.Items)
+    {
+        OrderTotal orderTotal = item.Result;
+        Console.WriteLine($"{orderTotal.OrderId}: {orderTotal.Total}");
+    }
+});
+```
 
 </ContentFrame>
 
@@ -710,7 +977,7 @@ subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
               declare function projectOrder(doc) {
                   var employee = load(doc.Employee);
                   return {
-                      Id: doc.Id,
+                      Id: id(doc),
                       Total: getOrderLinesSum(doc),
                       ShipTo: doc.ShipTo,
                       EmployeeName: employee.FirstName + ' ' + employee.LastName
@@ -805,10 +1072,9 @@ projected fields rather than the original document (see [Example: Including docu
 
 ### Example: Including documents with a projection
 
-In this example, the subscription sends a projection of each `Order` and includes the `Company` document related to the order.  
-When a subscription's query has a projection (a `select` clause), the server resolves the paths of the `include` clause against
-the projected fields rather than against the original document.  
-The projection must therefore contain the field that holds the ID of the document to include, here the order's `Company` field:
+In this example, the subscription sends a projection of each `Order` and includes the `Company` document related to the order
+(see [Including documents with a projection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#including-documents-with-a-projection)).  
+The projection contains the order's `Company` field, which holds the ID of the document to include:
 
 ```csharp
 subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
@@ -1232,7 +1498,7 @@ public class SubscriptionUpdateOptions : SubscriptionCreationOptions
 | **Name** | `string` | A user-defined name for the subscription. Must be unique within the database. |
 | **Query** | `string` | An RQL query that defines the subscription.<br />See [Subscription query](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#subscription-query). |
 | **Filter** | `Expression<Func<T, bool>>` | A lambda expression defining the subscription's filter. Translated to a JavaScript function. |
-| **Projection** | `Expression<Func<T, object>>` | A lambda expression defining the projection sent for each matching document. Translated to a JavaScript function. |
+| **Projection** | `Expression<Func<T, object>>` | A lambda expression defining the [projection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#projections) sent for each matching document. Translated to a JavaScript function.<br />The projection can create an anonymous object.<br />The projection can also create an object of a class or record you define, using an object initializer or a constructor call.<br />See [Projecting into your own class or record](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#projecting-into-your-own-class-or-record). |
 | **Includes** | `Action<ISubscriptionIncludeBuilder<T>>` | An action defining the subscription's include clauses. Included documents, counters, and time series are part of the batch the subscription sends. The [include methods](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#include-builder) can be chained. |
 | **ChangeVector** | `string` | A change vector marking where the subscription starts processing. See [Starting point](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#starting-point). |
 | **Disabled** | `bool` | `true` creates the subscription disabled, so the subscription does not accept worker connections until you [enable it](../../../data-subscriptions/maintenance-operations.mdx#enabling-and-disabling-a-subscription).<br />Default: `false`. |
