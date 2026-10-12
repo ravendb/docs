@@ -27,6 +27,10 @@ import ContentFrame from "@site/src/components/ContentFrame";
       * [Unsupported RQL features](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#unsupported-rql-features)
       * [Paths in a subscription query](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#paths-in-a-subscription-query)
       * [Compare-exchange values in a subscription query](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#compare-exchange-values-in-a-subscription-query)
+   * [Projections](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#projections)
+      * [Defining a projection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#defining-a-projection)
+      * [Processing projected objects](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#processing-projected-objects)
+      * [Including documents with a projection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#including-documents-with-a-projection)
    * [Archived documents](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#archived-documents)
    * [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples)
       * [Sending an entire collection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-sending-an-entire-collection)
@@ -70,7 +74,8 @@ name = store.subscriptions.create_for_class(Order)
 
 <br />
 
-For filtering, projections, and includes, see the [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples) below.
+For filtering and includes, see the [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples) below.  
+For projections, see [Projections](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#projections).
 
 <Admonition type="note" title="">
 If your application passes the subscription's definition to the server each time the application starts, create the subscription
@@ -255,7 +260,7 @@ A subscription query can have these parts:
       * `exists(field)`
       * `intersect(condition, condition, ...)`
    * **JavaScript**: plain JavaScript expressions and calls to declared functions, so you can express complex filtering.
-* **A `select` clause** defining the projection.  
+* **A `select` clause** defining the [projection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#projections).  
   This clause can call functions, allowing complex transformations.  
 * **An `include` clause** defining paths to include.  
 
@@ -330,6 +335,131 @@ A change to the value does not make the server evaluate the query again for docu
 e.g., after you lower a minimum freight, an order that did not exceed the old minimum is sent only when the order is modified.
 
 See [Example: Filtering by a compare-exchange value](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-by-a-compare-exchange-value).
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Projections">
+
+<ContentFrame>
+
+### Defining a projection
+
+By default, a subscription sends each matching document to a worker in full.  
+To send only the data the worker needs (e.g., an order's freight and shipping address), define a projection.  
+The subscription then creates, for each matching document, an object that holds only the data the projection defines, and sends
+this object to the worker in place of the document.  
+Using a projection to send only the needed data also keeps the rest of each document from reaching the worker (see
+[Security considerations](../../../data-subscriptions/overview.mdx#security-considerations)).
+
+To define a projection, add a `select` clause to the subscription's query:
+
+```python
+name = store.subscriptions.create_for_options(
+    SubscriptionCreationOptions(query="from Orders as o select { Freight: o.Freight, ShipTo: o.ShipTo }")
+)
+```
+
+<br />
+
+When you define a projection in a subscription's RQL query, the `select` clause must hold an object literal, as in the example
+above, or a call to a declared function that returns the projected object (e.g., `select projectOrder(o)`).  
+A list of fields, which ordinary RQL queries accept in a `select` clause (e.g., `select o.Freight, o.ShipTo`), will fail the
+creation of the subscription.  
+The `from` clause of a subscription query with a projection must define an alias for the collection (e.g., `from Orders as o`),
+or the creation of the subscription will fail.
+
+A projection can use:
+
+* The document's fields, and values computed from these fields (e.g., an order's total).
+* Data from [related documents](../../../indexes/indexing-related-documents.mdx#what-are-related-documents), loaded using `load`.
+* Counter values, using `counter` in RQL (e.g., `counter(o, 'Likes')`).
+* Compare-exchange values, using `cmpxchg` in RQL
+  (see [Compare-exchange values in a subscription query](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#compare-exchange-values-in-a-subscription-query)).
+
+<Admonition type="note" title="">
+For each document that matches the query's `where` clause, the server creates the projected object and sends the projected
+object to the worker.  
+If the projection returns `null` instead of an object, the server skips the document, as the server skips documents that do not
+match the `where` clause.  
+e.g., if the function you call in the `select` clause returns `null` for orders that have no `ShipTo` field, the worker does not
+receive these orders, although the orders match the `where` clause.
+</Admonition>
+
+See [Example: Filtering and projecting fields](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-and-projecting-fields) and
+[Example: Projecting from a related document](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-projecting-from-a-related-document).
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Processing projected objects
+
+The subscription sends the projected objects to the worker in batches, and each item of a batch holds one projected object
+(see the [batch item class](../../../data-subscriptions/consuming-subscription.mdx#classes)):
+
+* The item's `result` property holds the projected object.
+* The item's `key` property holds the ID of the document the projected object was created from (the **source document**).
+* The item's `is_projection` property is `True`.
+
+---
+
+#### Modifying source documents
+
+A session that you open using the batch's `open_session` method
+(see [Example: Processing documents in a session](../../../data-subscriptions/consuming-subscription.mdx#example-processing-documents-in-a-session)) tracks the documents
+the batch holds, but does not track projected objects.  
+Changes you make to a projected object are therefore not saved when you call `save_changes`.
+
+To modify a source document, load the source document in the session using the item's `key`, change the loaded document,
+and call `save_changes`.  
+Since the session does not hold the source document, loading the source document sends a request to the server.
+
+```python
+with batch.open_session() as session:
+    for item in batch.items:
+        # Load the source document of the projected object
+        order = session.load(item.key, Order)
+        # Set the field that the subscription's query uses to exclude handled orders
+        order.shipped_at = datetime.utcnow()
+
+    # Save the modified source documents
+    session.save_changes()
+```
+
+<br />
+
+<Admonition type="note" title="">
+Saving a modified source document makes the subscription send the document again if the document still matches the
+subscription's query (see [Processing order and re-sending](../../../data-subscriptions/overview.mdx#processing-order-and-re-sending)).  
+To keep the worker from processing the same documents again, define the query to exclude the documents the worker has already
+handled.
+
+e.g., the sample above sets the `ShippedAt` field of each order the worker handles.  
+The following subscription selects only orders whose `ShippedAt` is `null`, so an order that the worker has saved with a
+shipping date no longer matches the subscription's query and is not sent again:
+
+```python
+name = store.subscriptions.create_for_options(
+    SubscriptionCreationOptions(query="from Orders as o where o.ShippedAt = null select { Freight: o.Freight }")
+)
+```
+</Admonition>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Including documents with a projection
+
+A subscription can include related documents in the batches it sends (e.g., the `Company` document that an order's `Company`
+field refers to), so the worker can read these documents without requesting them from the server.  
+When the subscription's query has a projection, the server looks for the fields that hold the IDs of the documents to include in
+the projected object, not in the source document.  
+The projection must therefore contain these fields (e.g., `Company`), or the subscription includes no documents.
+
+See [Example: Including documents with a projection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-documents-with-a-projection).
 
 </ContentFrame>
 
@@ -469,7 +599,7 @@ name = store.subscriptions.create_for_options(
 
         declare function projectOrder(doc) {
             return {
-                Id: doc.Id,
+                Id: id(doc),
                 Total: getOrderLinesSum(doc)
             };
         }
@@ -507,7 +637,7 @@ name = store.subscriptions.create_for_options(
         declare function projectOrder(doc) {
             var employee = load(doc.Employee);
             return {
-                Id: doc.Id,
+                Id: id(doc),
                 Total: getOrderLinesSum(doc),
                 ShipTo: doc.ShipTo,
                 EmployeeName: employee.FirstName + ' ' + employee.LastName
@@ -602,10 +732,9 @@ projected fields rather than the original document (see [Example: Including docu
 
 ### Example: Including documents with a projection
 
-In this example, the subscription sends a projection of each `Order` and includes the `Company` document related to the order.  
-When a subscription's query has a projection (a `select` clause), the server resolves the paths of the `include` clause against
-the projected fields rather than against the original document.  
-The projection must therefore contain the field that holds the ID of the document to include, here the order's `Company` field:
+In this example, the subscription sends a projection of each `Order` and includes the `Company` document related to the order
+(see [Including documents with a projection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#including-documents-with-a-projection)).  
+The projection contains the order's `Company` field, which holds the ID of the document to include:
 
 ```python
 store.subscriptions.create_for_options(
