@@ -20,24 +20,29 @@ import ContentFrame from "@site/src/components/ContentFrame";
    * [Responsible node](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#responsible-node)
    * [Starting point](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#starting-point)
    * [Updating a subscription](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#updating-a-subscription)
+      * [Changing a subscription's definition](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#changing-a-subscriptions-definition)
       * [Updating a subscription defined using typed expressions](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#updating-a-subscription-defined-using-typed-expressions)
+      * [Creating a subscription via update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#creating-a-subscription-via-update)
    * [Subscription query](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#subscription-query)
       * [Supported query parts](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#supported-query-parts)
       * [Unsupported RQL features](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#unsupported-rql-features)
       * [Paths in a subscription query](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#paths-in-a-subscription-query)
+      * [Compare-exchange values in a subscription query](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#compare-exchange-values-in-a-subscription-query)
    * [Archived documents](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#archived-documents)
    * [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples)
       * [Sending an entire collection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-sending-an-entire-collection)
       * [Filtering documents](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-documents)
       * [Filtering with a regular expression](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-with-a-regular-expression)
+      * [Filtering by a compare-exchange value](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-by-a-compare-exchange-value)
       * [Filtering and projecting fields](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-and-projecting-fields)
       * [Projecting from a related document](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-projecting-from-a-related-document)
       * [Including documents](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-documents)
+      * [Including documents with a projection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-documents-with-a-projection)
       * [Including counters](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-counters)
       * [Including time series](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-time-series)
-      * [Creating a subscription via update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-creating-a-subscription-via-update)
       * [Updating an existing subscription](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-updating-an-existing-subscription)
       * [Updating a subscription defined using typed expressions](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-updating-a-subscription-defined-using-typed-expressions)
+      * [Creating a subscription via update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-creating-a-subscription-via-update)
    * [Syntax](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#syntax)
       * [Include builder](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#include-builder)
 
@@ -92,6 +97,11 @@ subscriptionName = store.Subscriptions.Create<Order>();
 
 For filtering, projections, and includes, see the [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples) below.  
 To subscribe to document revisions, see [Revisions support](../../../data-subscriptions/revisions-support.mdx).
+
+<Admonition type="note" title="">
+If your application passes the subscription's definition to the server each time the application starts, create the subscription
+using `Update` (see [Creating a subscription via update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#creating-a-subscription-via-update)).
+</Admonition>
 
 </Panel>
 
@@ -188,6 +198,10 @@ To change the starting point of an existing subscription, see [Updating a subscr
 
 <Panel heading="Updating a subscription">
 
+<ContentFrame>
+
+### Changing a subscription's definition
+
 You can change an existing subscription's definition using the [Update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#methods) method.  
 Pass a [SubscriptionUpdateOptions](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes) object, which extends the creation options with two
 additional fields, `Id` and `CreateNew`:
@@ -197,6 +211,7 @@ additional fields, `Id` and `CreateNew`:
 * **`CreateNew`** applies when the subscription you are updating does not exist.  
   Set it to `true` to create the subscription instead, or leave it `false`, the default, to
   throw an exception.  
+  See [Creating a subscription via update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#creating-a-subscription-via-update).
 
 <Admonition type="note" title="">
 You cannot rename a subscription by providing its `Id` and a new `Name`.  
@@ -222,6 +237,8 @@ Set `ChangeVector` to `"BeginningOfTime"` to process all matching documents agai
 documents created or modified after the update.
 
 For a full update example, see the [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples) below.
+
+</ContentFrame>
 
 <ContentFrame>
 
@@ -257,6 +274,29 @@ store.Subscriptions.Update(new SubscriptionUpdateOptions
 
 Using the translated query, you can also check whether your typed expressions still match the subscription's current
 definition (e.g., after you change a filter in your code), as shown in the [example below](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-updating-a-subscription-defined-using-typed-expressions).
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Creating a subscription via update
+
+Calling `Update` for a subscription that does not exist throws an exception.  
+If, however, the `CreateNew` property of the [SubscriptionUpdateOptions](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes) object that you pass to `Update` is set
+to `true`, updating a subscription that does not exist creates the subscription using the name, query, and other options
+set in the `SubscriptionUpdateOptions` object.
+
+Creating a subscription via `Update` is useful when your application defines a subscription and passes the definition to
+`Update` each time the application starts.  
+The first time the application starts, `Update` **creates** the subscription.  
+On later starts, `Update` **modifies** the subscription if the definition your application passes differs from the
+subscription's current definition (e.g., after you deploy a new version of the application with a changed query).  
+If there is no change in the subscription's definition, `Update` leaves the subscription as it is.
+
+Calling [Create](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#methods) rather than `Update` when the application starts would fail on every start after the first,
+since a subscription with the same name already exists by then.
+
+See [Example: Creating a subscription via update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-creating-a-subscription-via-update).
 
 </ContentFrame>
 
@@ -311,6 +351,8 @@ A subscription query does not support:
 * The `search`, `boost`, `lucene`, and `exact` methods, spatial methods, or vector search.
 * The `now()` and `today()` functions.
 * The `between` operator. Use `>=` and `<=` instead.
+* Query parameters (e.g., `$min`).
+* Including compare-exchange items (`include cmpxchg(...)`).
 
 The subscription does not apply `limit` and `filter` clauses, although it accepts a query that includes them.
 
@@ -345,6 +387,26 @@ declare function filterLines(doc, productId)
 from Orders as o
 where filterLines(o, "products/1-A")
 ```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Compare-exchange values in a subscription query
+
+A subscription's query cannot take parameters, so a value that the query compares documents against (e.g., a minimum freight) is
+normally written into the query itself.  
+Changing such a value then means updating the subscription, and the server disconnects the workers connected to the subscription
+when the query changes.  
+To change the value without updating the subscription, keep the value in a [compare-exchange item](../../../compare-exchange/overview.mdx)
+and read it in the query using the `cmpxchg` function.
+
+The server reads the compare-exchange value each time the server evaluates the subscription's query for a document, so a change
+to the value applies only to documents evaluated after the change.  
+A change to the value does not make the server evaluate the query again for documents that were already evaluated.  
+e.g., after you lower a minimum freight, an order that did not exceed the old minimum is sent only when the order is modified.
+
+See [Example: Filtering by a compare-exchange value](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-by-a-compare-exchange-value).
 
 </ContentFrame>
 
@@ -520,6 +582,24 @@ The pattern must be a constant expression; it cannot be a value computed at runt
 document fields.
 
 </Admonition>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Filtering by a compare-exchange value
+
+In this example, the subscription sends to the worker only `Orders` whose `Freight` exceeds the minimum freight kept in the
+[compare-exchange item](../../../compare-exchange/overview.mdx) `config/minFreight` (e.g., `100`).  
+The query reads the item's value using the `cmpxchg` function (see [Compare-exchange values in a subscription query](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#compare-exchange-values-in-a-subscription-query)).
+
+```csharp
+subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    Query = @"from Orders as o
+              where o.Freight > cmpxchg('config/minFreight')"
+});
+```
 
 </ContentFrame>
 
@@ -716,8 +796,33 @@ performance), or call `include` inside a JavaScript function invoked from the `s
 
 <Admonition type="info" title="">
 When you include documents alongside a projection, the `include` resolves paths against the
-projected fields rather than the original document.
+projected fields rather than the original document (see [Example: Including documents with a projection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-documents-with-a-projection)).
 </Admonition>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Including documents with a projection
+
+In this example, the subscription sends a projection of each `Order` and includes the `Company` document related to the order.  
+When a subscription's query has a projection (a `select` clause), the server resolves the paths of the `include` clause against
+the projected fields rather than against the original document.  
+The projection must therefore contain the field that holds the ID of the document to include, here the order's `Company` field:
+
+```csharp
+subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    Query = @"from Orders as o
+              select { Freight: o.Freight, Company: o.Company }
+              include Company"
+});
+```
+
+<br />
+
+If the projection does not contain the `Company` field (e.g., `select { Freight: o.Freight }`), the subscription includes no
+`Company` documents, even if the `include` clause names the field through the query's alias (`include o.Company`).
 
 </ContentFrame>
 
@@ -788,6 +893,9 @@ Adding a new counter to the document, or removing one, does trigger re-sending t
 In this example, the subscription sends every `Order` and includes time-series entries for each
 document in the batch, so the worker has those entries without issuing additional requests to the server.
 
+<Tabs groupId='languageSyntax'>
+<TabItem value="builder" label="Builder">
+
 ```csharp
 subscriptionName = store.Subscriptions.Create<Order>(new SubscriptionCreationOptions<Order>()
 {
@@ -797,31 +905,28 @@ subscriptionName = store.Subscriptions.Create<Order>(new SubscriptionCreationOpt
 });
 ```
 
+</TabItem>
+<TabItem value="rql" label="RQL">
+
+```csharp
+subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    Query = @"from Orders include timeseries('HeartRate', last(10))"
+});
+```
+
+</TabItem>
+</Tabs>
+
 <br />
+
+In RQL, use the `last` method to define the entries to include: a number of the latest entries (e.g., `last(10)`), or a
+period that ends at the time series' latest entry (e.g., `last(5, 'minutes')`).  
+To include these entries from all of the document's time series, omit the time series name (e.g., `timeseries(last(10))`).  
+A range defined by a start time and an end time is not supported.
 
 For the syntax of the builder's methods that include time series, see
 [Include builder: time series](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#include-builder-time-series).
-
-</ContentFrame>
-
-<ContentFrame>
-
-### Example: Creating a subscription via update
-
-When the subscription you update does not exist, set `CreateNew` to `true` to create it instead,
-using the provided query.
-
-```csharp
-subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
-{
-    Name = "my subscription",
-    Query = "from Products where PricePerUnit > 20",
-
-    // Set to true so that a new subscription is created
-    // if a subscription named "my subscription" does not exist
-    CreateNew = true
-});
-```
 
 </ContentFrame>
 
@@ -916,6 +1021,30 @@ if (state.Query.Replace("\r\n", "\n") != translated.Query.Replace("\r\n", "\n"))
 ```
 
 </Admonition>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Creating a subscription via update
+
+In this example, `Update` creates a subscription named "my subscription" if the subscription does not exist yet, using the
+query set in the `SubscriptionUpdateOptions` object.  
+If the subscription already exists, `Update` replaces the subscription's current query with the query set in
+the `SubscriptionUpdateOptions` object, unless the two queries are the same.  
+For an explanation of this use of `Update`, see [Creating a subscription via update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#creating-a-subscription-via-update).
+
+```csharp
+subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
+{
+    Name = "my subscription",
+    Query = "from Products where PricePerUnit > 20",
+
+    // Set to true so that a new subscription is created
+    // if a subscription named "my subscription" does not exist
+    CreateNew = true
+});
+```
 
 </ContentFrame>
 
