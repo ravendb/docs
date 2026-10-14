@@ -27,6 +27,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
       * [Unsupported RQL features](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#unsupported-rql-features)
       * [Paths in a subscription query](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#paths-in-a-subscription-query)
       * [Compare-exchange values in a subscription query](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#compare-exchange-values-in-a-subscription-query)
+      * [Metadata in a subscription query](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#metadata-in-a-subscription-query)
    * [Projections](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#projections)
       * [Defining a projection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#defining-a-projection)
       * [Processing projected objects](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#processing-projected-objects)
@@ -37,6 +38,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
       * [Filtering documents](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-documents)
       * [Filtering with a regular expression](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-with-a-regular-expression)
       * [Filtering by a compare-exchange value](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-by-a-compare-exchange-value)
+      * [Scheduling document delivery using the `@refresh` metadata property](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-scheduling-document-delivery-using-the-refresh-metadata-property)
       * [Filtering and projecting fields](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-filtering-and-projecting-fields)
       * [Projecting from a related document](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-projecting-from-a-related-document)
       * [Including documents](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-documents)
@@ -350,6 +352,127 @@ See [Example: Filtering by a compare-exchange value](../../../data-subscriptions
 
 </ContentFrame>
 
+<ContentFrame>
+
+### Metadata in a subscription query
+
+A subscription query can read the [metadata](../../../client-api/session/how-to/get-and-modify-entity-metadata.mdx) of a document and
+select documents by their metadata properties.  
+e.g., the following subscription selects only orders whose metadata holds a `Priority` property with the value `High`.
+
+```js
+const subscriptionName = await documentStore.subscriptions.create({
+    query: "from Orders as o where o.'@metadata'.'Priority' = 'High'"
+});
+```
+
+<br />
+
+Changing a document's metadata changes the document, so if the changed document matches the subscription's query, the subscription
+sends the document to the worker.
+
+To select documents whose metadata does not hold a specific property, use `not exists`
+(see [Filter by non-existing field](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx)).
+
+```js
+const subscriptionName = await documentStore.subscriptions.create({
+    // A 'where' clause cannot start with 'not', so the clause starts with 'true and'
+    query: "from Orders as o where true and not exists(o.'@metadata'.'Priority')"
+});
+```
+
+---
+
+#### Scheduling document delivery using the `@refresh` metadata property
+
+To have a subscription send a document to the worker at a time you choose (e.g., an email that the worker should send next week):
+
+1. **Enable the *document refresh* feature for the database.**  
+   The *document refresh* feature removes the `@refresh` metadata property from a document
+   once the time set by the property (e.g., `"@refresh": "2026-10-20T08:00:00.0000000Z"`) has passed, and saves the document.  
+   To enable the *document refresh* feature, use the `ConfigureRefreshOperation` operation
+   or Studio's [Document Refresh](../../../studio/database/settings/document-refresh.mdx) view.  
+   The *document refresh* feature periodically checks the database for documents to refresh (every 60 seconds by default),
+   so a document is refreshed at the first check after the time set by its `@refresh` metadata property.
+
+   <br />
+
+   <Admonition type="note" title="">
+   On a [Community license](https://ravendb.net/buy), the *document refresh* feature cannot check for documents to refresh more
+   often than every 36 hours.
+   </Admonition>
+
+2. **Have your subscription select only documents whose metadata does not hold the `@refresh` property.**  
+
+   ```js
+   const subscriptionName = await documentStore.subscriptions.create({
+       // A 'where' clause cannot start with 'not', so the clause starts with 'true and'
+       query: "from Emails as e where true and not exists(e.'@metadata'.'@refresh')"
+   });
+   ```
+
+   <br />
+
+3. **Store each document with its `@refresh` metadata property set to the intended delivery time.**  
+
+   ```js
+   const session = documentStore.openSession();
+
+   const email = new Email();
+   email.to = "customer@example.com";
+   email.subject = "Your order has shipped";
+   await session.store(email);
+
+   // Have the subscription send the email to the worker 7 days from now
+   const deliveryTime = new Date();
+   deliveryTime.setDate(deliveryTime.getDate() + 7);
+   session.advanced.getMetadataFor(email)["@refresh"] = deliveryTime;
+
+   await session.saveChanges();
+   ```
+
+   <br />
+
+   As long as the document's metadata holds the `@refresh` property, the document does not match the query, and the subscription
+   does not send the document.  
+   At the first check after the time set by the `@refresh` metadata property, the *document refresh* feature removes the property
+   and saves the document.  
+   The document then matches the query, and the subscription sends the document to the worker.
+
+To have the subscription send a document to the worker again later (e.g., when the email server is unavailable and sending the email
+fails), set a new time in the document's `@refresh` metadata property in the worker's batch-processing code, and save the document.  
+The document then does not match the query until the *document refresh* feature removes the new `@refresh` metadata property.
+
+```js
+worker.on("batch", async (batch, callback) => {
+    try {
+        const session = batch.openSession();
+
+        for (const item of batch.items) {
+            // 'trySendEmail' is your own function
+            if (!trySendEmail(item.result)) {
+                // Sending failed: have the subscription send the email again 10 minutes from now
+                const retryTime = new Date();
+                retryTime.setMinutes(retryTime.getMinutes() + 10);
+                session.advanced.getMetadataFor(item.result)["@refresh"] = retryTime;
+            }
+        }
+
+        // Save the emails whose @refresh metadata property was set
+        await session.saveChanges();
+        callback();
+    } catch (err) {
+        callback(err);
+    }
+});
+```
+
+<br />
+
+See [Example: Scheduling document delivery using the `@refresh` metadata property](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-scheduling-document-delivery-using-the-refresh-metadata-property).
+
+</ContentFrame>
+
 </Panel>
 
 <Panel heading="Projections">
@@ -414,6 +537,24 @@ The subscription sends the projected objects to the worker in batches, and each 
 * The item's `result` property holds the projected object.
 * The item's `id` property holds the ID of the document the projected object was created from (the **source document**).
 * The item's `projection` property is `true`.
+* The item's `metadata` property holds **the metadata of the projected object**, not the metadata of the source document.
+
+To have the worker receive the metadata of the source document, include this metadata in the projection: use `getMetadata(o)` to
+include the whole metadata, or `o['@metadata']['trace.id']` to include a single metadata property you set yourself (e.g., `trace.id`).  
+In a `select` clause, write the metadata path using brackets, since the RQL form `o.'@metadata'.'trace.id'` will fail the creation of
+the subscription.
+
+```js
+const subscriptionName = await documentStore.subscriptions.create({
+    // Include the source document's whole metadata, and a single metadata property
+    query: `from Orders as o
+            select {
+                Freight: o.Freight,
+                Metadata: getMetadata(o),
+                TraceId: o['@metadata']['trace.id']
+            }`
+});
+```
 
 ---
 
@@ -607,6 +748,77 @@ The query reads the item's value using the `cmpxchg` function (see [Compare-exch
 const subscriptionName = await documentStore.subscriptions.create({
     query: `from Orders as o
             where o.Freight > cmpxchg('config/minFreight')`
+});
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Scheduling document delivery using the `@refresh` metadata property
+
+In this example, the subscription sends each email to the worker once the time set in the email's `@refresh` metadata property has
+passed, and the worker sets a new time in this property for each email the worker fails to send.  
+For an explanation of this use of the `@refresh` metadata property, see
+[Scheduling document delivery using the `@refresh` metadata property](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#scheduling-document-delivery-using-the-refresh-metadata-property).
+
+#### Subscription side
+
+```js
+// Enable the document refresh feature for the database
+await documentStore.maintenance.send(new ConfigureRefreshOperation({
+    disabled: false
+}));
+
+// Create a subscription that selects only emails whose metadata does not hold the @refresh property
+await documentStore.subscriptions.create({
+    name: "ScheduledEmails",
+    // A 'where' clause cannot start with 'not', so the clause starts with 'true and'
+    query: "from Emails as e where true and not exists(e.'@metadata'.'@refresh')"
+});
+
+// Store an email, and schedule its delivery to the worker 7 days from now
+const session = documentStore.openSession();
+const email = new Email();
+email.to = "customer@example.com";
+email.subject = "Your order has shipped";
+await session.store(email);
+const deliveryTime = new Date();
+deliveryTime.setDate(deliveryTime.getDate() + 7);
+session.advanced.getMetadataFor(email)["@refresh"] = deliveryTime;
+await session.saveChanges();
+```
+
+<br />
+
+#### Worker side
+
+```js
+const worker = documentStore.subscriptions.getSubscriptionWorker({
+    subscriptionName: "ScheduledEmails",
+    documentType: Email
+});
+
+worker.on("batch", async (batch, callback) => {
+    try {
+        const session = batch.openSession();
+
+        for (const item of batch.items) {
+            // 'trySendEmail' is your own function
+            if (!trySendEmail(item.result)) {
+                // Sending failed: have the subscription send the email again 10 minutes from now
+                const retryTime = new Date();
+                retryTime.setMinutes(retryTime.getMinutes() + 10);
+                session.advanced.getMetadataFor(item.result)["@refresh"] = retryTime;
+            }
+        }
+
+        // Save the emails whose @refresh metadata property was set
+        await session.saveChanges();
+        callback();
+    } catch (err) {
+        callback(err);
+    }
 });
 ```
 

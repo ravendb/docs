@@ -22,12 +22,14 @@ import ContentFrame from "@site/src/components/ContentFrame";
    * [Worker strategies](../../data-subscriptions/consuming-subscription.mdx#worker-strategies)
    * [Error handling](../../data-subscriptions/consuming-subscription.mdx#error-handling)
    * [Worker status](../../data-subscriptions/consuming-subscription.mdx#worker-status)
+   * [Reading document metadata](../../data-subscriptions/consuming-subscription.mdx#reading-document-metadata)
    * [Examples](../../data-subscriptions/consuming-subscription.mdx#examples)
       * [Full exception handling with retries](../../data-subscriptions/consuming-subscription.mdx#example-full-exception-handling-with-retries)
       * [Setting the batch size](../../data-subscriptions/consuming-subscription.mdx#example-setting-the-batch-size)
       * [Processing documents in a session](../../data-subscriptions/consuming-subscription.mdx#example-processing-documents-in-a-session)
       * [Processing dynamic objects](../../data-subscriptions/consuming-subscription.mdx#example-processing-dynamic-objects)
       * [Processing a blittable object](../../data-subscriptions/consuming-subscription.mdx#example-processing-a-blittable-object)
+      * [Reading a document's metadata](../../data-subscriptions/consuming-subscription.mdx#example-reading-a-documents-metadata)
       * [End when no documents are left](../../data-subscriptions/consuming-subscription.mdx#example-end-when-no-documents-are-left)
       * [Including documents in the batch](../../data-subscriptions/consuming-subscription.mdx#example-including-documents-in-the-batch)
       * [Standby workers on several machines](../../data-subscriptions/consuming-subscription.mdx#example-standby-workers-on-several-machines)
@@ -374,6 +376,46 @@ subscriptionWorker.OnSubscriptionConnectionRetry += exception =>
 
 </Panel>
 
+<Panel heading="Reading document metadata">
+
+The `Metadata` property of each batch item holds the [metadata](../../client-api/session/how-to/get-and-modify-entity-metadata.mdx) 
+of the item's document (see [SubscriptionBatch&lt;T&gt;.Item](../../data-subscriptions/consuming-subscription.mdx#classes)), 
+with properties set by RavenDB (e.g., `@collection` and `@last-modified`) and any property you set yourself (like `trace.id`, 
+which the worker in the example below reads from each item's document).
+
+```csharp
+subscriptionRuntimeTask = subscriptionWorker.Run(batch =>
+{
+    foreach (var item in batch.Items)
+    {
+        // Read a metadata property you set yourself
+        // ('TryGetValue' returns false if the metadata does not hold the property)
+        if (item.Metadata.TryGetValue("trace.id", out string traceId))
+        {
+            // your processing logic here
+        }
+    }
+});
+```
+
+<br />
+
+Changing a document's metadata changes the document. If the changed document matches the subscription's query, 
+the subscription sends the document to the worker with the changed metadata held in the item's `Metadata` property.
+
+<Admonition type="note" title="">
+* When a subscription's query applies a [projection](../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#processing-projected-objects),
+  the `Metadata` property of each item holds **the metadata of the item's projected object**, not the metadata of the source document.
+* When a subscription sends [document revisions](../../data-subscriptions/revisions-support.mdx), each item holds two revisions of a
+  document, each revision carrying its own metadata.  
+  The item's `Metadata` property holds only a few properties RavenDB sets for the item itself, like `@id` and `@change-vector`, 
+  **not** the metadata of either revision.
+</Admonition>
+
+See [Example: Reading a document's metadata](../../data-subscriptions/consuming-subscription.mdx#example-reading-a-documents-metadata).
+
+</Panel>
+
 <Panel heading="Examples">
 
 <ContentFrame>
@@ -639,6 +681,53 @@ var subscriptionRuntimeTask = subscriptionWorker.Run(batch =>
         var employeeField = item.Result["Employee"].ToString();
 
         ProcessItem(employeeField); // call your custom method
+    }
+});
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Reading a document's metadata
+
+In this example, the application sets a `trace.id` metadata property in an `Order` document, and the worker reads this property from each order
+the subscription sends.  
+For an explanation of the metadata an item holds, see
+[Reading document metadata](../../data-subscriptions/consuming-subscription.mdx#reading-document-metadata).
+
+#### Setting the metadata property
+
+```csharp
+using (var session = store.OpenSession())
+{
+    var order = session.Load<Order>("orders/1-A");
+
+    // Set a metadata property of your own
+    session.Advanced.GetMetadataFor(order)["trace.id"] = "1234567";
+
+    // Saving the change makes the subscription send the order to the worker,
+    // if the order matches the subscription's query
+    session.SaveChanges();
+}
+```
+
+<br />
+
+#### Reading the metadata property in the worker
+
+```csharp
+var worker = store.Subscriptions.GetSubscriptionWorker<Order>(subscriptionName);
+
+var subscriptionRuntimeTask = worker.Run(batch =>
+{
+    foreach (var item in batch.Items)
+    {
+        // 'TryGetValue' returns false for orders whose metadata does not hold 'trace.id'
+        if (item.Metadata.TryGetValue("trace.id", out string traceId))
+        {
+            Console.WriteLine($"Order {item.Id} has the trace ID {traceId}");
+        }
     }
 });
 ```
@@ -1067,8 +1156,8 @@ public struct Item
 | **Projection** | `bool` | `true` when the item is a projection produced by the subscription query rather than a full document. |
 | **Revision** | `bool` | `true` when the item is a document revision, for a subscription that streams revisions. |
 | **RawResult** | `BlittableJsonReaderObject` | The item before deserialization to `T`. |
-| **RawMetadata** | `BlittableJsonReaderObject` | The metadata of the item's underlying document. |
-| **Metadata** | `IMetadataDictionary` | The item's underlying metadata values. |
+| **RawMetadata** | `BlittableJsonReaderObject` | The item's metadata, as a raw JSON object. |
+| **Metadata** | `IMetadataDictionary` | The item's metadata, as a dictionary.<br />For an item that holds a document: the document's metadata.<br />For a projected item: the metadata of the projected object.<br />For a revision item: only a few properties RavenDB sets for the item.<br />See [Reading document metadata](../../data-subscriptions/consuming-subscription.mdx#reading-document-metadata). |
 
 <Admonition type="warning" title="">
 Use this struct only within the subscription's `Run` delegate. Using it outside that scope may

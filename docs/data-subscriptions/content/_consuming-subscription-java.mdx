@@ -22,11 +22,13 @@ import ContentFrame from "@site/src/components/ContentFrame";
    * [Worker strategies](../../data-subscriptions/consuming-subscription.mdx#worker-strategies)
    * [Error handling](../../data-subscriptions/consuming-subscription.mdx#error-handling)
    * [Worker events](../../data-subscriptions/consuming-subscription.mdx#worker-events)
+   * [Reading document metadata](../../data-subscriptions/consuming-subscription.mdx#reading-document-metadata)
    * [Examples](../../data-subscriptions/consuming-subscription.mdx#examples)
       * [Full exception handling with retries](../../data-subscriptions/consuming-subscription.mdx#example-full-exception-handling-with-retries)
       * [Setting the batch size](../../data-subscriptions/consuming-subscription.mdx#example-setting-the-batch-size)
       * [Processing documents in a session](../../data-subscriptions/consuming-subscription.mdx#example-processing-documents-in-a-session)
       * [Processing raw objects](../../data-subscriptions/consuming-subscription.mdx#example-processing-raw-objects)
+      * [Reading a document's metadata](../../data-subscriptions/consuming-subscription.mdx#example-reading-a-documents-metadata)
       * [End when no documents are left](../../data-subscriptions/consuming-subscription.mdx#example-end-when-no-documents-are-left)
       * [Including documents in the batch](../../data-subscriptions/consuming-subscription.mdx#example-including-documents-in-the-batch)
       * [Standby workers on several machines](../../data-subscriptions/consuming-subscription.mdx#example-standby-workers-on-several-machines)
@@ -262,6 +264,44 @@ subscriptionWorker.addOnSubscriptionConnectionRetry(exception -> {
 
 </Panel>
 
+<Panel heading="Reading document metadata">
+
+The `metadata` property of each batch item holds the [metadata](../../client-api/session/how-to/get-and-modify-entity-metadata.mdx) 
+of the item's document (see [SubscriptionBatch&lt;T&gt;.Item](../../data-subscriptions/consuming-subscription.mdx#classes)), 
+with properties set by RavenDB (e.g., `@collection` and `@last-modified`) and any property you set yourself (like `trace.id`, 
+which the worker in the example below reads from each item's document).
+
+```java
+subscriptionWorker.run(batch -> {
+    for (SubscriptionBatch.Item<Order> item : batch.getItems()) {
+        // Read a metadata property you set yourself
+        // ('get' returns null if the metadata does not hold the property)
+        Object traceId = item.getMetadata().get("trace.id");
+        if (traceId != null) {
+            // your processing logic here
+        }
+    }
+});
+```
+
+<br />
+
+Changing a document's metadata changes the document. If the changed document matches the subscription's query, 
+the subscription sends the document to the worker along with the changed metadata held in the item's `metadata` property.
+
+<Admonition type="note" title="">
+* When a subscription's query applies a projection,
+  the `metadata` property of each item holds the metadata **of the item's projected object**, not the metadata of the source document.
+* When a subscription sends [document revisions](../../data-subscriptions/revisions-support.mdx), each item holds two revisions of a
+  document, each revision carrying its own metadata.  
+  The item's `metadata` property holds only a few properties RavenDB sets for the item itself, like `@id` and `@change-vector`, 
+  **not** the metadata of either revision.
+</Admonition>
+
+See [Example: Reading a document's metadata](../../data-subscriptions/consuming-subscription.mdx#example-reading-a-documents-metadata).
+
+</Panel>
+
 <Panel heading="Examples">
 
 <ContentFrame>
@@ -428,6 +468,51 @@ worker.run(x -> {
 
         // Access the dynamic field in the document
         processItem(result.get("DynamicField")); // call your custom method
+    }
+});
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Reading a document's metadata
+
+In this example, the application sets a `trace.id` metadata property in an `Order` document, and the worker reads this property from each order
+the subscription sends.  
+For an explanation of the metadata an item holds, see
+[Reading document metadata](../../data-subscriptions/consuming-subscription.mdx#reading-document-metadata).
+
+#### Setting the metadata property
+
+```java
+try (IDocumentSession session = store.openSession()) {
+    Order order = session.load(Order.class, "orders/1-A");
+
+    // Set a metadata property of your own
+    session.advanced().getMetadataFor(order).put("trace.id", "1234567");
+
+    // Saving the change makes the subscription send the order to the worker,
+    // if the order matches the subscription's query
+    session.saveChanges();
+}
+```
+
+<br />
+
+#### Reading the metadata property in the worker
+
+```java
+SubscriptionWorker<Order> worker =
+    store.subscriptions().getSubscriptionWorker(Order.class, subscriptionName);
+
+worker.run(batch -> {
+    for (SubscriptionBatch.Item<Order> item : batch.getItems()) {
+        // 'get' returns null for orders whose metadata does not hold 'trace.id'
+        Object traceId = item.getMetadata().get("trace.id");
+        if (traceId != null) {
+            System.out.println("Order " + item.getId() + " has the trace ID " + traceId);
+        }
     }
 });
 ```
@@ -765,8 +850,8 @@ If `T` is `ObjectNode`, no deserialization takes place.
 | **projection** | `boolean` | `true` when the item is a projection produced by the subscription query rather than a full document. |
 | **revision** | `boolean` | `true` when the item is a document revision, for a subscription that streams revisions. |
 | **rawResult** | `ObjectNode` | The item before deserialization to `T`. |
-| **rawMetadata** | `ObjectNode` | The metadata of the item's underlying document. |
-| **metadata** | `IMetadataDictionary` | The item's underlying metadata values. |
+| **rawMetadata** | `ObjectNode` | The item's metadata, as a raw JSON object. |
+| **metadata** | `IMetadataDictionary` | The item's metadata, as a dictionary.<br />For an item that holds a document: the document's metadata.<br />For a projected item: the metadata of the projected object.<br />For a revision item: only a few properties RavenDB sets for the item.<br />See [Reading document metadata](../../data-subscriptions/consuming-subscription.mdx#reading-document-metadata). |
 
 </TabItem>
 </Tabs>

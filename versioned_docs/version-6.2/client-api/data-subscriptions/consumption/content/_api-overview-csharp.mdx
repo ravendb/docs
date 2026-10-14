@@ -216,8 +216,8 @@ This class represents a single item in a subscription batch results.
 | **Id**               | `string`                    | The document ID of the underlying document for the current batch item.                                |
 | **ChangeVector**     | `string`                    | The change vector of the underlying document for the current batch item.                              |
 | **RawResult**        | `BlittableJsonReaderObject` | Current batch item before serialization to `T`.                                                       |
-| **RawMetadata**      | `BlittableJsonReaderObject` | Current batch item's underlying document metadata.                                                    |
-| **Metadata**         | `IMetadataDictionary`       | Current batch item's underlying metadata values.                                                      |
+| **RawMetadata**      | `BlittableJsonReaderObject` | The item's metadata, as a raw JSON object. |
+| **Metadata**         | `IMetadataDictionary`       | The item's metadata, as a dictionary.<br />For an item that holds a document: the document's metadata.<br />For a projected item: the metadata of the projected object.<br />For a revision item: only a few properties RavenDB sets for the item. |
 
 <Admonition type="warning" title="">
 This class should only be used within the subscription's `Run` delegate.  
