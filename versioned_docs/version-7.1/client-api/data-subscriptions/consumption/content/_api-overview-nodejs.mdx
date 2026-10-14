@@ -187,8 +187,8 @@ This class represents a single item in a subscription batch result.
 | **id**               | `string`  | The document ID of the underlying document for the current batch item.              |
 | **changeVector**     | `string`  | The change vector of the underlying document for the current batch item.            |
 | **rawResult**        | `object`  | Current batch item - no types reconstructed.                                        |
-| **rawMetadata**      | `object`  | Current batch item's underlying document metadata.                                  |
-| **metadata**         | `object`  | Current batch item's underlying metadata values.                                    |
+| **rawMetadata**      | `object`  | The item's metadata, as a raw JSON object. |
+| **metadata**         | `object`  | The item's metadata, as a dictionary.<br />For an item that holds a document: the document's metadata.<br />For a projected item: the metadata of the projected object.<br />For a revision item: only a few properties RavenDB sets for the item. |
 
 
 

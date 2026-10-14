@@ -156,8 +156,8 @@ if T is `ObjectNode`, no deserialization will take place
 | **id**               | `String`              | Current batch item's underlying document ID.                                           |
 | **changeVector**     | `String`              | Current batch item's underlying document change vector of the current document.        |
 | **rawResult**        | `ObjectNode`          | Current batch item before serialization to `T`.                                        |
-| **rawMetadata**      | `ObjectNode`          | Current batch item's underlying document metadata.                                     |
-| **metadata**         | `IMetadataDictionary` | Current batch item's underlying metadata values.                                       |
+| **rawMetadata**      | `ObjectNode`          | The item's metadata, as a raw JSON object. |
+| **metadata**         | `IMetadataDictionary` | The item's metadata, as a dictionary.<br />For an item that holds a document: the document's metadata.<br />For a projected item: the metadata of the projected object.<br />For a revision item: only a few properties RavenDB sets for the item. |
 
 </Admonition>
 
