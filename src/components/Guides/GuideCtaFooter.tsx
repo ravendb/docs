@@ -10,129 +10,108 @@ interface GuideCta {
     description: string;
     url: string;
     icon: IconName;
-    /** Sets `--cta-accent` for both themes; the icon tile and the hover state read it. */
+    /** Sets `--cta-accent` for both themes; the icon tile reads it. */
     accent: string;
 }
 
-/* Cloud borrows the green of the Cloud docs theme. */
+/*
+ * The accents share one OKLCH lightness and chroma per theme and differ only in hue, so the tiles vary without
+ * any of them outweighing the rest. Cloud keeps the green of the Cloud docs theme, Discord its blurple.
+ */
 const ctas: GuideCta[] = [
     {
         title: "Join the community on Discord",
         description: "Ask questions and talk with the RavenDB team.",
         url: "https://discord.com/invite/ravendb",
         icon: "discord",
-        accent: "[--cta-accent:#4752c4] dark:[--cta-accent:#8c95ff]",
+        accent: "[--cta-accent:oklch(0.56_0.13_280)] dark:[--cta-accent:oklch(0.8_0.12_280)]",
     },
     {
         title: "Get a free developer license",
         description: "Fully featured, free for development and testing.",
         url: "https://ravendb.net/dev",
         icon: "key",
-        accent: "[--cta-accent:#b45309] dark:[--cta-accent:#fbbf24]",
+        accent: "[--cta-accent:oklch(0.56_0.13_70)] dark:[--cta-accent:oklch(0.8_0.12_70)]",
     },
     {
         title: "Start a free cloud database",
         description: "A managed instance, with nothing to install.",
         url: "https://ravendb.net/cloud",
         icon: "cloud",
-        accent: "[--cta-accent:#417c5a] dark:[--cta-accent:#63ffa6]",
+        accent: "[--cta-accent:oklch(0.56_0.13_155)] dark:[--cta-accent:oklch(0.8_0.12_155)]",
     },
     {
         title: "Explore more guides",
         description: "Step-by-step walkthroughs of RavenDB features.",
         url: "/guides",
         icon: "guides",
-        accent: "[--cta-accent:var(--ifm-color-primary)] dark:[--cta-accent:var(--ifm-color-primary-lightest)]",
+        accent: "[--cta-accent:oklch(0.56_0.13_245)] dark:[--cta-accent:oklch(0.8_0.12_245)]",
     },
 ];
 
-function CtaCard({ title, description, url, icon, accent }: GuideCta): ReactNode {
+function CtaCell({ title, description, url, icon, accent }: GuideCta): ReactNode {
     const isExternal = !isInternalUrl(url);
 
     return (
         <li
             className={clsx(
-                "group relative flex items-center gap-3 rounded-xl p-3.5",
-                "bg-ifm-background dark:bg-white/5",
-                "transition-[background-color,box-shadow] duration-200",
-                "hover:ring-1 hover:ring-[color:var(--cta-accent)]/40 dark:hover:bg-white/[0.08]",
-                "has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2",
-                "has-[a:focus-visible]:outline-[color:var(--cta-accent)]",
+                "group relative flex items-start gap-4 p-5",
+                "bg-clip-padding transition-[background-color] duration-200 hover:bg-ifm-background-surface",
+                "border-black/10 dark:border-white/10",
+                "@max-xl:not-last:border-b @xl:odd:border-r @xl:nth-[-n+2]:border-b",
+                "has-[a:focus-visible]:outline-2 has-[a:focus-visible]:-outline-offset-2",
+                "has-[a:focus-visible]:outline-primary",
                 accent
             )}
         >
             <div
                 aria-hidden="true"
                 className={clsx(
-                    "flex size-9 shrink-0 items-center justify-center rounded-lg",
-                    "bg-[color:var(--cta-accent)]/12 text-[color:var(--cta-accent)]"
+                    "flex size-10 shrink-0 items-center justify-center rounded-lg [&_svg]:size-5",
+                    "bg-[color:var(--cta-accent)]/12 text-[color:var(--cta-accent)]",
+                    "transition-[background-color] duration-200 group-hover:bg-[color:var(--cta-accent)]/20"
                 )}
             >
-                <Icon icon={icon} size="xs" />
+                <Icon icon={icon} />
             </div>
-            <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-                <h3 className="!m-0 !text-sm !font-semibold !leading-snug">
-                    {/* The ::after stretches the link over the whole card, so the card is one target that is
+            <div className="flex min-w-0 flex-col">
+                <h3 className="!m-0 !text-sm !font-semibold !leading-5">
+                    {/* The ::after stretches the link over the whole cell, so the cell is one target that is
                         announced by its title alone. */}
                     <Link
                         {...(isExternal ? { href: url } : { to: url })}
                         className={clsx(
                             "!text-inherit !no-underline hover:!no-underline focus-visible:outline-none",
-                            "after:absolute after:inset-0 after:rounded-xl after:content-['']"
+                            "after:absolute after:inset-0 after:content-['']"
                         )}
                     >
                         {title}
                         {isExternal && <span className="sr-only"> (opens in a new tab)</span>}
                     </Link>
                 </h3>
-                <p className="!m-0 text-xs leading-relaxed text-[color:var(--ifm-color-emphasis-700)]">{description}</p>
+                <p className="!m-0 text-[13px]/5 text-[color:var(--ifm-color-emphasis-700)]">{description}</p>
             </div>
-            <Icon
-                icon={isExternal ? "newtab" : "arrow-thin-right"}
-                size="2xs"
-                className={clsx(
-                    "shrink-0 self-start text-[color:var(--ifm-color-emphasis-500)]",
-                    "transition-colors duration-200 group-hover:text-[color:var(--cta-accent)]"
-                )}
-            />
         </li>
     );
 }
 
 /**
- * Closing call to action for guide articles: the community, the two free ways to run RavenDB, and the
- * rest of the guides. DocItem/Footer renders it right after every hosted guide, so articles end on their own
- * takeaways and leave the generic invitations to this block. The outer frame is the only border; the
- * cards are filled tiles, so the block doesn't read as boxes inside boxes.
+ * Closing call to action for guide articles: the two free ways to run RavenDB, the community, and the rest of
+ * the guides. DocItem/Footer renders it right after every hosted guide, so articles end on their own takeaways and
+ * leave the generic invitations to this block. The heading sits on the page like the See also heading below it,
+ * and the links share one bordered grid split by hairlines rather than cards inside a box.
  */
 export default function GuideCtaFooter({ className }: { className?: string }): ReactNode {
     return (
         <section
             aria-labelledby="guide-cta-footer-heading"
-            className={clsx(
-                "relative isolate overflow-hidden rounded-2xl border p-5 md:p-6",
-                "border-black/10 dark:border-white/10",
-                "bg-ifm-background-surface",
-                "bg-[radial-gradient(70%_90%_at_100%_0%,color-mix(in_oklab,var(--ifm-color-primary)_16%,transparent)_0%,transparent_70%)]",
-                className
-            )}
+            className={clsx("@container flex w-full flex-col items-start gap-4", className)}
         >
-            {/* The brand mark from the navbar logo, bleeding off the corner. */}
-            <div
-                aria-hidden="true"
-                className={clsx(
-                    "pointer-events-none absolute -top-8 -right-8 -z-10 rotate-12",
-                    "text-[color:var(--ifm-color-primary)] opacity-[0.06] dark:opacity-[0.08]",
-                    "[&_svg]:size-48"
-                )}
-            >
-                <Icon icon="ravendb-mark" />
-            </div>
-            <div className="mb-4 flex flex-col items-start gap-1.5">
-                <span className="text-xs font-semibold uppercase tracking-widest text-primary-darker dark:text-primary-lightest">
+            <div className="flex flex-col items-start gap-1">
+                <span className="text-xs font-semibold uppercase tracking-wider text-[color:var(--ifm-color-emphasis-600)]">
                     Next steps
                 </span>
-                <h2 id="guide-cta-footer-heading" className="!m-0 !text-lg !leading-tight tracking-tight">
+                <h2 id="guide-cta-footer-heading" className="!m-0 !text-xl !leading-tight">
                     Keep building with RavenDB
                 </h2>
                 <p className="!m-0 max-w-[60ch] text-sm text-[color:var(--ifm-color-emphasis-700)]">
@@ -140,9 +119,14 @@ export default function GuideCtaFooter({ className }: { className?: string }): R
                     RavenDB.
                 </p>
             </div>
-            <ul className="!m-0 grid list-none grid-cols-1 gap-2.5 !p-0 sm:grid-cols-2">
+            <ul
+                className={clsx(
+                    "!m-0 grid w-full list-none overflow-hidden rounded-xl !p-0 @xl:grid-cols-2",
+                    "border border-black/10 dark:border-white/10"
+                )}
+            >
                 {ctas.map((cta) => (
-                    <CtaCard key={cta.url} {...cta} />
+                    <CtaCell key={cta.url} {...cta} />
                 ))}
             </ul>
         </section>

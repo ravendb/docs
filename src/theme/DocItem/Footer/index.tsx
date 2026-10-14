@@ -52,7 +52,7 @@ export default function DocItemFooter(): ReactNode {
                 />
             )}
             {/* The CTA closes the article, so it comes before the reference list rather than after it. */}
-            {canDisplayGuideCta && <GuideCtaFooter className="mt-8 mb-6" />}
+            {canDisplayGuideCta && <GuideCtaFooter className="mt-14 mb-6" />}
             {canDisplaySeeAlso && <SeeAlso items={see_also} className="mb-6" />}
         </footer>
     );
