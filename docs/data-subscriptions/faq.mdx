@@ -17,6 +17,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
    * [Can the same document be processed more than once?](../data-subscriptions/faq.mdx#can-the-same-document-be-processed-more-than-once)
    * [In what order are documents sent?](../data-subscriptions/faq.mdx#in-what-order-are-documents-sent)
    * [What happens if a worker disconnects or crashes?](../data-subscriptions/faq.mdx#what-happens-if-a-worker-disconnects-or-crashes)
+   * [Why are all documents processed again each time my application restarts?](../data-subscriptions/faq.mdx#why-are-all-documents-processed-again-each-time-my-application-restarts)
    * [Can several workers consume the same subscription at once?](../data-subscriptions/faq.mdx#can-several-workers-consume-the-same-subscription-at-once)
    * [What access level is needed to create or consume a subscription?](../data-subscriptions/faq.mdx#what-access-level-is-needed-to-create-or-consume-a-subscription)
    * [What happens if the responsible node goes down?](../data-subscriptions/faq.mdx#what-happens-if-the-responsible-node-goes-down)
@@ -82,6 +83,40 @@ A batch the worker received but did not acknowledge is sent again, so some docum
 processed more than once.
 
 See: [Progress persistence and failover](../data-subscriptions/overview.mdx#progress-persistence-and-failover)
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Why are all documents processed again each time my application restarts?
+
+When your application calls `store.Subscriptions.Create` without passing the method a name, the server creates
+a new subscription, sets the subscription's name to the subscription's ID, and returns this name.  
+If your application creates a new subscription this way each time it starts, and then passes the subscription's
+name to the worker, processing will start from scratch for the worker each time the application starts.  
+
+e.g.,  
+
+```csharp
+string subscriptionName = store.Subscriptions.Create<Order>();
+var worker = store.Subscriptions.GetSubscriptionWorker<Order>(subscriptionName);
+```
+
+<br />
+
+To continue processing where it left off, use one of these options:
+
+* **Using `Create`**  
+  Create the subscription only once, with a name, and pass this name to the worker each time the application starts.
+* **Using `Update`**  
+  Each time the application starts, call `Update` with the subscription's name and definition, and pass the name to the worker.  
+  Set the `CreateNew` property of the `SubscriptionUpdateOptions` object passed to `Update` to `true`, so that if a subscription
+  with this name does not exist yet, `Update` creates the subscription.  
+  If the subscription already exists, `Update` keeps the subscription's processing progress.
+
+See: [Creating a subscription](../data-subscriptions/creating-subscription/creating-subscription_api.mdx#creating-a-subscription),
+[Creating a subscription via update](../data-subscriptions/creating-subscription/creating-subscription_api.mdx#creating-a-subscription-via-update),
+and [Usage example](../data-subscriptions/overview.mdx#usage-example)
 
 </ContentFrame>
 

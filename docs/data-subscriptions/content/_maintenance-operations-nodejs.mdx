@@ -183,6 +183,23 @@ The returned `SubscriptionState` object includes, among others, the following pr
 | **disabled** | `boolean` | When `true`, the subscription does not allow workers to connect. |
 | **archivedDataProcessingBehavior** | `ArchivedDataProcessingBehavior` | The subscription's handling of archived documents.<br />See [Archived documents](../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#archived-documents). |
 
+<br />
+
+If no subscription with the given name exists, `getSubscriptionState` throws a `SubscriptionDoesNotExistException`.  
+To check whether a subscription exists (e.g., before your application connects a worker to the subscription), call
+`getSubscriptionState` and catch this exception.
+
+```js
+try {
+    await documentStore.subscriptions.getSubscriptionState("OrdersShippedToUK");
+    // The subscription exists
+} catch (err) {
+    if (err.name === "SubscriptionDoesNotExistException") {
+        // No subscription named "OrdersShippedToUK" exists
+    }
+}
+```
+
 </Panel>
 
 <Panel heading="Updating a subscription">
