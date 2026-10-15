@@ -57,7 +57,20 @@ import ContentFrame from "@site/src/components/ContentFrame";
 To create a subscription, define the documents that the server should send to the worker, then register
 this definition with the server using `documentStore.subscriptions.create`.
 
-You can define a subscription in two ways:
+`create` is meant to be called **once** per subscription.
+
+* Calling `create` **without a name** creates a new subscription, and the server sets the subscription's name to the subscription's ID.
+* Calling `create` **with a new name** creates a subscription with this name.
+* Calling `create` **with the name of an existing subscription** throws an exception.
+  <br /><br />
+  <Admonition type="info" title="">
+  A subscription can also be created using the `update` method, by setting `createNew` to `true` in the update options object passed to `update`.  
+  `update` then creates the subscription if it does not exist yet, and updates the subscription if it already exists and its definition has changed.  
+  See [Creating a subscription via update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#creating-a-subscription-via-update).
+  </Admonition>
+
+<br />
+You can use `create` in two ways:
 
 * **By document type**  
   Pass the collection's document type, so the server sends the entire collection.  
@@ -77,11 +90,6 @@ const subscriptionName = await documentStore.subscriptions.create(Order);
 For filtering and includes, see the [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples) below.  
 For projections, see [Projections](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#projections).  
 To subscribe to document revisions, see [Revisions support](../../../data-subscriptions/revisions-support.mdx).
-
-<Admonition type="note" title="">
-If your application passes the subscription's definition to the server each time the application starts, create the subscription
-using `update` (see [Creating a subscription via update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#creating-a-subscription-via-update)).
-</Admonition>
 
 </Panel>
 
@@ -235,8 +243,12 @@ On later starts, `update` **modifies** the subscription if the definition your a
 subscription's current definition (e.g., after you deploy a new version of the application with a changed query).  
 If there is no change in the subscription's definition, `update` leaves the subscription as it is.
 
-Calling [create](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#methods) rather than `update` when the application starts would fail on every start after the first,
-since a subscription with the same name already exists by then.
+<Admonition type="note" title="">
+If your application calls [create](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#methods) rather than `update` when the application starts:
+
+* Passing the subscription's name to `create` **would fail on every start after the first**, since the server attempts to create a subscription that already exists.
+* Not passing a name to `create` **would create a new subscription on every start**, and each new subscription would send the matching documents from the beginning.
+</Admonition>
 
 See [Example: Creating a subscription via update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-creating-a-subscription-via-update).
 

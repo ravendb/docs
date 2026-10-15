@@ -26,6 +26,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * In this article:
    * [What is a data subscription](../data-subscriptions/overview.mdx#what-is-a-data-subscription)
+   * [What data subscriptions are for](../data-subscriptions/overview.mdx#what-data-subscriptions-are-for)
    * [How documents are processed](../data-subscriptions/overview.mdx#how-documents-are-processed)
       * [Processing order and re-sending](../data-subscriptions/overview.mdx#processing-order-and-re-sending)
       * [Progress persistence and failover](../data-subscriptions/overview.mdx#progress-persistence-and-failover)
@@ -39,14 +40,13 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 <Panel heading="What is a data subscription">
 
-A data subscription is an ongoing task that runs on the server and selects documents for clients to
-process. The subscription's query defines the documents the server sends to the worker. You can
-shape the query to filter the documents, project specific fields, and include related data.  
+A data subscription is an ongoing task that runs on the server and selects documents for clients (**workers**) to process.  
+The subscription's query defines the documents the server sends to workers that use the subscription.  
+You can shape the query to filter documents, project specific document fields, or include related data.  
 
-A client consumes the subscription using a **worker**. The worker connects to the subscription,
-receives a batch of documents, and runs your processing code over the batch. Processing can take
-anywhere from seconds to hours, depending on your code. When the worker finishes processing a batch,
-it acknowledges the batch to the server, and the server then sends the next batch to the worker.  
+A worker connects to the subscription, receives a batch of documents, and runs your processing code over
+the batch. Processing time depends on your code. When the worker finishes processing a batch, it
+acknowledges the batch to the server, and the server then sends the next batch to the worker.  
 
 Two definitions shape every subscription:
 
@@ -65,6 +65,16 @@ To get started, create a data subscription using the
 Data subscriptions are also supported on [sharded databases](../sharding/subscriptions.mdx), where
 documents from all shards are processed in a single subscription stream.
 </Admonition>
+
+</Panel>
+
+<Panel heading="What data subscriptions are for">
+
+You can use a data subscription to process documents in your application, either continuously as documents are
+added or modified (e.g., to send a confirmation email for each new order) or as a one-time job over a whole collection
+(e.g., to check every order against a new validation rule).  
+The server keeps track of the batches the worker has acknowledged, so your application does not need to track the
+processed documents itself.
 
 </Panel>
 
@@ -235,22 +245,40 @@ query exposes to a consumer.
 
 <Panel heading="Usage example">
 
-The following example creates a subscription for a specific company's orders, then runs a worker
-that processes the documents the server sends.
+The following example creates a subscription for orders shipped to the UK, using the
+[CreateAsync](../data-subscriptions/creating-subscription/creating-subscription_api.mdx#creating-a-subscription) method.  
+The subscription is kept on the server until you explicitly delete it.
 
 ```csharp
-public async Task ConsumeSubscription(IDocumentStore store, CancellationToken cancellationToken)
+public async Task CreateSubscription(IDocumentStore store)
 {
-    // Create the subscription task on the server.
-    // The server will send every Order placed by company "companies/11".
-    string subscriptionName = await store.Subscriptions
-        .CreateAsync<Order>(order => order.Company == "companies/11");
+    // Create the subscription and give it a name
+    await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions<Order>
+    {
+        Name = "OrdersShippedToUK",
 
-    // Create a worker on the client to consume the subscription
+        // The subscription will send every Order shipped to the UK
+        Filter = order => order.ShipTo.Country == "UK"
+    });
+}
+```
+
+<br />
+
+To process the orders, pass the subscription's name to
+[GetSubscriptionWorker](../data-subscriptions/consuming-subscription.mdx#creating-a-subscription-worker) to create a worker,
+and run the worker using the worker's [Run](../data-subscriptions/consuming-subscription.mdx#running-the-worker) method.  
+You can run the worker any number of times (e.g., each time your application starts).  
+Each time the worker runs, processing continues where it left off.
+
+```csharp
+public async Task ProcessOrders(IDocumentStore store, CancellationToken cancellationToken)
+{
+    // Create a worker on the client, passing it the name of the subscription to connect to
     SubscriptionWorker<Order> worker =
-        store.Subscriptions.GetSubscriptionWorker<Order>(subscriptionName);
+        store.Subscriptions.GetSubscriptionWorker<Order>("OrdersShippedToUK");
 
-    // Run the worker and process each batch the server sends
+    // Run the worker and process each batch of documents the subscription sends
     await worker.Run(batch =>
     {
         foreach (var item in batch.Items)
