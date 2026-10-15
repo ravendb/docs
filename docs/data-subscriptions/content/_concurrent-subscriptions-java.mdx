@@ -1,0 +1,197 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+<Admonition type="note" title="">
+
+* With concurrent subscriptions, multiple workers can consume the same subscription simultaneously.
+
+* The server assigns each worker a different batch of documents to process.
+
+* By processing different batches in parallel, multiple workers can significantly accelerate the
+  consumption of the subscription's contents.
+
+* To run workers concurrently, set their [strategy](../../data-subscriptions/consuming-subscription.mdx#worker-strategies) 
+  to `SubscriptionOpeningStrategy.CONCURRENT`.  
+  Other strategies (`OPEN_IF_FREE`, `TAKE_OVER`, `WAIT_FOR_FREE`) let only one worker consume a subscription at a time.
+
+* If a concurrent worker disconnects, the server may reassign the documents this worker was
+  processing to other available workers consuming the same subscription.  
+  A document can reach more than one worker this way.  
+  See [Connection failure and reassignment](../../data-subscriptions/concurrent-subscriptions.mdx#connection-failure-and-reassignment) below.
+
+* In this article:
+   * [Defining concurrent workers](../../data-subscriptions/concurrent-subscriptions.mdx#defining-concurrent-workers)
+   * [Dropping a worker](../../data-subscriptions/concurrent-subscriptions.mdx#dropping-a-worker)
+   * [Connection failure and reassignment](../../data-subscriptions/concurrent-subscriptions.mdx#connection-failure-and-reassignment)
+   * [Syntax](../../data-subscriptions/concurrent-subscriptions.mdx#syntax)
+
+</Admonition>
+
+<Panel heading="Defining concurrent workers">
+
+To run workers concurrently, set each worker's strategy to `CONCURRENT`.  
+To create each worker, pass a [SubscriptionWorkerOptions](../../data-subscriptions/consuming-subscription.mdx#classes) object whose `strategy` is
+`SubscriptionOpeningStrategy.CONCURRENT` to [getSubscriptionWorker](../../data-subscriptions/consuming-subscription.mdx#methods).  
+[Run the workers](../../data-subscriptions/consuming-subscription.mdx#running-the-worker) the same way you run single workers.
+
+#### Example: Running two concurrent workers
+
+```java
+// Two workers, both using the CONCURRENT strategy,
+// so they connect to the "All Orders" subscription at the same time.
+// Each worker is created with its own options object.
+SubscriptionWorkerOptions options1 = new SubscriptionWorkerOptions("All Orders");
+options1.setStrategy(SubscriptionOpeningStrategy.CONCURRENT);
+options1.setMaxDocsPerBatch(20);
+SubscriptionWorker<Order> worker1 =
+    store.subscriptions().getSubscriptionWorker(Order.class, options1);
+
+SubscriptionWorkerOptions options2 = new SubscriptionWorkerOptions("All Orders");
+options2.setStrategy(SubscriptionOpeningStrategy.CONCURRENT);
+options2.setMaxDocsPerBatch(20);
+SubscriptionWorker<Order> worker2 =
+    store.subscriptions().getSubscriptionWorker(Order.class, options2);
+
+// Run both workers. The server assigns each one a different batch of documents.
+CompletableFuture<Void> subscriptionRuntimeTask1 = worker1.run(batch -> {
+    for (SubscriptionBatch.Item<Order> item : batch.getItems()) {
+        processOrder(item.getResult()); // your processing logic
+    }
+});
+
+CompletableFuture<Void> subscriptionRuntimeTask2 = worker2.run(batch -> {
+    for (SubscriptionBatch.Item<Order> item : batch.getItems()) {
+        processOrder(item.getResult()); // your processing logic
+    }
+});
+```
+
+</Panel>
+
+<Panel heading="Dropping a worker">
+
+To forcefully disconnect a worker from its subscription, pass the worker object to
+`subscriptions().dropSubscriptionWorker`.  
+The documents the worker was processing then become available for reassignment to the remaining workers.
+
+<Admonition type="note" title="Workers that share an options object">
+`dropSubscriptionWorker` identifies the worker to disconnect by the worker's ID.  
+This ID is generated when the worker's `SubscriptionWorkerOptions` object is created, so workers created from the same options object
+share one ID.  
+If two workers share an ID, calling `dropSubscriptionWorker` for one of these workers may disconnect the other worker instead.  
+To drop each worker separately, create a separate `SubscriptionWorkerOptions` object for each worker, as in
+[Example: Running two concurrent workers](../../data-subscriptions/concurrent-subscriptions.mdx#example-running-two-concurrent-workers).
+</Admonition>
+
+#### Example: Dropping one worker
+
+```java
+// Disconnect worker2; its documents become available to the other workers
+store.subscriptions().dropSubscriptionWorker(worker2);
+```
+
+<br />
+
+To disconnect every worker on a subscription at once, by subscription name rather than by a
+specific worker, use `dropConnection`.  
+See [Maintenance operations](../../data-subscriptions/maintenance-operations.mdx#dropping-connections).
+
+</Panel>
+
+<Panel heading="Connection failure and reassignment">
+
+When a concurrent worker's connection ends unexpectedly, the server may reassign the documents the
+worker was processing to the subscription's other available workers.  
+A worker that reconnects to the subscription after a failure receives a new batch, which is not
+guaranteed to hold the documents it was processing before.
+
+Because a worker can disconnect before acknowledging the documents it already handled, the same
+document can be processed more than once: first by the worker that dropped, and again by the worker
+the document is reassigned to.
+
+<Admonition type="note" title="">
+Plan for [at-least-once delivery](../../data-subscriptions/consuming-subscription.mdx#at-least-once-delivery).
+Make each worker's processing idempotent, so reprocessing a document the server reassigns has no
+unintended effect.
+</Admonition>
+
+</Panel>
+
+<Panel heading="Syntax">
+
+<ContentFrame>
+
+### Methods
+
+<Tabs groupId='concurrentMethods'>
+<TabItem value="drop-worker" label="dropSubscriptionWorker">
+
+Forcefully disconnect a specific worker from the subscription it is connected to.
+
+```java
+<T> void dropSubscriptionWorker(SubscriptionWorker<T> worker);
+<T> void dropSubscriptionWorker(SubscriptionWorker<T> worker, String database);
+```
+
+<br />
+
+Usage:
+
+```java
+store.subscriptions().dropSubscriptionWorker(worker2);
+```
+
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **worker** | `SubscriptionWorker<T>` | The worker to disconnect from the subscription. |
+| **database** | `String` | The database where the subscription resides. If `null`, the document store's default database is used. |
+
+| Return value | |
+|-----------|-------------|
+| `void` | Returns once the server has dropped the worker's connection. |
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Classes
+
+<Tabs groupId='concurrentClasses'>
+<TabItem value="opening-strategy" label="SubscriptionOpeningStrategy">
+
+The strategy set on a worker's [SubscriptionWorkerOptions](../../data-subscriptions/consuming-subscription.mdx#classes)
+`strategy` property. `CONCURRENT` is the value that lets multiple workers consume the subscription
+at once; the other values allow a single worker at a time, covered in
+[Worker strategies](../../data-subscriptions/consuming-subscription.mdx#worker-strategies).
+
+```java
+public enum SubscriptionOpeningStrategy {
+    // Connect only if no other worker is connected
+    OPEN_IF_FREE,
+
+    // Take over the connection from the current worker
+    TAKE_OVER,
+
+    // Wait for the current worker to disconnect, then take over
+    WAIT_FOR_FREE,
+
+    // Connect concurrently with the other workers
+    CONCURRENT
+}
+```
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+</Panel>
