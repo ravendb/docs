@@ -15,8 +15,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * A data subscription can subscribe not only to documents but also to their revisions, allowing workers 
   to track the changes made in documents over time.
 
-* To subscribe to revisions, consume the subscription with `getSubscriptionWorkerForRevisions`, 
-  or add `(Revisions = true)` to its RQL query.
+* To subscribe to revisions, create the subscription using `createForRevisions`, 
+  or add `(Revisions = true)` to the subscription's RQL query.
 
 * In this article:
    * [Regular subscription vs revisions subscription](../../data-subscriptions/revisions-support.mdx#regular-subscription-vs-revisions-subscription)
@@ -24,6 +24,9 @@ import ContentFrame from "@site/src/components/ContentFrame";
    * [Creating and consuming a revisions subscription](../../data-subscriptions/revisions-support.mdx#creating-and-consuming-a-revisions-subscription)
    * [Filtering revisions](../../data-subscriptions/revisions-support.mdx#filtering-revisions)
    * [Projecting fields from revisions](../../data-subscriptions/revisions-support.mdx#projecting-fields-from-revisions)
+   * [Including related documents](../../data-subscriptions/revisions-support.mdx#including-related-documents)
+   * [Reading a revision's metadata](../../data-subscriptions/revisions-support.mdx#reading-a-revision-s-metadata)
+   * [Syntax](../../data-subscriptions/revisions-support.mdx#syntax)
 
 </Admonition>
 
@@ -302,5 +305,144 @@ revenuesComparisonWorker.on("batch", (batch, callback) => {
     }
 });
 ```
+
+</Panel>
+
+<Panel heading="Including related documents">
+
+A revisions subscription can include related documents in the batches it sends (e.g., the `Employee` document that an order's
+`Employee` field refers to), so the worker can read these documents without requesting them from the server.  
+The path of each include starts at the revision being processed (`Current`) or at the preceding revision (`Previous`), and ends at
+the field that holds the ID of the document to include, e.g., `doc.Current.Employee` (where `doc` is the query's alias).  
+The worker reads an included document by loading the document in a session opened using `batch.openSession`.  
+To learn more about including related documents in batches, see
+[Example: Including documents in the batch](../../data-subscriptions/consuming-subscription.mdx#example-including-documents-in-the-batch).
+
+<ContentFrame>
+
+### Example
+
+In this example, the worker reports orders that were reassigned from one employee to another, and reads the names of both employees.
+
+#### Creating the subscription
+
+```js
+const subscriptionName = await documentStore.subscriptions.create({
+    // Include the employees that the processed revision and the preceding revision refer to
+    query: `from Orders (Revisions = true) as doc
+            include doc.Current.Employee, doc.Previous.Employee`
+});
+```
+
+<br />
+
+#### Consuming the subscription
+
+```js
+const workerOptions = { subscriptionName };
+
+const worker =
+    documentStore.subscriptions.getSubscriptionWorkerForRevisions(workerOptions);
+
+worker.on("batch", async (batch, callback) => {
+    try {
+        // Open a session using 'batch.openSession' to access the included Employee documents
+        const session = batch.openSession();
+
+        for (const item of batch.items) {
+            const previousRevision = item.result.previous;
+            const currentRevision = item.result.current;
+
+            // Skip a document's first revision, and revisions that did not change the employee
+            if (!previousRevision || previousRevision.Employee === currentRevision.Employee) {
+                continue;
+            }
+
+            // Calling 'load' will not generate a request to the server,
+            // because both employees were included in the batch
+            const previousEmployee = await session.load(previousRevision.Employee);
+            const currentEmployee = await session.load(currentRevision.Employee);
+
+            console.log(`
+                Order ${item.id} was reassigned from
+                ${previousEmployee.FirstName} ${previousEmployee.LastName}
+                to ${currentEmployee.FirstName} ${currentEmployee.LastName}`);
+        }
+        callback();
+    } catch (err) {
+        callback(err);
+    }
+});
+```
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Reading a revision's metadata">
+
+Each batch item of a revisions subscription holds two revisions of a document (`current` and `previous`).  
+The item's `metadata` property and each revision's own metadata hold these kinds of metadata properties:
+
+* **Properties set by RavenDB** (e.g., `@id` and `@change-vector`)  
+  The item's `metadata` property holds a few of these properties for the item itself.  
+  Each revision's metadata holds these properties for the revision.
+* **Properties you set yourself** (e.g., `trace.id`)  
+  Only each revision's metadata holds these properties. The item's `metadata` property does not.
+
+To read a revision's metadata, read the revision's `@metadata` object in the item's `rawResult` property,
+which holds the item before deserialization.
+
+e.g., the following worker reads the `trace.id` metadata property of each processed revision.
+
+```js
+worker.on("batch", (batch, callback) => {
+    try {
+        for (const item of batch.items) {
+            // Read a metadata property you set yourself from the revision being processed
+            const traceId = item.rawResult.current["@metadata"]["trace.id"];
+            if (traceId) {
+                // your processing logic here
+            }
+        }
+        callback();
+    } catch (err) {
+        callback(err);
+    }
+});
+```
+
+</Panel>
+
+<Panel heading="Syntax">
+
+<ContentFrame>
+
+### Classes
+
+<Tabs groupId='revisionsClasses'>
+<TabItem value="revision" label="Revision&lt;T&gt;">
+
+The processed-item type for a revisions subscription. Each batch item's `result` is a
+`Revision<T>` object holding the revision being processed and the one before it.
+
+```js
+interface Revision<T> {
+    previous: T;
+    current: T;
+}
+```
+
+<br />
+
+| Field | Type | Description |
+|-------|------|-------------|
+| **previous** | `T` | The preceding revision. `null` when `current` is the document's first revision. |
+| **current** | `T` | The revision being processed. |
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
 
 </Panel>

@@ -24,6 +24,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
    * [Creating and consuming a revisions subscription](../../data-subscriptions/revisions-support.mdx#creating-and-consuming-a-revisions-subscription)
    * [Filtering revisions](../../data-subscriptions/revisions-support.mdx#filtering-revisions)
    * [Projecting fields from revisions](../../data-subscriptions/revisions-support.mdx#projecting-fields-from-revisions)
+   * [Including related documents](../../data-subscriptions/revisions-support.mdx#including-related-documents)
+   * [Reading a revision's metadata](../../data-subscriptions/revisions-support.mdx#reading-a-revision-s-metadata)
    * [Syntax](../../data-subscriptions/revisions-support.mdx#syntax)
 
 </Admonition>
@@ -317,6 +319,136 @@ await revenuesComparisonWorker.Run(batch =>
         Console.WriteLine($@"Revenue for order {item.Id}
                              grew from {item.Result.PreviousRevenue}
                              to {item.Result.CurrentRevenue}");
+    }
+});
+```
+
+</Panel>
+
+<Panel heading="Including related documents">
+
+A revisions subscription can include related documents in the batches it sends (e.g., the `Employee` document that an order's
+`Employee` field refers to), so the worker can read these documents without requesting them from the server.  
+The path of each include starts at the revision being processed (`Current`) or at the preceding revision (`Previous`), and ends at
+the field that holds the ID of the document to include, e.g., `Current.Employee` (in RQL, after the query's alias:
+`doc.Current.Employee`).  
+The worker reads an included document by loading the document in a session opened using `batch.OpenSession`.  
+To learn more about including related documents in batches, see
+[Example: Including documents in the batch](../../data-subscriptions/consuming-subscription.mdx#example-including-documents-in-the-batch).
+
+<Admonition type="note" title="">
+
+When you use the [include builder](../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#include-builder-documents)
+with `Revision<T>`, pass each path to `IncludeDocuments` as a string.  
+e.g., `IncludeDocuments("Current.Employee")`
+
+</Admonition>
+
+<ContentFrame>
+
+### Example
+
+In this example, the worker reports orders that were reassigned from one employee to another, and reads the names of both employees.
+
+#### Creating the subscription
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="generic" label="Generic API">
+
+```csharp
+subscriptionName = store.Subscriptions.Create(
+    new SubscriptionCreationOptions<Revision<Order>>()
+    {
+        // Include the employees that the processed revision and the preceding revision refer to
+        Includes = builder => builder
+            .IncludeDocuments("Current.Employee")
+            .IncludeDocuments("Previous.Employee")
+    });
+```
+
+</TabItem>
+<TabItem value="rql" label="RQL">
+
+```csharp
+subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    // Include the employees that the processed revision and the preceding revision refer to
+    Query = @"from Orders (Revisions = true) as doc
+              include doc.Current.Employee, doc.Previous.Employee"
+});
+```
+
+</TabItem>
+</Tabs>
+
+<br />
+
+#### Consuming the subscription
+
+```csharp
+SubscriptionWorker<Revision<Order>> worker =
+    store.Subscriptions.GetSubscriptionWorker<Revision<Order>>(subscriptionName);
+
+await worker.Run(batch =>
+{
+    // Open a session using 'batch.OpenSession' to access the included Employee documents
+    using (var session = batch.OpenSession())
+    {
+        foreach (var item in batch.Items)
+        {
+            var previousRevision = item.Result.Previous;
+            var currentRevision = item.Result.Current;
+
+            // Skip a document's first revision, and revisions that did not change the employee
+            if (previousRevision == null || previousRevision.Employee == currentRevision.Employee)
+                continue;
+
+            // Calling Load will not generate a request to the server,
+            // since both employees were included in the batch
+            var previousEmployee = session.Load<Employee>(previousRevision.Employee);
+            var currentEmployee = session.Load<Employee>(currentRevision.Employee);
+
+            Console.WriteLine($@"Order {item.Id} was reassigned from
+                                 {previousEmployee.FirstName} {previousEmployee.LastName}
+                                 to {currentEmployee.FirstName} {currentEmployee.LastName}");
+        }
+    }
+});
+```
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Reading a revision's metadata">
+
+Each batch item of a revisions subscription holds two revisions of a document (`Current` and `Previous`).  
+The item's `Metadata` property and each revision's own metadata hold these kinds of metadata properties:
+
+* **Properties set by RavenDB** (e.g., `@id` and `@change-vector`)  
+  The item's `Metadata` property holds a few of these properties for the item itself.  
+  Each revision's metadata holds these properties for the revision.
+* **Properties you set yourself** (e.g., `trace.id`)  
+  Only each revision's metadata holds these properties. The item's `Metadata` property does not.
+
+To read a revision's metadata, read the revision's `@metadata` object in the item's `RawResult` property,
+which holds the item before deserialization to `T`.  
+The batch session does not track revisions, so `GetMetadataFor` cannot read a revision's metadata either.
+
+e.g., the following worker reads the `trace.id` metadata property of each processed revision.
+
+```csharp
+await worker.Run(batch =>
+{
+    foreach (var item in batch.Items)
+    {
+        // Read a metadata property you set yourself from the revision being processed
+        if (item.RawResult.TryGet("Current", out BlittableJsonReaderObject currentRevision) &&
+            currentRevision.TryGet("@metadata", out BlittableJsonReaderObject metadata) &&
+            metadata.TryGet("trace.id", out string traceId))
+        {
+            // your processing logic here
+        }
     }
 });
 ```

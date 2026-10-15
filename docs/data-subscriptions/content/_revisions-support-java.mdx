@@ -15,14 +15,18 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * A data subscription can subscribe not only to documents but also to their revisions, allowing workers 
   to track the changes made in documents over time.
 
-* To subscribe to revisions, create it using `createForRevisions`, 
-  or add `(Revisions = true)` to its RQL query.
+* To subscribe to revisions, create the subscription using `createForRevisions`, 
+  or add `(Revisions = true)` to the subscription's RQL query.
 
 * In this article:
    * [Regular subscription vs revisions subscription](../../data-subscriptions/revisions-support.mdx#regular-subscription-vs-revisions-subscription)
    * [Revisions processing order](../../data-subscriptions/revisions-support.mdx#revisions-processing-order)
    * [Creating and consuming a revisions subscription](../../data-subscriptions/revisions-support.mdx#creating-and-consuming-a-revisions-subscription)
+   * [Filtering revisions](../../data-subscriptions/revisions-support.mdx#filtering-revisions)
    * [Projecting fields from revisions](../../data-subscriptions/revisions-support.mdx#projecting-fields-from-revisions)
+   * [Including related documents](../../data-subscriptions/revisions-support.mdx#including-related-documents)
+   * [Reading a revision's metadata](../../data-subscriptions/revisions-support.mdx#reading-a-revision-s-metadata)
+   * [Syntax](../../data-subscriptions/revisions-support.mdx#syntax)
 
 </Admonition>
 
@@ -161,6 +165,45 @@ revisionsWorker.run(x -> {
 
 </Panel>
 
+<Panel heading="Filtering revisions">
+
+This subscription sends to the worker only the revisions in which the order was shipped to Mexico.
+
+#### Example: Creating the subscription
+
+```java
+SubscriptionCreationOptions options = new SubscriptionCreationOptions();
+// Only revisions of orders shipped to Mexico are sent to the worker
+options.setQuery(
+    "declare function isSentToMexico(doc) {\n" +
+    "    return doc.Current.ShipTo.Country == 'Mexico'\n" +
+    "}\n" +
+    "\n" +
+    "from 'Orders' (Revisions = true) as doc\n" +
+    "where isSentToMexico(doc) == true");
+
+String name = store.subscriptions().create(options);
+```
+
+<br />
+
+#### Example: Consuming the subscription
+
+```java
+SubscriptionWorker<Revision<Order>> worker = store
+    .subscriptions().getSubscriptionWorkerForRevisions(Order.class, name);
+
+worker.run(batch -> {
+    for (SubscriptionBatch.Item<Revision<Order>> item : batch.getItems()) {
+        System.out.printf("This is a revision of document %s.%n" +
+            "The order in this revision was shipped at %s.%n",
+            item.getId(), item.getResult().getCurrent().getShippedAt());
+    }
+});
+```
+
+</Panel>
+
 <Panel heading="Projecting fields from revisions">
 
 This subscription filters the revisions and sends to the worker only the projected data rather than
@@ -242,5 +285,134 @@ revenuesComparisonWorker.run(x -> {
     }
 });
 ```
+
+</Panel>
+
+<Panel heading="Including related documents">
+
+A revisions subscription can include related documents in the batches it sends (e.g., the `Employee` document that an order's
+`Employee` field refers to), so the worker can read these documents without requesting them from the server.  
+The path of each include starts at the revision being processed (`Current`) or at the preceding revision (`Previous`), and ends at
+the field that holds the ID of the document to include, e.g., `doc.Current.Employee` (where `doc` is the query's alias).  
+The worker reads an included document by loading the document in a session opened using `batch.openSession`.  
+To learn more about including related documents in batches, see
+[Example: Including documents in the batch](../../data-subscriptions/consuming-subscription.mdx#example-including-documents-in-the-batch).
+
+<ContentFrame>
+
+### Example
+
+In this example, the worker reports orders that were reassigned from one employee to another, and reads the names of both employees.
+
+#### Creating the subscription
+
+```java
+SubscriptionCreationOptions options = new SubscriptionCreationOptions();
+// Include the employees that the processed revision and the preceding revision refer to
+options.setQuery(
+    "from Orders (Revisions = true) as doc\n" +
+    "include doc.Current.Employee, doc.Previous.Employee");
+
+String name = store.subscriptions().create(options);
+```
+
+<br />
+
+#### Consuming the subscription
+
+```java
+SubscriptionWorker<Revision<Order>> worker = store
+    .subscriptions().getSubscriptionWorkerForRevisions(Order.class, name);
+
+worker.run(batch -> {
+    // Open a session using 'batch.openSession' to access the included Employee documents
+    try (IDocumentSession session = batch.openSession()) {
+        for (SubscriptionBatch.Item<Revision<Order>> item : batch.getItems()) {
+            Order previousRevision = item.getResult().getPrevious();
+            Order currentRevision = item.getResult().getCurrent();
+
+            // Skip a document's first revision, and revisions that did not change the employee
+            if (previousRevision == null ||
+                previousRevision.getEmployee().equals(currentRevision.getEmployee())) {
+                continue;
+            }
+
+            // Calling load will not generate a request to the server,
+            // since both employees were included in the batch
+            Employee previousEmployee = session.load(Employee.class, previousRevision.getEmployee());
+            Employee currentEmployee = session.load(Employee.class, currentRevision.getEmployee());
+
+            System.out.printf("Order %s was reassigned from %s %s to %s %s%n", item.getId(),
+                previousEmployee.getFirstName(), previousEmployee.getLastName(),
+                currentEmployee.getFirstName(), currentEmployee.getLastName());
+        }
+    }
+});
+```
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Reading a revision's metadata">
+
+Each batch item of a revisions subscription holds two revisions of a document (`getCurrent()` and `getPrevious()`).  
+The item's `metadata` property and each revision's own metadata hold these kinds of metadata properties:
+
+* **Properties set by RavenDB** (e.g., `@id` and `@change-vector`)  
+  The item's `metadata` property holds a few of these properties for the item itself.  
+  Each revision's metadata holds these properties for the revision.
+* **Properties you set yourself** (e.g., `trace.id`)  
+  Only each revision's metadata holds these properties. The item's `metadata` property does not.
+
+To read a revision's metadata, read the revision's `@metadata` object in the item's `rawResult` property (`getRawResult()`),
+which holds the item before deserialization to `T`.
+
+e.g., the following worker reads the `trace.id` metadata property of each processed revision.
+
+```java
+worker.run(batch -> {
+    for (SubscriptionBatch.Item<Revision<Order>> item : batch.getItems()) {
+        // Read a metadata property you set yourself from the revision being processed
+        JsonNode traceId = item.getRawResult().path("Current").path("@metadata").get("trace.id");
+        if (traceId != null) {
+            // your processing logic here
+        }
+    }
+});
+```
+
+</Panel>
+
+<Panel heading="Syntax">
+
+<ContentFrame>
+
+### Classes
+
+<Tabs groupId='revisionsClasses'>
+<TabItem value="revision" label="Revision&lt;T&gt;">
+
+The processed-item type for a revisions subscription. Each batch item's `getResult()` returns a
+`Revision<T>` holding the revision being processed and the one before it.
+
+```java
+public class Revision<T> {
+    public T getPrevious();
+    public T getCurrent();
+}
+```
+
+<br />
+
+| Method | Return type | Description |
+|--------|-------------|-------------|
+| **getPrevious()** | `T` | The preceding revision. `null` when `getCurrent()` returns the document's first revision. |
+| **getCurrent()** | `T` | The revision being processed. |
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
 
 </Panel>
