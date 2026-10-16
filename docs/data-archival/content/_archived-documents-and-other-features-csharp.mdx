@@ -335,6 +335,11 @@ This setting will **override** the global configuration defined by the [Indexing
     * `IncludeArchived`: both archived and non-archived documents are processed by the subscription query.
     * `ArchivedOnly`: only archived documents are processed by the subscription query.
 
+<Admonition type="note" title="">
+On a [sharded database](../../sharding/subscriptions.mdx#unsupported-features), the per-task setting does **not** override the `Subscriptions.ArchivedDataProcessingBehavior` configuration key, whether the per-task setting is made using the Client API or in Studio.  
+All the subscriptions of a sharded database handle archived documents as set by this key.
+</Admonition>
+
 ---
     
 ### Configuring archived document processing for a data subscription task - <br/> from the Client API

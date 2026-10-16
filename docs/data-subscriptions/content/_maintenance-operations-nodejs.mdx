@@ -182,6 +182,7 @@ The returned `SubscriptionState` object includes, among others, the following pr
 | **lastClientConnectionTime** | `string` | The last time a client connected (retained after the connection ends). |
 | **disabled** | `boolean` | When `true`, the subscription does not allow workers to connect. |
 | **archivedDataProcessingBehavior** | `ArchivedDataProcessingBehavior` | The subscription's handling of archived documents.<br />See [Archived documents](../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#archived-documents). |
+| **shardingState** | `SubscriptionShardingState` | The subscription's state on each shard of a [sharded database](../../sharding/subscriptions.mdx) (e.g., the change vector from which each shard will start its next batch, and the node that processes the subscription on each shard).<br />`null` when the database is not sharded. |
 
 <br />
 

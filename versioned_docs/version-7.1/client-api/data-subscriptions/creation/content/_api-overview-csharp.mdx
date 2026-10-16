@@ -207,10 +207,17 @@ and adds two additional fields:
 | **CreateNew** | `bool`  | Determines the behavior when the subscription you wish to update does Not exist.<br/>`true` - a new subscription is created with the provided option parameters.<br/>`false` - an exception will be thrown.<br/>Default: `false`                                                                                                                                                                                                                                            |
 
 <Admonition type="note" title="Archived documents">
+
+<br />
+
 The `Update` method does not change the subscription's handling of [archived documents](../../../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-subscriptions),
 even if you set `ArchivedDataProcessingBehavior` in the `SubscriptionUpdateOptions` object.  
 To change an existing subscription's handling of archived documents, edit the [subscription task](../../../../studio/database/tasks/ongoing-tasks/subscription-task.mdx)
 in Studio and set the task's **Archived Data Processing Behavior** option.
+
+On a [sharded database](../../../../sharding/subscriptions.mdx#unsupported-features), a subscription **ignores** both `ArchivedDataProcessingBehavior` and the
+**Archived Data Processing Behavior** option set in Studio, and uses the handling set by the `Subscriptions.ArchivedDataProcessingBehavior` configuration key.  
+Unlike on a non-sharded database, a later change to the configuration key **does** affect existing subscriptions.
 </Admonition>
 
 
