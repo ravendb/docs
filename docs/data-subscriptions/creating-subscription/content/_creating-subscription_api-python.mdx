@@ -627,6 +627,12 @@ To change an existing subscription's handling of archived documents, edit the su
 [Ongoing Tasks view](../../../studio/database/tasks/ongoing-tasks/general-info.mdx#the-ongoing-tasks-list), and set the task's **Archived Data Processing Behavior** option.  
 This option is described in [Creating a data subscription: Studio](../../../data-subscriptions/creating-subscription/creating-subscription_studio.mdx#defining-the-subscription-task).
 
+<Admonition type="note" title="">
+On a [sharded database](../../../sharding/subscriptions.mdx#unsupported-features), a subscription **ignores** the **Archived Data Processing Behavior**
+option set in Studio, and uses the handling set by the `Subscriptions.ArchivedDataProcessingBehavior` configuration key.  
+Unlike on a non-sharded database, a later change to the configuration key **does** affect existing subscriptions.
+</Admonition>
+
 To learn more about a subscription's handling of archived documents, see [Data archival: Archived documents and subscriptions](../../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-subscriptions).
 
 </Panel>

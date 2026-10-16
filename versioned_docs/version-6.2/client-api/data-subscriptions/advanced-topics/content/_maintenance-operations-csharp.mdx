@@ -199,6 +199,7 @@ usage:
 | **Disabled**                              | `bool`      | If `true`, subscription will not allow workers to connect.                                                                                                    |
 | **LastClientConnectionTime**              | `DateTime?` | Time when last client was connected (value sustained after disconnection).                                                                                  |                
 | **ArchivedDataProcessingBehavior** | `ArchivedDataProcessingBehavior?` | The subscription's handling of archived documents.<br/>See [Subscriptions.ArchivedDataProcessingBehavior](../../../../server/configuration/subscription-configuration.mdx#subscriptionsarchiveddataprocessingbehavior). |
+| **ShardingState** | `SubscriptionShardingState` | The subscription's state on each shard of a [sharded database](../../../../sharding/subscriptions.mdx) (e.g., the change vector from which each shard will start its next batch, and the node that processes the subscription on each shard).<br />`null` when the database is not sharded. |
 
 </Admonition>
 

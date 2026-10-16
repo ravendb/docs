@@ -66,6 +66,8 @@ Enter a task name, then define the subscription:
    <br />
 
    <Admonition type="note" title="">
+   On a [sharded database](../../sharding/subscriptions.mdx#unsupported-features), this option has no effect, and all subscriptions handle archived documents
+   as set by the [Subscriptions.ArchivedDataProcessingBehavior](../../data-subscriptions/configuration.mdx#subscriptionsarchiveddataprocessingbehavior) configuration key.  
    To learn more about a subscription's handling of archived documents, see [Data archival: Archived documents and subscriptions](../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-subscriptions).
    </Admonition>
   

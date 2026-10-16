@@ -41,6 +41,8 @@ the subscription sends no documents to the worker.
 * A subscription takes this key's value when the subscription is created, unless you set the subscription's own handling of archived documents (see [Subscription creation options](../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptionst)).  
   A later change to the key does not affect existing subscriptions.
 * A subscription to [document revisions](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx) **ignores** this key and sends the revisions of archived and non-archived documents alike.
+* On a [sharded database](../../sharding/subscriptions.mdx#unsupported-features), all subscriptions use this behavior, and a subscription's own setting has no effect.  
+  Unlike on a non-sharded database, a later change to the key **does** affect existing subscriptions.
 </Admonition>
 
 
