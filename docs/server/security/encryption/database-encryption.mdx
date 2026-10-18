@@ -267,16 +267,4 @@ await store.Maintenance.Server.SendAsync(
     
 </Admonition>
 
-<Admonition type="warning" title="">
-    
-### Recovering vector indexes affected by RavenDB 7.2.5 regression   
-    
-* A regression in RavenDB 7.2.5 caused Corax vector indexes on encrypted databases to fail during indexing.
-    
-* If an index entered Error state because of this regression, upgrade to RavenDB 7.2.6 or later and [reset the affected index](../../../indexes/index-administration.mdx#reset-index).
-  With the [default index startup behavior](../../../server/configuration/indexing-configuration.mdx#indexingerrorindexstartupbehavior), upgrading alone does not clear the Error state.  
-  Resetting rebuilds the index from the documents.
-    
-</Admonition>
-
 </Panel>
