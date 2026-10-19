@@ -1192,5 +1192,12 @@
         "value": {
             "targetUrl": "/quill/getting-started/adding-a-web-widget-channel"
         }
+    },
+    {
+        "key": "/indexes/querying/exploration-queries",
+        "value": {
+            "targetUrl": "/querying/filtering-query-results/exploration-queries",
+            "minimumVersion": "7.2"
+        }
     }
 ]

@@ -14,9 +14,9 @@ see_also:
     source: "docs"
     path: "Client API > FAQ > Transaction Support"
   - title: "Exploration Queries (Filter)"
-    link: "indexes/querying/exploration-queries"
+    link: "querying/filtering-query-results/exploration-queries"
     source: "docs"
-    path: "Indexes > Querying > Exploration Queries"
+    path: "Querying > Filtering Query Results > Exploration Queries"
 proficiency_level: "Expert"
 author: "Paweł Lachowski"
 ---
@@ -62,7 +62,7 @@ Not every read from the database is impacted by staleness. Staleness might impac
 | Get all from the collection | ❌ | `session.Query<Reports>().ToList();` |
 | Load ID that starts with | ❌ | `session.Query<Reports>().Where(x => x.Id.StartsWith("reports/2025-03/")).ToList();` |
 
-There is an interesting case of filtering. `Filter` is not a search engine of its own: it is post-query filtering, executed by RavenDB’s JavaScript engine over the dataset the query already retrieved, without requiring or creating an index. Applied to a collection query, it never touches an index at all, so it cannot be stale. Applied on top of an index query, the filtering itself is always fresh, but the result set it filters comes from the index and can still be stale. It is handy for one-off exploration, but scanning the whole retrieved dataset costs real server resources, so using it without understanding might cause performance issues. You can read more about [exploration queries and `filter`](https://docs.ravendb.net/indexes/querying/exploration-queries/#filter).
+There is an interesting case of filtering. `Filter` is not a search engine of its own: it is post-query filtering, executed by RavenDB’s JavaScript engine over the dataset the query already retrieved, without requiring or creating an index. Applied to a collection query, it never touches an index at all, so it cannot be stale. Applied on top of an index query, the filtering itself is always fresh, but the result set it filters comes from the index and can still be stale. It is handy for one-off exploration, but scanning the whole retrieved dataset costs real server resources, so using it without understanding might cause performance issues. You can read more about [exploration queries and `filter`](https://docs.ravendb.net/querying/filtering-query-results/exploration-queries/#how-exploration-queries-work).
 
 ```csharp
 .Filter(f => f.Address.Country == "USA", limit: 500)
