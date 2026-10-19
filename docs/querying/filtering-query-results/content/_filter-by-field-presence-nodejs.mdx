@@ -122,7 +122,10 @@ where exists("Address.Location.Latitude")
                     Id: id(employee),
 
                     FirstName: employee.FirstName,
-                    Latitude: employee.Address.Location.Latitude
+
+                    // Optional chaining keeps Latitude missing (not null) 
+                    // when Address or Location is missing.
+                    Latitude: employee.Address?.Location?.Latitude
                 };
             });
         }
@@ -334,12 +337,14 @@ where true and not exists("Latitude")
 ### whereExists
 
 ```typescript
-whereExists(fieldName: string): IDocumentQuery<T>;
+whereExists(fieldName: Field<T>): TSelf;
 ```
 
-| Parameter     | Type     | Description |
-|---------------|----------|-------------|
-| **fieldName** | `string` | For a dynamic query, the document field name or nested path.<br/>For a static index query, the index field name. |
+| Parameter     | Type       | Description |
+|---------------|------------|-------------|
+| **fieldName** | `Field<T>` | For a dynamic query, the document field name or nested path.<br/>For a static index query, the index field name.<br/>`Field<T>` accepts a property name of `T` or any string. |
+
+Returns `TSelf`, the query instance (`IDocumentQuery<T>` for `session.query`), so calls can be chained.
 
 ---
     
