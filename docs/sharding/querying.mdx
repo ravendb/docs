@@ -569,11 +569,11 @@ The server uses it to retrieve only items that match the specified conditions.
     
 ## `filter`
 
-The [filter](../indexes/querying/exploration-queries.mdx#filter) command scans data that has already been retrieved from the database by the server  
+The [filter](../querying/filtering-query-results/exploration-queries.mdx#how-exploration-queries-work) command scans data that has already been retrieved from the database by the server  
 before the results are sent to the client.
 
 * **NON-SHARDED database**:  
-  When a query includes a `filter` clause, it is mainly used as an [exploration query](../indexes/querying/exploration-queries.mdx):
+  When a query includes a `filter` clause, it is mainly used as an [exploration query](../querying/filtering-query-results/exploration-queries.mdx):
   an additional filtering layer that scans the entire retrieved dataset without creating an index that would then need to be maintained.
 
     Exploration queries are typically one-time operations and should be used cautiously,  
@@ -650,7 +650,7 @@ use `filter` cautiously and restrict its scope whenever possible.
     ```
     </TabItem>
 
-* **Set a [limit](../indexes/querying/exploration-queries.mdx#usage) on `filter` when possible** to bound how much data the orchestrator scans.    
+* **Set a [limit](../querying/filtering-query-results/exploration-queries.mdx#limit-the-number-of-scanned-results) on `filter` when possible** to bound how much data the orchestrator scans.    
 
 </ContentFrame>    
     
