@@ -222,5 +222,3 @@ In this article, we've walked you through setting up an Amazon SQS ETL task. By 
 - The secret key is shown only once when you create it, so save it before leaving the AWS page; you also need the region name to complete the connection.
 - RavenDB Queue ETL wraps each document in a CloudEvents envelope, so your Lambda must parse the record body and read the nested data field rather than the raw document.
 - AWS SES only delivers to verified identities while your account is in the sandbox, so verify both the source and destination addresses before expecting mail to flow.
-
-Want to try this on your own cluster? Grab a free developer license at [ravendb.net/dev](https://ravendb.net/dev), and bring questions to the RavenDB community on [Discord](https://discord.gg/ravendb).
