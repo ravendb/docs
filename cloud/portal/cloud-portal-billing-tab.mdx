@@ -19,7 +19,7 @@ Use your account's Billing & Costs tab to view your present costs, past invoices
 
 * In this page:
     * [The Billing & Costs Tab](#the-billing-&-costs-tab)
-        * [Pay Now](../../cloud/portal/cloud-portal-billing-tab.mdx#pay-now)
+        * [Retry a failed payment](../../cloud/portal/cloud-portal-billing-tab.mdx#pay-now)
         * [Current billing period](../../cloud/portal/cloud-portal-billing-tab.mdx#current-billing-period)
         * [Current billing period costs](../../cloud/portal/cloud-portal-billing-tab.mdx#current-billing-period-costs)
         * [Account benefits](../../cloud/portal/cloud-portal-billing-tab.mdx#account-benefits)
@@ -32,16 +32,17 @@ Use your account's Billing & Costs tab to view your present costs, past invoices
 
 The Billing & Costs tab will show your existing resources and their costs as well as past billing events.
 
-### Pay Now
+### Retry a failed payment {#pay-now}
 
-![The Pay Now widget](./assets/portal-billing-costs-pay-now.png)
+![The unpaid costs banner](./assets/portal-billing-costs-pay-now.png)
 
-![The Pay Now widget - confirmation](./assets/portal-billing-costs-pay-now-modal.png)
+![Confirm payment dialog](./assets/portal-billing-costs-pay-now-modal.png)
 
- The *Pay Now* button is designed to facilitate immediate payment of outstanding costs accrued from previous billing
- cycles. This feature is especially useful for ensuring timely payments and maintaining up-to-date account status.
- It can be used when automatic charge fails due to reasons like expired cards or insufficient funds.
- You can read more about the _Pay Now_ option on the [Pricing, Payment and Billing](../cloud-pricing-payment-billing.mdx#pay-now) page.
+ When an automatic charge fails, for example because of an expired card or insufficient funds, the Billing & Costs
+ tab shows a *We couldn't process your payment* banner with the date of the oldest unpaid cost and the total due.
+ Click **Retry payment** to pay the outstanding costs from previous billing cycles right away. A *Confirm payment*
+ dialog shows the amount to be charged; click **Confirm and pay** to proceed.
+ You can read more about retrying a payment on the [Pricing, Payment and Billing](../cloud-pricing-payment-billing.mdx#pay-now) page.
 
 ### Current billing period
 
@@ -50,15 +51,15 @@ The Billing & Costs tab will show your existing resources and their costs as wel
 The *Current billing period* widget shows information about accrued costs in the current billing period and basic information about the last invoice.
 
 It also shows your **Unbilled** total — the costs accrued so far that have not yet been settled by an invoice — and a
-progress bar marking today's position between the start and end of the period. Use the **Cost Details** button to open
-the [Cost details](../../cloud/portal/cloud-portal-billing-tab.mdx#cost-details) view for the unbilled period.
+progress bar marking today's position between the start and end of the period; hover the marker to see today's date.
 
 ### Current billing period costs
 
 ![The Current Billing Period Costs widget](./assets/portal-billing-costs-current-period-costs.png)
 
 The *Current billing period costs* widget breaks the current period's costs down as a donut chart, so you can see at a
-glance what is driving the bill.
+glance what is driving the bill. Use its **Cost Details** button to open the
+[Cost details](../../cloud/portal/cloud-portal-billing-tab.mdx#cost-details) view for the unbilled period.
 
 Use the **Group costs by** selector to switch the breakdown between:
 
@@ -84,6 +85,7 @@ Depending on the state of the period, the widget may report instead that:
 ![The Account Benefits widget](./assets/portal-billing-costs-account-benefits.png)
 
 The *Account benefits* widget shows information about current and expired benefits, their scope, validity dates and amounts.
+A one-time credit that has been fully used is listed under **Expired**, even before its end date.
 
 ### Billing history
 
@@ -94,7 +96,10 @@ The *Billing history* widget shows information about issued invoices, their stat
 Use the year selector above the table to move between years. Only years for which you have billing history are offered,
 and the selector always reflects the year the table is currently showing.
 
-Selecting a row opens that period's [Cost details](../../cloud/portal/cloud-portal-billing-tab.mdx#cost-details) view.
+Use a row's **Cost Details** button to open that period's
+[Cost details](../../cloud/portal/cloud-portal-billing-tab.mdx#cost-details) view, and **See invoice** to open its
+invoice (**See invoices** when the period has several). Accounts billed through a cloud marketplace have no invoice
+buttons.
 
 ### Spending
 
@@ -139,9 +144,8 @@ account summary, which already includes backup costs, and so **excludes account 
 
 The *Cost details* view breaks a single billing period down to the individual products that produced the costs.
 Open it with the **Cost Details** button on the
-[Current billing period](../../cloud/portal/cloud-portal-billing-tab.mdx#current-billing-period) or
 [Current billing period costs](../../cloud/portal/cloud-portal-billing-tab.mdx#current-billing-period-costs) widget, or
-by selecting a row in [Billing history](../../cloud/portal/cloud-portal-billing-tab.mdx#billing-history).
+with the **Cost Details** button in a [Billing history](../../cloud/portal/cloud-portal-billing-tab.mdx#billing-history) row.
 
 The view is headed with the period it describes and contains:
 
