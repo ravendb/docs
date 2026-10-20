@@ -15,9 +15,9 @@ import Panel from '@site/src/components/Panel';
   * To find documents that are **missing** a specified field, use `.not().whereExists`.  
   * Both are available through the [DocumentQuery API](../../../querying/document-query/what-is-document-query.mdx).  
 
-* A field with an explicit `null` value counts as present.  
-  For example, a document containing `"FirstName": null` matches `whereExists("FirstName")`  
-  and is excluded by `.not().whereExists("FirstName")`.    
+* An explicit `null` counts as **present** only when it is the value of the field you check.  
+  If a parent on a nested path is missing or `null`, or the field is an empty array, the field counts as **missing**.  
+  Learn more in [How field presence is determined](#how-field-presence-is-determined).
     
 * You can check field presence when querying a **static index** or when making a **dynamic query**.  
   When querying a static index, the check applies to the fields produced by the index's map function.
@@ -29,6 +29,7 @@ import Panel from '@site/src/components/Panel';
     * [Find documents that are MISSING a field](#find-documents-that-are-missing-a-field)
         * [Dynamic query](#dynamic-query-missing-field)
         * [Static index query](#static-index-query-missing-field)
+    * [How field presence is determined](#how-field-presence-is-determined)
     * [Syntax](#syntax)
 
 </Admonition>
@@ -41,7 +42,7 @@ import Panel from '@site/src/components/Panel';
   Documents that are missing the field are excluded from the results.
 
 * RavenDB uses an auto-index to process the filter, creating one if needed.  
-  Learn more in about this query type in [Query a collection - with filtering](../../../querying/overview.mdx#2-query-a-collection---with-filtering).
+  Learn more about this query type in [Query a collection - with filtering](../../../querying/overview.mdx#2-query-a-collection---with-filtering).
 
 * You can check field presence using either a **field name** or a nested **field path**, as shown below.
     
@@ -91,7 +92,7 @@ List<Employee> employees = session
 <TabItem value="RQL" label="RQL">
 ```sql
 from Employees
-where exists("Address.Location.Latitude")
+where exists(Address.Location.Latitude)
 ```
 </TabItem>
 </Tabs>
@@ -242,7 +243,7 @@ List<Employee> employeesWithoutLatitude = session
 <TabItem value="RQL" label="RQL">
 ```sql
 from Employees
-where true and not exists("Address.Location.Latitude")
+where true and not exists(Address.Location.Latitude)
 ```
 </TabItem>
 </Tabs>
@@ -328,6 +329,48 @@ where true and not exists("Latitude")
 
 </Panel>
 
+<Panel heading="How field presence is determined">
+
+* `whereExists` checks field presence in the index used by the query:
+  * An explicit `null` counts as **present** only when it is the value of the field you check.
+  * If a parent on a nested path is missing or `null`, the field counts as **missing**.
+  * An empty array counts as **missing**.
+
+* These rules apply to both query types, with a configuration exception for static indexes:
+
+  * **For dynamic queries**, they apply to the document field name or nested path specified in the query.
+
+  * **For static index queries**, presence is checked on the fields produced by the index's map function.   
+    For example, with the direct index-field mapping `Latitude = employee.Address.Location.Latitude`,  
+    the query checks `Latitude`, not `Address.Location.Latitude`.
+
+    If `Address` is missing or `null`, this mapping produces an implicit `null` for `Latitude`,  
+    which is not indexed by default. The `Latitude` index-field therefore counts as **missing**.
+
+    The [Indexing.IndexMissingFieldsAsNull](../../../server/configuration/indexing-configuration.mdx#indexingindexmissingfieldsasnull) configuration key is `false` by default.  
+    If set to `true`, missing mapped fields are indexed as `null` and count as **present**.  
+    Empty arrays still count as **missing**, regardless of this setting.
+
+    For `.not().whereExists` to return documents with missing fields, the index must retain entries for them.  
+    See [Static index query for missing fields](#static-index-query-missing-field) for details.
+
+---
+
+The following examples use document field names and paths and assume the default indexing settings.  
+For static indexes, they assume direct mappings and retained entries for documents with missing fields,  
+as explained above.
+
+| Document content                                  | Checked path                | `whereExists` result     | `.not().whereExists` result |
+| ------------------------------------------------- | --------------------------- | ------------------------ | --------------------------- |
+| `"FirstName": null`                               | `FirstName`                 | Document returned&nbsp;✅ | Document excluded&nbsp;❌    |
+| No `FirstName` field                              | `FirstName`                 | Document excluded&nbsp;❌ | Document returned&nbsp;✅    |
+| `"Territories": []`                               | `Territories`               | Document excluded&nbsp;❌ | Document returned&nbsp;✅    |
+| `"Address": { "Location": { "Latitude": null } }` | `Address.Location.Latitude` | Document returned&nbsp;✅ | Document excluded&nbsp;❌    |
+| `"Address": null`                                 | `Address.Location.Latitude` | Document excluded&nbsp;❌ | Document returned&nbsp;✅    |
+| `"Address": { "City": "Seattle" }`                | `Address.Location.Latitude` | Document excluded&nbsp;❌ | Document returned&nbsp;✅    |
+
+</Panel>
+
 <Panel heading="Syntax">
 
 ### whereExists
@@ -357,10 +400,10 @@ Place it immediately before `whereExists` to search for missing fields:
 
 ```sql
 // Find documents with the field.
-where exists("FieldName")
+where exists(FieldName)
 
 // Find documents without the field.
-where true and not exists("FieldName")
+where true and not exists(FieldName)
 ```
 
 </Panel>
