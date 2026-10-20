@@ -1,0 +1,133 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+<Admonition type="note" title="">
+
+* When querying with some filtering conditions,  
+  a basic score is calculated for each document in the results by the underlying engine.
+
+* Providing a boost value to some fields allows you to prioritize the resulting documents.  
+  The boost value is integrated with the basic score, making the document rank higher.  
+
+* Boosting can be achieved in the following ways:  
+
+    * **At query time**:  
+      Apply a boost factor to searched terms at query time - as described in this article.
+
+    * **Via index definition**:  
+      Apply a boost factor in your index definition - see this [boosting](../../../../../indexes/boosting.mdx) indexing article.
+
+* The automatic ordering of the results by the score is configurable.  
+  Learn more here: [automatic score-based ordering](../../../../../indexes/boosting.mdx#automatic-score-based-ordering)  
+
+* The calculated score details of the results can be retrieved if needed.  
+  Learn more here: [get resulting score](../../../../../querying/sorting-query-results/sort-query-results.mdx#get-resulting-score)  
+
+* In this article:
+  * [Boost results - when making a full-text search](#boost-results-when-making-a-full-text-search)
+  * [Boost results - when querying with where clause](#boost-results-when-querying-with-where-clause)
+    * [Boost a whereExists() condition with Corax](#boost-a-whereexists-condition-with-corax)
+
+</Admonition>
+
+<Panel heading="Boost results - when making a full-text search">
+
+To apply boosting while running a full-text search, use the 
+`boost()` method to prioritize the preceding `search()` results.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+List<Employee> employees = session
+     // Make a dynamic full-text search query on 'Employees' collection
+    .query(Employee.class)
+     // This search predicate will use the default boost value of 1
+    .search("Notes", "English")
+     // This search predicate will use a boost value of 10
+    .search("Notes", "Italian")
+     // Call 'boost' to set the boost value of the previous 'search' call
+    .boost(10)
+    .toList();
+
+// * Results will contain all Employee documents that have
+//   EITHER 'English' OR 'Italian' in their 'Notes' field (case-insensitive).
+//
+// * Matching documents that contain 'Italian' will get a HIGHER score
+//   than those that contain 'English'.
+//
+// * Unless configured otherwise, the resulting documents will be ordered by their score.
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Employees" where
+search(Notes, "English") or boost(search(Notes, "Italian"), 10)
+```
+</TabItem>
+</Tabs>
+
+</Panel>
+
+<Panel heading="Boost results - when querying with where clause">
+
+`boost()` can be used to give different priorities to the results 
+returned by different `where` clauses.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+List<Company> companies = session
+     // Make a dynamic query on 'Companies' collection
+    .query(Company.class)
+     // Define a 'where' condition
+    .whereStartsWith("Name", "O")
+     // Call 'boost' to set the boost value of the previous 'where' predicate
+    .boost(10)
+     // Call 'orElse' so that OR operator will be used between statements
+    .orElse()
+    .whereStartsWith("Name", "P")
+    .boost(50)
+    .orElse()
+    .whereEndsWith("Name", "OP")
+    .boost(90)
+    .toList();
+
+// * Results will contain all Company documents that either
+//   (start-with 'O') OR (start-with 'P') OR (end-with 'OP') in their 'Name' field (case-insensitive).
+//
+// * Matching documents that end-with 'OP' will get the HIGHEST scores.
+//   Matching documents that start-with 'O' will get the LOWEST scores.
+//
+// * Unless configured otherwise, the resulting documents will be ordered by their score.
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Companies" where
+boost(startsWith(Name, "O"), 10) or
+boost(startsWith(Name, "P"), 50) or
+boost(endsWith(Name, "OP"), 90)
+```
+</TabItem>
+</Tabs>
+
+<ContentFrame>
+    
+### Boost a `whereExists()` condition with Corax
+    
+In RavenDB 7.2.6 and later, when using the Corax search engine, a boosted `whereExists()` condition (`exists()` in RQL)
+contributes `1` multiplied by the query boost, rather than a relevance score calculated from the field's values.
+    
+For example, `.whereExists("Fax").boost(3)` (`boost(exists(Fax), 3)` in RQL) contributes `3`
+once per matching document, before any index-entry boost is applied.
+    
+The `whereStartsWith()` and `whereEndsWith()` conditions in the example above use relevance-based scoring.      
+Learn more in [Corax: Scoring](../../../../../indexes/search-engine/corax.mdx#scoring).
+
+</ContentFrame>
+
+</Panel>

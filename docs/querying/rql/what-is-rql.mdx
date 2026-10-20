@@ -361,6 +361,11 @@ where exists(Name) and NOT Name in ("The Big Cheese", "The Cracker Box")
 Avoid using `where true` or an `exists()` check on a *different* field.  
 If a document is missing the field you're filtering on, these anchors may return unexpected results.
 
+In RavenDB 7.2.6 and later, when ordering by score with the Corax search engine,
+the `exists()` and `where true` conditions contribute differently:
+`exists()` adds a constant score, while `where true` adds no score.  
+Learn more in [Corax: Scoring](../../indexes/search-engine/corax.mdx#scoring).
+
 </ContentFrame>
     
 <ContentFrame>
