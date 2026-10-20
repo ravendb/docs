@@ -15,6 +15,7 @@ import Panel from '@site/src/components/Panel';
 * In this article:
   * [Connection string](#connection-string)
   * [Prerequisites](#prerequisites)
+  * [Table verification](#table-verification)
   * [Polling behavior](#polling-behavior)
   * [Task configuration](#task-configuration)
 
@@ -99,6 +100,38 @@ If the Agent is stopped, the task can still start and raise a warning, but no CD
 Azure SQL Database has no classic SQL Server Agent.  
 Its CDC capture runs on a managed scheduler, so this requirement does not apply there.
     
+</Admonition>
+
+</Panel>
+
+<Panel heading="Table verification">
+
+**Verify tables** in Studio, or the [dry-run REST endpoint](../../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/create-task.mdx#verify-the-configuration), runs the task's SQL Server setup and initial-load steps once  
+against the source database before you save the task,
+see [Verify tables](../../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/create-task.mdx#verify-tables).
+
+* **CDC is enabled temporarily**  
+  If CDC is not enabled on the database or on a configured table,  
+  verification enables it with `sys.sp_cdc_enable_db` or `sys.sp_cdc_enable_table`, as the task does when it starts.  
+  The user in the connection string needs permission to run these procedures.  
+  Otherwise, verification fails with the script an administrator can run.
+
+* **Cleanup after verification**  
+  If verification enabled CDC on the database, it attempts to run `sys.sp_cdc_disable_db`.  
+  Otherwise, it attempts to run `sys.sp_cdc_disable_table` for each table it enabled.  
+  If this cleanup fails, verification reports a warning,
+  see [Table verification fails or returns warnings](../../../../../../server/ongoing-tasks/cdc-sink/troubleshooting.mdx#table-verification-fails-or-returns-warnings).
+
+* **SQL Server Agent is not checked**  
+  The task checks the Agent only when it starts polling for changes,  
+  so a successful verification does not mean the Agent is running.
+
+<Admonition type="note" title="">
+
+`sys.sp_cdc_disable_db` removes every capture instance in the database.  
+If another CDC Sink task enables CDC on the same database while verification is running,  
+the capture instances that task created are removed as well.
+
 </Admonition>
 
 </Panel>

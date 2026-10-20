@@ -131,10 +131,13 @@ See [Schema design](../../../server/ongoing-tasks/cdc-sink/document-modeling/sch
    Specify the connection string, table mappings, and transformation options.  
    See [Create a CDC Sink task](../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/create-task.mdx). 
    You can later [Update](../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/update-task.mdx) or
-   [Enable/Disable](../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/enable-disable-task.mdx) the task.
+   [Enable/Disable](../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/enable-disable-task.mdx) the task.  
+    
+   Before saving, you can verify the configuration against the live source database via Studio or the REST API,  
+   see [Verify tables](../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/create-task.mdx#verify-tables).
 
 2. **Verify**  
-   CDC Sink verifies that the source database is properly configured,  
+   When the task starts, CDC Sink verifies that the source database is properly configured,  
    including permissions, replication prerequisites, and table configuration.
 
 3. **Initial load**  

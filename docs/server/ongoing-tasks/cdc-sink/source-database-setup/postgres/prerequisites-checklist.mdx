@@ -38,6 +38,7 @@ import Panel from '@site/src/components/Panel';
   * [User permissions](#user-permissions)
   * [Table requirements](#table-requirements)
   * [Network access](#network-access)
+  * [Check prerequisites with Verify tables](#check-prerequisites-with-verify-tables)
 
 </Admonition>   
 
@@ -100,9 +101,10 @@ the PostgreSQL user also needs:
 * **Create replication slots**:  
   the `REPLICATION` role attribute.
     
-* **Create publications**:  
-  `CREATE` on the database, plus ownership of the tables being published.  
-  `SUPERUSER` satisfies both publication requirements.
+* **Create or update publications**:  
+  Creating a publication requires `CREATE` on the database and ownership of the tables being published.  
+  Adding tables to an existing publication requires ownership of the publication and the tables being added.  
+  `SUPERUSER` satisfies these publication requirements.
 
 See [Permissions and Roles](../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/permissions-and-roles.mdx) for the exact grants.
 
@@ -149,5 +151,40 @@ See [Initial Setup](../../../../../server/ongoing-tasks/cdc-sink/source-database
 
 * The replication connection is long-lived.  
   Ensure that firewalls, proxies, and load balancers do not terminate idle or long-lived connections.
+
+</Panel>
+
+<Panel heading="Check prerequisites with Verify tables">
+
+Once the source database is set up, use **Verify tables** in Studio, or the [dry-run REST endpoint](../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/create-task.mdx#verify-the-configuration),  
+to check most of these prerequisites against the live database before you save the task,
+see [Verify tables](../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/create-task.mdx#verify-tables).
+
+For PostgreSQL, verification runs the task's setup and initial-load steps once:
+
+* **Publication**  
+  If the publication does not exist, verification creates it and attempts to drop it when verification completes.  
+  If cleanup fails, verification reports a warning and the publication may remain.  
+  If it exists but does not include every configured table, verification reports a warning and does not change it.
+
+* **Replication slot**  
+  If the slot does not exist, verification creates a temporary slot, which PostgreSQL drops automatically.  
+  If it exists, verification checks that it uses the `pgoutput` plugin.  
+  It does not read from the slot or disconnect a task that uses it.
+
+* **REPLICA IDENTITY**  
+  If an embedded table needs `REPLICA IDENTITY FULL`, verification reports a warning and does not change the table.
+
+* **Tables**  
+  Verification reads at most one row from each configured table.
+
+Creating the slot requires `wal_level = logical`, a free replication slot (`max_replication_slots`),  
+and the `REPLICATION` role attribute, so verification fails if any of them is missing.  
+For the permission-related messages, see [Check permissions with Verify tables](../../../../../server/ongoing-tasks/cdc-sink/source-database-setup/postgres/permissions-and-roles.mdx#check-permissions-with-verify-tables).
+
+Verification does not check:
+
+* `max_wal_senders` and the replication connection, because verification does not stream changes.
+* The permissions needed to create the publication or the slot, when they already exist.
 
 </Panel>
