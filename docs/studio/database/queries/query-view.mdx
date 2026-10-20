@@ -14,15 +14,19 @@ import Panel from "@site/src/components/Panel";
 * Use Studio's **Query view** to write and run [RQL](../../../querying/rql/what-is-rql.mdx) queries on a database,
   and to examine the query results.  
 
-* A query can be executed over an index or a collection.  
-  Queries that are executed over a collection and filter or sort documents are served by
-  [auto indexes](../../../studio/database/indexes/indexes-overview.mdx#index-types).  
-  RavenDB creates an auto index when no existing auto index fits the query.  
-  Learn more about the index used by each query type in [Query overview](../../../querying/overview.mdx).  
-
 * Queries you save are kept in your browser's local storage, and can be loaded only in this browser.  
 
-* Query results can be exported to a CSV or a JSON file.  
+* You can set query options for the view, e.g., to prevent queries from creating
+  [auto indexes](../../../studio/database/indexes/indexes-overview.mdx#index-types), or to display the index entries that match
+  a query rather than the matching documents.  
+
+* In the query results area, you can examine the index that served the query, view the query statistics,
+  delete the documents that match the query, and export the results to a CSV or a JSON file.  
+  The result columns can also be customized, and each result can be previewed and its values copied.  
+
+* Time series query results can be displayed as a graph over time, and spatial query results on a world map.  
+  These displays are described in [Querying Time Series](../../../studio/database/document-extensions/time-series.mdx#querying-time-series)
+  and [Spatial Queries Map View](../../../studio/database/queries/spatial-queries-map-view.mdx).  
 
 * In this article:
    * [Query view](../../../studio/database/queries/query-view.mdx#query-view)
@@ -133,6 +137,7 @@ use to work with these items.
    Click the index name to open a menu of actions related to the index.  
    For a query that retrieves a collection's documents without an auto index (e.g., `from "Orders"`), the collection's
    name is displayed, with no menu.  
+   Learn about the index used by each query type in [Query overview](../../../querying/overview.mdx).  
 
    ![Index menu](./assets/query-view-index-dropdown.png)  
 

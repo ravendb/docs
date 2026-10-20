@@ -1,143 +1,296 @@
 ---
-title: "Database List View"
+title: "Studio: Database List View"
 sidebar_label: Database List View
-description: "Browse all RavenDB databases in Studio with status indicators, document counts, storage sizes, and quick access to database operations."
+description: "See the databases of your cluster in Studio's Database List view, examine each database's state and statistics, and create, manage, and delete databases."
 sidebar_position: 0
 ---
 
 import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
-import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
-import LanguageContent from "@site/src/components/LanguageContent";
+import Panel from "@site/src/components/Panel";
 
-# Database List View
+# Studio: Database List View
 <Admonition type="note" title="">
 
-* All your databases are listed in this view  
-  * Database stats can be viewed  
-  * Actions can be performed on each database  
+* Use Studio's **Database List view** to see the databases in your cluster, examine the state and statistics of each database,
+  and manage the databases, e.g., disable a database or pause its indexing.  
+  You can also select multiple databases and enable, disable, or delete them at once.  
 
-* In this page:  
-  * [Database Stats](../../studio/database/databases-list-view.mdx#database-stats)  
-  * [Database Actions](../../studio/database/databases-list-view.mdx#database-actions)  
-  * [Creating New Database Options](../../studio/database/databases-list-view.mdx#creating-new-database-options)  
-  * [More Actions](../../studio/database/databases-list-view.mdx#more-actions)  
-  * [Remote Database](../../studio/database/databases-list-view.mdx#remote-database)  
+* The database list includes databases that are not hosted by the node that Studio is connected to.  
+  You can filter the list by database name, by database state, and by location (this node or other cluster nodes).  
+
+* You can create new databases in this view, from scratch or by restoring a backup.  
+  Creating a database from scratch is described in
+  [Create a Database: General Flow](../../studio/database/create-new-database/general-flow.mdx),
+  and restoring a database from a backup in
+  [Restoring from backup using Studio](../../backup/restore.mdx#restoring-from-backup-using-studio).  
+
+* In this article:
+   * [Database list view](../../studio/database/databases-list-view.mdx#database-list-view)
+   * [Database actions](../../studio/database/databases-list-view.mdx#database-actions)
+   * [Database stats](../../studio/database/databases-list-view.mdx#database-stats)
+   * [Actions on selected databases](../../studio/database/databases-list-view.mdx#actions-on-selected-databases)
+
 </Admonition>
-## Database Stats
 
-![Figure 1. Database Stats](./assets/database-stats.png)
+<Panel heading="Database list view">
 
-1. **Database state**    
-   A database can be: _Online_ , _Offline_ or _Disabled_        
+The Database List view shows the databases in your cluster, with the state, statistics, and available actions of each database.  
 
-   * ***Online***   - the database is active and ready to use. Read and write actions can be performed.  
-   * ***Offline***  - the database has not been used recently, and will become online upon access.  
-   * ***Disabled*** - the database has been disabled.  
-  
-   * Note:  
-     If the database is contained in a cluster's node that is different than the node that is currently viewed in this Studio instance, then 'Remote' will be indicated - see more [below](../../studio/database/databases-list-view.mdx#remote-database).
+![Database list view](./assets/databases-list-view.png)
 
-2. **Containing nodes**   
-   These are the nodes that contain a copy of the database. 
+1. **Databases**  
+   Click **Databases**, in the **Server** section of Studio's main menu, to open the Database List view.  
 
-3. **Database size**    
-   The total size of the database, including both documents and indexes.
+2. **New database**  
+   Open a dialog to create a new database.  
+   To restore a database from a backup, click **Restore from backup** at the bottom of the dialog's first step.  
+   Learn more in [Create a Database: General Flow](../../studio/database/create-new-database/general-flow.mdx)
+   and [Restoring from backup using Studio](../../backup/restore.mdx#restoring-from-backup-using-studio).  
+   This button is available only to users with `Operator` or `Cluster Admin`
+   [security clearance](../../server/security/authorization/security-clearance-and-permissions.mdx).  
 
-4. **Up time**        
-   The time that has passed since database last came online. 
+3. **Filter by name**  
+   Enter text to list only the databases whose names contain the text.  
 
-5. **Number of documents**      
-   The number of documents in the database.
+4. **Filter by state**  
+   Select one or more states to list only the databases in the selected states.  
+   Select **Local (Node A)** to list the databases hosted by the node that Studio is connected to (node A in this image),
+   or **Remote** to list the databases hosted by other cluster nodes.  
+   The number next to each option counts the databases that match the option.  
+   A database that is online on only some of its nodes is counted as both **Online** and **Offline**.  
 
-6. **Latest backup time**      
-   The time of the latest database backup.
-      
-7. **Number of indexes**    
-   The number of index errors will show if relevant.
+5. **Select All**  
+   Select all the databases displayed in the view (that match the filters you set).  
+   If any displayed databases are already selected, clicking **Select All** deselects them instead of selecting all displayed databases.  
+   To select a single database, select the checkbox next to the database's name.  
+   The checkboxes are available only to users with `Operator` or `Cluster Admin` security clearance.  
+   See [Actions on selected databases](../../studio/database/databases-list-view.mdx#actions-on-selected-databases)
 
-8. **Alerts**    
-   The number of alerts on this database if there are any.
+6. **A database**  
+   Each listed database is displayed with its state, statistics, and the actions you can perform on it.  
+   See [Database actions](../../studio/database/databases-list-view.mdx#database-actions)
+   and [Database stats](../../studio/database/databases-list-view.mdx#database-stats)
 
-9. **Performance hints**    
-   The number of performance hints on this database if there are any.
-   
+<Admonition type="note" title="">
+In a browser window narrower than 1400 pixels, the name and state filters are hidden.  
+To display the filters, click **Show Filtering Options** next to **New database**.  
+</Admonition>
 
+</Panel>
 
-## Database Actions
+<Panel heading="Database actions">
 
-![Figure 2. Database Actions](./assets/database-actions-1.png)
+The top line of each listed database shows the database's state and name, and buttons you can use to act on the database.  
 
-1. **Create new database**  
-   A new database can be created from scratch, from a backup copy, or from existing 3.x data - see more [below](../../studio/database/databases-list-view.mdx#creating-new-database-options).
+![Database actions](./assets/databases-list-view_database-actions.png)
 
-2. **Manage group**  
-   Click to manage the nodes that contain this database - see more about [The Database Group](../../studio/database/settings/manage-database-group.mdx).
+1. **Database state**  
+   The state of the database on the nodes of its [database group](../../server/clustering/distribution/distributed-database.mdx):  
+   * **Online**: the database is loaded by all the nodes of the database group.  
+   * **Online (x/y)**: the database is loaded by only some of the nodes of the database group (x of y nodes).  
+   * **Offline**: the database is not loaded by any of the nodes of the database group.  
+     RavenDB unloads a database that has not been accessed for a
+     [set time](../../server/configuration/database-configuration.mdx#databasesmaxidletimeinsec) (15 minutes by default),
+     and loads the database again when the database is accessed.  
+   * **Disabled**: the database was disabled (see **Disable** below), and cannot be accessed.  
+   * **Error**: at least one node of the database group failed to load the database.  
+   * **Loading...**: Studio has not retrieved the database's state from the nodes yet.  
 
-3. **Disable/Enable the database**  
-   A disabled database cannot be accessed. 
+2. **Checkbox**  
+   Select the database, to perform an action on this database and on other selected databases at once.  
+   See [Actions on selected databases](../../studio/database/databases-list-view.mdx#actions-on-selected-databases)
 
-4. **More actions**  
-   Pause indexing, Disable indexing, Compact database - see more [below](../../studio/database/databases-list-view.mdx#more-actions). 
+3. **Database name**  
+   Click the name to open the database's [Documents view](../../studio/database/documents/documents-and-collections.mdx#the-documents-view).  
+   A house symbol on the database icon marks a database hosted by the node that Studio is connected to.  
+   For a database that this node does not host, the Documents view opens in a new browser tab, on a node that hosts the database.  
+   The name of a disabled database cannot be clicked.  
 
-5. **Refresh data**  
-   Refresh the database stats data in this view from the server.
+4. **Manage group**  
+   Open the [Manage Database Group](../../studio/database/settings/manage-database-group.mdx) view, to manage the database group
+   (the nodes that host the database).  
 
-6. **Delete the database**  
+5. **Disable**  
+   Disable the database.  
+   You will be asked to confirm.  
+   A disabled database cannot be accessed, and its data is kept.  
+   To enable a disabled database, click **Enable** (the label this button shows while the database is disabled).  
 
+6. <a id="more-actions"/> **More actions**  
+   Open a menu of additional actions.  
 
-## Creating New Database Options
+   ![More actions](./assets/databases-list-view_more-actions.png)  
 
-![Figure 3. Creating New Database](./assets/database-actions-2.png)
+   * A. **Pause indexing until restart**  
+     Pause the indexing of all the database's indexes, including indexes created while indexing is paused.  
+     In the dialog that opens, select the nodes to pause indexing on, and click **Pause**.  
 
-1. **Create new database from scratch**   
-   See detailed flow [here](../../studio/database/create-new-database/general-flow.mdx)  
+     ![Pause indexing](./assets/databases-list-view_pause-indexing.png)  
 
-2. **Create new database from an existing backup copy**   
-   See detailed flow [here](../../backup/restore#restoring-from-backup-using-studio)  
+     Indexing resumes when the server restarts, when the database is restarted (see **Restart database** below),
+     or when you resume indexing.  
+     While indexing is paused, an **Indexing paused** badge is displayed, and **Resume indexing** appears at the top of the menu.  
 
-3. **Create new database from legacy data files**      
-   Create a new database from a 3.x RavenDB version database    
-   See detailed flow [here](../../studio/database/create-new-database/from-legacy-files.mdx)
+     ![Indexing paused](./assets/databases-list-view_indexing-paused.png)  
 
+     To resume indexing, select **Resume indexing**, select the nodes to resume indexing on, and click **Resume**.  
+     Indexing can also be paused and resumed using the client API.  
+     See [Pause Indexing Operation](../../client-api/operations/maintenance/indexes/stop-indexing.mdx)
+     and [Resume Indexing Operation](../../client-api/operations/maintenance/indexes/start-indexing.mdx)
+   * B. **Disable indexing**  
+     Disable the indexing of all the database's indexes, on all the nodes that host the database.  
+     You will be asked to confirm.  
+     The change takes effect only after the database is reloaded.  
+     To reload the database, restart it (see **Restart database** below), disable and enable it, or restart the server.  
+     Indexing stays disabled after the database is reloaded and after the server restarts, until you select **Enable indexing**
+     (shown in place of **Disable indexing**) and reload the database.  
+   * C. **Restart database**  
+     Restart the database.  
+     In the dialog that opens, select the nodes to restart the database on (when the database is hosted by more than one node),
+     and click **Restart**.  
+   * D. **Compact database**  
+     Open a dialog to compact the database's documents and indexes, reducing the disk space the database uses.  
+     The database is offline during compaction.  
+     Learn more in [Compact Database Operation](../../client-api/operations/server-wide/compact-database.mdx).  
 
-## More Actions
+7. **Delete**  
+   Delete the database.  
+   In the dialog that opens, click **Delete & Keep Files** to delete the database from all the cluster nodes and keep the
+   database's files on disk, or **Delete All Data** to delete the files as well.  
+   To delete the database from specific nodes only, use the
+   [Manage Database Group](../../studio/database/settings/manage-database-group.mdx) view.  
+   The **Delete** button is disabled when the database's delete lock mode prevents deletion (see **Delete lock mode** below).  
 
-![Figure 4. More Actions](./assets/database-actions-3.png)
+8. **Delete lock mode**  
+   Set the database's delete lock mode, to allow or prevent the deletion of the database.  
+   You will be asked to confirm the change.  
 
-1. **Pause indexing**      
-   All indexes on this database will pause indexing.  
-   Indexing will be paused only on the __local node__ the browser is opened on.  
-   Indexing will __resume__ with either of the following:  
-     * Click this button again ("Resume indexing")  
-     * Restart the server.  
-     * Reload the database (by disabling and then enabling the database state).  
-     * Resume indexing from the client code. See [resume indexing](../../client-api/operations/maintenance/indexes/start-indexing.mdx).  
+   ![Delete lock mode](./assets/databases-list-view_delete-lock-mode.png)  
 
-2. **Disable indexing**     
-   * Click 'Disable indexing' to disable all indexes on this database, on all nodes.  
-   * After clicking, __for the change to be in effect__, the database must be re-loaded by either:  
-      * Restart the server, or  
-      * Disable/enable the database  
-   * Indexing will remain __disabled__ after restarting the server or after disabling/enabling the database.  
-   * To __enable__ indexing back click this button again ("Enable indexing").  
-     And again, the database must be reloaded for the change to be in effect.  
+   * A. **Allow database delete**  
+     The database can be deleted.  
+     This is the default mode.  
+   * B. **Prevent database delete**  
+     Requests to delete the database are ignored, and no error is returned.  
+   * C. **Prevent database delete (Error)**  
+     Requests to delete the database fail with an error.  
 
-3. **Compact database**   
-   Physically compact the database on disk.  
+</Panel>
 
+<Panel heading="Database stats">
 
-## Remote Database
+The lower part of each listed database shows the database's statistics, and the nodes of its database group.  
 
-![Figure 5. Remote Database](./assets/database-actions-4.png)
+![Database stats](./assets/databases-list-view_database-stats.png)
 
-* If the database is contained in one of the cluster's other nodes, but not in the node you are currently viewing in this instance of the studio,  
-  the database state will be ***'Remote'***
+1. **Expand distribution details**  
+   Display the statistics of the database on each node of the database group, in place of the **Nodes** list.  
+   Click the button again to collapse the distribution details.  
 
-* For example, in the above figure, DB2 is contained in nodes A & B. 
-  DB2 is labeled ***'Remote'*** because we are currently viewing node C.  
+   ![Distribution details](./assets/databases-list-view_distribution-details.png)  
 
-* **Note:** Clicking on a remote database will navigate to the documents view for this database on one of its containing nodes.  
+   * A. **Database state**  
+     A striped label marks a database that is loaded by only some of the nodes of its database group
+     (in this image, by one of three nodes).  
+   * B. **Nodes**  
+     The details include a column for each node of the database group.  
+     The node icon is grayed out when the node has not loaded the database.  
+   * C. **Documents**  
+     The number of documents in the database on each node.  
+   * D. **Task Errors**  
+     The number of errors raised by the database's [ongoing tasks](../../monitoring/task-errors/studio-views.mdx) on each node.  
+   * E. **Indexing Errors**  
+     The number of indexing errors on each node.  
+   * F. **Indexing Status**  
+     The indexing status on each node (e.g., `Running`, `Paused`, or `Disabled`).  
+   * G. **Alerts**  
+     The number of alerts raised for the database on each node.  
+   * H. **Performance Hints**  
+     The number of performance hints raised for the database on each node.  
+   * I. **Size on disk**  
+     The disk space the database uses on each node.  
+   * J. **Uptime**  
+     The time that has passed since each node loaded the database, or `Offline` for a node that has not loaded the database.  
 
+2. **Encryption**  
+   An icon that shows whether the database is [encrypted](../../server/security/encryption/database-encryption.mdx).  
+   Hovering over the icon displays `This database is encrypted` or `This database is not encrypted`.  
+
+3. **Size**  
+   The disk space the database uses, including temporary buffers.  
+   Click the size to open the
+   [Database Storage Report](../../monitoring/performance-views/storage-reports.mdx#database-storage-report) view.  
+
+4. **Documents**  
+   The number of documents in the database.  
+   Click the number to open the database's
+   [Documents view](../../studio/database/documents/documents-and-collections.mdx#the-documents-view).  
+
+5. **Indexes**  
+   The number of indexes in the database.  
+   Click the number to open the [Indexes List view](../../studio/database/indexes/indexes-list-view.mdx).  
+
+6. **Backup status**  
+   The time of the database's latest backup, or `Never backed up` if the database has never been backed up.  
+   The text is green when the latest backup was taken within the last 24 hours, yellow when the latest backup is older
+   than 24 hours, and red when the database has never been backed up.  
+   Click the text to open the database's **Backups** view.  
+
+7. **Badges**  
+   Badges call attention to issues requiring it, and are displayed only when there is an issue to report.  
+   * **Indexing errors**: the number of indexing errors on all the nodes of the database group.  
+     Click the badge to open the **Index Errors** view.  
+     Learn about indexing errors in [Debugging Index Errors](../../indexes/troubleshooting/debugging-index-errors.mdx).  
+   * **Task errors**: the number of errors raised by the database's ongoing tasks on all the nodes of the database group.  
+     Click the badge to open the [Task Errors view](../../monitoring/task-errors/studio-views.mdx#task-errors-view).  
+   * **Indexing paused** or **Indexing disabled**: indexing is paused or disabled on at least one node of the database group.  
+     Click the badge to open the Indexes List view.  
+   * **Alerts** or **Performance hints**: the number of alerts or performance hints raised for the database on the node that
+     Studio is connected to.  
+     When other nodes of the database group hold alerts or hints as well, a globe icon is added, with the total number
+     reported by all the nodes of the database group.  
+     Click the badge to open the [notification center](../../monitoring/alerts-and-notifications/notification-center.mdx).  
+   * **Database has load errors!**: at least one node of the database group failed to load the database.  
+
+8. **Nodes**  
+   The nodes of the database group.  
+   The icon next to each node tag shows the node's
+   [state in the database group](../../server/clustering/distribution/distributed-database.mdx#database-topology)
+   (Member, Promotable, or Rehab).  
+   Hovering over the icon displays the state.  
+
+<Admonition type="note" title="">
+The database's size, number of documents, and backup status are read from the node that Studio is connected to.  
+If this node does not host the database, the values are read from one of the nodes that do host it.  
+</Admonition>
+
+</Panel>
+
+<Panel heading="Actions on selected databases">
+
+To perform an action on several databases at once, select the databases
+(see **Select All** in [Database list view](../../studio/database/databases-list-view.mdx#database-list-view)).  
+When one or more databases are selected, a selection bar appears at the right end of the **Select All** line.  
+
+![Selection actions](./assets/databases-list-view_selection-actions.png)
+
+* A. **Selected databases**  
+  The number of selected databases.  
+* B. **Set state**  
+  Select **Enable** or **Disable** to enable or disable all the selected databases.  
+  You will be asked to confirm.  
+* C. **Set delete lock mode**  
+  Set the delete lock mode of all the selected databases
+  (see **Delete lock mode** in [Database actions](../../studio/database/databases-list-view.mdx#database-actions)).  
+  You will be asked to confirm.  
+* D. **Delete**  
+  Delete the selected databases.  
+  Only the selected databases whose delete lock mode allows deletion are deleted.  
+  The **Delete** button is disabled when the delete lock mode of every selected database prevents deletion.  
+  In the dialog that opens, click **Delete & Keep Files** or **Delete All Data**
+  (see **Delete** in [Database actions](../../studio/database/databases-list-view.mdx#database-actions)).  
+  The option you select applies to all the deleted databases.  
+* E. **Cancel**  
+  Deselect all the databases.  
+
+</Panel>
