@@ -83,7 +83,9 @@ The **Activity** section reports conversations, prompts, tokens, and write usage
    * The app's creation date determines the earliest selectable day, month, and year.  
      If the app has no usable creation date, Quill uses the deployment's setup date instead.
    * Future periods are unavailable, and future buckets are not shown in the chart.
-   * This selection is independent of the periods selected on **My apps**, **Usage**, and the app's **Analytics** page.
+   * Periods and chart dates are in UTC, as the **UTC** indicator beside the period label reminds you.
+   * This selection is independent of the periods selected on **My apps**, **Usage**, and the app's
+     [Analytics view](./analytics-view.mdx).
 
 </ContentFrame>
 
@@ -92,7 +94,7 @@ The **Activity** section reports conversations, prompts, tokens, and write usage
 ### Activity tiles
 
 Each tile shows the app's total for the selected period and a chart that breaks the total down by time bucket.  
-Hover over a chart to see the value and the bucket it covers.  
+Hover over a chart to see a bucket's value and the UTC date at which the bucket starts (in the **Day** view, the date and time).  
 A chart is not shown when the selected period contains only one bucket.
 
 2. **Conversations**  
@@ -112,6 +114,8 @@ A chart is not shown when the selected period contains only one bucket.
    This includes writes made when Quill mirrors source data and records conversations,  
    as well as direct writes made through the RavenDB Client API.  
    Write usage is reported every 15 minutes, so recent writes may not be included yet.  
+   If Quill cannot retrieve write usage from the license server, the tile shows a dash and
+   **Unavailable from the license server**. The other tiles are not affected.  
    For **license-wide** write usage, see the [Usage](../usage.mdx) view.
 
 </ContentFrame>
@@ -120,8 +124,9 @@ A chart is not shown when the selected period contains only one bucket.
 
 #### How activity is reported
     
-* A conversation and all its prompts and tokens are assigned to the bucket in which the conversation started.  
-  For example, a conversation started at 23:50 and continued past midnight is reported entirely on the first day.
+* Buckets are UTC calendar periods.  
+  A conversation and all its prompts and tokens are assigned to the bucket in which the conversation started.  
+  For example, a conversation started at 23:50 UTC and continued past midnight UTC is reported entirely on the first day.
 
 * If the app has no activity during the selected period, every tile shows **0**. This is not an error.
 
@@ -186,7 +191,7 @@ The agents themselves are added, modified and deleted in the
 
 * **Last run**, **Conversations**, **Prompts**, and **Tokens** cover the agent's entire recorded history.  
   They are not affected by the period selected in the Activity section.  
-  For period-specific totals and breakdowns, use the app's **Analytics** page.
+  For period-specific totals and breakdowns, use the app's [Analytics view](./analytics-view.mdx).
 
 * Activity is associated with the agent's identifier, which is derived from its name.  
   If an agent is deleted and then recreated with the same name, its earlier activity is included in the new row.
@@ -278,14 +283,15 @@ If the app has no channels, the table displays **No channels yet.**
 
 A failure can affect the whole page or an individual section.
 
-| Situation                           | What the page shows |
-| ----------------------------------- | ------------------- |
-| The app does not exist              | **App not found** and **Go to dashboard**                                                  |
-| The app cannot be loaded            | **Could not load app**, with **Retry** and **Go to dashboard**                             |
-| Activity cannot be loaded           | A dash instead of the total on each Activity tile                                          |
-| Agents cannot be loaded             | **Could not load agents** and **Could not load channels**, each with **Retry**             |
-| Channels cannot be loaded           | **Could not load channels**, with **Retry**; the Agents table remains available            |
-| Active-link counts cannot be loaded | No error message; the channels remain listed, with **0** shown for each Web widget channel |
+| Situation                                               | What the page shows                                                                                   |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| The app does not exist                                  | **App not found** and **Go to dashboard**                                                             |
+| The app cannot be loaded                                | **Could not load app**, with **Retry** and **Go to dashboard**                                        |
+| Activity cannot be loaded                               | A dash instead of the total on each Activity tile                                                     |
+| Write usage cannot be retrieved from the license server | A dash and **Unavailable from the license server** on the WRU tile; the other tiles show their totals |
+| Agents cannot be loaded                                 | **Could not load agents** and **Could not load channels**, each with **Retry**                        |
+| Channels cannot be loaded                               | **Could not load channels**, with **Retry**; the Agents table remains available                       |
+| Active-link counts cannot be loaded                     | No error message; the channels remain listed, with **0** shown for each Web widget channel            |
 
 The Channels table also loads the agents to populate its **Agent name** column.  
 Therefore, an agent-loading failure affects both tables, while a channel-only failure does not affect the Agents table.

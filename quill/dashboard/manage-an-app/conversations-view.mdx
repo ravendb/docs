@@ -48,10 +48,11 @@ sidebar, under **Database**.
      An arrow is disabled at the end of the available range, which starts with the period in which the app was
      created and ends with the current period.  
      ![The period arrows](./assets/conversations-view_period-selector_arrows.png)
+   - Periods are UTC calendar periods, as the **UTC** indicator at the end of the selector reminds you.
 3. **Activity counters**  
    These counters report the activities of conversations that **started** during the selected period, 
    for the **entire duration** of the conversations, including their activities **after** the selected period.  
-   e.g., if the selected period is **August** and a conversation started on August 31 and ended on September 1, 
+   e.g., if the selected period is **August** and a conversation started on August 31 and ended on September 1 (UTC), 
    the counters will include the conversation's activities for both August 31 and September 1.
    * **Conversations**  
      The number of conversations your users **started** with the app's agents within the selected period.  
@@ -98,7 +99,7 @@ sidebar, under **Database**.
    * **Last exchange**  
      The agent's last reply, and the prompt the agent answered.
    * **Last activity**  
-     The time of the last message in the conversation, preceded by a dot in the colour of the conversation's state.
+     The time of the last message in the conversation, in UTC, preceded by a dot in the colour of the conversation's state.
 9. **View transcript**  
    Open the full transcript of the conversation. See [The conversation's transcript](#the-conversation-s-transcript).
 10. **Paging**  
@@ -131,7 +132,7 @@ The transcript sheet holds the conversation as it ran, including the user prompt
    ![The system prompt](./assets/conversations-view_system-prompt.png)
 4. **A prompt**  
    A message your user sent.  
-   Every entry in the transcript carries a timestamp indicating the time it was recorded.
+   Every entry in the transcript carries a timestamp, in UTC, indicating the time it was recorded.
 5. **The tools the agent ran**  
    Lists each query tool or action the agent ran while answering, labelled with the tool's name.  
    Expanding an entry shows any parameters the LLM provided while requesting the tool, and the tool's response.

@@ -25,7 +25,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * Conversation, prompt, and token metrics are not shown in this view.  
   Find their combined totals under [Activity](my-apps.mdx#activity) in **My apps** for your Quill.  
-  For a single app, open the app's **Overview** page and use its **Activity** section.
+  For a single app, use the **Activity** section of the app's [Overview](manage-an-app/overview.mdx#activity),
+  or the app's [Analytics view](manage-an-app/analytics-view.mdx) for breakdowns by capability, model, and channel.
 
 * In this article:
    * [Usage overview](#usage-overview)
@@ -45,7 +46,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
 2. **Period selector**  
    Choose **Year**, **Month**, or **Day**, and select the period to display.  
    The selection applies to both the chart and the table.  
-   Available periods run from this Quill's first start date through today.
+   Available periods run from this Quill's first start date through today.  
+   Periods and chart dates are in UTC, as the **UTC** indicator beside the period label reminds you.
 
 3. **WRU**  
    The chart shows the license-wide write usage for the selected period, divided into time buckets.  
@@ -102,10 +104,14 @@ Each bar represents one time bucket:
 * **Month** - one bar per day.
 * **Day** - one bar per hour.
 
+Every bucket from the start of the period up to the present appears on the horizontal axis.
+A bucket with no reported usage has no bar.  
+Buckets and their labels are in UTC. The vertical axis shows abbreviated values, for example `1K`.
+
 Future buckets are not shown.  
 During the current period, the values can change when the view loads newer usage data.
 
-Hover over a bar to see its period and WRU.  
+Hover over a bar to see its UTC period, for example `Sep 5, 2026`, and its WRU.  
 Click a bar in the **Year** view to open that month, or in the **Month** view to open that day.  
 Bars in the **Day** view are not clickable because it already shows hourly buckets.
 
@@ -200,6 +206,8 @@ To confirm the terms of your installed license, contact RavenDB sales.
   Usage is reported every 15 minutes, so recent write activity may still take time to appear.
 
 * If the usage request fails, the chart displays **Could not load usage** and the table displays "**Could not load per-app usage**".
-  Select **Retry** in either card to request the usage data again.
+  Select **Retry** in either card to request the usage data again.  
+  This also happens when Quill cannot retrieve usage data from the license server.  
+  To check the license's connectivity to RavenDB's licensing API, open the [License](license.mdx) view.
 
 </Panel>
