@@ -43,11 +43,11 @@ The Database List view shows the databases in your cluster, with the state, stat
 
 2. **New database**  
    Open a dialog to create a new database.  
-   To restore a database from a backup, click **Restore from backup** at the bottom of the dialog's first step.  
    Learn more in [Create a Database: General Flow](../../studio/database/create-new-database/general-flow.mdx)
    and [Restoring from backup using Studio](../../backup/restore.mdx#restoring-from-backup-using-studio).  
-   This button is available only to users with `Operator` or `Cluster Admin`
-   [security clearance](../../server/security/authorization/security-clearance-and-permissions.mdx).  
+   * To restore a database from a backup, click **Restore from backup** at the bottom of the dialog's first step.  
+   * This button is available only to users with `Operator` or `Cluster Admin`
+     [security clearance](../../server/security/authorization/security-clearance-and-permissions.mdx).  
 
 3. **Filter by name**  
    Enter text to list only the databases whose names contain the text.  
@@ -56,15 +56,15 @@ The Database List view shows the databases in your cluster, with the state, stat
    Select one or more states to list only the databases in the selected states.  
    Select **Local (Node A)** to list the databases hosted by the node that Studio is connected to (node A in this image),
    or **Remote** to list the databases hosted by other cluster nodes.  
-   The number next to each option counts the databases that match the option.  
-   A database that is online on only some of its nodes is counted as both **Online** and **Offline**.  
+   * The number next to each option counts the databases that match the option.  
+   * A database that is online on only some of its nodes is counted as both **Online** and **Offline**.  
 
 5. **Select All**  
    Select all the databases displayed in the view (that match the filters you set).  
    If any displayed databases are already selected, clicking **Select All** deselects them instead of selecting all displayed databases.  
-   To select a single database, select the checkbox next to the database's name.  
-   The checkboxes are available only to users with `Operator` or `Cluster Admin` security clearance.  
-   See [Actions on selected databases](../../studio/database/databases-list-view.mdx#actions-on-selected-databases)
+   See [Actions on selected databases](../../studio/database/databases-list-view.mdx#actions-on-selected-databases)  
+   * To select a single database, select the checkbox next to the database's name.  
+   * The checkboxes are available only to users with `Operator` or `Cluster Admin` security clearance.  
 
 6. **A database**  
    Each listed database is displayed with its state, statistics, and the actions you can perform on it.  
@@ -102,9 +102,9 @@ The top line of each listed database shows the database's state and name, and bu
 
 3. **Database name**  
    Click the name to open the database's [Documents view](../../studio/database/documents/documents-and-collections.mdx#the-documents-view).  
-   A house symbol on the database icon marks a database hosted by the node that Studio is connected to.  
-   For a database that this node does not host, the Documents view opens in a new browser tab, on a node that hosts the database.  
-   The name of a disabled database cannot be clicked.  
+   * A house symbol on the database icon marks a database hosted by the node that Studio is connected to.  
+   * For a database that this node does not host, the Documents view opens in a new browser tab, on a node that hosts the database.  
+   * The name of a disabled database cannot be clicked.  
 
 4. **Manage group**  
    Open the [Manage Database Group](../../studio/database/settings/manage-database-group.mdx) view, to manage the database group
@@ -123,7 +123,9 @@ The top line of each listed database shows the database's state and name, and bu
 
    * A. **Pause indexing until restart**  
      Pause the indexing of all the database's indexes, including indexes created while indexing is paused.  
-     In the dialog that opens, select the nodes to pause indexing on, and click **Pause**.  
+     In the dialog that opens, click **Pause**.  
+     When the database is hosted by more than one node or is [sharded](../../sharding/overview.mdx), the dialog also displays
+     a **Select context** area, where you can select the nodes (and shards) to pause indexing on.  
 
      ![Pause indexing](./assets/databases-list-view_pause-indexing.png)  
 
@@ -133,21 +135,24 @@ The top line of each listed database shows the database's state and name, and bu
 
      ![Indexing paused](./assets/databases-list-view_indexing-paused.png)  
 
-     To resume indexing, select **Resume indexing**, select the nodes to resume indexing on, and click **Resume**.  
-     Indexing can also be paused and resumed using the client API.  
-     See [Pause Indexing Operation](../../client-api/operations/maintenance/indexes/stop-indexing.mdx)
-     and [Resume Indexing Operation](../../client-api/operations/maintenance/indexes/start-indexing.mdx)
+     To resume indexing, select **Resume indexing** and click **Resume** in the dialog that opens.  
+     * When the database is hosted by more than one node or is sharded, the Resume dialog also displays a **Select context**
+       area, where you can select the nodes (and shards) to resume indexing on.  
+     * Indexing can also be paused and resumed using the client API.  
+       See [Pause Indexing Operation](../../client-api/operations/maintenance/indexes/stop-indexing.mdx)
+       and [Resume Indexing Operation](../../client-api/operations/maintenance/indexes/start-indexing.mdx)
    * B. **Disable indexing**  
      Disable the indexing of all the database's indexes, on all the nodes that host the database.  
      You will be asked to confirm.  
-     The change takes effect only after the database is reloaded.  
-     To reload the database, restart it (see **Restart database** below), disable and enable it, or restart the server.  
-     Indexing stays disabled after the database is reloaded and after the server restarts, until you select **Enable indexing**
-     (shown in place of **Disable indexing**) and reload the database.  
+     * The change takes effect only after the database is reloaded.  
+       To reload the database, restart it (see **Restart database** below), disable and enable it, or restart the server.  
+     * Indexing stays disabled after the database is reloaded and after the server restarts, until you select **Enable indexing**
+       (shown in place of **Disable indexing**) and reload the database.  
    * C. **Restart database**  
      Restart the database.  
-     In the dialog that opens, select the nodes to restart the database on (when the database is hosted by more than one node),
-     and click **Restart**.  
+     In the dialog that opens, click **Restart**.  
+     When the database is hosted by more than one node or is sharded, the dialog also displays a **Select restart context**
+     area, where you can select the nodes (and shards) to restart the database on.  
    * D. **Compact database**  
      Open a dialog to compact the database's documents and indexes, reducing the disk space the database uses.  
      The database is offline during compaction.  
@@ -157,9 +162,9 @@ The top line of each listed database shows the database's state and name, and bu
    Delete the database.  
    In the dialog that opens, click **Delete & Keep Files** to delete the database from all the cluster nodes and keep the
    database's files on disk, or **Delete All Data** to delete the files as well.  
-   To delete the database from specific nodes only, use the
-   [Manage Database Group](../../studio/database/settings/manage-database-group.mdx) view.  
-   The **Delete** button is disabled when the database's delete lock mode prevents deletion (see **Delete lock mode** below).  
+   * To delete the database from specific nodes only, use the
+     [Manage Database Group](../../studio/database/settings/manage-database-group.mdx) view.  
+   * The **Delete** button is disabled when the database's delete lock mode prevents deletion (see **Delete lock mode** below).  
 
 8. **Delete lock mode**  
    Set the database's delete lock mode, to allow or prevent the deletion of the database.  
@@ -285,11 +290,11 @@ When one or more databases are selected, a selection bar appears at the right en
   You will be asked to confirm.  
 * D. **Delete**  
   Delete the selected databases.  
-  Only the selected databases whose delete lock mode allows deletion are deleted.  
-  The **Delete** button is disabled when the delete lock mode of every selected database prevents deletion.  
-  In the dialog that opens, click **Delete & Keep Files** or **Delete All Data**
-  (see **Delete** in [Database actions](../../studio/database/databases-list-view.mdx#database-actions)).  
-  The option you select applies to all the deleted databases.  
+  * Only the selected databases whose delete lock mode allows deletion are deleted.  
+    The **Delete** button is disabled when the delete lock mode of every selected database prevents deletion.  
+  * In the dialog that opens, click **Delete & Keep Files** or **Delete All Data**
+    (see **Delete** in [Database actions](../../studio/database/databases-list-view.mdx#database-actions)).  
+    The option you select applies to all the deleted databases.  
 * E. **Cancel**  
   Deselect all the databases.  
 

@@ -91,21 +91,24 @@ Use the Query view to write, save, and load queries, and to run queries with the
    * B. **Don't create a new Auto-Index**  
      Enable to prevent queries from creating auto indexes.  
      When this option is enabled and no existing auto index fits a query, the query will fail.  
-     The option's initial state is set in
-     [Studio configuration](../../../studio/database/settings/studio-configuration.mdx#disabling-auto-index-creation-on-studio-queries-or-patches).  
+     * The option's initial state is set in
+       [Studio configuration](../../../studio/database/settings/studio-configuration.mdx#disabling-auto-index-creation-on-studio-queries-or-patches).  
    * C. **Show stored index fields only**  
      Enable to display only the fields stored in the queried index.  
      This option is disabled for queries executed over a collection (e.g., `from "Orders"`).  
    * D. **Show raw index entries instead of matching documents**  
      Enable to display the index entries that match the query, rather than the matching documents.  
-     This option is disabled for queries executed over a collection (e.g., `from "Orders"`).  
+     * This option is disabled for queries executed over a collection (e.g., `from "Orders"`).  
+     * For [map-reduce indexes](../../../indexes/map-reduce-indexes.mdx) and for indexes of
+       [counters](../../../indexes/indexing-counters.mdx) or [time series](../../../indexes/indexing-time-series.mdx),
+       the option is named **Show raw index entries instead of index results**, since the results of these indexes are not documents.  
    * E. **Ignore the index query size limit**  
-     This option appears while **Show raw index entries** is enabled.  
-     Each index uses one of RavenDB's two [search engines](../../../indexes/search-engine/corax.mdx), Lucene or Corax.  
-     By default, a request to display the raw entries of a Lucene index that holds more than 524,288 entries will fail,
-     since reading so many entries can take a long time and use a lot of memory.  
-     Corax indexes have no such limit.  
      Enable to read the raw entries regardless of the index size.  
+     * This option appears while **Show raw index entries** is enabled.  
+     * Each index uses one of RavenDB's two [search engines](../../../indexes/search-engine/corax.mdx), Lucene or Corax.  
+       By default, a request to display the raw entries of a Lucene index that holds more than 524,288 entries will fail,
+       since reading so many entries can take a long time and use a lot of memory.  
+       Corax indexes have no such limit.  
    * F. **Projection Behavior**  
      Select the projection behavior, which determines whether the values of projected fields are retrieved from
      the index or from the documents.  
@@ -161,9 +164,6 @@ use to work with these items.
 
 3. **Query duration**  
    The time it took to retrieve the query results.  
-   If the results were retrieved from the cache (see **Cache enabled** in the
-   [query settings](../../../studio/database/queries/query-view.mdx#query-settings)), the text reads
-   `was used to get the cached results` and adds the duration of the original request. e.g.: `(original request took: 4 ms)`
 
    <Admonition type="note" title="">
    To see a breakdown of the query duration, add `include timings()` to the query.  
