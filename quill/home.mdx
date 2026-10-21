@@ -18,13 +18,15 @@ description: "Quill gives your PostgreSQL, SQL Server, or MySQL database an AI a
 import QuillHero from "@site/src/components/Quill/QuillHero";
 import QuillWidgetDemo from "@site/src/components/Quill/QuillWidgetDemo";
 import { QuillFlow } from "@site/src/components/Quill/QuillHowItWorks";
+import QuillWalkthrough from "@site/src/components/Quill/QuillWalkthrough";
 import CardWithIcon from "@site/src/components/Common/CardWithIcon";
+import onboardingVideoPoster from "@site/static/img/quill/onboarding-video-poster.webp";
 
 <QuillHero
     title="AI agents for the database you already have"
     lead="Quill gives your PostgreSQL, SQL Server, or MySQL database AI agents, without changing the database itself. It runs as a single Docker container beside your database, mirrors the tables you select into an internal database of its own, and lets the agents talk with your users through a chat box on your website or a bot in Telegram, Slack, or Discord. Your data, your workflows, and your applications remain unchanged."
     primary={{ label: "Start your free trial", url: "https://ravendb.net/quill/start", external: true }}
-    secondary={{ label: "Set up Quill", url: "/quill/getting-started/overview" }}
+    secondary={{ label: "Watch the setup", url: "#watch-the-full-setup" }}
     visual={<QuillWidgetDemo />}
 />
 
@@ -57,6 +59,16 @@ import CardWithIcon from "@site/src/components/Common/CardWithIcon";
             url: "/quill/overview#channels",
         },
     ]}
+/>
+
+## Watch the full setup
+
+<QuillWalkthrough
+    url="https://www.youtube.com/watch?v=gLYQrEJ9yc4"
+    title="Quill step-by-step onboarding"
+    lead={"Follow one deployment from the sign-up page to an agent answering users in a website chat box and in Slack, in 14\u00a0minutes."}
+    poster={onboardingVideoPoster}
+    readInstead={{ label: "Getting Started", url: "/quill/getting-started/overview" }}
 />
 
 ## Explore the documentation

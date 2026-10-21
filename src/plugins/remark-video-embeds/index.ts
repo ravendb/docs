@@ -17,6 +17,7 @@ type VideoAvailability = { status: "ok" | "broken" | "unverified"; reason: strin
 
 const YOUTUBE_TIMEOUT_MS = 10_000;
 const LOG_PREFIX = "[video-embeds]";
+const VIDEO_COMPONENTS = ["Video", "QuillWalkthrough"];
 
 export function createVideoEmbedChecks({
     checkWithYouTube = process.env.DOCUSAURUS_STRICT === "true",
@@ -55,16 +56,16 @@ function findEmbeds(root: MarkdownNode, source: string) {
     for (const node of descendants(root)) {
         const location = `${source}:${node.position?.start.line ?? "?"}`;
 
-        if (isJsxElement(node, "Video")) {
+        if (isVideoComponent(node)) {
             const url = stringAttribute(node, "url");
             const id = url === undefined ? null : youTubeVideoId(url);
             if (id) {
                 videos.push({ id, location });
             } else if (url === undefined) {
-                problems.push(`${location}: <Video> needs a plain string url`);
+                problems.push(`${location}: <${node.name}> needs a plain string url`);
             } else {
                 problems.push(
-                    `${location}: <Video> url "${url}" is not a YouTube watch or youtu.be link, or a video ID`
+                    `${location}: <${node.name}> url "${url}" is not a YouTube watch or youtu.be link, or a video ID`
                 );
             }
         }
@@ -118,6 +119,10 @@ function* descendants(node: MarkdownNode): Generator<MarkdownNode> {
         yield child;
         yield* descendants(child);
     }
+}
+
+function isVideoComponent(node: MarkdownNode): boolean {
+    return VIDEO_COMPONENTS.some((name) => isJsxElement(node, name));
 }
 
 function isJsxElement(node: MarkdownNode, name: string): boolean {
