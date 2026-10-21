@@ -1,5 +1,15 @@
-import React, { cloneElement, type ReactElement, type ReactNode } from "react";
+import React, {
+    cloneElement,
+    useEffect,
+    useRef,
+    useState,
+    type ReactElement,
+    type ReactNode,
+    type RefObject,
+} from "react";
 import clsx from "clsx";
+import { useLocation } from "@docusaurus/router";
+import { usePrevious } from "@docusaurus/theme-common";
 import {
     useScrollPositionBlocker,
     useTabsContextValue,
@@ -25,7 +35,55 @@ interface TabListProps {
 interface TabContentProps {
     lazy: boolean;
     selectedValue: string;
+    panelsRef: RefObject<HTMLDivElement | null>;
     children: ReactNode;
+}
+
+function getHashTarget(hash: string): HTMLElement | null {
+    try {
+        return hash ? document.getElementById(decodeURIComponent(hash.slice(1))) : null;
+    } catch {
+        // Malformed percent-encoding
+        return null;
+    }
+}
+
+// Hidden panels have no layout, so open the tab holding the hash target before scrolling to it
+function useOpenTabOfHashTarget(
+    panelsRef: RefObject<HTMLDivElement | null>,
+    tabValues: readonly TabValue[],
+    selectValue: (value: string) => void
+) {
+    const location = useLocation();
+    const previousLocation = usePrevious(location);
+    // New object per request, so the same id scrolls again
+    const [scrollRequest, setScrollRequest] = useState<{ id: string } | null>(null);
+
+    // Every navigation, so a repeated link reopens the tab; search-only changes are `queryString` tab clicks
+    useEffect(() => {
+        if (previousLocation?.hash === location.hash && previousLocation.search !== location.search) {
+            return;
+        }
+        const target = getHashTarget(location.hash);
+        if (!target) {
+            return;
+        }
+        const panels = Array.from(panelsRef.current?.children ?? []);
+        const tab = tabValues[panels.findIndex((panel) => panel.contains(target))];
+        if (tab) {
+            selectValue(tab.value);
+            setScrollRequest({ id: target.id });
+        }
+    }, [location]);
+
+    // After the panel is unhidden and grouped Tabs have switched
+    useEffect(() => {
+        if (!scrollRequest) {
+            return;
+        }
+        const timeout = setTimeout(() => document.getElementById(scrollRequest.id)?.scrollIntoView());
+        return () => clearTimeout(timeout);
+    }, [scrollRequest]);
 }
 
 function TabList({ className, block, selectedValue, selectValue, tabValues }: TabListProps) {
@@ -115,7 +173,7 @@ function TabList({ className, block, selectedValue, selectValue, tabValues }: Ta
     );
 }
 
-function TabContent({ lazy, children, selectedValue }: TabContentProps) {
+function TabContent({ lazy, children, selectedValue, panelsRef }: TabContentProps) {
     const childTabs = (Array.isArray(children) ? children : [children]).filter(Boolean) as TabItemElement[];
     if (lazy) {
         const selectedTabItem = childTabs.find((tabItem) => tabItem.props.value === selectedValue);
@@ -128,7 +186,7 @@ function TabContent({ lazy, children, selectedValue }: TabContentProps) {
         });
     }
     return (
-        <div className="p-4 bg-pre-background">
+        <div ref={panelsRef} className="p-4 bg-pre-background">
             {childTabs.map((tabItem) =>
                 cloneElement(tabItem, {
                     key: tabItem.props.value,
@@ -141,6 +199,8 @@ function TabContent({ lazy, children, selectedValue }: TabContentProps) {
 
 function TabsComponent(props: Props): ReactNode {
     const tabs = useTabsContextValue(props);
+    const panelsRef = useRef<HTMLDivElement>(null);
+    useOpenTabOfHashTarget(panelsRef, tabs.tabValues, tabs.selectValue);
     return (
         <div
             className={clsx(
@@ -155,7 +215,7 @@ function TabsComponent(props: Props): ReactNode {
                 selectValue={tabs.selectValue}
                 tabValues={tabs.tabValues}
             />
-            <TabContent lazy={tabs.lazy} selectedValue={tabs.selectedValue}>
+            <TabContent lazy={tabs.lazy} selectedValue={tabs.selectedValue} panelsRef={panelsRef}>
                 {props.children}
             </TabContent>
         </div>
