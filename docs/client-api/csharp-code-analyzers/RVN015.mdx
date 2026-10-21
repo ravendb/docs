@@ -1,0 +1,98 @@
+---
+title: "RVN015 — Correlated conditions over a nested collection in a dynamic query"
+sidebar_label: RVN015
+sidebar_position: 15
+---
+
+# RVN015 — Correlated conditions over a nested collection in a dynamic query
+
+| Property | Value |
+|----------|-------|
+| **ID** | RVN015 |
+| **Title** | Correlated conditions over a nested collection in a dynamic query |
+| **Severity** | Info (default) |
+| **Category** | Usage |
+| **Code fix** | No |
+
+## Description
+
+A dynamic query (`session.Query<T>()` with no index specified) is served by an **auto index**. The auto index flattens a nested collection into one multi-valued field per member, e.g. `Members[].UserId` and `Members[].Role`. A predicate such as `p.Members.Any(m => m.UserId == userId && m.Role == Role.Contributor)` therefore becomes:
+
+```sql
+where Members[].UserId = $p0 and Members[].Role = $p1
+```
+
+Each condition is matched **independently**: a document matches when *some* member has the user id and *some* member (possibly a different one) has the role. The query returns documents where **no single element satisfies both conditions**, which is rarely what the code intends.
+
+The server never creates fan-out auto indexes, so per-element correlation requires a **static index** whose map emits one entry per element.
+
+## Trigger condition
+
+The analyzer fires when a `Where` predicate of a dynamic query calls `Any` or `All` on a collection reachable from the queried document, and the lambda joins **two or more conditions on the element** with `&&`. Both the method-chain form and the query-expression form are detected. Nested collections are checked at every level, so `Members.Any(m => m.UserId == id && m.Permissions.Any(p => p.Scope == scope && p.Granted))` reports once for `Members` and once for `Permissions`.
+
+## What to do
+
+Replace the dynamic query with a query over a static index whose map fans out one entry per element, then filter on the fanned-out fields.
+
+### Before (triggers RVN015)
+
+```csharp
+var projects = session.Query<Project>()
+    .Where(p => p.Members.Any(m => m.UserId == userId && m.Role == Role.Contributor))  // RVN015
+    .Take(50)
+    .ToList();
+```
+
+The query-expression form is flagged the same way:
+
+```csharp
+var projects = (from p in session.Query<Project>()
+                where p.Members.Any(m => m.UserId == userId && m.Role == Role.Contributor)  // RVN015
+                select p).ToList();
+```
+
+### After (correct)
+
+```csharp
+public class Projects_ByMember : AbstractIndexCreationTask<Project>
+{
+    public class Result
+    {
+        public string UserId { get; set; }
+        public Role Role { get; set; }
+    }
+
+    public Projects_ByMember()
+    {
+        Map = projects => from p in projects
+                          from m in p.Members
+                          select new { m.UserId, m.Role };
+    }
+}
+
+var projects = session.Query<Projects_ByMember.Result, Projects_ByMember>()
+    .Where(r => r.UserId == userId && r.Role == Role.Contributor)
+    .OfType<Project>()
+    .Take(50)
+    .ToList();
+```
+
+The fan-out map itself triggers [RVN014](./RVN014.mdx). Here the fan-out is intentional, so suppress that rule for the index or accept the informational hint.
+
+## Not flagged
+
+- A single condition on the element: `p.Members.Any(m => m.UserId == userId)`.
+- Conditions joined with `||`, which match the same way with or without flattening.
+- Separate `Any` calls, which state the uncorrelated matching explicitly: `p.Members.Any(m => m.UserId == userId) && p.Members.Any(m => m.Role == Role.Contributor)`.
+- Conditions that do not reference the element, such as a captured flag: `p.Members.Any(m => m.UserId == userId && includeAll)`.
+- Queries over a static index (`session.Query<T, TIndex>()` or an index name), where [RVN014](./RVN014.mdx) covers the fan-out on the index side.
+- `Any`/`All` over something that is not a collection member of the queried document, such as a string or a captured local list.
+
+## Note on DocumentQuery
+
+Only LINQ queries via `session.Query<T>()` are detected. The low-level `session.Advanced.DocumentQuery<T>()` API is not covered.
+
+## See also
+
+- [Indexing nested data](../../indexes/indexing-nested-data.mdx) — how fan-out maps index collection elements.
+- [RVN014](./RVN014.mdx) — the index-side counterpart that flags fan-out maps.
