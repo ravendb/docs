@@ -34,7 +34,7 @@ Both analyzer assemblies (`Raven.Analyzers.dll` and `Raven.Analyzers.CodeFixes.d
 
 ## Severity
 
-<Admonition type="info" title="Severity defaults to Info — existing builds are unaffected">
+<Admonition type="info" title="Severity defaults to Info" id="severity-defaults-to-info" href="#severity-defaults-to-info">
 
 All rules ship at **`DiagnosticSeverity.Info`** by default. They appear as informational hints in the IDE and in build output but **do not break existing builds on upgrade**.
 
@@ -50,7 +50,7 @@ dotnet_diagnostic.RVN013.severity = error
 
 ## Code Fixes
 
-<Admonition type="tip" title="Two rules ship with automated code fixes">
+<Admonition type="tip" title="Rules with automated code fixes" id="rules-with-automated-code-fixes" href="#rules-with-automated-code-fixes">
 
 - **[RVN011](./RVN011.mdx)** — rewrites `store.OpenSession()` to `batch.OpenSession()` inside a subscription `Run` lambda.
 - **[RVN012](./RVN012.mdx)** — rewrites a block of independent eager `Load` / `Query` calls into lazy registrations followed by a single `ExecuteAllPendingLazyOperations[Async]()` call.
