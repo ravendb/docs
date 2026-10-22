@@ -16,10 +16,12 @@ Prerequisites
   *What's New* for specific versions)
 * Environment variable **`KVS_ARN`** set (CloudFront KeyValueStore holding the
   redirect table)
+* Optional `ALGOLIA_*` variables for the Algolia config push (see `sync-algolia.ps1`)
 * Project `package.json` includes `@docusaurus/core` and `@docusaurus/cli`
 
 Phase 3 also pushes the CloudFront config kept in this repo: the redirect table,
-the viewer-request function and the CSP. See CLAUDE.md.
+the viewer-request function and the CSP. After the invalidation it pushes the
+Algolia config. See CLAUDE.md.
 
 Example
 -------
@@ -61,6 +63,7 @@ $PythonWhatsNewPath = Join-Path $PSScriptRoot 'build_whats_new.py'
 $RedirectsFilePath = Join-Path $PSScriptRoot 'redirects.json'
 $SyncEdgeFunctionPath = Join-Path $PSScriptRoot 'sync-edge-function.ps1'
 $SyncCspPath = Join-Path $PSScriptRoot 'sync-csp.ps1'
+$SyncAlgoliaPath = Join-Path $PSScriptRoot 'sync-algolia.ps1'
 
 function ThrowIfEmpty {
     param (
@@ -226,7 +229,7 @@ if ($empty) {
 }
 
 if ($DryRun) {
-    Write-Host "Dry run mode enabled. Skipping sync to s3://$S3BucketName/, CloudFront KeyValueStore update, edge function publish, CSP push and CloudFront invalidation." -ForegroundColor Yellow
+    Write-Host "Dry run mode enabled. Skipping sync to s3://$S3BucketName/, CloudFront KeyValueStore update, edge function publish, CSP push, CloudFront invalidation and Algolia config push." -ForegroundColor Yellow
 } else {
 
     Write-Host "Syncing to s3://$S3BucketName/ ..." -ForegroundColor Cyan
@@ -272,6 +275,15 @@ if ($DryRun) {
         Write-Host "Invalidating CloudFront distribution $CloudFrontDistributionId" -ForegroundColor Cyan
         aws cloudfront create-invalidation --distribution-id $CloudFrontDistributionId --paths '/*' | Out-Null
         if ($LASTEXITCODE) { throw 'CloudFront invalidation failed' }
+    }
+
+    # After the invalidation, so a recrawl reads this release's HTML; errors are held like the CloudFront sync.
+    Write-Host 'Syncing Algolia configuration' -ForegroundColor Cyan
+    try {
+        & $SyncAlgoliaPath
+    } catch {
+        if (-not $configError) { $configError = $_ }
+        Write-Host "  Algolia config sync failed: $_" -ForegroundColor Red
     }
 
     # Phase 4 — CloudFront now serves only the new index.html, so old hashed
