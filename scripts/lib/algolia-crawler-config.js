@@ -65,6 +65,8 @@ const CRAWLER_CONFIG = {
     ignoreCanonicalTo: true,
     discoveryPatterns: ["https://docs.ravendb.net/**"],
     ignoreRobotsTxtRules: true,
+    // Language switcher ?lang= links serve the same HTML; index each page once.
+    ignoreQueryParams: ["lang"],
     actions: [
         {
             indexName: ALGOLIA_INDEX_NAME,
