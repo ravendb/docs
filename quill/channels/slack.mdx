@@ -17,6 +17,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
   Users can message the bot from any Slack client, and the agent will answer from the app's internal database.
 
 * The bot is a **Slack app** installed in the Slack workspace the users belong to.  
+  The Slack app is referred to as a **Slack bot** in this documentation, to avoid confusion with a
+  [Quill app](../overview.mdx#one-quill-several-apps).  
   The bot is created at `api.slack.com/apps`, free of charge, from a manifest that Quill provides.  
   Slack issues two credentials that Quill needs in order to operate the bot: a **bot token** and a **signing secret**.  
   Slack delivers the users' messages to your Quill deployment, so the deployment must be reachable from the internet.

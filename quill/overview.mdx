@@ -55,7 +55,13 @@ Quill's Docker container includes everything Quill runs:
 * The machinery that mirrors your source database's tables.
 * An internal database that holds the mirrored data.
 * AI agents that talk with your users, query the mirrored data, and compose the replies.
-* The channels that carry the conversations, like an embedded chat channel with a chat widget on your website.
+* Four types of channels that can carry the conversations:
+  * Embedded chat, carrying the conversations your users hold through a chat widget placed in your website or mobile app.
+  * Telegram, carrying the conversations your users hold with a Telegram bot.
+  * Slack, carrying the conversations your users hold with a Slack bot.  
+    On Slack, the bot is called a Slack app. It is referred to as a **Slack bot** in this documentation to avoid confusion
+    with a [Quill app](#one-quill-several-apps).
+  * Discord, carrying the conversations your users hold with a Discord bot.
 * Quill's management dashboard.
 
 </Panel>
@@ -127,17 +133,19 @@ Parts of the Quill service and the data flow between them:
 * Each channel is bound to a single agent.
 * An agent can serve several channels at once.
 
-#### Embedded chat
+#### Chat widgets and bots
 
-* An **embedded chat** is a channel that opens to a chat widget on your website page.
-* Several embedded chat channels can serve your website, each carrying conversations to its own agent (e.g., a product assistant on
-  the catalog page, and a support assistant on the orders page).
+* An [embedded chat](channels/embedded-chat.mdx) channel opens to a chat widget on your website page.
+* A [Telegram](channels/telegram.mdx), [Slack](channels/slack.mdx), or [Discord](channels/discord.mdx) channel carries the
+  conversations your users hold with a bot on the platform.
+* Multiple channels can serve your users, each carrying conversations to its own agent (e.g., a product assistant answering in a
+  chat widget on your catalog page, and a support assistant answering through a Slack bot in your company's workspace).
 
 #### Your users
 
-* Users need no account with Quill and no knowledge of it: they simply type questions into a channel, like the chat widget
-  on your website, and get the
-  agent's replies in return.
+* Users need no account with Quill and no knowledge of it: they simply type questions into a channel and get the agent's replies
+  in return.  
+  The channel can be a chat widget in your website or mobile app, or a bot on Telegram, Slack, or Discord.
 
 #### LLM
 
@@ -183,15 +191,22 @@ and is answered with data from the mirrored database, a full RavenDB database ru
 
 Keeping Quill secure is part of the package: at sign-up, Quill receives its own web address and
 [TLS certificates](security-and-architecture/network-architecture.mdx#the-tls-front-and-the-wildcard-certificate),
-so its management dashboard and the [chat widgets](#embedded-chat) it serves are served over HTTPS from the
-moment Quill first starts, with no certificate handling on your side.
+so its management dashboard and its public addresses are served over HTTPS from the moment Quill first starts, with no
+certificate handling on your side.
 
 * Quill reaches [your SQL database](#your-sql-database) using the access details you provide; your data
   is only read, never modified.
-* Chat widgets are [the only public part of the service](security-and-architecture/network-architecture.mdx#what-is-public).
+* [The public parts of the service](security-and-architecture/network-architecture.mdx#what-is-public) depend on the channel type:
+  * **Embedded chat**: the chat widgets.
+  * **Slack**: a [web address](channels/slack.mdx#finishing-the-event-subscription-on-slack) that Quill creates for each Slack
+    channel, to which Slack delivers the users' messages.
+  * **Telegram** and **Discord**: no public address. Quill connects to the platform's servers, and the users' messages reach
+    Quill over this connection.
 * A chat widget is reached through an **embed link** you place on your page.  
-  Each link expires, serves a limited number of exchanges, and
+  Each link expires, allows a limited number of prompts, and
   [can be revoked at any time](developer-access/embed-the-chat-widget.mdx#lifetime-usage-cap-and-revocation).
+* Quill handles a message delivered by Slack only if the message arrives at the address created for the Slack channel, and carries
+  a valid signature made using the bot's [signing secret](channels/slack.mdx#collecting-the-bot-token-and-the-signing-secret).
 * Quill's management dashboard requires the
   [API key](security-and-architecture/operator-authentication.mdx#the-dashboard-api-key) you receive at sign-up.
 * Direct access to [Quill's internal database](#internal-database) requires a
@@ -254,14 +269,15 @@ The road from sign-up to a working AI interface:
 
 Once a deployment runs, day-to-day management is done using Quill's **management dashboard**, reachable through the
 deployment's web address.  
-The dashboard opens with the deployment's apps; each app then has an overview of its own, like the one shown here:
+The dashboard opens with the deployment's [apps](dashboard/my-apps.mdx). Each app has an
+[overview](dashboard/manage-an-app/overview.mdx) of its own, like the one shown here:
 
 ![The Northwind app's overview in the management dashboard](./assets/dashboard-app-overview.png)
 
-1. The welcome banner tracks the app's three setup steps: a connected data source, a first agent, and a channel.
-2. The Activity tiles follow the app's conversations, messages, and usage over the selected period.
-3. The [Agents table](dashboard/manage-an-app/agents-view.mdx) lists the app's agents, each with its status, model, and activity.
-4. The Channels table lists the app's channels, each with its type, status, and active embed links.
+1. The Activity tiles follow the app's conversations, prompts, and usage over the selected period.
+2. The [Agents table](dashboard/manage-an-app/agents-view.mdx) lists the app's agents, each with its status, model, and activity.
+3. The Channels table lists the app's channels, each with its type and status, and, for an embedded chat channel, its active
+   embed links.
 
 The sidebar leads to the app's sections: the data source, the agents, the conversations, and settings like channels
 and analytics.
@@ -309,7 +325,7 @@ Developers can work with Quill using code as well as through the management dash
 * **[Embedding the chat widget](developer-access/embed-the-chat-widget.mdx)**
   * Quill delivers each embed link as a ready-made HTML segment.
   * A developer can add this segment to the code of any of your site's pages; the page will then display the chat
-    box.
+    widget.
   * The embed segment, as Quill delivers it:
 
     ```html
