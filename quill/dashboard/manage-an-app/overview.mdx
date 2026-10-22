@@ -222,13 +222,13 @@ If the app has no channels, the table displays **No channels yet.**
 3. **Status**  
    **Active**, or **Disabled** when the channel has been switched off.  
    A disabled channel does not carry conversations.   
-   For a Web widget channel, new embed links cannot be generated while the channel is disabled.
+   For an embedded chat channel, new embed links cannot be generated while the channel is disabled.
 
 4. **Type**  
-   The channel type: **Web widget**, **Telegram**, **Slack**, **Discord**, or **WhatsApp**.
+   The channel type: **Embedded chat**, **Telegram**, **Slack**, **Discord**, or **WhatsApp**.
 
 5. **Active links**  
-   For a **Web widget** channel, the number of [embed links](../../channels/web-widget.mdx#the-management-tabs) that have not expired or been revoked.  
+   For an **Embedded chat** channel, the number of [embed links](../../channels/embedded-chat.mdx#the-management-tabs) that have not expired or been revoked.  
    A link that has reached its invocation limit remains included until it expires or is revoked.  
    Other channel types display a dash.
 
@@ -247,15 +247,15 @@ If the app has no channels, the table displays **No channels yet.**
      Click the eye to open the channel's page.  
      You can also open it by clicking the channel name.
    * **Generate an embed link**  
-     Click the link icon to generate an embed link for a **Web widget** channel. 
-     This action is available only for Web widget channels and is disabled when the channel is disabled.  
-     Learn more in [Generating an embed link](../../channels/web-widget.mdx#generating-an-embed-link).
+     Click the link icon to generate an embed link for an **Embedded chat** channel. 
+     This action is available only for embedded chat channels and is disabled when the channel is disabled.  
+     Learn more in [Generating an embed link](../../channels/embedded-chat.mdx#generating-an-embed-link).
    * **Edit**  
      Click the pencil to open the channel's page in edit mode.
    * **Delete**  
      Click the trash can and then click **Delete** in the confirmation dialog.   
      This action cannot be undone.  
-     Any widgets embedded with this channel stop working.
+     An embedded chat channel's chat widgets stop working; a channel of any other type stops replying to messages.
 
 </Panel>
 
@@ -291,7 +291,7 @@ A failure can affect the whole page or an individual section.
 | Write usage cannot be retrieved from the license server | A dash and **Unavailable from the license server** on the WRU tile; the other tiles show their totals |
 | Agents cannot be loaded                                 | **Could not load agents** and **Could not load channels**, each with **Retry**                        |
 | Channels cannot be loaded                               | **Could not load channels**, with **Retry**; the Agents table remains available                       |
-| Active-link counts cannot be loaded                     | No error message; the channels remain listed, with **0** shown for each Web widget channel            |
+| Active-link counts cannot be loaded                     | No error message; the channels remain listed, with **0** shown for each embedded chat channel            |
 
 The Channels table also loads the agents to populate its **Agent name** column.  
 Therefore, an agent-loading failure affects both tables, while a channel-only failure does not affect the Agents table.

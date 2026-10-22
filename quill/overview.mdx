@@ -13,14 +13,14 @@ import ContentFrame from "@site/src/components/ContentFrame";
 <Admonition type="note" title="">
 
 * Databases like PostgreSQL, SQL Server, and MySQL lack AI capabilities that could greatly improve user experience.  
-  For example, a company that runs one of these databases may want to offer its website visitors a chat box that answers
+  For example, a company that runs one of these databases may want to offer its website visitors a chat widget that answers
   their questions using the company's live data.  
-  To accomplish this, the company would have to either build the chat box from scratch, an effort that requires
+  To accomplish this, the company would have to either build the chat widget from scratch, an effort that requires
   expertise in AI, databases, and security, or migrate to a database that already offers such capabilities, a major
   undertaking as well.
 
   **Quill** is a ready-made alternative that spares you both efforts: it runs as a service in a Docker container beside your
-  database, reads your live data using access details you provide, and publishes AI interfaces (like the chat box mentioned
+  database, reads your live data using access details you provide, and publishes AI interfaces (like the chat widget mentioned
   above) that offer your users the AI experience you want to incorporate.  
   Your data, your workflows, and your applications remain unchanged.
   
@@ -31,7 +31,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * Getting Quill running is a [guided process](getting-started/overview.mdx), from the sign-up page, through a setup wizard, to a
   working AI interface for your users.  
   Once this process is complete, day-to-day management is done using Quill's dashboard, including changes to the mirrored
-  data and to the user-facing side, like the chat box, as well as usage and license tracking.
+  data and to the user-facing side, like the chat widget, as well as usage and license tracking.
 
 * In this article:
    * [What Quill is](#what-quill-is)
@@ -55,7 +55,7 @@ Quill's Docker container includes everything Quill runs:
 * The machinery that mirrors your source database's tables.
 * An internal database that holds the mirrored data.
 * AI agents that talk with your users, query the mirrored data, and compose the replies.
-* The channels that carry the conversations, like a web widget channel with a chat box on your website.
+* The channels that carry the conversations, like an embedded chat channel with a chat widget on your website.
 * Quill's management dashboard.
 
 </Panel>
@@ -127,15 +127,15 @@ Parts of the Quill service and the data flow between them:
 * Each channel is bound to a single agent.
 * An agent can serve several channels at once.
 
-#### Web widget
+#### Embedded chat
 
-* A **web widget** is a channel that opens to a chat box on your website page.
-* Several web widget channels can serve your website, each carrying conversations to its own agent (e.g., a product assistant on
+* An **embedded chat** is a channel that opens to a chat widget on your website page.
+* Several embedded chat channels can serve your website, each carrying conversations to its own agent (e.g., a product assistant on
   the catalog page, and a support assistant on the orders page).
 
 #### Your users
 
-* Users need no account with Quill and no knowledge of it: they simply type questions into a channel, like the chat box
+* Users need no account with Quill and no knowledge of it: they simply type questions into a channel, like the chat widget
   on your website, and get the
   agent's replies in return.
 
@@ -153,7 +153,7 @@ Parts of the Quill service and the data flow between them:
 
 ### Answering questions
 
-Each exchange between a user and an agent starts at a channel, like a web widget with a chat box on your website, 
+Each exchange between a user and an agent starts at a channel, like an embedded chat channel with a chat widget on your website, 
 and is answered with data from the mirrored database, a full RavenDB database running inside the Docker container.
 
 * When a user enters a question, the channel carries the question to the agent, which forwards it to the LLM.  
@@ -183,13 +183,13 @@ and is answered with data from the mirrored database, a full RavenDB database ru
 
 Keeping Quill secure is part of the package: at sign-up, Quill receives its own web address and
 [TLS certificates](security-and-architecture/network-architecture.mdx#the-tls-front-and-the-wildcard-certificate),
-so its management dashboard and the [chat boxes](#web-widget) it serves are served over HTTPS from the
+so its management dashboard and the [chat widgets](#embedded-chat) it serves are served over HTTPS from the
 moment Quill first starts, with no certificate handling on your side.
 
 * Quill reaches [your SQL database](#your-sql-database) using the access details you provide; your data
   is only read, never modified.
-* Chat box pages are [the only public part of the service](security-and-architecture/network-architecture.mdx#what-is-public).
-* A chat box is reached through an **embed link** you place in your page.  
+* Chat widgets are [the only public part of the service](security-and-architecture/network-architecture.mdx#what-is-public).
+* A chat widget is reached through an **embed link** you place on your page.  
   Each link expires, serves a limited number of exchanges, and
   [can be revoked at any time](developer-access/embed-the-chat-widget.mdx#lifetime-usage-cap-and-revocation).
 * Quill's management dashboard requires the
@@ -243,10 +243,10 @@ The road from sign-up to a working AI interface:
 
 6. **Channel creation**  
    *The agent goes live.*  
-   You create a **channel** that carries the conversations between your users and the agent: a [web widget](getting-started/adding-a-web-widget-channel.mdx) channel
-   with a chat box on your website, a Telegram bot, a Slack app, or a Discord bot.  
-   For a web widget channel, for example, you generate an **embed link**; placed in a page of
-   your website, the link will display the chat box, live and answering from the mirrored data.
+   You create a **channel** that carries the conversations between your users and the agent: an [embedded chat](getting-started/adding-an-embedded-chat-channel.mdx) channel
+   with a chat widget on your website, a Telegram bot, a Slack app, or a Discord bot.  
+   For an embedded chat channel, for example, you generate an **embed link**; placed on a page of
+   your website, the link will display the chat widget, live and answering from the mirrored data.
 
 </Panel>
 
@@ -306,7 +306,7 @@ Developers can work with Quill using code as well as through the management dash
     ```
     <br />
 
-* **[Embedding the chat box](developer-access/embed-the-chat-widget.mdx)**
+* **[Embedding the chat widget](developer-access/embed-the-chat-widget.mdx)**
   * Quill delivers each embed link as a ready-made HTML segment.
   * A developer can add this segment to the code of any of your site's pages; the page will then display the chat
     box.
