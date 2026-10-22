@@ -25,7 +25,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * The chat widget can also be embedded in a mobile app, in a component that displays web pages as a browser does.  
   This article follows the website case.  
 
-* A chat widget embed link is valid for a period and a number of chats of your choice.  
+* A chat widget embed link is valid for a period and a number of prompts of your choice.  
 
 * Each chat widget opens a single conversation thread over the embedded chat channel. All page visitors that use the same 
   chat widget take part in the same conversation; users of a different chat widget participate in a different conversation.
@@ -164,7 +164,7 @@ The pencil and trash icons are used to edit or delete the channel, see [Managing
 * An **embed link** is the address of a single conversation carried over the embedded chat channel.  
   When placed on your website page, an embed link opens a **chat widget** to the conversation.  
 * Joining a conversation through a chat widget requires no sign-in or any other procedure.  
-* The conversation ends when the embed link expires, reaches its chat limit, or is revoked.  
+* The conversation ends when the embed link expires, reaches its maximum number of prompts, or is revoked.  
   When the chat widget's users send their next message, they will be notified that the conversation has ended  
   and further messaging will be disabled.  
   A new conversation requires a new embed link.  
@@ -223,9 +223,9 @@ parameters), and generate the embed link.
 2. **Custom duration**  
    Shown when **Link expires after** is set to **Custom**.  
    Enter a number and select the time unit (seconds, minutes, hours, or days), for a period of **1 minute** to **30 days**.
-3. **Max invocations**  
-   Enter the maximum number of chats allowed through this link before it stops working (**100** by default, up to **1,000,000**).
-   A **chat** is a single question and its answer.
+3. **Maximum prompts**  
+   Enter the maximum number of prompts allowed through this link before it stops working (**100** by default, up to **1,000,000**).
+   A **prompt** is a single question sent through the link.
 4. **Generate link**  
    Generate the embed link.
 
@@ -252,14 +252,14 @@ Use the second dialog panel to copy and test the generated link.
    The same address, wrapped in an `<iframe>` element that you can paste into your website page.  
    See [Placing the embed snippet on your page](#placing-the-embed-snippet-on-your-page).
 3. **The link's limits**  
-   An informative summary of the date and time the link expires, and the number of chats it is allowed to serve, 
+   An informative summary of the date and time the link expires, and the number of prompts allowed through it, 
    as set in the first dialog panel.
 4. **Preview**  
    A working chat widget, opened through the new link.  
    Questions asked here are answered by the agent.  
 
    <Admonition type="warning" title="">
-   Be aware that chats you make using the preview **are** counted, reducing the number of chats left for the link.
+   Be aware that questions you ask using the preview **are** counted, reducing the number of prompts left for the link.
    </Admonition>
 5. **Generate another**  
    Generate another link for the channel. The link you just generated will remain valid.  
@@ -307,7 +307,7 @@ Once the embed snippet is added to your website page, any page visitor can chat 
 - Visitors can **enter questions** and send them using the arrow button or the Enter key from their keyboard.
 - **The agent's reply is streamed** into the chat widget as the agent composes it.
 - While the reply is being composed, the arrow button turns into a **stop button**; clicking it stops the reply,
-  but the chat is still counted against the link's limit.
+  but the question is still counted against the link's limit.
 - **Reloading the page** (e.g., by pressing F5) reloads the chat widget as well.  
   As long as the embed link is valid, the reloaded chat widget will contain the full conversation history.  
   See [Invalid links](#invalid-links) for the outcome when the link is no longer valid.
@@ -327,7 +327,7 @@ The image below shows a chat widget on a catalog page, after the visitor's first
 An embed link becomes invalid when:  
 - The link expired (i.e., the period set for it has passed).
 - The link was revoked.
-- The link has served the number of chats set for it.
+- The link has reached its maximum number of prompts.
 - The channel is paused or deleted.
 
 What a visitor sees then depends on the reason the link is no longer valid.
@@ -359,7 +359,7 @@ The chat widget is replaced by a notice that the conversation is not available.
 
 ---
 
-#### The link has served all the chats set for it:
+#### The link has reached its maximum number of prompts:
 
 The chat widget still opens, containing the conversation history, but a new question is answered with a notice that the
 conversation has reached its usage limit, and the question field is disabled.
@@ -593,7 +593,7 @@ to Quill's API, and **the snippet** you place on your page or in your mobile app
       Your backend decides which link to return: a new link (to open a new conversation), or a link it already 
       served this visitor (to resume the conversation held over it).  
     * While the chat widget stays open, it notifies the snippet that hosts it whenever the conversation ends 
-      (whether the link expired or served all its chats), the snippet asks the endpoint for another link, and when 
+      (whether the link expired or reached its maximum number of prompts), the snippet asks the endpoint for another link, and when 
       the link arrives a new conversation opens in the chat widget.  
     * Learn more in [Place the iframe on your page](../developer-access/embed-the-chat-widget.mdx#place-the-iframe-on-your-page).
 
@@ -602,7 +602,7 @@ to Quill's API, and **the snippet** you place on your page or in your mobile app
 #### The Active links tab:
 
 The **Active links** tab lists the channel's embed links that have neither expired nor been revoked, newest first.  
-An embed link that has served all the chats it was allowed to serve is still listed, since it has not expired.
+An embed link that has reached its maximum number of prompts is still listed, since it has not expired.
 
 ![The Active links tab](./assets/embedded-chat_active-links.png)
 
@@ -621,10 +621,10 @@ An embed link that has served all the chats it was allowed to serve is still lis
    The date and time the link expires.  
    During the link's last 24 hours, the time is shown as a warning badge, as in the depicted row.
 7. **Usage**  
-   The number of chats held using the link so far, out of the number of chats allowed for it.  
+   The number of prompts sent through the link so far, out of the maximum number of prompts allowed for it.  
    The count is highlighted when the link nears its limit, and marked in red when the limit is reached:
 
-   ![A link that reached its chat limit](./assets/embedded-chat_active-links_limit-reached.png)
+   ![A link that reached its maximum number of prompts](./assets/embedded-chat_active-links_limit-reached.png)
 
 8. **Copy link**, **Preview link**, and **Revoke link**  
    **Copy** the embed link,  
@@ -685,7 +685,7 @@ The **Customize appearance** tab holds the chat widget's theme: its colors, styl
   The **Allowed origins** list can prevent websites from embedding the chat widget, 
   but cannot prevent a user from opening the link in a browser and participating in the conversation.
 * **The limits of an embed link cannot be changed after the link is generated.**  
-  To allow more chats or a longer validity period, generate a new embed link.  
+  To allow additional prompts or a longer validity period, generate a new embed link.  
   See [Setting the link limits](#setting-the-link-limits).
 * **The chat widget accepts text only.**  
   Users can type questions in the question field, but cannot send files or images.  

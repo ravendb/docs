@@ -43,7 +43,7 @@ current with your source data.
 * A channel has no address of its own.  
   A chat widget is opened through an **embed link**, an address you generate for a specific conversation carried by the channel 
   and place on your page.  
-  You can choose how long an embed link and the conversation it opens will last, and how many chats are allowed through this link.
+  You can choose how long an embed link and the conversation it opens will last, and how many prompts are allowed through this link.
 
 * Once the chat widget is on your page, your users can use it to ask their questions and are answered from your app's
   data. They are not required to have an account or know anything about Quill.
@@ -178,13 +178,13 @@ embed the link in your site, and your users can use the chat widget it opens.
    Select how long the link will last: 1 hour, 4 hours, 24 hours, 7 days, or **Custom** for a duration of your
    own, entered as a number and a time unit, from one minute to thirty days.
 
-2. **Max invocations**  
-   Enter the number of chats that the link allows, 100 by default and up to 1,000,000.
+2. **Maximum prompts**  
+   Enter the number of prompts (questions sent through the link) that the link allows, 100 by default and up to 1,000,000.
 
 3. **Generate link**  
    Click to generate the link.
 
-The limits' exact behavior, including the message your users will see once a link expires or its chats are
+The limits' exact behavior, including the message your users will see once a link expires or its prompts are
 used up, is covered in
 [Invalid links](../channels/embedded-chat.mdx#invalid-links).
 
@@ -219,12 +219,12 @@ the link, so the agent's queries and answers will relate only to this product.
    (see [Placing the chat widget on your page](#placing-the-chat-widget-on-your-page)).
 
 3. **The link's limits**  
-   The link's expiration time and number of allowed chats.
+   The link's expiration time and number of allowed prompts.
 
 4. **The chat widget**  
    A working chat widget, served by the link shown above it.  
    Ask a question in the chat widget that can be answered from your app's data. The agent will reply here as it will on your site.  
-   Chats initiated here **are** counted against the link's limit.
+   Questions asked here **are** counted against the link's limit.
 
 5. **Generate another**  
    Click to return to the settings and generate an additional link for this channel.  

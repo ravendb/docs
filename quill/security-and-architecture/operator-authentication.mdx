@@ -267,7 +267,7 @@ Three surfaces use different access controls:
 
 * **The public chat surface**  
   End users open embedded chat pages on `public.<domain>` without the Dashboard API key.  
-  Each embed URL contains a bearer token whose expiration and invocation limit constrain its use.
+  Each embed URL contains a bearer token whose expiration and maximum number of prompts constrain its use.
 
   The channel's allowed origins restrict where browsers may embed the page through Content Security Policy.  
   They do not authenticate requests or prevent direct use of a disclosed embed token.

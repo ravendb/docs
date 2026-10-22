@@ -141,7 +141,7 @@ Agent parameters are bound by the channel, and the source of a parameter's value
      A Telegram user can make the agent forget sooner by sending `/clear`; Slack and Discord users cannot.
    * In an embedded chat channel, the conversation belongs to the embed link that opened the chat widget, and lasts as long as the link is valid:
      all website visitors who open the chat widget through the same link share the same conversation, which ends when 
-     the link [expires, reaches its chat limit, or is revoked](../channels/embedded-chat.mdx#invalid-links).
+     the link [expires, reaches its maximum number of prompts, or is revoked](../channels/embedded-chat.mdx#invalid-links).
 * **Messages sent faster than the bot answers may go unanswered.**  
   On Telegram, Slack, and Discord, a message a user sends while the bot is still answering waits in a queue that Quill keeps for
   this user. When the queue is full, further messages are not taken, and the bot sends one notice asking the user to send the
