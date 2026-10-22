@@ -1,13 +1,12 @@
 ---
-title: "Networking & DNS"
-sidebar_label: "Networking & DNS"
+title: "DNS & IP Configuration"
+sidebar_label: "DNS & IP Configuration"
 description: "The DNS records created for your Quill instance, what they point at, and how to repoint them when your server's IP address changes."
-sidebar_position: 6
+sidebar_position: 1
 ---
 
 import Admonition from '@theme/Admonition';
 import Panel from '@site/src/components/Panel';
-import ContentFrame from '@site/src/components/ContentFrame';
 
 <Admonition type="note" title="">
 
@@ -19,6 +18,9 @@ import ContentFrame from '@site/src/components/ContentFrame';
 
 * This article explains the DNS names associated with a Quill instance, what DNS controls,  
   and how to update and verify the published records after the host's IP address changes.
+
+* If Quill runs on Docker Desktop or WSL on Windows, other devices on your network may be unable to reach it.  
+  [LAN Access on Windows](lan-access-on-windows.mdx) explains how to allow them.
 
 * In this article:
   * [Quill DNS records](#quill-dns-records)
@@ -69,9 +71,9 @@ The first four hostnames expose Quill's customer-facing service surfaces.
 Quill does not publish corresponding `-tcp` records.  
 Direct RavenDB access through `db.<domain>` or a topology-discovered `a.<domain>` address uses HTTPS on port `443`;  
 the native RavenDB TCP listener is not exposed by default.
-Learn more in [Direct database access](security-and-architecture/network-architecture.mdx#direct-database-access).
+Learn more in [Direct database access](../security-and-architecture/network-architecture.mdx#direct-database-access).
 
-For details about how connections to these hostnames are routed and protected, see [The Quill hostnames](security-and-architecture/network-architecture.mdx#the-quill-hostnames).
+For details about how connections to these hostnames are routed and protected, see [The Quill hostnames](../security-and-architecture/network-architecture.mdx#the-quill-hostnames).
 
 The behavior of the RavenDB node hostname is described in [The `a` hostname](#the-a-hostname).
 
@@ -104,7 +106,7 @@ As a result, communication between Quill and RavenDB remains on loopback without
 * DNS updates include `a.<domain>` together with the other four records.
 
 For more information about direct RavenDB connections and your Quill's network limitations,  
-see [Direct database access](security-and-architecture/network-architecture.mdx#direct-database-access).
+see [Direct database access](../security-and-architecture/network-architecture.mdx#direct-database-access).
 
 </Panel>
 
@@ -146,9 +148,9 @@ The host's firewall, cloud security rules, and any intervening NAT configuration
 DNS and TLS are separate as well. DNS points a hostname to an address, while the wildcard certificate for your Quill proves the identity of that hostname. Changing the address behind a hostname does not change the hostname itself.
 
 For the complete routing and TLS model, see
-[How a connection is routed](security-and-architecture/network-architecture.mdx#how-a-connection-is-routed) and
-[The TLS front and the wildcard certificate](security-and-architecture/network-architecture.mdx#the-tls-front-and-the-wildcard-certificate).  
-For dashboard and API authentication, see [Operator Authentication](security-and-architecture/operator-authentication.mdx).
+[How a connection is routed](../security-and-architecture/network-architecture.mdx#how-a-connection-is-routed) and
+[The TLS front and the wildcard certificate](../security-and-architecture/network-architecture.mdx#the-tls-front-and-the-wildcard-certificate).  
+For dashboard and API authentication, see [Operator Authentication](../security-and-architecture/operator-authentication.mdx).
 
 </Panel>  
 
@@ -205,8 +207,8 @@ The Quill domain and the URLs used by operators, chat users, and applications re
 Repointing the DNS records therefore does not require a new domain, new URLs, a new wildcard certificate,  
 or a different Dashboard API key.
 
-For details about the wildcard certificate, see [The TLS front and the wildcard certificate](security-and-architecture/network-architecture.mdx#the-tls-front-and-the-wildcard-certificate).  
-For information about preserving or replacing the Dashboard API key, see [Operator Authentication](security-and-architecture/operator-authentication.mdx).
+For details about the wildcard certificate, see [The TLS front and the wildcard certificate](../security-and-architecture/network-architecture.mdx#the-tls-front-and-the-wildcard-certificate).  
+For information about preserving or replacing the Dashboard API key, see [Operator Authentication](../security-and-architecture/operator-authentication.mdx).
 
 <Admonition type="warning" title="">
 
@@ -401,7 +403,7 @@ If your deployment uses the other surfaces, verify them through their normal acc
   * open an existing embed link through `public.<domain>`;
   * connect to `db.<domain>` with a recognized client certificate.
 
-For the requirements of a direct RavenDB connection, see [Direct database access](security-and-architecture/network-architecture.mdx#direct-database-access).  
+For the requirements of a direct RavenDB connection, see [Direct database access](../security-and-architecture/network-architecture.mdx#direct-database-access).  
 If any verification step fails, continue with [Diagnose failures](#diagnose-failures).
 
 </Panel>
@@ -416,11 +418,12 @@ Use the point at which verification fails to identify the affected layer:
 | A hostname does not resolve | The hostname or base domain is incorrect, the record was not provisioned, or a resolver cached an earlier "not found" response | Compare the hostname with the `PublicServerUrl` in the activated setup package. If the hostname was recently provisioned, wait up to 15 minutes for the cached response to expire, then resolve it again |
 | A hostname still resolves to the old address | The answer is cached or the update has not completed | Allow for the TTL, then resolve all five hostnames again |
 | The hostname resolves correctly, but the connection times out | External TCP port `443` is blocked or does not reach container port `443` | Check the firewall, cloud security rules, NAT or load-balancer forwarding, and Docker port mapping |
+| Other devices cannot connect, although the hostname resolves to the LAN address of the Windows machine running Quill | WSL's default networking mode or a firewall may be preventing LAN access to Quill | Check port publishing, firewalls, and WSL networking, as described in [LAN Access on Windows](lan-access-on-windows.mdx) |
 | The hostname resolves correctly, but the connection is refused | The container is stopped or nothing is accepting the forwarded connection | Check the container state and Docker port mapping |
 | HTTPS reports a certificate error | The certificate is expired, invalid, or does not cover the requested hostname | Inspect the certificate and certificate-renewal logs |
 | `/healthz` returns an unsuccessful response | The Quill web application or RavenDB is not ready | Check bootstrap status and the Quill logs |
-| `/healthz` succeeds, but the dashboard or API returns `401` | The DNS change succeeded, but the expected Dashboard API key was not preserved | Check `QUILL_API_KEY` and see [Operator Authentication](security-and-architecture/operator-authentication.mdx) |
-| Dashboard health succeeds, but `db.<domain>` connections fail | DNS and the web surface are working; investigate the client certificate and RavenDB connection separately | See [Direct database access](security-and-architecture/network-architecture.mdx#direct-database-access) |
+| `/healthz` succeeds, but the dashboard or API returns `401` | The DNS change succeeded, but the expected Dashboard API key was not preserved | Check `QUILL_API_KEY` and see [Operator Authentication](../security-and-architecture/operator-authentication.mdx) |
+| Dashboard health succeeds, but `db.<domain>` connections fail | DNS and the web surface are working; investigate the client certificate and RavenDB connection separately | See [Direct database access](../security-and-architecture/network-architecture.mdx#direct-database-access) |
     
 ---
     
@@ -525,10 +528,10 @@ docker exec <container-name> tail -n 100 \
 ```
 <br/>
 
-For general guidance on reading and following log files, see [Read a log file](logging.mdx#read-a-log-file).  
-For certificate behavior and renewal, see [The TLS front and the wildcard certificate](security-and-architecture/network-architecture.mdx#the-tls-front-and-the-wildcard-certificate).  
-For dashboard and API authorization failures, see [Operator Authentication](security-and-architecture/operator-authentication.mdx).  
-For client-certificate requirements, see [Direct database access](security-and-architecture/network-architecture.mdx#direct-database-access).  
+For general guidance on reading and following log files, see [Read a log file](../logging.mdx#read-a-log-file).  
+For certificate behavior and renewal, see [The TLS front and the wildcard certificate](../security-and-architecture/network-architecture.mdx#the-tls-front-and-the-wildcard-certificate).  
+For dashboard and API authorization failures, see [Operator Authentication](../security-and-architecture/operator-authentication.mdx).  
+For client-certificate requirements, see [Direct database access](../security-and-architecture/network-architecture.mdx#direct-database-access).  
 
 </Panel>   
 

@@ -1192,5 +1192,11 @@
         "value": {
             "targetUrl": "/quill/getting-started/adding-a-web-widget-channel"
         }
+    },
+    {
+        "key": "/quill/networking-and-dns",
+        "value": {
+            "targetUrl": "/quill/networking/dns-and-ip-configuration"
+        }
     }
 ]
