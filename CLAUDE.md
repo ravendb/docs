@@ -94,20 +94,28 @@ rendered client-side never reaches an agent, which is also why `LanguageContent`
 
 ---
 
-## CloudFront Configuration as Code
+## Service Configuration as Code
 
-Three pieces of CloudFront config are versioned here and do not travel with the S3 upload, so a
-local build never exercises them. `deploy.ps1` phase 3 pushes all three:
+CloudFront and Algolia config is versioned here and does not travel with the S3 upload, so a local
+build never exercises it. `deploy.ps1` pushes it: CloudFront in phase 3, Algolia after the
+invalidation.
 
 | Source | Pushed by | Identifier |
 |---|---|---|
 | `scripts/redirects.json` | `Update-CloudFrontKVS` in `deploy.ps1` | `$env:KVS_ARN` |
 | `scripts/handle_redirects.js` | `scripts/sync-edge-function.ps1` | `-EdgeFunctionName` |
 | `scripts/lib/csp-policy.js` | `scripts/sync-csp.ps1` | `-ResponseHeadersPolicyId` |
+| `scripts/lib/algolia-crawler-config.js` | `scripts/sync-algolia.ps1` | `$env:ALGOLIA_CRAWLER_ID` |
+| `scripts/lib/algolia-index-settings.json` | `scripts/sync-algolia.ps1` | index named in the crawler config |
 
 Both AWS APIs replace the whole config, so both sync scripts re-send it verbatim and verify
 afterwards: the response headers policy also holds CORS and HSTS, and the function config holds
-the KVS binding. `-Check` reports drift without writing, for CI.
+the KVS binding. The Algolia APIs merge top-level keys instead, so `sync-algolia.ps1` compares
+only the keys the repo keeps and warns about keys only Algolia has. The crawler's indexing
+`apiKey` stays in Algolia for that reason. A crawler config change starts a recrawl, since it only
+applies to newly crawled records; a settings change applies at once. The crawler's
+`initialIndexSettings`, which Algolia applies only to a new index, is built from the same settings
+file. `-Check` reports drift without writing, for CI.
 
 ---
 

@@ -1,4 +1,4 @@
-# Shared by sync-csp.ps1 and sync-edge-function.ps1.
+# Shared by sync-csp.ps1 and sync-edge-function.ps1. sync-algolia.ps1 uses Get-JsonDifference.
 
 # CloudFront limits: CSP header value, and function code size.
 $script:MaxCspBytes = 1783
