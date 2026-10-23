@@ -118,13 +118,14 @@ Suggestions are generated based on a 60-day period divided in half.
 
 #### Suggestion types
 
-**Cluster Health** is able to generate suggestions for *five* usage areas:
+**Cluster Health** is able to generate suggestions for *six* usage areas:
 
 - High CPU usage                                                         
 - High IO usage                        
 - Low memory mode                      
 - Low CPU credits                                                                      
 - Server restarted due to Out of Memory
+- Not responding
 
 #### Analyses
 
@@ -132,9 +133,9 @@ Suggestions are generated using three types of analyses for specific suggestion 
 
 | Analyse type                                     | Applicable to                                                   | Description                                                                                                 |
 |--------------------------------------------------|-----------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
-| Current period above previous period by percents | High CPU usage, High IO usage, Low memory mode, Low CPU credits | The duration of a specific event was longer in the current period than in the previous period.              |
-| Current period above previous period by numbers  | Server restarted due to Out of Memory                           | The number of occurrences of a specific event was higher in the previous period than in the current period. |
-| Current period above threshold by percents       | High CPU usage, High IO usage, Low memory mode, Low CPU credits | The duration of a specific event in the current period was longer than the threshold (5%).                  |
+| Current period above previous period by percents | High CPU usage, High IO usage, Low memory mode, Low CPU credits, Not responding | The duration of a specific event was longer in the current period than in the previous period, by at least 4 percentage points (0.01 for Not responding). |
+| Current period above previous period by numbers  | Server restarted due to Out of Memory                           | The number of occurrences of a specific event was higher in the current period than in the previous period, by at least 4. |
+| Current period above threshold by percents       | High CPU usage, High IO usage, Low memory mode, Low CPU credits, Not responding | The duration of a specific event in the current period was longer than the threshold (5%; 0.01% for Not responding). |
 
 Below examples of the suggestions with the analyses: 
 
@@ -169,7 +170,15 @@ A product can have **at most one** daily summary.
 
 * It covers **every** trigger event, so there is nothing to choose - the panel lists them all for reference.
 * The email groups the events by name and includes the counts for the period.
-* It also carries the current [Suggestions](#suggestions) for the product, when there are any.
+* It also lists **suggestions** worked out from **that day's events only** - not the 30-day
+  [Suggestions](#suggestions) shown on the Cluster Health page. A node gets a suggestion when, in the
+  last 24 hours, it had:
+  * *High CPU usage* for at least **5%** of the time,
+  * *High IO usage* for at least **3%** of the time,
+  * *Low memory mode* for at least **2%** of the time, or
+  * any *Low CPU credits*, *Not responding* or *Server restarted due to Out of Memory* event.
+* Only the part of an event that falls within the period counts. A suggestion whose event is still in
+  progress when the email is sent is marked as ongoing.
 * If nothing happened in the period, **no email is sent** - a daily summary never arrives empty.
 
 ### Custom alerts

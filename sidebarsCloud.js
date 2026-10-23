@@ -78,6 +78,11 @@ export default {
                 },
                 {
                     type: "doc",
+                    id: "cloud-sso",
+                    label: "External SSO",
+                },
+                {
+                    type: "doc",
                     id: "cloud-maintenance-troubleshooting",
                     label: "Maintenance & Troubleshooting",
                 },
