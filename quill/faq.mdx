@@ -38,8 +38,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
 Quill is an AI service for your PostgreSQL, SQL Server, MySQL, or MariaDB database, packaged as a single Docker container.  
 Quill mirrors the tables you select into its internal database: it copies them, and keeps the copy current as your data changes.  
 Its AI agents can then answer your users' questions from this data.  
-You can give your users access to Quill's agents through **channels**, such as a Telegram bot, or a chat box on your
-website or in your phone app.  
+You can give your users access to Quill's agents through **channels**, such as a Telegram bot, or a chat widget on your
+website or in your mobile app.  
 Quill is described in full in [Overview: What Quill is](overview.mdx#what-quill-is).
 
 </ContentFrame>
@@ -115,9 +115,9 @@ Yes. Quill is managed through its management dashboard, and developers can also
 * **The internal database**  
   Your applications can connect to an app's internal database directly, using a RavenDB client library and a client
   certificate you generate in the management dashboard's **Certificates** view.
-* **The chat box**  
-  A developer can [embed the chat box](developer-access/embed-the-chat-widget.mdx) in a page of your website, or in a
-  phone app, using the HTML segment Quill delivers for each embed link.
+* **The chat widget**  
+  A developer can [embed the chat widget](developer-access/embed-the-chat-widget.mdx) in a page of your website, or in a
+  mobile app, using the HTML segment Quill delivers for each embed link.
 
 </ContentFrame>
 
@@ -138,10 +138,10 @@ internet access and a free port 443.
 
 With `127.0.0.1`, only your own machine can reach Quill:
 
-* The management dashboard and a [chat box](channels/web-widget.mdx) work in a browser on your machine.
-* A [Telegram bot](channels/telegram-bot.mdx) or a [Discord bot](channels/discord-bot.mdx) works for users anywhere.
+* The management dashboard and a [chat widget](channels/embedded-chat.mdx) work in a browser on your machine.
+* A [Telegram bot](channels/telegram.mdx) or a [Discord bot](channels/discord.mdx) works for users anywhere.
   Quill opens the connection to Telegram or Discord itself, and the users' messages arrive over it.
-* A [Slack bot](channels/slack-bot.mdx) does not work, since Slack delivers each message to Quill over the internet.
+* A [Slack bot](channels/slack.mdx) does not work, since Slack delivers each message to Quill over the internet.
 
 </Admonition>
 
@@ -273,7 +273,7 @@ As long as the app exists, unless a user of a Telegram bot deletes a conversatio
 
 * Quill deletes no conversation on its own.
 * Conversations cannot be deleted in the Conversations view.
-* A user of a [Telegram bot](channels/telegram-bot.mdx#clearing-the-conversation) can delete the current conversation with
+* A user of a [Telegram bot](channels/telegram.mdx#clearing-the-conversation) can delete the current conversation with
   the bot by sending `/clear`.  
   Each day's conversation is kept separately, from midnight to midnight UTC, so the conversations of earlier days remain.
 
@@ -461,10 +461,10 @@ Test chats also run without the agent's actions, so the agent cannot call other 
 
 Four [channel types](channels/overview.mdx#channel-types):
 
-* **Web widget:** a chat box on a page of your website, or in a phone app that displays web pages.
-* **Telegram bot:** a bot your users chat with on Telegram.
-* **Slack bot:** a bot the members of a Slack workspace message directly.
-* **Discord bot:** a bot the members of a Discord server message directly.
+* **Embedded chat:** a chat widget on a page of your website, or in a mobile app that displays web pages.
+* **Telegram:** a bot your users chat with on Telegram.
+* **Slack:** a bot the members of a Slack workspace message directly.
+* **Discord:** a bot the members of a Discord server message directly.
 
 </ContentFrame>
 
@@ -483,18 +483,19 @@ account to chat with a Telegram bot, or membership in the Slack workspace a Slac
 
 It depends on the channel type:
 
-* **Web widget:** any website visitor or phone app user who opens the chat box can chat with the agent. Quill does not
-  identify the chat box's users.  
-  To limit who can chat, place the chat box in parts of your website or phone app that only the intended users can reach,
+* **Embedded chat:** any website visitor or mobile app user who opens the chat widget can chat with the agent. Quill does
+  not identify the chat widget's users.  
+  To limit who can chat, place the chat widget in parts of your website or mobile app that only the intended users can reach,
   e.g., pages that require signing in to your website.  
-  The channel's **Allowed origins** list names the websites permitted to embed the chat box. However, a user who obtains an
-  [embed link](channels/web-widget.mdx#generating-an-embed-link) can also open the link directly in a browser and join the
-  link's conversation, as described in [Web widget: Web widget limitations](channels/web-widget.mdx#web-widget-limitations).
-* **Slack bot:** any member of the workspace the bot is installed in can chat with it.
-* **Discord bot:** any member of a server the bot is in can chat with it.  
+  The channel's **Allowed origins** list names the websites permitted to embed the chat widget. However, a user who obtains an
+  [embed link](channels/embedded-chat.mdx#generating-an-embed-link) can also open the link directly in a browser and join the
+  link's conversation, as described in
+  [Embedded chat: Embedded chat channel limitations](channels/embedded-chat.mdx#embedded-chat-channel-limitations).
+* **Slack:** any member of the workspace the bot is installed in can chat with it.
+* **Discord:** any member of a server the bot is in can chat with it.  
   To be the only one who can add the bot to a server, turn off the **Public Bot** toggle in the Discord Developer Portal, as
-  described in [Discord bot: Discord bot limitations](channels/discord-bot.mdx#discord-bot-limitations).
-* **Telegram bot:** any Telegram user who finds the bot can chat with it.
+  described in [Discord: Discord channel limitations](channels/discord.mdx#discord-channel-limitations).
+* **Telegram:** any Telegram user who finds the bot can chat with it.
 
 A bot channel cannot select users within a Slack workspace, a Discord server, or Telegram.  
 Agent parameters bound to the user can tie the answers to the user's own data, but cannot choose which users the agent
@@ -506,13 +507,13 @@ answers.
 
 ##### Can I limit how many questions a user asks?
 
-In a web widget channel, yes.  
-Each [embed link](channels/web-widget.mdx#setting-the-link-limits) accepts a set number of
+In an embedded chat channel, yes.  
+Each [embed link](channels/embedded-chat.mdx#setting-the-link-limits) accepts a set number of
 user prompts (100 by default), and stops accepting prompts when this number is reached, when the link expires, or when
 you revoke the link.  
 Your backend can generate a separate embed link for each visitor or app user, as described in
-[Web widget: Having your backend generate the link](channels/web-widget.mdx#having-your-backend-generate-the-link).  
-The prompt limit then applies to each visitor's or app user's link separately.
+[Embedded chat: Having your backend generate the link](channels/embedded-chat.mdx#having-your-backend-generate-the-link).  
+The maximum number of prompts then applies to each visitor's or app user's link separately.
 
 In addition, Quill accepts up to 60 prompts per minute from each IP address:
 
@@ -535,7 +536,8 @@ again after it replies, as described in
 
 It depends on the channel type:
 
-* **Web widget:** until the embed link the chat box was opened with expires, reaches its prompt limit, or is revoked.
+* **Embedded chat:** until the embed link the chat widget was opened with expires, reaches its maximum number of prompts, or is
+  revoked.
 * **Telegram, Slack, and Discord bots:** until midnight UTC. After midnight, the agent answers the next message without
   the earlier exchange.  
   A Telegram user can make the agent forget the earlier exchange sooner, by sending `/clear`.
@@ -556,14 +558,14 @@ No. A channel serves the agent it was added for, as described in
 [Channels Overview: Channels and agents](channels/overview.mdx#channels-and-agents).  
 To have another agent answer your users, add a new channel for the other agent, and then move your users to the new channel:
 
-* **Web widget:** wherever the chat box is placed, replace the old channel's embed links with links generated for the new
+* **Embedded chat:** wherever the chat widget is placed, replace the old channel's embed links with links generated for the new
   channel.  
   If your backend generates the embed links, as described in
-  [Web widget: Having your backend generate the link](channels/web-widget.mdx#having-your-backend-generate-the-link),
+  [Embedded chat: Having your backend generate the link](channels/embedded-chat.mdx#having-your-backend-generate-the-link),
   have the backend generate links for the new channel.  
   The old channel's links keep working, with the old agent, until they expire or are revoked. To stop them at once,
   pause or delete the old channel, as described in
-  [Web widget: Pausing and deleting the channel](channels/web-widget.mdx#pausing-and-deleting-the-channel).
+  [Embedded chat: Pausing and deleting the channel](channels/embedded-chat.mdx#pausing-and-deleting-the-channel).
 * **Telegram, Slack, and Discord bots:** to let your users keep chatting with the same bot, connect the bot to the new
   channel.  
   A bot can be connected to one channel only, so delete the old channel first, and then add the new channel with the same
@@ -621,7 +623,7 @@ They are separate conditions, each requiring a different action:
 
 * **Build expiry:** each Quill build expires 90 days after its release date.  
   Quill checks the build's age when its container is started. In a container started from an expired build, the management
-  dashboard, Quill's API, and the chat boxes all show a notice titled `Quill needs updating` instead of their usual
+  dashboard, Quill's API, and the chat widgets all show a notice titled `Quill needs updating` instead of their usual
   content. A container that is already running when its build expires keeps running until it restarts.  
   To replace an expired build, [update Quill](updating-quill.mdx#update-quill) to a newer build.
 * **License expiry:** the license's expiration date is shown in the

@@ -280,8 +280,8 @@ For `ravendb`, see [Quill is running, but is not serving requests](#quill-is-run
    ```
    <br />
 
-3. If the log names a cause that another entry on this page describes, follow that entry. Otherwise, contact support, as
-   described in [Contacting support](#contacting-support), and include the log lines you found.
+3. If the log names a cause that another entry on this page describes, follow that entry. Otherwise,
+   [contact support](#contacting-support) and include the log lines you found.
 
 </ContentFrame>
 
@@ -536,7 +536,8 @@ Tables that exist in the source database are not listed in the `Verify your sche
 
 ##### A PostgreSQL table is listed with a warning
 
-A table of a PostgreSQL source database is listed with a warning beside its name.
+A table of a PostgreSQL source database is listed with a warning beside its name.  
+To list only the tables that have warnings, select **Warnings** in the filter beside the `Search by table name...` box.
 
 <Admonition type="note" title="">
 
@@ -790,7 +791,35 @@ The delete icon of an AI connection string is dimmed, and hovering over it shows
 3. Delete the connection string.
 
 Switching an agent or a task to another connection string, and deleting one, are described in
-[AI Connection Strings View: Delete an AI connection string](dashboard/ai-connection-strings.mdx#delete-an-ai-connection-string).
+[AI Connection Strings View: When the connection string is in use](dashboard/ai-connection-strings.mdx#when-the-connection-string-is-in-use).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### Deleting a connection string fails with a list of its uses
+
+In the `AI connection strings` view, clicking a connection string's
+[delete icon](dashboard/ai-connection-strings.mdx#the-ai-connection-strings-view) and then **Delete** in the
+`Delete connection string?` dialog does not delete the connection string.  
+Instead, the dialog shows `This connection string is still in use. Remove what uses it first:`, followed by a list of the
+agents and tasks that use the connection string.
+
+<Admonition type="note" title="">
+
+**Cause:** an agent or a task started using the connection string after the management dashboard last loaded the list of
+connection strings (e.g., you set an agent to use the connection string in another browser tab). The view's **Used by**
+column therefore still showed `Not used`, and the delete icon was available. Quill refuses to delete a connection string that is in use.
+
+</Admonition>
+
+**What to do:**
+
+1. Switch each agent or task that the dialog lists to another connection string, or delete the agent or task, as
+   described in
+   [AI Connection Strings View: When the connection string is in use](dashboard/ai-connection-strings.mdx#when-the-connection-string-is-in-use).
+2. Reload the `AI connection strings` view in your browser. When the connection string's row shows `Not used` in the
+   **Used by** column, delete the connection string.
 
 </ContentFrame>
 
@@ -1156,13 +1185,13 @@ Find the symptoms of each channel type in:
 
 * [Channels Overview: Troubleshooting](channels/overview.mdx#troubleshooting)  
   Symptoms common to the Telegram, Slack, and Discord bots, and a symptom that may appear in a channel of any type.
-* [Web Widget: Troubleshooting](channels/web-widget.mdx#troubleshooting)  
-  Symptoms that may appear in the management dashboard, and on the website page that embeds the chat box.
-* [Telegram Bot: Troubleshooting](channels/telegram-bot.mdx#troubleshooting)  
+* [Embedded Chat: Troubleshooting](channels/embedded-chat.mdx#troubleshooting)  
+  Symptoms that may appear in the management dashboard, and on the website page that embeds the chat widget.
+* [Telegram: Troubleshooting](channels/telegram.mdx#troubleshooting)  
   Symptoms that may appear in the management dashboard, and on Telegram.
-* [Slack Bot: Troubleshooting](channels/slack-bot.mdx#troubleshooting)  
+* [Slack: Troubleshooting](channels/slack.mdx#troubleshooting)  
   Symptoms that may appear in the management dashboard, in the bot's settings on Slack, and in the Slack client.
-* [Discord Bot: Troubleshooting](channels/discord-bot.mdx#troubleshooting)  
+* [Discord: Troubleshooting](channels/discord.mdx#troubleshooting)  
   Symptoms that may appear in the management dashboard, and on Discord.
 
 </Panel>
@@ -1426,7 +1455,8 @@ described in [Updating Quill: Build expiry and license expiry](updating-quill.md
 Updating Quill replaces its container with a container created from a newer Quill image, keeping Quill's data as long
 as its Docker command mounts the same data volume, as described in
 [Updating Quill: What an update replaces](updating-quill.mdx#what-an-update-replaces).  
-The symptoms below may appear when a build expires, while you update Quill, or when Quill's license expires.
+The symptoms below may appear when a build expires, while you update Quill, when Quill's license expires, or when Quill
+cannot reach the license server.
 
 <ContentFrame>
 
@@ -1551,6 +1581,41 @@ The `License` view shows the message: `This license has expired.`
 Updating Quill does not renew the license.  
 To open the view, click **My apps** at the top of the management dashboard's sidebar, and then click **License** under
 **License & usage**. The view is described in [License View: Current license](dashboard/license.mdx#current-license).
+
+</ContentFrame>
+
+<ContentFrame>
+
+##### The dashboard shows no WRU figures
+
+The **WRU** card of the `My apps` view and of an app's `Overview` shows `—` with the caption
+`Unavailable from the license server`, and the `My apps` table shows `—` in its **WRU / month** column.  
+The `Usage` view shows `Could not load usage` and `Could not load per-app usage` instead of the WRU chart and the
+**Usage per app** table.
+
+<Admonition type="note" title="">
+
+**Likely cause:** the RavenDB server inside Quill's container cannot reach the RavenDB service at `api.ravendb.net`, from
+which the RavenDB server gets the WRU figures.  
+Quill reads the figures of the other cards (**Conversations**, **Prompts**, and **Tokens**) from the apps' databases, so
+these cards still show their figures.
+
+</Admonition>
+
+To confirm this cause, click **My apps** at the top of the management dashboard's sidebar, and then click **License** under
+**License & usage** to open the `License` view.  
+The cause is confirmed if **Connectivity**, in the view's **License health** section, shows a status other than `OK` next
+to a red dot. If the connection failed, the error message appears below the status, as described in
+[License View: Connectivity](dashboard/license.mdx#connectivity).
+
+**What to do:**
+
+1. Make sure Quill's machine allows outgoing HTTPS connections to `api.ravendb.net`.  
+   To check whether Quill's container can reach `api.ravendb.net`, use the command shown in
+   [Quill is not ready after 180 seconds](#quill-is-not-ready-after-180-seconds).
+2. Click **Refresh** in the `License` view to run the check again. Once **Connectivity** shows `OK`, click **Retry** in the
+   `Usage` view, and reload the `My apps` view or the app's `Overview` in your browser.
+3. If **Connectivity** shows `OK` and the WRU figures are still unavailable, [contact support](#contacting-support).
 
 </ContentFrame>
 
