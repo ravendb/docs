@@ -275,12 +275,12 @@ You can generate client certificates from the dashboard's Certificates page and 
 
 ### Internal service ports
 
-RavenDB starts in secured mode after the setup package becomes available and listens on the container's loopback interface at `127.0.0.1:8443`.  
+RavenDB starts in secure mode after the setup package becomes available and listens on the container's loopback interface at `127.0.0.1:8443`.  
 The Quill web application listens on the loopback interface at `127.0.0.1:5000`.
 
 These internal addresses allow the container's services to communicate without accepting connections from the host or peer containers.
 
-For diagnostics, run commands inside the container. In this command, `<container-name>` is the name specified by `docker run --name` and, by default, matches your Quill name.
+For diagnostics, run commands inside the container. In this command, `<container-name>` is the name specified by `docker run --name`: in the Docker command you received at sign-up, `quill-` followed by your Quill name (e.g., `quill-baloo`).
 
 ```bash
 docker exec <container-name> curl -s http://127.0.0.1:5000/api/bootstrap/status
@@ -346,16 +346,17 @@ If renewal cannot complete before the certificate expires, clients will reject T
 When RavenDB replaces the certificate file, Quill regenerates the PEM files used by nginx and reloads nginx.  
 No new setup package or manual certificate installation is required.
 
-Renewal failures are recorded in `/var/lib/quill/logs/ravendb.log`.  
+Renewal failures are recorded in the RavenDB server's own logs, under `/var/lib/quill/logs/ravendb-server/`, with the message
+`Failed to replace the server certificate.`  
 Successful nginx certificate reloads are recorded in `/var/lib/quill/logs/certwatch.log`.
 
 Inspect these logs from the host:
 
 In the commands below, `<container-name>` is the name specified by `docker run --name`.  
-By default, it matches your Quill name.
+In the Docker command you received at sign-up, it is `quill-` followed by your Quill name (e.g., `quill-baloo`).
 
 ```bash
-docker exec <container-name> tail -n 100 /var/lib/quill/logs/ravendb.log
+docker exec <container-name> sh -c "grep -h -A 10 'Failed to replace the server certificate' /var/lib/quill/logs/ravendb-server/*.log"
 docker exec <container-name> tail -n 100 /var/lib/quill/logs/certwatch.log
 ```
 <br/>

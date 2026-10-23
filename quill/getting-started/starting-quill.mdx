@@ -50,7 +50,7 @@ Before starting Quill, make sure you have:
    * The dashboard, the API, and the chat channels of your deployment are all
      [served on this one port](../security-and-architecture/network-architecture.mdx#how-a-connection-is-routed).
 * **Internet access** from Quill's machine to Docker Hub and to `api.ravendb.net`.
-   * Docker pulls [Quill's image](https://hub.docker.com/r/ravendb/quill-nightly) from Docker Hub.
+   * Docker pulls [Quill's image](https://hub.docker.com/r/ravendb/quill) from Docker Hub.
    * Quill fetches the [certificate and configuration](../security-and-architecture/network-architecture.mdx#the-tls-front-and-the-wildcard-certificate)
      for your domain from `api.ravendb.net`.
 * **The Docker command and the dashboard API key** you copied at the end of signing up.
@@ -72,24 +72,24 @@ Its two forms differ only in the character that continues a command across lines
 <TabItem value="bash" label="bash">
 
 ```bash
-docker run --sig-proxy=false --name quill-baloo \
+docker run --sig-proxy=false --pull=always --name quill-baloo \
   -p 443:443 \
   -e QUILL_LICENSE_KEY=QUILL-... \
   -e QUILL_API_KEY=primary/QUILLDASH-... \
   -v quill-baloo-data:/var/lib/quill \
-  ravendb/quill-nightly:latest
+  ravendb/quill:latest
 ```
 
 </TabItem>
 <TabItem value="powershell" label="PowerShell">
 
 ```powershell
-docker run --sig-proxy=false --name quill-baloo `
+docker run --sig-proxy=false --pull=always --name quill-baloo `
   -p 443:443 `
   -e QUILL_LICENSE_KEY=QUILL-... `
   -e QUILL_API_KEY=primary/QUILLDASH-... `
   -v quill-baloo-data:/var/lib/quill `
-  ravendb/quill-nightly:latest
+  ravendb/quill:latest
 ```
 
 </TabItem>
@@ -107,12 +107,13 @@ The command's parts:
 | Part | Description |
 |---|---|
 | `--sig-proxy=false` | Quill runs in the terminal you start it in, where an interruption, e.g., Ctrl+C, would ordinarily reach the container and stop it. This setting keeps interruptions from reaching Quill, so it will keep on running. |
+| `--pull=always` | Docker checks for and pulls the current Quill image before creating the container, even if an older copy of the image is already on Quill's machine. |
 | `--name quill-baloo` | Names the container `quill-` followed by your deployment's name, so later commands can address Quill by name. |
 | `-p 443:443` | Publishes port 443, Quill's only external port. |
 | `-e QUILL_LICENSE_KEY=...` | Your license key, which Quill uses to fetch the certificate and configuration for your domain. |
 | `-e QUILL_API_KEY=...` | Your dashboard API key, exactly as issued, prefix included. |
 | `-v quill-baloo-data:/var/lib/quill` | A Docker volume holding everything Quill keeps: its settings, its certificate, and your mirrored data. When [Quill is updated](../updating-quill.mdx), the new container mounts this same volume. |
-| `ravendb/quill-nightly:latest` | Quill's image. |
+| `ravendb/quill:latest` | Quill's image. |
 
 The Docker command does not return to the prompt.  
 Quill goes on running even after you close the terminal you ran it in, since its container is run by the Docker

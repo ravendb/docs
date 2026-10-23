@@ -150,9 +150,9 @@ that appears in the next stage will be shaped by the option you select here.
 ### Accepting the AI Terms of Use
 
 The two AI options (**AI-suggested agents based on your data** and **Describe what you'd like your agent to
-do**) send the app's mapping and your description to the RavenDB AI service. They only become available when
-you accept the Terms of Use. As long as you do not accept the terms, you can only set agent configurations
-manually.
+do**) send the app's mapping, your description, and the names of the app's existing agents to the RavenDB AI service.  
+These options only become available when you accept the Terms of Use. As long as you do not accept the terms, you can only set
+agent configurations manually.
 
 If you reached here through [Mapping your tables](../getting-started/mapping-your-tables.mdx) and used **AI Suggest** there, you
 have already accepted the terms and no further acceptance is required for the AI options to work.
@@ -181,8 +181,8 @@ have already accepted the terms and no further acceptance is required for the AI
    Quill reads the app's [mapping](../getting-started/mapping-your-tables.mdx) and proposes agent configurations that suit your
    data, each with its own fitting system prompt and query tools.  
    Click a suggestion card to select the agent configuration it describes.  
-   Quill drafts these suggestions live when you open this stage, so their number and content may differ from
-   one visit to the next, and from one app to another.
+   Quill drafts these suggestions using the RavenDB AI service, so their number and content may differ from one draft
+   to the next, and from one app to another.
 
 2. **Describe what you'd like your agent to do**  
    Enter a description that Quill will use to draft the agent you want.  
@@ -282,8 +282,8 @@ Manual setup skips the AI suggestion overview since there is no suggestion to sh
        `{"productId": 1}` tells the LLM to send a product ID as a number.
      * **Parameters JSON schema** states the same in a formal schema.
 
-     Either a sample parameters object or a JSON schema must be defined. If both are defined, the JSON schema
-     takes precedence.
+     If the query takes no values from the LLM, leave both the sample parameters object and the JSON schema
+     empty. If both are defined, the JSON schema takes precedence.
    * **E. Allow model queries** and **Add to initial context**
      * **Allow model queries** determines whether the LLM is allowed to run this query.
      * **Add to initial context** determines whether Quill will run this query only when the LLM requests it
@@ -322,8 +322,9 @@ stage to open the chat.
 
 ![Test agent](./assets/adding-an-ai-agent_review_footer_test-agent.png)
 
-Every message is sent on its own, so the agent has no memory of earlier messages in the chat, and the chat is
-never saved.
+* Every message is sent on its own, so the agent has no memory of earlier messages in the chat, and the chat is
+  never saved.
+* Actions are left out of the chat, so the draft agent is tested without them.
 
 ![Test agent](./assets/adding-an-ai-agent_review_test-agent.png)
 
