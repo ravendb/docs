@@ -1190,7 +1190,37 @@
     {
         "key": "/quill/getting-started/adding-a-chat-widget",
         "value": {
-            "targetUrl": "/quill/getting-started/adding-a-web-widget-channel"
+            "targetUrl": "/quill/getting-started/adding-an-embedded-chat-channel"
+        }
+    },
+    {
+        "key": "/quill/getting-started/adding-a-web-widget-channel",
+        "value": {
+            "targetUrl": "/quill/getting-started/adding-an-embedded-chat-channel"
+        }
+    },
+    {
+        "key": "/quill/channels/web-widget",
+        "value": {
+            "targetUrl": "/quill/channels/embedded-chat"
+        }
+    },
+    {
+        "key": "/quill/channels/telegram-bot",
+        "value": {
+            "targetUrl": "/quill/channels/telegram"
+        }
+    },
+    {
+        "key": "/quill/channels/discord-bot",
+        "value": {
+            "targetUrl": "/quill/channels/discord"
+        }
+    },
+    {
+        "key": "/quill/channels/slack-bot",
+        "value": {
+            "targetUrl": "/quill/channels/slack"
         }
     }
 ]
