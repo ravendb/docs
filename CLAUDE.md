@@ -74,7 +74,7 @@ versions.json                # Active version list
   - Both checks fail the build under `DOCUSAURUS_STRICT_SEO=true`. Registered **after** all `content-docs` instances so HTML is already emitted when it runs.
 - `agent-hint-plugin`: puts a hidden pointer to the hosted agent skill at the top of every page's `<body>`. See "Hosted Agent Skill" below.
 
-Noindex for legacy versions is set declaratively in `docusaurus.config.ts` (`versions[v].noIndex: true`); template pages are marked `unlisted: true` in frontmatter. No custom plugin writes the meta tag — the versioned-seo-plugin only verifies it landed.
+Noindex for legacy versions is set declaratively in `docusaurus.config.ts` (`versions[v].noIndex: true`), and the versionless `templates` instance does the same with `versions.current.noIndex: true`. Don't mark template pages `unlisted: true`: on production builds that hides them from the templates sidebar unless they are the active page. No custom plugin writes the meta tag; the versioned-seo-plugin only verifies it landed (on legacy versions).
 
 ---
 
