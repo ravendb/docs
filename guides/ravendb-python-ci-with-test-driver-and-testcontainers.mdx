@@ -39,7 +39,7 @@ The second answer is a real database. Now the tests see what production sees: ho
 
 RavenDB's Python Test Driver gives you tests against a real database without most of those costs. The Testcontainers library starts a disposable RavenDB server in Docker, so there's nothing to install or maintain. The driver gives every test that uses the database its own fresh one, so tests can't interfere with each other. The whole suite runs in seconds, and in CI, a pull request that breaks something turns red before anyone merges it.
 
-All you need is Python and Docker, and every example uses pytest.
+All you need is Python 3.11 or later and Docker, and every example uses pytest.
 
 ## What "real" needs to mean in CI
 
@@ -82,13 +82,15 @@ bookshop/
 
 Why start from the app and not from RavenDB? Because our tests aren't there to check RavenDB. They check our code: what it does with the data RavenDB hands back. Running pytest in this folder runs the mocked tests, and they pass.
 
+The complete project, including every file this guide adds, is in [this gist](https://gist.github.com/Netzach-Nyss/d297d44f24e485f2d29c4bc39136c912). A gist has no folders, so its README shows where each file goes.
+
 Here's what we want. The same pytest command should also start a real RavenDB server, give every new test its own database on that server, and clean everything up when the run ends, on any machine with Docker. The Test Driver takes care of the databases. For the server, we'll use [Testcontainers](https://testcontainers-python.readthedocs.io/en/latest/), a library that starts Docker containers from test code and removes them afterward. Starting a container takes about 5 seconds, so we start one for the whole test run, and every test shares it. Only the databases are per test, and they're cheap: after the first one, each takes about a tenth of a second.
 
 Let's build it.
 
 ### Create a virtual environment
 
-First, the packages need a home. You'll need Python and [Docker](https://docs.docker.com/get-started/get-docker/) running. Open a terminal in the project's folder, the one that contains `src` and `tests`. In Python, a project is just a folder with code in it, so there's nothing to create. We'll install the packages into a [virtual environment](https://docs.python.org/3/library/venv.html), a private set of packages for this project, so they don't mix with anything else on your machine:
+First, the packages need a home. You'll need Python 3.11 or later and [Docker](https://docs.docker.com/get-started/get-docker/) running. Open a terminal in the project's folder, the one that contains `src` and `tests`. In Python, a project is just a folder with code in it, so there's nothing to create. We'll install the packages into a [virtual environment](https://docs.python.org/3/library/venv.html), a private set of packages for this project, so they don't mix with anything else on your machine:
 
 ```sh
 python -m venv .venv
@@ -101,8 +103,8 @@ Then activate it. On Windows, in PowerShell, run `.venv\Scripts\Activate.ps1`. O
 Next, create a `requirements.txt` file in the project's folder, next to `src` and `tests`, with the four packages the suite needs. We pin exact versions, so every machine, including the CI runner later, gets the same ones:
 
 ```text
-ravendb==7.2.6.post1
-ravendb-test-driver==7.2.6.post1
+ravendb==7.2.7
+ravendb-test-driver==7.2.7
 testcontainers==4.15.0
 pytest==8.4.2
 ```
@@ -163,12 +165,12 @@ def url_of(container: DockerContainer) -> str:
     return f"http://{container.get_container_host_ip()}:{container.get_exposed_port(8080)}"
 ```
 
-The line that makes this container RavenDB is `DockerContainer(IMAGE)`. `ravendb/ravendb:7.2.7` is RavenDB's official image on [Docker Hub](https://hub.docker.com/r/ravendb/ravendb): a packaged RavenDB server that Docker can run on any machine. Testcontainers asks Docker to start a container from that image, and the first time, Docker downloads it. We pin the tag to the server version we run in production, here 7.2.7, which keeps runs reproducible and the server on the same 7.2 release line as the client. The `RAVENDB_IMAGE` variable lets us try a different version without touching the code.
+The line that makes this container RavenDB is `DockerContainer(IMAGE)`. `ravendb/ravendb:7.2.7` is RavenDB's [official image](/7.2/start/containers/general-guide) on [Docker Hub](https://hub.docker.com/r/ravendb/ravendb): a packaged RavenDB server that Docker can run on any machine. Testcontainers asks Docker to start a container from that image, and the first time, Docker downloads it. We pin the tag to the server version we run in production, here 7.2.7, which keeps runs reproducible and the server version matched to the client. The `RAVENDB_IMAGE` variable lets us try a different version without touching the code.
 
 Each setting removes one thing that would otherwise need a human (see [image usage](https://docs.ravendb.net/start/containers/image-usage) for all the options):
 
 * `RAVEN_Setup_Mode=None` skips the setup wizard.
-* `RAVEN_Security_UnsecuredAccessAllowed=PublicNetwork` lets the tests connect without certificates, whatever the Docker network looks like. It's meant for disposable test containers only.
+* `RAVEN_Security_UnsecuredAccessAllowed=PublicNetwork` lets the tests connect without [certificates](/7.2/server/configuration/security-configuration), whatever the Docker network looks like. It's meant for disposable test containers only.
 * `RAVEN_License_Eula_Accepted=true` accepts the license agreement up front.
 * `RAVEN_ARGS=--RunInMemory=true` keeps all data in memory, so nothing survives the container.
 * `RAVEN_License`, which is optional, carries a license from the environment.
@@ -181,7 +183,7 @@ Finally, `url_of` reads the URL from the container instead of hardcoding one. Te
 
 ### Connect the container to the Test Driver
 
-Finally, the Test Driver needs to know about the container. We'll use a session-scoped [pytest fixture](https://docs.pytest.org/en/stable/how-to/fixtures.html) in `tests/conftest.py`, a file pytest loads automatically, so the fixture runs once for the whole test run. It decides where the server comes from and tells the driver about it:
+Last, the Test Driver needs to know about the container. We'll use a session-scoped [pytest fixture](https://docs.pytest.org/en/stable/how-to/fixtures.html) in `tests/conftest.py`, a file pytest loads automatically, so the fixture runs once for the whole test run. It decides where the server comes from and tells the driver about it:
 
 ```py
 import os
@@ -247,7 +249,7 @@ def stocked(store):
     return _seed
 ```
 
-Here's what the server looks like in the middle of a run, in RavenDB Studio: every test that asks for a store gets its own database. If you want to look around yourself, the driver can pause a test and keep its database open for you, as shown in the Python driver guide's [debugging section](./writing-unit-tests-with-ravendb-python-test-driver#6-debugging-the-database).
+Here's what the server looks like in the middle of a run, in [RavenDB Studio](/7.2/studio/overview): every test that asks for a store gets its own database. If you want to look around yourself, the driver can pause a test and keep its database open for you, as shown in the Python driver guide's [debugging section](./writing-unit-tests-with-ravendb-python-test-driver#6-debugging-the-database).
 
 <Image img={require("./assets/ci-testcontainers1.webp")} alt="RavenDB Studio databases list during a test run, showing a separate test_1 and test_2 database for each test" />
 
@@ -278,7 +280,7 @@ def test_order_from_last_week_can_be_returned():
     assert svc.can_return("orders/1-A", NOW)
 ```
 
-There's nothing wrong with this test as a check of the logic, and it stays in the suite: mocks are fast and good at exactly that. It just can't see what the database does. So next to it, let's write the same test against the real server, in `tests/test_real.py`. The only difference is where the order lives: we store it in the test's own database, then ask the service. The repository also has its twin, for an order from two months ago that can't be returned:
+There's nothing wrong with this test as a check of the logic, and it stays in the suite: mocks are fast and good at exactly that. It just can't see what the database does. So next to it, let's write the same test against the real server, in `tests/test_real.py`. The only difference is where the order lives: we store it in the test's own database, then ask the service. The full sample also has its twin, for an order from two months ago that can't be returned:
 
 ```py
 def test_order_from_last_week_can_be_returned(store):
@@ -315,7 +317,7 @@ There's our production bug, caught before it ships. The order went into the data
 
 The text also has no time zone: the Python client writes the date without its offset, so reading it back correctly is up to the class.
 
-The fix belongs in the `Order` class, in `src/domain.py`. When a class has a `from_json` class method, the client library calls it to build the object on load. We parse the text back into a date with [`datetime.fromisoformat`](https://docs.python.org/3/library/datetime.html#datetime.datetime.fromisoformat), and because we always store UTC, we mark it as UTC:
+The fix belongs in the `Order` class, in `src/domain.py`. When a class has a `from_json` class method, the client library calls it to build the object on load. We parse the text back into a date with [`datetime.fromisoformat`](https://docs.python.org/3/library/datetime.html#datetime.datetime.fromisoformat), and because we always store UTC, we mark it as UTC. The client writes seven digits of fractional seconds, which `fromisoformat` accepts only from Python 3.11 on:
 
 ```py
 @classmethod
@@ -348,9 +350,15 @@ The returns feature now works against the same server it will meet in production
 
 The returns bug came from one difference between our mock and RavenDB. Our bookshop's code depends on a few more of them. Each one below is a real situation in the shop where the mock gives one answer and RavenDB gives another. The tests go in `tests/test_real.py`, next to the returns tests.
 
+| Behavior | What the mock returns | What RavenDB returns | What breaks with the mock alone |
+|---|---|---|---|
+| Dates | The `datetime` object the test stored | ISO 8601 text, without a time zone, unless the class parses it | Date math, like the returns check |
+| Document ids | `orders/1`, `orders/2`, as we coded it | `orders/1-A`, with the tag of the node that generated it | Code that builds or parses order numbers |
+| Queries right after a save | Everything it was given | Only what the indexes have caught up with | Pages that query right after a write, like order history |
+
 ### Ids carry a node tag
 
-The bookshop's confirmation email shows the order number, taken from the order's id. In the returns tests, we picked the id ourselves. New orders get theirs from the store instead. Our mock numbers the orders `orders/1`, `orders/2`, and so on, because that's what we coded. RavenDB gives the first one `orders/1-A`: the suffix is the tag of the cluster node that [generated the id](https://docs.ravendb.net/server/kb/document-identifier-generation). Code that strips `orders/` and turns the rest into a number works with the mock and breaks with the real thing. Let's pin down the real shape of the id:
+The bookshop's confirmation email shows the order number, taken from the order's id. In the returns tests, we picked the id ourselves. New orders get theirs from the store instead. Our mock numbers the orders `orders/1`, `orders/2`, and so on, because that's what we coded. RavenDB gives the first one `orders/1-A`: the suffix is the [tag of the cluster node](/7.2/glossary/node-tag) that [generated the id](https://docs.ravendb.net/server/kb/document-identifier-generation). Code that strips `orders/` and turns the rest into a number works with the mock and breaks with the real thing. Let's pin down the real shape of the id:
 
 ```py
 def test_server_appends_a_node_tag_to_the_id(stocked):
@@ -365,7 +373,7 @@ On a real server, the first order gets `orders/1-A`, and the test passes. Any co
 
 ### Indexing is asynchronous
 
-Right after checkout, customers open their order history. The history page runs a query, and in RavenDB, queries read from indexes that are updated in the background, after a save completes. So a query right after a save can miss the order that was just placed. The docs explain why in [stale indexes](https://docs.ravendb.net/indexes/stale-indexes). Our mock's query returns whatever list we gave it, so it never misses anything.
+Right after checkout, customers open their order history. The history page runs a query, and in RavenDB, queries read from [indexes](/7.2/indexes/what-are-indexes) that are updated in the background, after a save completes. So a query right after a save can miss the order that was just placed. The docs explain why in [stale indexes](https://docs.ravendb.net/indexes/stale-indexes). Our mock's query returns whatever list we gave it, so it never misses anything.
 
 To make the effect easy to see, the test saves 200 orders for one customer at once, as a busy customer during a sale might, then queries that customer's history. There's one trap in testing this. A query that creates a new index waits until the index is built, so on a fresh database, everything looks consistent. That's why the test warms the index first, then saves the 200 orders and queries immediately.
 
@@ -408,7 +416,7 @@ immediately after saving: 0 of 200
 
 After `wait_for_indexing`, all 200 are there, and the test passes.
 
-`wait_for_indexing` is the right tool for a test, but the checkout code needs its own answer, so the customer sees their order. RavenDB's documented fix is `wait_for_indexes_after_save_changes`: the save itself waits until the indexes have caught up, so a query right after it sees everything. Let's commit a test of that pattern too:
+`wait_for_indexing` is the right tool for a test, but the checkout code needs its own answer, so the customer sees their order. RavenDB's [documented fix](/7.2/client-api/session/saving-changes) is `wait_for_indexes_after_save_changes`: the save itself waits until the indexes have caught up, so a query right after it sees everything. Let's commit a test of that pattern too:
 
 ```py
 def test_wait_for_indexes_after_save_changes(store):
