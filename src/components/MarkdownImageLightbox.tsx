@@ -27,7 +27,9 @@ function isImageElement(element: unknown): element is HTMLImageElement {
 
 function getLightboxCandidates(): CandidateElement[] {
     const candidatesElements = Array.from(
-        document.querySelectorAll(".theme-doc-markdown img, .theme-doc-markdown .ideal-image-lightbox-host")
+        document.querySelectorAll(
+            ".theme-doc-markdown img:not([data-no-lightbox] img), .theme-doc-markdown .ideal-image-lightbox-host"
+        )
     );
 
     return candidatesElements.filter((element) => isImageElement(element) || isIdealImageHost(element));

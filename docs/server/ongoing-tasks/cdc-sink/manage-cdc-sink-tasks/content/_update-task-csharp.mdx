@@ -86,12 +86,21 @@ See [PostgreSQL - Cleanup and Maintenance](../../../../../server/ongoing-tasks/c
 
 To edit a CDC Sink task in the Studio:    
     
-![Create task 12](../assets/create-task-12.png)       
+![Created CDC Sink task](../assets/create-task-12.png)       
 
 1. Navigate to **Databases** → your database → **Tasks** → **Ongoing Tasks**.
 2. Under the **SINK (SOURCE ⇒ RavenDB)** group,   
    click the task's name (or the edit icon) to open the same configuration form used for creation, now in edit mode.
-3. Modify the connection string, tables, column mappings, or patches as needed, then click **Save**.
+3. Modify the connection string, tables, column mappings, or patches as needed.
+4. Optionally, click **Verify tables** to check the updated configuration against the source database.  
+   Verification does not stop or disconnect the running task.  
+   See [Verify tables](../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/create-task.mdx#verify-tables).
+5. Click **Save task configuration**.  
+   If you changed the connection string selection, the PostgreSQL publication or slot name, or the table configuration,  
+   Studio verifies the updated configuration before saving, unless a verification result is already available for it.  
+   Changes to other settings, such as the task name, task state, or responsible node, do not trigger a new verification.  
+   If the current verification result includes warnings or an error, click **Save anyway** to save the changes,
+   see [Save the task configuration](../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/create-task.mdx#save-the-task-configuration).
 
 </Panel>
 
@@ -106,5 +115,8 @@ If `id` is omitted, the same endpoint creates a new CDC Sink task.
 | Method | Endpoint | Auth |
 |--------|----------|------|
 | `PUT`  | `/databases/{databaseName}/admin/cdc-sink?id={taskId}` | `DatabaseAdmin` |
+
+To verify the updated configuration against the source database before sending it,
+see [Verify the configuration](../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/create-task.mdx#verify-the-configuration).
 
 </Panel>

@@ -31,6 +31,7 @@ import Panel from '@site/src/components/Panel';
     * [Vector search in RavenDB](../../ai-integration/vector-search/overview.mdx#vector-search-in-ravendb)
       * [Vector search using a dynamic query](../../ai-integration/vector-search/overview.mdx#vector-search-using-a-dynamic-query)
       * [Vector search using a static-index](../../ai-integration/vector-search/overview.mdx#vector-search-using-a-static-index)
+      * [Vector search on encrypted databases](../../ai-integration/vector-search/overview.mdx#vector-search-on-encrypted-databases)
     
 </Admonition>
 
@@ -244,6 +245,18 @@ The full description of how to perform a **vector search query using a static-in
 [Vector Search using a Static-Index](../../ai-integration/vector-search/vector-search-using-static-index.mdx).
 It explains how to define the index, configure indexing & query-time parameters, query for similar documents, and more.    
 </Admonition>
+    
+</Admonition>
+
+<Admonition type="note" title="">
+    
+## Vector search on encrypted databases
+    
+* Vector queries on [encrypted databases](../../server/security/encryption/database-encryption.mdx#vector-search-node-cache) run without the HNSW node cache.  
+  Without the cache, vector queries may require more disk reads, which can reduce query performance.  
+    
+* Disabling the cache does not change query results.  
+  See [Indexing.Corax.VectorSearch.CacheSizeInMb](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchcachesizeinmb) for cache configuration.
     
 </Admonition>
     

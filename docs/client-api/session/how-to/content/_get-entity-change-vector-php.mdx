@@ -2,41 +2,50 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
 
-* The change-vector reflects the cluster-wide point in time in which a change occured, and 
-  includes the unique database ID, node identifier, and document Etag in the specific node.  
+<Admonition type="note" title="">
 
-* When a document is downloaded from the server, it contains various metadata information.  
-  E.g. ID or current change-vector.  
+* A [change vector](../../../../server/clustering/replication/change-vector.mdx) identifies a document version across the database group.  
+  RavenDB updates the change vector whenever the document changes.
 
-* The current change-vector is stored within the session metadata and is available for each 
-  entity using the `getChangeVectorFor` method from the `advanced` session operations.
+* When a session tracks a document loaded directly or returned by a query, it tracks both the entity and the document's change vector.
+  If the session saves changes to the document, it updates the tracked change vector.  
+    
+* Use `$session->advanced()->getChangeVectorFor()` to retrieve the tracked change vector.  
+  The entity must be tracked by the session.
 
-## Syntax
+* In this article:
+  * [Get entity change vector](../../../../client-api/session/how-to/get-entity-change-vector.mdx#get-entity-change-vector)
+  * [Syntax](../../../../client-api/session/how-to/get-entity-change-vector.mdx#syntax)
 
-<TabItem value="get_change_vector_1" label="get_change_vector_1">
-<CodeBlock language="php">
-{`public function getChangeVectorFor(?object $instance): ?string;
-`}
-</CodeBlock>
-</TabItem>
+</Admonition>
 
-| Parameter | Type | Description |
-| --------- | ---- | ----------- |
-| **$instance** | `?object` | An instance of an entity for which an Etag will be returned |
+<Panel heading="Get entity change vector">
 
-| Return Type | Description |
-| ----------- | ----------- |
-| `?string` | Returns the current change-vector for an entity. Throws an exception if the entity is not tracked by the session. |
-
-## Example
-
-<TabItem value="get_change_vector_2" label="get_change_vector_2">
-<CodeBlock language="php">
-{`$employee = $session->load(Employee::class, "employees/1-A");
+<TabItem>
+```php
+$employee = $session->load(Employee::class, "employees/1-A");
 $changeVector = $session->advanced()->getChangeVectorFor($employee);
-`}
-</CodeBlock>
+```
 </TabItem>
 
+</Panel>
 
+<Panel heading="Syntax">
+
+<TabItem>
+```php
+public function getChangeVectorFor(?object $instance): ?string;
+```
+</TabItem>
+
+| Parameter     | Type      | Description                                            |
+|---------------|-----------|--------------------------------------------------------|
+| **$instance** | `?object` | A tracked entity whose change vector will be returned. |
+
+| Return value | Description                                                                                                                                                          |
+|--------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `?string`    | The entity's tracked change vector, or `null` if the entity is new and has not yet been saved.<br/>Throws an exception if the `$instance` is not tracked by the session. |
+
+</Panel>

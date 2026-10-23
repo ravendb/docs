@@ -244,7 +244,7 @@ Problems it identifies:
 * Gradual degradation over time  
 * Patterns not visible in short-term diagnostics
 
-This option is more about preventing future problems than about already existing ones. It is that way because external monitoring, as the name suggests, is external, so it needs to be set up before an incident. For RavenDB, we have two monitoring setup guides: [Zabbix](https://ravendb.net/articles/set-up-zabbix-monitoring-for-ravendb-cloud) and [Grafana](https://ravendb.net/articles/sending-your-ravendb-7-0-logs-to-grafana-cloud). 
+This option is more about preventing future problems than about already existing ones. It is that way because external monitoring, as the name suggests, is external, so it needs to be set up before an incident. For RavenDB, we have two monitoring setup guides: [Zabbix](https://ravendb.net/articles/set-up-zabbix-monitoring-for-ravendb-cloud) and [Grafana](./sending-your-ravendb-7-0-logs-to-grafana-cloud). 
 
 As we said, it’s about preventing future problems. External monitoring can help you set up alarms and dashboards to detect potential problems before they become actual issues. Native RavenDB mechanisms are good until you need long-term logs and dashboards that require customization.
 
@@ -255,5 +255,3 @@ For example, if we receive reports of problems at certain hours, we can check th
 In our case, the disk is under the most pressure. Now we have a lead, and we can go to the database and use previous tools to identify the cause. More about monitoring can be found in the articles we mentioned.
 
 Now that you know where to look, you might need a way to fix your problems or look even deeper into them. If you need help with investigating high CPU usage, you may be interested in [How to Troubleshoot High CPU Usage in RavenDB](https://ravendb.net/articles/how-to-troubleshoot-ravendbs-high-cpu-usage). Or maybe you are having trouble with high memory usage; we have a guide on [troubleshooting high memory usage in RavenDB](https://ravendb.net/articles/master-ravendb-troubleshoot-fix-high-memory-usage), too.
-
-Interested in RavenDB? Grab the [developer license for testing](https://ravendb.net/dev), or get a [free RavenDB Cloud database](https://ravendb.net/cloud). If you have questions about this feature, or want to hang out and talk with the RavenDB team, join the [RavenDB Discord Community Server](https://discord.com/invite/ravendb).

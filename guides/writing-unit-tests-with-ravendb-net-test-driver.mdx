@@ -1,9 +1,9 @@
 ---
 title: "Writing unit tests with RavenDB .NET Test Driver"
 tags: [csharp, testing, getting-started]
-image: "https://ravendb.net/wp-content/uploads/2024/08/csharp-in-mem.png"
+icon: "csharp"
 description: "Learn how to use RavenDB.TestDriver to run integration tests against a real in-memory RavenDB instance instead of mocks, with full support for indexing, Studio debugging, and CI/CD pipelines."
-published_at: 2024-08-28
+published_at: 2026-09-30
 see_also:
   - title: "Test Driver"
     link: "start/test-driver"
@@ -43,13 +43,13 @@ There are many advantages of testing with real databases over mocks. You can tes
 
 ## Introduction
 
-Mocking a database is a commonly used strategy for testing of database-driven applications. While mocks offer convenience and low effort, many bugs and erroneous program states might happen due to interactions with a database in a real production system. This discrepancy can lead to unexpected issues when transitioning from testing to deployment, ultimately undermining the effectiveness of the testing process.
+Mocking a database is commonly used for testing database-driven applications. While mocks offer convenience and a low-effort solution, real database interactions can introduce bugs and unexpected program states. This discrepancy can cause unexpected issues when moving from testing to deployment, ultimately undermining the effectiveness of the testing process.
 
-It's crucial to recognize that the effectiveness of your testing process heavily depends on how closely it mirrors real-life production conditions. Testing in an environment that is similar to production helps to detect potential issues early on, ensuring a smoother transition to deployment and a more reliable application in the hands of users.
+Your testing process's effectiveness depends heavily on how closely it mirrors real-life production conditions. Testing in an environment similar to production helps detect potential issues early, ensuring a smoother transition to deployment and a more reliable application in users' hands.
 
-Being aware of it, we've decided to provide a simple solution that developers may take leverage of to use the real database instead of mocks with no effort, while working with it in the various types of tests, especially in the integration tests. We've created test drivers, that let users instantiate the database component in no time.
+We've decided to provide a simple solution that lets developers use the real database instead of mocks with no effort, while working with it in various types of tests. We've created test drivers for exactly that. A test driver starts a real RavenDB server for your test process and hands each test its own database, so your queries run against the same engine that will run them in production rather than against a stand-in. The first call for a store starts that server, and every later call reuses it.
 
-We will be running RavenDB in-memory, ensuring that each test receives its own separated and isolated database instance. These instances will be automatically disposed, which solves the problem with a state of a database. Provisioning in-memory databases is fast and easy, making the testing seamlessly integrable into CI/CD pipelines. This approach not only simplifies the testing process but also ensures that developers can work with a database environment that closely mimics production conditions, leading to more reliable and accurate test results.
+We will run RavenDB in-memory, ensuring each test gets its own separate, isolated database instance. These instances will be automatically disposed of, solving the database-state problem. Provisioning in-memory databases is fast and easy, making the testing seamlessly integrable into CI/CD pipelines. This approach not only simplifies testing but also ensures developers can work with a database environment that closely mimics production conditions, leading to more reliable and accurate test results.
 
 In this article we'll take a closer look upon NuGet [RavenDB.TestDriver](https://www.nuget.org/packages/RavenDB.TestDriver) package.
 
@@ -70,23 +70,58 @@ Begin by including the *RavenDB.TestDriver* package in your project:
 dotnet add package RavenDB.TestDriver
 ```
 
-It will install the test driver and the [embedded server](https://www.nuget.org/packages/RavenDB.Embedded).
+It will install the test driver along with the RavenDB server binaries.
+
+<Admonition type="note" title="You also need matching .NET runtimes">
+The RavenDB server is a framework-dependent .NET application, so the machine running your tests, including your CI agents, needs both the matching [.NET Runtime and ASP.NET Core Runtime](https://dotnet.microsoft.com/en-us/download/dotnet) installed. The exact version moves with RavenDB releases (RavenDB.TestDriver 7.2.6 asks for 10.0.11 or a later 10.0 patch), and if it is missing the first test fails at startup with a message naming the version it wanted.
+</Admonition>
+
+### Registering a license
+
+The Test Driver's server needs a license. Without a valid one it doesn't start, and your first test fails with "Unable to start the RavenDB Server", so register your license before you write the first test.
+
+The simplest way is the *RAVEN_LICENSE* environment variable, which the server picks up from the environment it inherits and which keeps the license out of source control. You can also pass it explicitly through *TestServerOptions*, together with any other server settings you need:
+
+```csharp
+using System;
+using System.Runtime.CompilerServices;
+using Raven.TestDriver;
+
+public static class TestServerSetup
+{
+    [ModuleInitializer]
+    public static void Init()
+    {
+        RavenTestDriver.ConfigureServer(new TestServerOptions
+        {
+            Licensing =
+            {
+                EulaAccepted = true,
+                License = Environment.GetEnvironmentVariable("RAVEN_LICENSE")
+            }
+        });
+    }
+}
+```
+
+*ConfigureServer* has to run before the first *GetDocumentStore()* call and throws if it runs later, which is why it belongs in a [ModuleInitializer](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/general#moduleinitializer-attribute): it runs when the test assembly loads, before any test. A static constructor on one test class is not enough, because it only runs when that class is first used, and another test class may start the server before that. *TestServerOptions* also carries `DataDirectory`, `LogsPath`, `FrameworkVersion` and `CommandLineArgs`, so it is the place to shape the server generally. `Licensing.LicensePath` takes a file instead of a string.
+
+To get a free developer license, visit the [RavenDB license request page](https://ravendb.net/license/request/dev). The request page lists it as suitable for development, CI and QA purposes (not production, staging or UAT) and as not applicable for commercial use, and it must be renewed every 6 months: a license stored in your CI secrets will expire and has to be replaced. See the [licensing overview](https://docs.ravendb.net/licensing/overview) for details.
 
 ### 2. Integrating Test Driver into your tests
 
 Your test class like `BasicTest` should be inheriting `RavenTestDriver` from `Raven.TestDriver`.
 
-#### Step 2: Creating a test case equipped with RavenTestDriver
+#### Creating a test case equipped with RavenTestDriver
 
 ```csharp
 using Raven.TestDriver;
-using Raven.Client.Documents;
 using Xunit;
 
 public class BasicTest : RavenTestDriver
 {
     [Fact]
-    public void BasicTest()
+    public void Test()
     {
         // your test code here
     }
@@ -94,13 +129,26 @@ public class BasicTest : RavenTestDriver
 ```
 
 You can override RavenTestDriver methods to customize its behavior.
+
 - The *PreInitialize()* method is called right **before** the DocumentStore is initialized. Pre-configure your `DocumentStore` here, e.g. change the store `DocumentConventions`
-- The *SetupDatabase()* method is called right **after** the `DocumentStore` is initialized. Here you can already work with a running server - store new documents, setup and configure features like revisions or expiration, prepare ongoing tasks like ETLs or subscriptions, execute various operations, etc.
+- The *PreConfigureDatabase()* method is called right **before** the database is created. Change the `DatabaseRecord` here, e.g. turn on revisions or expiration, or set database-level settings.
+- The *SetupDatabase()* method is called **after** the `DocumentStore` is initialized, and after the database dump is imported if you configured one (see [Seeding a database from a dump](#seeding-a-database-from-a-dump)). Here you can already work with a running server - store new documents, setup and configure features like revisions or expiration, prepare ongoing tasks like ETLs or subscriptions, execute various operations, etc.
 
 #### Overriding RavenTestDriver PreInitialize() and SetupDatabase() methods
 
 ```csharp
-class BasicTest : RavenTestDriver 
+using System;
+using Raven.Client.Documents;
+using Raven.Client.Documents.Operations.Revisions;
+using Raven.TestDriver;
+using Xunit;
+
+public class Company
+{
+    public string Name { get; set; }
+}
+
+public class BasicTest : RavenTestDriver
 {
     protected override void PreInitialize(IDocumentStore documentStore)
     {
@@ -128,12 +176,13 @@ class BasicTest : RavenTestDriver
     }
 
     [Fact]
-    public void BasicTest()
+    public void Test()
     {
-        // your test code here
     }
 }
 ```
+
+Returning `null` from `FindCollectionName` falls back to the default collection name, so only `Company` documents are affected.
 
 ### 3. Using Test Driver to get database instance
 
@@ -147,11 +196,18 @@ public class Contractor
 }
 ```
 
-Now, you can write new tests or replace mocks in existing tests with real database instances. Your [document store](/7.2/client-api/what-is-a-document-store) *IDocumentStore* is available by calling the GetDocumentStore() method. It's the one from *RavenDB.Client* NuGet package, our .NET database client with powerful API. Interact with the docs and other entities in your database instance, like in the .NET C# client.
+Every *GetDocumentStore()* call creates a brand new database, named after the method that called it plus a counter, for example *TestBasicContractor_1*. The counter is shared by the whole test run, so the number keeps growing from test to test (*TestBasicContractor_1*, *TestBasicContractor_2*, *OtherTest_3*). If you call *GetDocumentStore()* from a helper method, the database is named after the helper instead.
 
-#### Step 3: Writing your test
+Disposing the store deletes its database, even when the test fails, so to look at the data in Studio, pause the test before the store is disposed (see [Debugging the database](#4-debugging-the-database)).
+
+Now, you can write new tests or replace mocks in existing tests with real database instances. Your [document store](https://docs.ravendb.net/client-api/creating-document-store) *IDocumentStore* is available by calling the GetDocumentStore() method. It's the one from *RavenDB.Client* NuGet package, our .NET database client with a powerful API. Interact with the docs and other entities in your database instance, like in the .NET C# client.
+
+#### Writing your test
 
 ```csharp
+using Raven.TestDriver;
+using Xunit;
+
 public class BreweryTest : RavenTestDriver
 {
     [Fact]
@@ -168,21 +224,21 @@ public class BreweryTest : RavenTestDriver
                 });
                 session.SaveChanges();
             }
-
-            // the rest of your test 
         }
-
     }
 }
 ```
 
 ### 4. Debugging the database
 
-In some cases, you might want to check what's under the hood, working with the database. We've provided a *WaitForUserToContinueTheTest(store)* method, that freezes the test and opens-up the Raven Studio UI in the background, which lets you investigate the issues and influence the databases/server state in the meantime. It works only when the debugger is attached, so you don't have to add and remove the method call every time you want to run the code after debugging.
+In some cases, you might want to check what's under the hood as the database works. We've provided a *WaitForUserToContinueTheTest(store)* method, that freezes the test and opens up the Raven Studio UI in the background, which lets you investigate the issues and influence the databases/server state in the meantime. It works only when the debugger is attached, so you don't have to add and remove the method call every time you want to run the code after debugging.
 
-#### Step 4: Using 'wait for user to continue the test'
+#### Using 'wait for user to continue the test'
 
 ```csharp
+using Raven.TestDriver;
+using Xunit;
+
 public class BreweryTest : RavenTestDriver
 {
     [Fact]
@@ -205,34 +261,40 @@ public class BreweryTest : RavenTestDriver
             using (var session = store.OpenSession())
             {
                 // Do something else if needed
-            } 
+            }
 
             // Assert
         }
     }
 }
-
 ```
 
 The studio pops out in the browser:
-<Image img={require("./assets/net-test-driver1.webp")} alt="RavenDB Studio opened during test debugging" />
 
-After you're done reviewing your data in a database, click *Continue test* button located on the bottom UI bar, to continue the execution of a test.
+<Image img={require("./assets/net-test-driver1.webp")} alt="RavenDB Studio opened during a paused test, showing the TestBasicContractor_1 database with the contractors/1-A document and the Continue test button in the bottom bar" />
+
+After you're done reviewing your data in a database, click *Continue test* button located on the bottom UI bar, to continue the execution of a test. The button writes a `Debug/Done` document, which the driver waits for and then deletes.
+
+The browser is launched by the overridable *OpenBrowser(url)* method, so override it if you want a different browser, or none at all on a machine with no desktop session. The wait itself has no timeout, so if nothing opens Studio, the test waits until someone creates `Debug/Done` by hand.
 
 ### 5. Address indexing delays if needed
 
-RavenDB works on indexing in the background. You can find more about it in the RavenDB docs on [indexing process](/7.2/studio/database/indexes/indexes-overview#indexing-process) and [stale indexes](/7.2/indexes/stale-indexes).
-Usually, the delay from indexing is so small that it can be ignored. But it's crucial during the tests.
+RavenDB works on indexing in the background. You can find more about it in the RavenDB docs on [indexing process](https://docs.ravendb.net/studio/database/indexes/indexes-overview#2-indexing-process) and [stale indexes](https://docs.ravendb.net/indexes/stale-indexes). Usually, the delay from indexing is so small that it can be ignored. But it's crucial during the tests.
 
 In real life, programmers should know about this delay and how it can affect results. But here, unlike in real life, we use *WaitForIndexing()* to ensure our tests won't fail to interact with index which did not process the documents yet. We need to wait for indexes to finish to avoid test failures. Even single or couple of documents can cause a false-negative test result.
 
-In the example below, we're going a little bit further. We define the test driver that creates *BreweryCustomersByShippingAddressLocation* [spatial index](/7.2/indexes/indexing-spatial-data) (which can be [queried](/7.2/indexes/querying/spatial) later on) before every test using *SetupDatabase()* override. In the test we'll insert the data, and then we'll instruct the driver to wait for index to finish the processing.
+In the example below, we're going a little bit further. We define the test driver that creates the *BreweryCustomers/ByShippingAddressLocation* [spatial index](https://docs.ravendb.net/indexes/indexing-spatial-data) (which can be [queried](https://docs.ravendb.net/indexes/querying/spatial) later on) before every test using *SetupDatabase()* override. In the test we'll insert the data, and then we'll instruct the driver to wait for index to finish the processing.
 
-#### Step 5: Instructing driver to wait for index to process the new data
+#### Instructing driver to wait for index to process the new data
 
 ```csharp
+using System.Linq;
+using Raven.Client.Documents;
+using Raven.Client.Documents.Indexes;
+using Raven.TestDriver;
+using Xunit;
 
-public class Customer 
+public class Customer
 {
     public string Name { get; set; }
     public Location ShippedTo { get; set; }
@@ -245,9 +307,9 @@ public class Location
     public double Lng { get; set; }
 }
 
-public class BreweryCustomers_ByShippingAddressLocation : AbstractIndexCreationTask<Customer> 
+public class BreweryCustomers_ByShippingAddressLocation : AbstractIndexCreationTask<Customer>
 {
-    public BreweryCustomers_ByShippingAddressLocation() 
+    public BreweryCustomers_ByShippingAddressLocation()
     {
         Map = customers => from c in customers
                            select new
@@ -258,7 +320,7 @@ public class BreweryCustomers_ByShippingAddressLocation : AbstractIndexCreationT
     }
 }
 
-class AdvancedBreweryTest : RavenTestDriver 
+public class AdvancedBreweryTest : RavenTestDriver
 {
     protected override void SetupDatabase(IDocumentStore documentStore)
     {
@@ -292,42 +354,58 @@ class AdvancedBreweryTest : RavenTestDriver
 
             // Let's wait for indexes to process the docs before asserting
             WaitForIndexing(store);
-        }
 
-        // your code and assert
+            // your code and assert
+        }
     }
 }
-
 ```
 
 The *WaitForIndexing(store)* method ensures that the database indexes are up-to-date before proceeding with the test. Stale indexes, which occur when queries are executed before indexing is complete, can lead to incorrect or outdated results in tests.
 
-### Registering a license
+When the indexes and data a test relies on come from *SetupDatabase()* or from a dump, you can also ask for the wait when taking the store. The driver then waits right after *SetupDatabase()* returns:
 
-The *RavenDB.TestDriver* package offers the option to register a license by providing an environmental variable called *RAVEN\_LICENSE*. While not mandatory, registering a license can unlock additional features and performance enhancements, particularly for advanced operations.
-
-Enabling a license may increase the number of cores available, resulting in significant performance boosts for tests that heavily utilize the database. Consider registering a license for optimal performance in your testing environment.
-
-**To request a developer license, which is suitable for CI/CD purposes, visit the [RavenDB license request page](https://ravendb.net/license/request/dev)**.
-
-## FAQ
-
-### Q: I'm getting this error after trying to run the test:
-
-```
-Unable to start the RavenDB Server
-Error:
-It was not possible to find any compatible framework version
-The framework 'Microsoft.AspNetCore.App', version '5.0.13' (arm64) was not found.
-  - The following frameworks were found:
-      6.0.1 at [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
-
+```csharp
+using (var store = GetDocumentStore(new GetDocumentStoreOptions
+{
+    WaitForIndexingTimeout = TimeSpan.FromSeconds(30)
+}))
+{
+    // indexes created in SetupDatabase are already non-stale here
+}
 ```
 
-### It says that dotnet framework installed on my machine isn't compatible. Why the package doesn't include dotnet included to actually run the server?
+This wait happens before your test stores anything, so it doesn't replace the *WaitForIndexing(store)* call after *SaveChanges()*.
 
-**A:** In order to maintain a lightweight package, we cannot include multiple framework versions with the server files. RavenDB typically aligns with the newest dotnet version on each release. It's the responsibility of the user to ensure they have a compatible dotnet version installed. If you encounter errors like the one above, you can obtain the necessary dotnet version from the [official dotnet website](https://dotnet.microsoft.com/en-us/download/dotnet).
+*WaitForIndexing* also accepts an explicit database name and timeout: *WaitForIndexing(store, database, timeout)*. Without a timeout it waits up to a minute, then throws a `TimeoutException`. If an index is in the error state while other indexes are still stale, the wait stops early and the exception message lists the server-side index errors. An errored index that has finished its pass counts as non-stale, though, so the wait can also return normally: if a query still comes back empty after the wait, check the index errors too.
 
-### Conclusion
+### Seeding a database from a dump
+
+Seeding a large fixture one *session.Store* at a time makes the setup slow and unreadable. Instead, export the data once and let the driver import it into every database it creates, before *SetupDatabase()* runs:
+
+```csharp
+using Raven.TestDriver;
+using Xunit;
+
+public class SeededBreweryTest : RavenTestDriver
+{
+    protected override string DatabaseDumpFilePath => "TestData/brewery.ravendbdump";
+
+    [Fact]
+    public void QueriesSeededData()
+    {
+        using (var store = GetDocumentStore())
+        {
+            // the dump is already imported here
+        }
+    }
+}
+```
+
+The path is resolved from the test process's working directory, which under `dotnet test` is the build output folder, so mark the dump file with `CopyToOutputDirectory` (for example `PreserveNewest`) in your `.csproj`.
+
+*DatabaseDumpFileStream* takes a stream instead. The driver reads that property for every database it creates, so it must hand out a stream positioned at the start each time; when a test class takes more than one store, the file path is simpler. Produce the file with [Export Database](https://docs.ravendb.net/studio/database/tasks/export-database) in Studio, or with [Smuggler](https://docs.ravendb.net/client-api/smuggler/what-is-smuggler).
+
+## Summary
 
 The *RavenDB.TestDriver* package lets you run tests against a real in-memory RavenDB instance with minimal setup. You get isolated databases per test, automatic cleanup, and the same client API you use in production, so your tests reflect actual database behavior rather than mock assumptions.

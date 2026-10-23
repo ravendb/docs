@@ -31,6 +31,7 @@ import Panel from '@site/src/components/Panel';
   * [Minimum permissions](#minimum-permissions)
   * [Permissions for automatic setup](#permissions-for-automatic-setup)
   * [Creating a dedicated CDC user](#creating-a-dedicated-cdc-user)
+  * [Check permissions with Verify tables](#check-permissions-with-verify-tables)
 
 </Admonition>
 
@@ -87,16 +88,18 @@ ALTER USER cdc_user REPLICATION;
 
 **Create and update publications:**
 
-Creating a publication requires `CREATE` on the database.  
-Adding tables to the publication requires ownership of those tables (`SUPERUSER` satisfies both requirements):
+Creating a publication requires `CREATE` on the database and ownership of the tables included in it.  
+Adding tables to an existing publication requires ownership of the publication and the tables being added  
+(`SUPERUSER` satisfies these requirements):
 
 <Tabs>
 <TabItem value="sql" label="SQL">
 ```sql
 GRANT CREATE ON DATABASE mydb TO cdc_user;
 
--- The user must also own the tables added to the publication,
--- or a database administrator must create/update the publication manually.
+-- The user must also own the tables added to the publication.
+-- To add tables to an existing publication, the user must also own the publication.
+-- Otherwise, a database administrator must create/update the publication manually.
 ```
 </TabItem>
 </Tabs>
@@ -138,8 +141,9 @@ GRANT SELECT ON TABLE order_lines TO cdc_user;
 -- If CDC Sink should create the publication automatically:
 GRANT CREATE ON DATABASE mydb TO cdc_user;
 
--- The user must also own every table added to the publication,
--- or a database administrator must create/update the publication manually.
+-- The user must also own every table added to the publication.
+-- To add tables to an existing publication, the user must also own the publication.
+-- Otherwise, a database administrator must create/update the publication manually.
 ALTER TABLE orders OWNER TO cdc_user;
 ALTER TABLE order_lines OWNER TO cdc_user;
 ```
@@ -153,5 +157,32 @@ including who can alter or drop the table and who controls table-level privilege
 For production environments, prefer having a database administrator create or update the publication manually unless table ownership transfer is acceptable.
 
 </Admonition>
+
+</Panel>
+
+<Panel heading="Check permissions with Verify tables">
+
+[**Verify tables**](../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/create-task.mdx#verify-tables) in Studio, or the [dry-run REST endpoint](../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/create-task.mdx#verify-the-configuration), connects as the CDC Sink user and runs the task's setup steps once,
+so it reports missing permissions before you save the task.
+
+Verification can fail with the following permission errors:
+
+* _"Insufficient permissions to create replication slot '&lt;name&gt;'..."_:  
+  The CDC Sink user does not have the `REPLICATION` role attribute.
+
+* _"Insufficient permissions to create publication '&lt;name&gt;'..."_:  
+  The publication does not exist, and the CDC Sink user cannot create it.  
+  Grant `CREATE` on the database and ownership of the published tables,  
+  or have a database administrator create the publication.
+
+* A PostgreSQL _permission denied_ error for a table:  
+  The CDC Sink user does not have `SELECT` on a configured table.
+
+When the publication and the slot already exist, verification does not create them,  
+so it does not check the permissions needed to create them.
+
+Verification also reports warnings about publication coverage and `REPLICA IDENTITY FULL`,  
+which point to permissions the task needs when it starts,
+see [Table verification fails or returns warnings](../../../../../server/ongoing-tasks/cdc-sink/troubleshooting.mdx#table-verification-fails-or-returns-warnings).
 
 </Panel>

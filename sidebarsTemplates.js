@@ -39,6 +39,11 @@ export default {
                             id: "tags",
                             label: "Tags",
                         },
+                        {
+                            type: "doc",
+                            id: "guide-cta-footer",
+                            label: "CTA footer",
+                        },
                     ],
                 },
                 {
@@ -101,6 +106,11 @@ export default {
                     type: "doc",
                     id: "see-also",
                     label: "See also",
+                },
+                {
+                    type: "doc",
+                    id: "video",
+                    label: "Video",
                 },
             ],
         },

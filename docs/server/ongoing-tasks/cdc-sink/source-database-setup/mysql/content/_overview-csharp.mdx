@@ -14,6 +14,7 @@ import Panel from '@site/src/components/Panel';
 * In this article:
   * [Connection string](#connection-string)
   * [Prerequisites](#prerequisites)
+  * [Table verification](#table-verification)
   * [Streaming behavior](#streaming-behavior)
   * [Task configuration](#task-configuration)
 
@@ -103,6 +104,30 @@ GRANT SELECT ON mydb.* TO 'ravendb_cdc'@'%';
 * `REPLICATION SLAVE` - required to read the binlog stream
 * `REPLICATION CLIENT` - required to query binlog status
 * `SELECT` - required for the initial full-table load
+
+</Panel>
+
+<Panel heading="Table verification">
+
+**Verify tables** in Studio, or the [dry-run REST endpoint](../../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/create-task.mdx#verify-the-configuration), runs the task's MySQL/MariaDB setup and initial-load steps once  
+against the source database before you save the task,
+see [Verify tables](../../../../../../server/ongoing-tasks/cdc-sink/manage-cdc-sink-tasks/create-task.mdx#verify-tables).
+
+For MySQL/MariaDB, verification is read-only.  
+It creates nothing on the source database, so there is nothing to clean up afterwards.
+
+Verification checks that:
+
+* `binlog_format` is `ROW`
+* `binlog_row_image` is `FULL`
+* `gtid_mode` is `ON` (MySQL only)
+* Each configured table and its mapped columns exist, and the user can read the table  
+  (it reads at most one row from each)
+
+Verification does not open the binlog stream, so a successful verification does **not** confirm that:
+
+* Binary logging is enabled (`log-bin`)
+* The user has the `REPLICATION SLAVE` and `REPLICATION CLIENT` privileges
 
 </Panel>
 

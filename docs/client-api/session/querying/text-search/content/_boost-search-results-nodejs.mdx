@@ -2,6 +2,8 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
@@ -9,9 +11,9 @@ import CodeBlock from '@theme/CodeBlock';
   a basic score is calculated for each document in the results by the underlying engine.
 
 * Providing a boost value to some fields allows you to prioritize the resulting documents.  
-  The boost value is integrated with the basic score, making the document rank higher.
+  The boost value is integrated with the basic score, making the document rank higher.  
 
-* Boosting can be achieved in the following ways:
+* Boosting can be achieved in the following ways:  
 
     * **At query time**:  
       Apply a boost factor to searched terms at query time - as described in this article.
@@ -25,20 +27,22 @@ import CodeBlock from '@theme/CodeBlock';
 * The calculated score details of the results can be retrieved if needed.  
   Learn more here: [get resulting score](../../../../../querying/sorting-query-results/sort-query-results.mdx#get-resulting-score)  
 
-* In this page:
-
-  * [Boost results - when making a full-text search](../../../../../client-api/session/querying/text-search/boost-search-results.mdx#boost-results---when-making-a-full-text-search)
-  * [Boost results - when querying with where clause](../../../../../client-api/session/querying/text-search/boost-search-results.mdx#boost-results---when-querying-with-where-clause)  
+* In this article:
+  * [Boost results - when making a full-text search](#boost-results-when-making-a-full-text-search)
+  * [Boost results - when querying with where clause](#boost-results-when-querying-with-where-clause)
+    * [Boost a whereExists() condition with Corax](#boost-a-whereexists-condition-with-corax)
 
 </Admonition>
-## Boost results - when making a full-text search
 
-<Admonition type="note" title="">
+<Panel heading="Boost results - when making a full-text search">
+
+To apply boosting while running a full-text search, use the 
+`boost()` method to prioritize the preceding `search()` results.  
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="js">
-{`const employees = await session
+```js
+const employees = await session
      // Make a dynamic full-text search Query on 'Employees' collection
     .query({ collection: "Employees"})
      // This search predicate will use the default boost value of 1
@@ -56,31 +60,27 @@ import CodeBlock from '@theme/CodeBlock';
 //   than those that contain 'English'.
 //
 // * Unless configured otherwise, the resulting documents will be ordered by their score.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Employees" where
+```sql
+from "Employees" where
 search(Notes, "English") or boost(search(Notes, "Italian"), 10)
-{"p0":"English","p1":"Italian"}
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+</Panel>
 
+<Panel heading="Boost results - when querying with where clause">
 
-
-## Boost results - when querying with where clause
-
-<Admonition type="note" title="">
+`boost()` can be used to give different priorities to the results 
+returned by different `where` clauses.  
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="js">
-{`const companies = await session
+```js
+const companies = await session
      // Make a dynamic DocumentQuery on 'Companies' collection
     .query({ collection: "Companies"})
      // Define a 'where' condition
@@ -103,22 +103,31 @@ search(Notes, "English") or boost(search(Notes, "Italian"), 10)
 //   Matching documents that start-with 'O' will get the LOWEST scores. 
 //
 // * Unless configured otherwise, the resulting documents will be ordered by their score.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Companies" where
+```sql
+from "Companies" where
 boost(startsWith(Name, "O"), 10) or
 boost(startsWith(Name, "P"), 50) or
 boost(endsWith(Name, "OP"), 90)
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-</Admonition>
+<ContentFrame>
+    
+### Boost a `whereExists()` condition with Corax
+    
+In RavenDB 7.2.6 and later, when using the Corax search engine, a boosted `whereExists()` condition (`exists()` in RQL)
+contributes `1` multiplied by the query boost, rather than a relevance score calculated from the field's values.
+    
+For example, `.whereExists("Fax").boost(3)` (`boost(exists(Fax), 3)` in RQL) contributes `3`
+once per matching document, before any index-entry boost is applied.
+    
+The `whereStartsWith()` and `whereEndsWith()` conditions in the example above use relevance-based scoring.      
+Learn more in [Corax: Scoring](../../../../../indexes/search-engine/corax.mdx#scoring).
 
+</ContentFrame>
 
-
-
+</Panel>

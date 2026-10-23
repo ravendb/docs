@@ -67,10 +67,12 @@ versions.json                # Active version list
 - `tailwind-config` — registers Tailwind CSS 4 via PostCSS.
 - `recent-guides-plugin` — indexes `guides/*.mdx`, exposes sorted list + tag counts.
 - `remark-panel-headings` — runs as `beforeDefaultRemarkPlugins` on every content instance and hoists `<Panel heading="...">` into a real Markdown heading node, so panel headings reach the compile-time TOC (Docusaurus' `remark/toc` only sees Markdown headings, never JSX props). It also pre-sets the legacy anchor id, which `remark/headings` honours, so existing panel anchors stay valid. Heading ids are a build-time concern: `Panel` just renders the hoisted heading it receives as its first child.
+- `remark-video-embeds`: `createVideoEmbedChecks()` in `docusaurus.config.ts` returns a remark plugin and a site plugin that share what the compile saw. The remark plugin is registered next to `remark-panel-headings`, so it sees every MDX file, including the language partials that the built HTML leaves out, and fails the compile on a `<Video>` without a YouTube `url` and on a hand-written YouTube iframe (the CSP blocks those in production). Under `DOCUSAURUS_STRICT=true`, the site plugin's `postBuild` asks YouTube's oEmbed endpoint whether each of those videos still plays in an embed and fails on one that does not; an oEmbed timeout, 5xx or rate limit only warns, so a YouTube outage cannot break CI. The request waits for `postBuild` because it times out during compilation.
 - `versioned-seo-plugin` — two responsibilities, both running during `postBuild` on the same walk of versioned HTML files:
   - rewrites `<link rel="canonical">` in built HTML to the current-version URL, resolving redirect chains from `scripts/redirects.json`. Legacy-version files get a self-canonical. Verifies every rewritten canonical against the Docusaurus route universe.
   - asserts every legacy-version page carries `<meta name="robots" content="noindex,...">`. The injection itself is delegated to Docusaurus' native per-version `noIndex` config (see `docusaurus.config.ts`); the plugin only audits.
   - Both checks fail the build under `DOCUSAURUS_STRICT_SEO=true`. Registered **after** all `content-docs` instances so HTML is already emitted when it runs.
+- `agent-hint-plugin`: puts a hidden pointer to the hosted agent skill at the top of every page's `<body>`. See "Hosted Agent Skill" below.
 
 Noindex for legacy versions is set declaratively in `docusaurus.config.ts` (`versions[v].noIndex: true`); template pages are marked `unlisted: true` in frontmatter. No custom plugin writes the meta tag — the versioned-seo-plugin only verifies it landed.
 
@@ -82,6 +84,13 @@ Noindex for legacy versions is set declaratively in `docusaurus.config.ts` (`ver
 prefix. `SKILL.md` links to `references/` with relative paths, so moving or flattening the tree
 breaks navigation, and `md` must stay in `staticAssetRegex` in `scripts/handle_redirects.js` or
 these URLs 301 to a versioned path that does not exist.
+
+Every page points agents at the skill through `agent-hint-plugin`: a pre-body blockquote hidden
+from people (`sr-only` styling, `aria-hidden`, `tabindex="-1"` on its link) that survives the
+HTML-to-Markdown conversion agents run on fetched pages. Its text is the `description` from
+`SKILL.md`'s frontmatter, read at build time, so editing that description changes what agents
+read on every page, and the build fails if it is missing. Keep the hint in static HTML: anything
+rendered client-side never reaches an agent, which is also why `LanguageContent` shows agents C# only.
 
 ---
 
@@ -193,6 +202,7 @@ Each folder contains `_category_.json`:
 - Tags defined in `guides/tags.yml` (~40 predefined tags — do not invent new ones without adding there first).
 - Guide-specific frontmatter: `tags`, `description`, `icon`, `image`, `published_at` (ISO date), `external_url`, `proficiency_level`, `author`.
 - Indexed and sorted by `src/plugins/recent-guides-plugin.ts`.
+- Every hosted guide ends with `GuideCtaFooter` (Discord, developer license, free Cloud, more guides), rendered by `src/theme/DocItem/Footer`. Don't hand-write those calls to action in guide content; end on the guide's own takeaways.
 
 ### Guides Frontmatter Example
 ```yaml

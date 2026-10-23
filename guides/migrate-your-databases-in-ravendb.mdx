@@ -177,5 +177,3 @@ Again, you can read the [External Replication task documentation](/7.2/studio/da
 - If subscriptions are running against the source, cut over in order. Drain the source, point the subscriptions on the target at Latest Document, let replication catch up, then switch the application.
 
 Now that your data is in its new home, it is worth setting up a safety net for it. Have a look at our [guide on backups in RavenDB](./backups-in-ravendb) to get scheduled backups running on the new instance, or at [on-demand production database replication](./unlocking-the-benefits-of-on-demand-production-database-replication) if what you actually want is a copy of production data to test against.
-
-Interested in RavenDB? Grab the [developer license dedicated for testing](https://ravendb.net/dev), or get a [free cloud database](https://ravendb.net/cloud). If you have questions about this feature, or want to hang out and talk with the RavenDB team, join our [RavenDB Discord community](https://discord.com/invite/ravendb).

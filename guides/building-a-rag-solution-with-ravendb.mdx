@@ -1,0 +1,545 @@
+---
+title: "Building a RAG solution with RavenDB"
+tags: [ai, querying, architecture]
+icon: "ai"
+description: "Build all six RAG steps inside RavenDB: chunk and embed with a GenAI context prefix, retrieve with RQL vector search, and answer with a scoped AI agent."
+published_at: 2026-10-22
+see_also:
+  - title: "GenAI Integration Overview"
+    link: "ai-integration/gen-ai-integration/overview"
+    source: "docs"
+    path: "AI Integration > GenAI Integration"
+  - title: "Embeddings Generation Task"
+    link: "ai-integration/generating-embeddings/embeddings-generation-task"
+    source: "docs"
+    path: "AI Integration > Generating Embeddings"
+  - title: "AI Agents Overview"
+    link: "ai-integration/ai-agents/overview"
+    source: "docs"
+    path: "AI Integration > AI Agents"
+author: "Paweł Lachowski"
+proficiency_level: "Expert"
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+Almost every company has some kind of knowledge base. Well-organized or not, it holds the business knowledge that keeps the company running: procedures, policies, runbooks, postmortems, supplier agreements. These documents are often long and rarely read end to end. Most of the time, someone opens one looking for a single answer buried somewhere in the middle.
+
+Finding that answer is the hard part. Keyword search only works if you guess the words the author used: look for "hotel allowance" and you may never reach the paragraph headed "Accommodation and meals", which talks about nightly caps. Browsing works only as well as the folders were organized. And a general-purpose chatbot can't help either, because it has never seen your documents and will often answer anyway.
+
+There are a few ways to close that gap. You can tag and restructure the documents so they're easier to browse, or switch to semantic search, which matches on meaning instead of exact words. Or you can go a step further and let a language model answer the question, using your own documents as its source. That last approach is called Retrieval-Augmented Generation, or RAG.
+
+## What is RAG?
+
+Retrieval-Augmented Generation (RAG) is a pattern where you find the records in your own data that bear on a question and pass them to a language model with it, so the answer comes from your data, not from the model's training.
+
+A language model doesn't know your data, and whatever it does know stopped at its training cutoff. RAG fixes both: the answer reflects what your data says today, and because you chose the records, you can point to where it came from.
+
+It takes six steps. Three run ahead of time, when a document arrives or changes:
+
+* Chunk the source into pieces small enough to embed
+* Embed each piece into a vector
+* Store the vectors where they can be searched
+
+Three run per question:
+
+* Retrieve the nearest vectors
+* Augment a prompt with what they point to
+* Generate an answer from it
+
+The steps are simple to list. Building them is where most RAG projects slow down.
+
+### Too many moving parts
+
+The usual recipe needs a database for your records, a job that turns each record into a searchable representation, a separate vector store for the embeddings, an embedding service, another job to keep everything in sync, and application code to stitch them together at query time. That's six moving parts before anybody asks a question.
+
+### Two copies that drift apart
+
+Once the vectors live in a separate store, every new, edited or deleted document has to reach both places. When the sync job lags or fails, search returns passages that no longer exist or misses ones that do, and nothing tells you which.
+
+### Deciding what to embed
+
+To see why this one is tricky, it helps to know what an embedding is. An embedding model reads a piece of text and turns it into a vector: a list of numbers that captures what the text is about. Texts about similar things get vectors that sit close together, so searching means turning the question into a vector as well and looking for its nearest neighbors. But each vector describes one piece of text as a whole, and that's why RAG starts by cutting documents into chunks.
+
+Think of a library card catalog. If the only card for the company handbook says "Company handbook", it will never lead you to the page on travel expenses. If the library writes a card for every sentence, you get thousands of cards, and the one you pull out ("Claims are submitted within thirty days") doesn't tell you which policy it belongs to. What actually helps is the index at the back of a good book: one entry per topic, each pointing to the right page.
+
+Embeddings have the same two failure modes. Embed a whole handbook as one vector, and that vector becomes a blurry average of everything inside: travel, approvals, mileage, card rules. A question about any one of them finds it only weakly. Cut the handbook into fixed-size pieces instead, and the cuts fall wherever the character count says, often mid-thought, and each piece loses the heading and title that gave it meaning.
+
+Most pipelines handle this by picking a chunk size and hoping for the best. This guide cuts each document along its own structure instead, at paragraph boundaries, and gives every piece a line of context: the document's title and one sentence a model wrote about the whole document. A piece about mileage claims then still says that it belongs to the travel policy.
+
+RavenDB handles the first two problems by running every step inside the database that already holds your documents, so there's no second store and no pipeline to keep in sync. The third is still a decision you make, but in RavenDB you make it in a script and a prompt, not in a separate service. Let's look at the pieces.
+
+## What we're building
+
+Let's say we work at a freight company. Thirteen documents are already sitting in the database, one per file: handbooks, policies, runbooks, and a couple of supplier agreements. Each runs to about a thousand words, and each covers seven to nine unrelated things under `##` headings.
+
+Could we just embed them as they are? We could. A thousand words fits inside an embedding model's input with room to spare, so nothing stops us. But think about what that vector would mean. One document covers meal limits, approval limits, card rules and mileage claims all at once, so its vector points at all four and at none of them in particular. Search for any one of those and the document turns up weakly, next to everything else that turns up weakly.
+
+That's the problem this guide solves, and it's worth seeing what we start from. Each file arrives as one document, with its title, department and revision date lifted out of the frontmatter, its body kept exactly as written, and no vectors anywhere:
+
+```json
+{
+    "Title": "Packaging Supply Agreement",
+    "Department": "Procurement",
+    "Revised": "2026-04-08T00:00:00.0000000",
+    "Markdown": "## Parties and term\n\nThis agreement is between ...",
+    "@metadata": { "@collection": "HandbookDocuments" }
+}
+```
+
+The documents are written for this guide. Every policy, figure and deadline in them is invented, and they describe no real organization, so please don't quote them at your own supplier.
+
+Here's where we're heading. Ask it something the way you'd actually say it out loud:
+
+<Image img={require("./assets/rag1.webp")} alt="Handbook assistant sample answering a question about the nightly hotel budget, citing the Travel and Expense Policy" />
+
+Nobody handed the agent that text. It picked a search term, searched, read the document that looked relevant, and answered from what it read.
+
+### The six steps
+
+To get there, we'll go through the six RAG steps in order, one section each. For every step we'll look at what it does, why it matters for our documents, and which RavenDB feature does the work:
+
+| RAG step | What happens to our documents | RavenDB feature |
+| :---- | :---- | :---- |
+| 1. Chunk | Each document is cut at paragraph boundaries, and a model writes one sentence about the whole document | Embeddings generation task, GenAI task |
+| 2. Embed | Each chunk is embedded with the document's title and that sentence in front of it | Embeddings generation task |
+| 3. Store | The vectors live next to the documents and are regenerated when they change | The same database |
+| 4. Retrieve | A query finds the documents closest in meaning to a question | Vector search in RQL |
+| 5. Augment | The model is handed the summaries and full text the search found | AI agent query tools |
+| 6. Generate | The model answers from what it read, and names its sources | AI agent |
+
+The first three steps run as ongoing tasks that watch the collection, and they pass work along through the documents themselves. The GenAI task writes a summary onto a document, and the embeddings task sees the document change and embeds it, with that summary in front of every chunk. Nothing in your application arranges that handoff, because the document is the handoff.
+
+We'll do the configuration in RavenDB Studio, and after each step we'll also show the code that does the same thing.
+
+<Admonition type="info" title="What you need to follow along">
+- RavenDB 7.2.3 or later, with a license that includes the AI features. The free [Developer license](https://ravendb.net/license/request/dev) does.
+- Three connection strings to AI models: a chat model for the summaries in Step 1, an embedding model for Step 2, and a chat model for the agent in Steps 5 and 6. A hosted provider with an API key, or a local endpoint, either is fine.
+- A collection of long-ish documents. Ours are markdown with `##` headings.
+- Or skip the setup: the [handbook-rag sample](https://github.com/poissoncorp/handbook-rag) runs everything in this guide with one `docker compose up`.
+</Admonition>
+
+## Step 1: Chunk
+
+Chunking is where a document stops being one thing. We want each handbook cut into pieces that each cover a single topic, so every piece can get a vector of its own, and a question about meal limits lands on the piece about meals rather than on the whole travel policy.
+
+As we saw earlier, how you cut decides what search can ever find. One vector per document is a blurry average of everything in it, and cuts made by character count fall mid-thought and lose the context that gave each piece its meaning.
+
+### The usual way, and a better one
+
+Most pipelines run the raw text through a splitter: every few hundred tokens, or at every paragraph break. RavenDB can do that for you as part of embedding, and it understands markdown, so it cuts at paragraph boundaries and never through the middle of one. That solves the first half of the problem: each piece is about one thing. It doesn't solve the second half. A piece cut out of the travel policy no longer says it's from the travel policy, and "Claims are submitted within thirty days" could have come from anywhere.
+
+So each piece gets a line of context in front of it before it's embedded: the document's title, and one sentence about the whole document, written by a model. The splitting itself happens in Step 2, in one line of script. The sentence is written here.
+
+Why not go further and have a model rewrite each document as a searchable summary, and embed that instead of the text? Because a summary is a second, lossy copy. Whatever it leaves out, no search can find, and the answer someone needs is in the text itself. So we embed the text, and use the model only to write the context.
+
+Running a model over every document normally turns into a small service of its own: something to call the model, something to retry when the call fails, something to remember which documents have already been done. In RavenDB it's a task we set up once and then stop thinking about.
+
+### RavenDB feature: GenAI tasks
+
+A GenAI task watches a collection and runs a model over its documents. It's four pieces, and the model is the only one you don't write: a context script that decides what to send, a prompt that says what to do with it, a JSON schema that shapes the answer, and an update script that decides what to do with the answer. Classification, extraction, translation and summarization are the same task with different contents in those four boxes.
+
+For us, the task is simple to describe: one sentence per document, saying what the document is and who it applies to. Thirteen documents, thirteen calls. That's the whole cost of this step.
+
+### The connection string
+
+Every AI task reaches its model through a connection string, so let's make one. Point it at a generation model: OpenAI, Azure OpenAI, or a local Ollama if you'd rather nothing left the building. One sentence per document, written once and again only when the document changes, doesn't need an expensive model, so we use a cheaper one here and give the agent a connection string of its own later.
+
+<Image img={require("./assets/rag2.webp")} alt="AI Hub Edit connection string dialog for the handbook-summaries chat connection string" />
+
+Here's the code that does the same thing:
+
+```csharp
+await store.Maintenance.SendAsync(new PutConnectionStringOperation<AiConnectionString>(
+    new AiConnectionString
+    {
+        Name = "handbook-summaries",
+        Identifier = "handbook-summaries",
+        ModelType = AiModelType.Chat,
+        OpenAiSettings = new OpenAiSettings(apiKey, "https://api.openai.com/v1", "gpt-6-luna")
+    }));
+```
+
+Now for the task itself. Let's go back to the AI Hub, open AI Tasks, and add a new GenAI task.
+
+That opens a wizard, one stage per piece, and this is the nice part: every stage has a playground. We can run it against a real document, see exactly what it would do, and nothing is saved until we say so. We'll use it at each of the four stages below.
+
+### The context script
+
+This is where we decide what leaves the database: the model gets the fields we name, not the whole document. Ours is about as small as a context script gets, the title and the markdown and nothing else:
+
+```js
+ai.genContext({ Title: this.Title, Content: this.Markdown });
+```
+
+One call to `ai.genContext` means one call to the model and one answer back. It could just as easily loop, handing over a section or an array element at a time, and there are jobs where that's the right shape: a document with twenty comments becomes twenty small questions rather than one awkward one. Here it isn't: a sentence about the whole document needs the whole document.
+
+One thing to notice before we move on: the script reads `Markdown` and `Title`, and never `Summary`. That will matter by the end of this step.
+
+Let's try it. Pick a document, hit Test Context, and the playground shows exactly what would be sent. Being wrong here costs nothing.
+
+<Image img={require("./assets/rag3.webp")} alt="GenAI task wizard Generate context objects stage, with the context script and its test result" />
+
+### The prompt and the schema
+
+The prompt says what to do with the context. Ours asks for one sentence:
+
+```
+Write one sentence of at most 25 words that says what this document is, what it covers
+and who it applies to. Do not list individual rules, amounts or deadlines.
+```
+
+One sentence, and a short one, on purpose. In Step 2 that sentence goes in front of every chunk, and the prefix shares the chunk's token budget, so a long summary would crowd out the text it's meant to describe. It shouldn't list rules either: the rules are in the chunks. The sentence only has to say where they come from.
+
+We don't want prose back, we want an object we can store. You can write a formal JSON schema, but RavenDB will also build one for us from a sample object, so let's write what we want and describe the field in words:
+
+```json
+{ "Summary": "One sentence of at most 25 words: what the document is and who it applies to." }
+```
+
+Here's where the second playground earns its place. It sends our context to the model and shows what comes back, so we can read a real sentence before a single document is touched.
+
+<Image img={require("./assets/rag4.webp")} alt="GenAI task wizard Define prompt and JSON schema stage, with the model test result" />
+
+### The update script
+
+Last piece: what happens to the answer. The script gets `$output`, the model's answer, `$input`, the context that produced it, and `this`, the document itself. It's JavaScript, so it could write several properties, create other documents, or decide to do nothing at all. We asked for one sentence, so there's one thing to do with it:
+
+```js
+this.Summary = $output.Summary;
+```
+
+That's the whole script. It's still worth running the playground on it, because an update script is JavaScript with write access to the documents it processes, and yours won't always be one line.
+
+### Saving it, and watching it work
+
+Save, and the task starts. Here's the same thing from code:
+
+```csharp
+var config = new GenAiConfiguration
+{
+    Name = "handbook-summaries",
+    Identifier = "handbook-summaries",
+    ConnectionStringName = "handbook-summaries",
+    Collection = "HandbookDocuments",
+    GenAiTransformation = new GenAiTransformation { Script = SummaryContext },
+    Prompt = SummaryPrompt,
+    SampleObject = SummarySample,
+    UpdateScript = "this.Summary = $output.Summary;"
+};
+
+await store.Maintenance.SendAsync(new AddGenAiOperation(config));
+```
+
+Now don't watch the task, watch the documents. A `Summary` property appears on each one as the model works through the corpus, and it's the first thing in this guide that our own code didn't put there.
+
+<Image img={require("./assets/rag5.webp")} alt="HandbookDocuments document in Studio with the generated Summary property and GenAI hash metadata" />
+
+### Wait, won't this loop?
+
+Fair question. We just wrote to the collection the task is watching, and it's still watching.
+
+It doesn't loop. RavenDB hashes the prompt, the schema, the update script and the generated context into each document's metadata, so a document never goes to the model twice for the same work. Our context script only ever reads `Markdown` and `Title`, so writing the summary back leaves that hashed context untouched, and the document doesn't go round again. The same property is what lets a second task watch this collection and pick up what the first one wrote, which is exactly what Step 2 does.
+
+Change the prompt, though, and every hash stops matching, so the whole corpus gets summarized afresh. That's the behavior we want, and at thirteen documents it's cheap enough to tune against. There's a good deal more a GenAI task can do, and [the documentation](https://docs.ravendb.net/ai-integration/gen-ai-integration/overview) walks through it.
+
+## Step 2: Embed
+
+Now each document has to become something a database can compare by meaning. That's what an embedding model does: it turns a piece of text into a vector, and texts about similar things get vectors that sit close together. It's what will later let "what can we claim back if a supplier lets us down" match an agreement that talks about liability and remedies.
+
+Two things have to happen to a document before it's worth embedding. It has to be cut into pieces, and each piece needs to remember where it came from.
+
+### RavenDB feature: Embeddings generation tasks
+
+This task watches a collection, reads the content we point it at, splits it into chunks, sends each chunk to an embedding provider, and writes the vectors into dedicated collections where queries can reach them. Then it keeps doing it: edit a document and its vectors are regenerated behind you, with nothing in your code noticing the change.
+
+What you configure is small. An identifier, which is the name your queries will use to refer to the task. A connection string. The collection to watch, and either the properties to embed or a script that builds the text. A chunking method and a maximum number of tokens per chunk, 512 by default. We'll go through them in order.
+
+### The second connection string
+
+The task needs somewhere to send the text, and it isn't the model we used in Step 1. Back to the AI Hub for another connection string, this time with the model type set to embeddings:
+
+```csharp
+await store.Maintenance.SendAsync(new PutConnectionStringOperation<AiConnectionString>(
+    new AiConnectionString
+    {
+        Name = "handbook-embeddings",
+        Identifier = "handbook-embeddings",
+        ModelType = AiModelType.TextEmbeddings,
+        OpenAiSettings = new OpenAiSettings(apiKey, "https://api.openai.com/v1", "text-embedding-3-small")
+    }));
+```
+
+Keep the two roles apart on purpose. You'll swap generation models often and it costs nothing, while swapping an embedding model means re-embedding the whole corpus, since vectors from two different models can't be compared.
+
+### The source script
+
+Both of the things a document needs live in one short script:
+
+```js
+if (this.Summary) {
+    embeddings.generate({
+        Markdown: markdown.splitParagraphs(this.Markdown, 512)
+            .withContextPrefix(this.Title + '. ' + this.Summary)
+    });
+}
+```
+
+Take the splitting first. A thousand-word document is too much for one vector to mean anything useful, so it has to be cut up. We don't write a splitter for that. RavenDB can split at word boundaries, line breaks or paragraph breaks, with markdown-aware versions of the last two, and it estimates token counts rather than running a tokenizer. Our documents are markdown, so we use `markdown.splitParagraphs`, which gathers whole paragraphs into chunks of up to 512 tokens and never cuts through the middle of one. On our corpus that works out at four chunks per document, 52 in all. There's no overlap between chunks: the context a neighboring chunk would have lent is carried by the prefix instead.
+
+### Making it better: context prefixes
+
+Chunk size can't solve the second problem, which is that a piece taken out of a document stops saying which document it came from. "Returns are accepted within 48 hours of delivery" will match a returns question from anywhere in the corpus, including both supplier agreements, which say different things.
+
+From 7.2.3, `withContextPrefix` fixes that. It puts text of your choosing on the front of every chunk before it reaches the model, and RavenDB adds the separating space. Ours is the document's title and the one-sentence summary from Step 1, so a chunk about rejected deliveries starts by saying it comes from the packaging supply agreement and what that agreement covers. The prefix counts against the chunk's token budget, which is why Step 1 asked for one short sentence and not a paragraph. It's also the reason the task takes a script rather than a field path: a path can carry a prefix too, but only a constant one, the same for every document, which is no help at all here.
+
+Does it help? On 28 test questions, the right document came first 27 times with the title and the sentence in front, 26 times with the title alone, and 24 times with no prefix. The [Additional context in embedded chunks](./additional-context-in-embedded-chunks) guide measures the same idea on a larger corpus.
+
+### Two details in the script
+
+`Markdown` is the name the vectors are stored under, and the name Step 4's query will ask for. It's named after the property its chunks come from, so a query that says `embedding.text(Markdown, ...)` reads as what it is: a search over the document's text.
+
+And that `if` is not decoration. Both tasks watch the same collection, so this one meets a document the moment it's loaded, before Step 1 has written its summary. Without the `if`, every document would be embedded twice: once without context, and again when the summary arrives. With it, the first pass emits nothing, and writing the summary brings the document back with everything it needs.
+
+### The task
+
+In the Studio it's AI Hub > AI Tasks again, this time adding an Embeddings Generation task, with the source set to Script rather than Paths.
+
+<Image img={require("./assets/rag6.webp")} alt="Edit Embeddings Generation task in Studio with a script source using withContextPrefix" />
+
+```csharp
+var config = new EmbeddingsGenerationConfiguration
+{
+    Name = "handbook-embeddings",
+    Identifier = "handbook-embeddings",
+    ConnectionStringName = "handbook-embeddings",
+    Collection = "HandbookDocuments",
+    EmbeddingsTransformation = new EmbeddingsTransformation { Script = EmbeddingsScript },
+    ChunkingOptionsForQuerying = new ChunkingOptions(), // required; the defaults suit short questions
+    StoreChunkText = true                               // keeps each chunk's text next to its vector
+};
+
+await store.Maintenance.SendAsync(new AddEmbeddingsGenerationOperation(config));
+```
+
+Two settings there are worth a sentence each. `ChunkingOptionsForQuerying` says how a search term is chunked before it's embedded: it looks optional, but the task won't save without it, and the defaults suit short questions. `StoreChunkText` keeps each chunk's text next to its vector, so you can see exactly what was embedded, prefix included. Everything else stays at its default, and [the embeddings generation documentation](https://docs.ravendb.net/ai-integration/generating-embeddings/embeddings-generation-task) covers those settings.
+
+<Image img={require("./assets/rag7.webp")} alt="Travel and Expense Policy chunks in the sample app, each with its context prefix" />
+
+## Step 3: Store
+
+Vectors are only useful where a query can reach them, and only while they still match the documents they came from. In most stacks this is where the second copy appears: a separate vector store, and a sync job that has to carry every new, edited and deleted document across. That's the drift problem from the start of this guide.
+
+### RavenDB feature: vectors live with the documents
+
+In RavenDB, this step is mostly something you don't do. There's no store to set up, because the embeddings task from Step 2 writes the vectors into collections of its own in the same database, and keeps them there. Edit a handbook and the chain runs again: the GenAI task writes a new summary, the embeddings task sees the document change and regenerates its vectors, and the old ones are replaced. Delete a document and there's nothing left over to clean up somewhere else.
+
+That's easy to claim, so here's what we measured on our thirteen documents:
+
+| What happens | What RavenDB does | How long, on our 13 documents |
+| :---- | :---- | :---- |
+| First start, empty database | Summarizes and embeds every document | 15 to 23 s |
+| The application restarts | Nothing, because every hash still matches | 0 of 13 documents reprocessed |
+| A rule is edited in Studio | A new summary and new vectors for that document only | About 3 s, and the agent quotes the new value |
+| A document is deleted | Its vectors go with it | About 1 s |
+| The API key was wrong, then fixed | The tasks retry and catch up on their own | 22 s after the fix |
+
+Generated embeddings are also cached in `@embeddings-cache`, so text that hasn't changed isn't sent to the provider twice. Entries there expire after 90 days by default, and the task enables document expiration for you, so the cache cleans itself up.
+
+We never query the vectors directly, but open one embeddings document anyway. With `StoreChunkText` on, the document for the packaging agreement in the `@embeddings/HandbookDocuments` collection holds the text of every chunk in order, prefix in front, and seeing it makes the next step a lot less magical.
+
+None of this is instant, as the table shows. These are background tasks calling models over a network, and there's a gap between saving a document and seeing it turn up in results. What goes away is the second copy and the pipeline you'd otherwise build to maintain it.
+
+## Step 4: Retrieve
+
+This is the first of the three steps that run per question. Given a question, we want the documents whose chunks are closest to it in meaning, and only those, because whatever comes back here is all the model will ever get to see.
+
+### RavenDB feature: vector search in RQL
+
+A vector is just another field on a document, and searching it works the same way as searching any other field. You give it the thing you're looking for, a minimum similarity and a number of candidates. What comes back isn't an exact match: RavenDB compares the meaning you searched for against the meanings already stored and hands you the documents behind the closest ones. Indexing takes care of itself, so there's nothing to define up front.
+
+### The query
+
+Our query names the embeddings task inside `embedding.text()` and takes the question as an ordinary string parameter. RavenDB embeds that search term with the same model that embedded the chunks, so we don't have to:
+
+```sql
+from "HandbookDocuments"
+where vector.search(
+    embedding.text(Markdown, ai.task('handbook-embeddings')),
+    $searchTerm, 0.72, 20)
+select id() as Id, Title, Department, Summary
+```
+
+Let's ask it something a person would actually type: *what can we claim back if a supplier lets us down*. Back come both supplier agreements, the packaging one and the temperature-controlled one, and nothing else.
+
+<Image img={require("./assets/rag8.webp")} alt="Studio query running a vector search that returns both supplier agreements" />
+
+Neither agreement says "claim back" or "lets us down". They talk about liability, remedies and credit notes instead. What matched was a chunk of the agreement itself, embedded with its title and one-sentence summary in front.
+
+### Picking a threshold
+
+The similarity threshold matters more than it looks. Ask *how much are they on the hook for if something goes wrong* at 0.72 and nothing comes back. At 0.65 the Packaging Supply Agreement does. At 0.60 more than half of the thirteen documents do. Our search page uses 0.65: on our test set every real question found its documents and none of the nonsense ones found anything. The agent's tool uses 0.5, because the agent reads what comes back and judges it, and an empty result only made it search again.
+
+### Filtering in the same query
+
+And since this is just a query, it mixes with everything else you'd normally filter on. Narrowing a semantic search to the user's department is an ordinary `where` clause in the same statement, not a search followed by a second pass in your code throwing half the results away. This is the shape of the query our search page runs:
+
+```sql
+from "HandbookDocuments"
+where Department == $department
+  and vector.search(
+      embedding.text(Markdown, ai.task('handbook-embeddings')),
+      $searchTerm, 0.65)
+limit 5
+```
+
+## Step 5: Augment
+
+Retrieval hands back documents, not answers. To augment, we put what retrieval found into the model's prompt, next to the question, so the model answers from our documents rather than from whatever it picked up in training.
+
+That's harder than pasting search results into a prompt. Something has to pick a search term from the user's question, decide which results are worth reading, and fetch the full text, because a summary is enough to find the right document and not enough to answer from. In most stacks that's an orchestration layer you write and maintain.
+
+### RavenDB feature: AI agents
+
+An agent is the part that does the deciding. It lives on the server, between your application, a model and your data: your application sends a question, the agent hands the model a set of tools, runs the ones it asks for, and keeps going until there's an answer to hand back.
+
+You decide what those tools are, and that's the whole point of them. Query tools are queries you write yourself, vector searches included. The model never touches the database: it asks for a tool by name, the agent runs your query, and the results go back to the model. That's augmentation, done by the model as many times as it needs, using only the queries you allowed. Query tools only read.
+
+### The tools
+
+Ours has two query tools, and nothing else. `search` takes a plain sentence and returns the id, title and summary of the closest documents, and `read` takes an id and hands back the document in full. Both are limited to the user's department.
+
+Search and read work as a pair, and that pairing is the whole design. A search narrows thirteen documents down to two or three, and the model reads those properly before it says anything. In code, these are the agent's `Queries`:
+
+```csharp
+Queries =
+[
+    new AiAgentToolQuery
+    {
+        Name = "search",
+        Description =
+            "Semantic search over the documents: pass a plain sentence, like the user's question. " +
+            "Extra keywords do not help. Returns the id, title and summary of the best matches.",
+        Query = """
+            from HandbookDocuments
+            where Department == $department
+              and vector.search(embedding.text(Markdown, ai.task('handbook-embeddings')), $query, 0.5)
+            select id() as Id, Title, Summary
+            limit 5
+            """,
+        ParametersSampleObject = """{ "query": "what you are looking for, in a plain sentence" }"""
+    },
+    new AiAgentToolQuery
+    {
+        Name = "read",
+        Description = "Read one document in full by its id.",
+        Query = """
+            from HandbookDocuments
+            where id() == $id and Department == $department
+            select Title, Markdown
+            """,
+        ParametersSampleObject = """{ "id": "a document id returned by search" }"""
+    }
+]
+```
+
+Two details worth copying. Every tool projects rather than returning whole documents, because whatever a tool hands back is spent out of the model's context window. And the descriptions are written for the model rather than for us. The search description tells it to pass a plain sentence: semantic search compares meaning, so the user's own question works better than the list of keywords a model reaches for out of habit.
+
+### Scoping with agent parameters
+
+Both tools filter on `$department`, and that's an agent parameter, declared next to the tools in the same definition:
+
+```csharp
+Parameters =
+{
+    new AiAgentParameter("department", "The user's department.",
+        sendToModel: false, AiAgentParameterPolicy.ForbidModelGeneration,
+        AiAgentParameterValueType.String)
+},
+```
+
+The department isn't something the model chooses. Our application takes it from the current user and passes it as an agent parameter when the conversation opens. The sample lets you pick one of eight users; a real application would take the user from authentication. The parameter is never sent to the model, and the model isn't allowed to supply it, so no prompt can talk the agent into another department. Both tools filter on it in RQL: there is no tool that reaches outside the user's department, so there is nothing to talk the model out of using.
+
+You can see it in the sample. Ask as Ben Okafor, from Finance, whether he can work from another country for a few weeks, and the agent says the documents he can see don't cover it. The rule is in the remote work policy, which belongs to People Operations. Ask the same thing as Ada Lindqvist, who works there, and she gets the answer.
+
+## Step 6: Generate
+
+The last step is the one everybody pictures when they think of RAG: the model writes the answer. By now it has the question and the documents it chose to read, and what's left is deciding how it should answer. That part is entirely ours, and nothing in this guide improves it for us. An agent with good tools and a vague prompt is a worse product than a plain search box.
+
+### The system prompt
+
+Ours tells the agent to search first, to read each document whose title and summary fit the question once, and to search again with other words only if nothing fits. Then the rules that matter more than the method:
+
+```
+Answer only from what you read: quote the specific rule, amount or deadline and name the document.
+If several documents have a rule for it, give each one.
+If the documents do not cover the question, say so.
+Write the answer in Markdown. Put the ids of the documents you used in Sources.
+```
+
+The agent gets a connection string of its own, `handbook-agent`, because it needs a different model from Step 1. A sentence written once per document change doesn't need much, but the agent has to choose the right tool, call it with a sensible query, and know when to stop. We use `gpt-5.5`.
+
+### Opening a conversation
+
+Our application opens a conversation against the agent, hands it the parameter and the question, and streams the answer back as the model writes it:
+
+```csharp
+var chat = store.AI.Conversation("handbook-assistant", conversationId ?? "HandbookChats/",
+    new AiConversationCreationOptions().AddParameter("department", user.Department));
+chat.SetUserPrompt(question);
+
+var result = await chat.StreamAsync<AgentAnswer>(
+    a => a.Answer,                    // the property to stream
+    chunk => SendToPageAsync(chunk),  // your code: called with each piece as the model writes it
+    ct);
+
+// result.Answer.Sources, result.Usage.TotalTokens and result.Elapsed are there when it ends
+```
+
+A conversation id that ends in a bare prefix, like `HandbookChats/`, starts a new conversation. In the sample the first words reach the page about four seconds after the question, once the agent has searched and read, and a question costs about 2 cents with `gpt-5.5`.
+
+That's all that's left in our application. Everything else, the tools, the prompt and the deciding, is the definition on the server.
+
+<Image img={require("./assets/rag9.webp")} alt="Edit AI Agent view with the department agent parameter and the search and read query tools" />
+
+The conversation itself is a document, tool calls included, kept in the `@conversations` collection. The model remembers nothing between turns, so the agent replays the history each time. Our sample doesn't trim that history; for long conversations, [chat trimming](https://docs.ravendb.net/ai-integration/ai-agents/overview#define-a-chat-trimming-configuration) summarizes older messages once the conversation passes a token limit you set.
+
+### Beyond reading: action tools
+
+Everything the agent can do here is a read. If you want it to change something, that's an action tool, and an action is a request rather than a deed: the model asks, your own handler decides whether to carry it out, and the outcome goes back into the conversation. Nothing writes to your data except code you wrote. [The agents documentation](https://docs.ravendb.net/ai-integration/ai-agents/overview) covers those, along with conversation history, trimming and multi-agent setups.
+
+## What we never had to write
+
+Here's the conventional version of what we just built, step by step, against what replaced it.
+
+| RAG step | A conventional stack needs | Here it is |
+| :---- | :---- | :---- |
+| Chunk | A markdown-aware splitter | `markdown.splitParagraphs` |
+| Chunk | A job that writes context for every chunk | A GenAI task and `withContextPrefix` |
+| Chunk | A record of what has been processed | A hash in each document's metadata |
+| Embed | An embedding client | An embeddings generation task |
+| Store | A vector store and a sync job | Nothing. There's one copy |
+| Retrieve | Retrieval code: embed, search, filter | One RQL query |
+| Augment | An orchestration layer deciding what to fetch | An agent definition holding that query |
+| Augment | Permission checks around every tool | An agent parameter the model can't see |
+
+What's left on our side is a page that sends a question and streams the answer back.
+
+The judgment is still ours, though, and it's worth being straight about that. The script and the prompt in Steps 1 and 2 decide what every chunk carries into the search. The system prompt in Step 6 decides how the answers read, and whether the agent admits it doesn't know. And whether the answers are any good isn't measured anywhere in the pipeline. We measured ours by hand, on 28 questions for retrieval and 20 for answers, and that's the part most teams skip right before wondering why the demo went better than production.
+
+## Summary
+
+Markdown documents went in, and all six RAG steps ran without leaving the database. An embeddings generation task cut each document at paragraph boundaries and embedded every piece with the document's title and a one-sentence summary that a GenAI task wrote. One RQL query retrieved chunks by meaning, inside the user's department. An agent whose tools can't leave that department read the documents it found and streamed an answer with its sources. Nothing in between had to be kept in sync, because there was nothing to keep in sync.
+
+- Embed the original text and use a model only to write context for it. A model-written summary is a lossy second copy, and whatever it leaves out, no search can find.
+- Keep the context prefix short, because it shares each chunk's token budget. On 28 test questions, the title plus one sentence put the right document first 27 times, against 24 with no prefix.
+- Set the similarity threshold by who reads the results. A search page needs a stricter cutoff so nonsense questions find nothing, while an agent that judges what it reads does better with a looser one.
+- Scope agent tools with parameters the model can neither see nor supply. Access rules then live in the RQL of every tool, so no prompt can talk the agent past them.
+
+To run it yourself, the [handbook-rag sample](https://github.com/poissoncorp/handbook-rag) starts RavenDB and the app with one `docker compose up`, and its *How it works* button follows a real question through every step above.
