@@ -5,7 +5,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-* In this page:  
+* On this page:  
   * [Client with full exception handling and processing retries](../../../../client-api/data-subscriptions/consumption/examples.mdx#client-with-full-exception-handling-and-processing-retries)
   * [Worker with a specified batch size](../../../../client-api/data-subscriptions/consumption/examples.mdx#worker-with-a-specified-batch-size)
   * [Worker that operates with a session](../../../../client-api/data-subscriptions/consumption/examples.mdx#worker-that-operates-with-a-session)
@@ -158,7 +158,7 @@ store.subscriptions.create_for_class(
         From Orders as o
         Select 
         \{
-            dynamic_field_1: "Company: " + o.Company + " Employee: " + o.Employee,
+            dynamic_field: "Company: " + o.Company + " Employee: " + o.Employee,
         \}
         """,
     ),
@@ -168,7 +168,7 @@ subscription_worker = store.subscriptions.get_subscription_worker_by_name(subscr
 
 def _raise_notification_callback(batch: SubscriptionBatch[Order]):
     for item in batch.items:
-        raise_notification(item.result.dynamic_field_1)
+        raise_notification(item.result.dynamic_field)
 
 _ = subscription_worker.run(_raise_notification_callback)
 `}
@@ -260,8 +260,12 @@ _ = subscriptionWorker.Run(batch =>
 
 ## Subscription workers with failover on other nodes
 
-In this configuration, any available node will create a worker.  
-If the worker fails, another available node will take over.
+In this configuration, the same worker code runs on several machines, all using the `WAIT_FOR_FREE` strategy.  
+One worker connects to the subscription, and the other workers wait.  
+If the connected worker disconnects (e.g., when its machine goes down), one of the waiting workers connects and
+continues processing.  
+Unlike in the [primary and secondary workers](../../../../client-api/data-subscriptions/consumption/examples.mdx#primary-and-secondary-workers)
+example, a worker that reconnects after a failure does not take the connection back, but joins the waiting workers.
 
 <TabItem value="waitforfree" label="waitforfree">
 <CodeBlock language="python">

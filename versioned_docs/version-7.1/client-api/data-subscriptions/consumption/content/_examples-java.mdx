@@ -5,13 +5,14 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-*  this page:  
+* On this page:  
    * [Worker with a specified batch size](../../../../client-api/data-subscriptions/consumption/examples.mdx#worker-with-a-specified-batch-size)  
    * [Client with full exception handling and processing retries](../../../../client-api/data-subscriptions/consumption/examples.mdx#client-with-full-exception-handling-and-processing-retries)  
    * [Subscription that ends when no documents left](../../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-ends-when-no-documents-left)  
-   * [Worker that processes raw objects](../../../../client-api/data-subscriptions/consumption/examples.mdx#sworker-that-processes-raw-objects)  
+   * [Worker that processes raw objects](../../../../client-api/data-subscriptions/consumption/examples.mdx#worker-that-processes-raw-objects)  
    * [Worker that operates with a session](../../../../client-api/data-subscriptions/consumption/examples.mdx#worker-that-operates-with-a-session)
    * [Subscription that uses included documents](../../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-uses-included-documents)  
+   * [Subscription workers with failover on other nodes](../../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-workers-with-failover-on-other-nodes)  
    * [Primary and secondary workers](../../../../client-api/data-subscriptions/consumption/examples.mdx#primary-and-secondary-workers)  
 
 </Admonition>
@@ -133,8 +134,13 @@ try \{
         for (SubscriptionBatch.Item<OrderAndCompany> item : batch.getItems()) \{
             sendThankYouNoteToEmployee(item.getResult());
         \}
-    \});
-\} catch (SubscriptionClosedException e) \{
+    \}).get();
+\} catch (Exception e) \{
+    // 'get' wraps the worker's exception, so unwrap it before checking its type
+    RuntimeException cause = ExceptionsUtils.unwrapException(e);
+    if (!(cause instanceof SubscriptionClosedException)) \{
+        throw cause;
+    \}
     //that's expected
 \}
 `}
@@ -155,14 +161,14 @@ SubscriptionCreationOptions subscriptionCreationOptions = new SubscriptionCreati
 subscriptionCreationOptions.setName("My dynamic subscription");
 subscriptionCreationOptions.setQuery("from Orders as o \\n" +
     "select \{ \\n" +
-    "   DynamicField_1: 'Company:' + o.Company + ' Employee: ' + o.Employee \\n" +
+    "   DynamicField: 'Company:' + o.Company + ' Employee: ' + o.Employee \\n" +
     "\}");
 
 SubscriptionWorker<ObjectNode> worker = store.subscriptions().getSubscriptionWorker(subscriptionName);
 worker.run(x -> \{
     for (SubscriptionBatch.Item<ObjectNode> item : x.getItems()) \{
         ObjectNode result = item.getResult();
-        raiseNotification(result.get("DynamicField_1"));
+        raiseNotification(result.get("DynamicField"));
     \}
 \});
 `}
@@ -237,6 +243,28 @@ subscriptionWorker.run(batch -> \{
 
 
 
+## Subscription workers with failover on other nodes
+
+In this configuration, the same worker code runs on several machines, all using the `WAIT_FOR_FREE` strategy.  
+One worker connects to the subscription, and the other workers wait.  
+If the connected worker disconnects (e.g., when its machine goes down), one of the waiting workers connects and
+continues processing.  
+Unlike in the [primary and secondary workers](../../../../client-api/data-subscriptions/consumption/examples.mdx#primary-and-secondary-workers)
+example, a worker that reconnects after a failure does not take the connection back, but joins the waiting workers.
+
+<TabItem value="waitforfree" label="waitforfree">
+<CodeBlock language="java">
+{`SubscriptionWorkerOptions options = new SubscriptionWorkerOptions(subscriptionName);
+// WAIT_FOR_FREE: wait and take over if the connected worker fails
+options.setStrategy(SubscriptionOpeningStrategy.WAIT_FOR_FREE);
+
+SubscriptionWorker<Order> worker = store.subscriptions().getSubscriptionWorker(Order.class, options);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
 ## Primary and secondary workers
 
 Here we create two workers:  
@@ -248,19 +276,21 @@ The primary worker:
 
 <TabItem value="waiting_subscription_1" label="waiting_subscription_1">
 <CodeBlock language="java">
-{`SubscriptionWorkerOptions options1 = new SubscriptionWorkerOptions(subscriptionName);
-options1.setStrategy(SubscriptionOpeningStrategy.TAKE_OVER);
-SubscriptionWorker<Order> worker1 = store.subscriptions().getSubscriptionWorker(Order.class, options1);
+{`while (true) \{
+    // Create a new worker for each attempt: a worker cannot run again once run was called
+    SubscriptionWorkerOptions primaryWorkerOptions = new SubscriptionWorkerOptions(subscriptionName);
+    primaryWorkerOptions.setStrategy(SubscriptionOpeningStrategy.TAKE_OVER);
+    SubscriptionWorker<Order> primaryWorker =
+        store.subscriptions().getSubscriptionWorker(Order.class, primaryWorkerOptions);
 
-
-while (true) \{
     try \{
-        worker1
-            .run(x -> \{
-                // your logic
-            \});
+        primaryWorker.run(x -> \{
+            // your logic
+        \}).get();
     \} catch (Exception e) \{
         // retry
+    \} finally \{
+        primaryWorker.close();
     \}
 \}
 `}
@@ -271,18 +301,21 @@ The secondary worker:
 
 <TabItem value="waiting_subscription_2" label="waiting_subscription_2">
 <CodeBlock language="java">
-{`SubscriptionWorkerOptions options2 = new SubscriptionWorkerOptions(subscriptionName);
-options2.setStrategy(SubscriptionOpeningStrategy.WAIT_FOR_FREE);
-SubscriptionWorker<Order> worker2 = store.subscriptions().getSubscriptionWorker(Order.class, options2);
+{`while (true) \{
+    // Create a new worker for each attempt: a worker cannot run again once run was called
+    SubscriptionWorkerOptions secondaryWorkerOptions = new SubscriptionWorkerOptions(subscriptionName);
+    secondaryWorkerOptions.setStrategy(SubscriptionOpeningStrategy.WAIT_FOR_FREE);
+    SubscriptionWorker<Order> secondaryWorker =
+        store.subscriptions().getSubscriptionWorker(Order.class, secondaryWorkerOptions);
 
-while (true) \{
     try \{
-        worker2
-            .run(x -> \{
-                // your logic
-            \});
+        secondaryWorker.run(x -> \{
+            // your logic
+        \}).get();
     \} catch (Exception e) \{
         // retry
+    \} finally \{
+        secondaryWorker.close();
     \}
 \}
 `}

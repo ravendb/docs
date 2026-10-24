@@ -25,14 +25,25 @@ import LanguageContent from "@site/src/components/LanguageContent";
  
 ## Subscriptions.ArchivedDataProcessingBehavior
 
-The default processing behavior for archived documents in a subscription query.
+The default processing behavior of data subscriptions for archived documents.  
+A subscription applies this behavior **in addition** to the subscription's query, so the query cannot select documents that the behavior excludes.  
+e.g., if a subscription's processing behavior is `ExcludeArchived` and the subscription's query selects only archived documents,
+the subscription sends no documents to the worker.
 
 - **Type**: `enum ArchivedDataProcessingBehavior`:
-    * `ExcludeArchived`: only non-archived documents are processed by the subscription query.
-    * `IncludeArchived`: both archived and non-archived documents are processed by the subscription query.
-    * `ArchivedOnly`: only archived documents are processed by the subscription query.
+    * `ExcludeArchived`: the subscription selects only non-archived documents.
+    * `IncludeArchived`: the subscription selects both archived and non-archived documents.
+    * `ArchivedOnly`: the subscription selects only archived documents.
 - **Default**: `ExcludeArchived`
 - **Scope**: Server-wide, or per database
+
+<Admonition type="note" title="">
+* A subscription takes this key's value when the subscription is created, unless you set the subscription's own handling of archived documents (see [Subscription creation options](../../client-api/data-subscriptions/creation/api-overview.mdx#subscription-creation-options)).  
+  A later change to the key does not affect existing subscriptions.
+* A subscription to [document revisions](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx) **ignores** this key and sends the revisions of archived and non-archived documents alike.
+* On a [sharded database](../../sharding/subscriptions.mdx#unsupported-features), all subscriptions use this behavior, and a subscription's own setting has no effect.  
+  Unlike on a non-sharded database, a later change to the key **does** affect existing subscriptions.
+</Admonition>
 
 
 
