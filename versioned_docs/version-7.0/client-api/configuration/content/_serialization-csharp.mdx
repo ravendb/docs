@@ -1,139 +1,384 @@
 import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
 import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
-Use the methods described in this page to customize the [conventions](../../../client-api/configuration/conventions.mdx)
-by which entities are serialized as they are sent by the client to the server.
-
-* In this page:  
+* The C# client serializes entities into JSON using the
+  [Newtonsoft.Json](https://www.newtonsoft.com/json/help/html/SerializingJSON.htm) library (also known as Json.NET).  
+* Use the [conventions](../../../client-api/configuration/conventions.mdx) described in this article
+  to customize the serialization (e.g., to exclude a property, or to control the JSON form of a type).  
+* In this article:  
   * [Ignoring a property](../../../client-api/configuration/serialization.mdx#ignoring-a-property)  
   * [CustomizeJsonSerializer](../../../client-api/configuration/serialization.mdx#customizejsonserializer)  
+    * [Adding a converter](../../../client-api/configuration/serialization.mdx#adding-a-converter)  
+    * [Example: Storing a temperature as a string](../../../client-api/configuration/serialization.mdx#example-storing-a-temperature-as-a-string)  
+    * [Example: Storing FHIR resources](../../../client-api/configuration/serialization.mdx#example-storing-fhir-resources)  
   * [JsonContractResolver](../../../client-api/configuration/serialization.mdx#jsoncontractresolver)  
-  * [BulkInsert.TrySerializeEntityToJsonStream](../../../client-api/configuration/serialization.mdx#bulkinserttryserializeentitytojsonstream)  
+  * [BulkInsert.TrySerializeEntityToJsonStream](../../../client-api/configuration/serialization.mdx#bulkinsert-tryserializeentitytojsonstream)  
   * [IgnoreByRefMembers and IgnoreUnsafeMembers](../../../client-api/configuration/serialization.mdx#ignorebyrefmembers-and-ignoreunsafemembers)  
 
 </Admonition>
 
-<ContentFrame>
-
-## Ignoring a property
+<Panel heading="Ignoring a property">
 
 * By default, RavenDB serializes **all** properties and **all** public fields of an entity.  
-* Decorate a property with `[JsonIgnore]` to exclude it from serialization.  
+* Decorate a property with `[JsonIgnore]` (from the `Newtonsoft.Json` namespace) to exclude it from serialization.  
   The decorated property will not be stored in the document and will not be available for indexing.  
-* `[JsonIgnore]` is from the `Newtonsoft.Json` namespace.  
+  <br /><br />
+  ```csharp
+  public class Shirt
+  {
+      public string Id { get; set; }
+
+      // Stored in the document
+      public decimal Price { get; set; }
+
+      // Not stored - computed from Price at runtime
+      [JsonIgnore]
+      public decimal PriceWithTax => Price * 1.2m;
+  }
+  ```
+
+</Panel>
+
+<Panel heading="CustomizeJsonSerializer">
+
+* The client uses `JsonSerializer` objects of the [Newtonsoft.Json](https://www.newtonsoft.com/json/help/html/SerializingJSON.htm)
+  library to **serialize** entities into JSON before sending the entities to the server,
+  and to **deserialize** documents loaded from the server back into entities.  
+* Use the `CustomizeJsonSerializer` convention to register an action that modifies the `JsonSerializer` objects.  
+  The client applies the registered action when storing entities as well as when loading documents into entities.  
+  To customize only the deserialization of loaded documents, use the
+  [CustomizeJsonDeserializer](../../../client-api/configuration/deserialization.mdx#customizejsondeserializer) convention.  
+  <br /><br />
+  ```csharp
+  Conventions =
+  {
+      Serialization = new NewtonsoftJsonSerializationConventions
+      {
+          CustomizeJsonSerializer = serializer => throw new CodeOmitted()
+      }
+  }
+  ```
+
+---
+
+### Adding a converter
+
+To control the JSON form of a specific type (e.g., to store a temperature as the string `"30C"`),
+add a **converter** for this type: a class that tells the `JsonSerializer` object how to serialize and deserialize the type.  
+Learn more about converters in the Newtonsoft.Json [Custom JsonConverter](https://www.newtonsoft.com/json/help/html/CustomJsonConverter.htm) article.
+
+<ContentFrame>
+
+Define and register a converter as follows:
+
+1. Define a converter class derived from the library's `JsonConverter<T>` class, with your type as `T`.
+2. Override the converter's `WriteJson` method to write the type's JSON form.  
+   `WriteJson` receives a **writer** (a `JsonWriter` object) that writes JSON one element at a time,
+   e.g., the writer's `WriteValue` method writes a single value.  
+   <br /><br />
+   ```csharp
+   public override void WriteJson(JsonWriter writer, Temperature value, JsonSerializer serializer)
+   {
+       // Supported: WriteValue writes the string "30C" as a single JSON value
+       writer.WriteValue($"{value.Celsius}C");
+
+       // Not supported: WriteRaw would write "30C" as raw JSON text
+       // writer.WriteRaw($"\"{value.Celsius}C\"");
+   }
+   ```
+   <br />
+   <Admonition type="note" title="">
+   The writer that the client provides does not support raw JSON text (a JSON string written in one piece),
+   so calling the writer's `WriteRaw` or `WriteRawValue` method throws a `NotSupportedException`.
+   </Admonition>
+3. Override the converter's `ReadJson` method to convert the JSON form back into the type.
+4. In the action you register using `CustomizeJsonSerializer`,
+   add the converter to the `Converters` collection of the `JsonSerializer` object.
+
+</ContentFrame>
+
+<ContentFrame>
+
+#### Example: Storing a temperature as a string
+
+In the following example, a `WeatherReport` entity holds a `Temperature` object in its `Temp` property.  
+A converter stores the `Temperature` object as a string (e.g., `"30C"`) rather than as a JSON object (e.g., `{"Celsius": 30}`).
 
 ```csharp
-public class Shirt
+public class Temperature
+{
+    public int Celsius { get; set; }
+}
+
+public class WeatherReport
 {
     public string Id { get; set; }
+    public Temperature Temp { get; set; }
+}
 
-    // Stored in the document
-    public decimal Price { get; set; }
+public class TemperatureConverter : JsonConverter<Temperature>
+{
+    public override void WriteJson(JsonWriter writer, Temperature value, JsonSerializer serializer)
+    {
+        writer.WriteValue($"{value.Celsius}C");
+    }
 
-    // Not stored - computed from Price at runtime
-    [JsonIgnore]
-    public decimal PriceWithTax => Price * 1.2m;
+    public override Temperature ReadJson(JsonReader reader, Type objectType, Temperature existingValue,
+        bool hasExistingValue, JsonSerializer serializer)
+    {
+        if (reader.TokenType == JsonToken.Null)
+            return null;
+
+        // Remove the trailing "C" and parse the number
+        var text = (string)reader.Value;
+        return new Temperature { Celsius = int.Parse(text.Substring(0, text.Length - 1)) };
+    }
 }
 ```
+<br />
 
-</ContentFrame>
-
----
-
-<ContentFrame>
-
-## CustomizeJsonSerializer
-
-* The `JsonSerializer` object is used by the client to serialize entities
-  sent by the client to the server.  
-* Use the `CustomizeJsonSerializer` convention to modify `JsonSerializer`
-  by registering a serialization customization action.  
+The following code uses `CustomizeJsonSerializer` to register the `TemperatureConverter` class defined above,
+stores a `WeatherReport` document, and loads the document back.  
+Since `CustomizeJsonSerializer` applies when loading documents as well, the same converter converts the stored string
+back into a `Temperature` object.
 
 ```csharp
-Serialization = new NewtonsoftJsonSerializationConventions
+using (var store = new DocumentStore
 {
-    CustomizeJsonSerializer = serializer => throw new CodeOmitted()
+    Urls = new[] { "http://localhost:8080" },
+    Database = "Demo",
+    Conventions =
+    {
+        Serialization = new NewtonsoftJsonSerializationConventions
+        {
+            // Register the converter
+            CustomizeJsonSerializer = serializer => serializer.Converters.Add(new TemperatureConverter())
+        }
+    }
+}.Initialize())
+{
+    using (var session = store.OpenSession())
+    {
+        // The document is stored with: "Temp": "30C"
+        session.Store(new WeatherReport { Temp = new Temperature { Celsius = 30 } }, "weatherReports/1");
+        session.SaveChanges();
+    }
+
+    using (var session = store.OpenSession())
+    {
+        // report.Temp is loaded back into a Temperature object with Celsius = 30
+        var report = session.Load<WeatherReport>("weatherReports/1");
+    }
 }
 ```
 
 </ContentFrame>
 
----
-
 <ContentFrame>
 
-## JsonContractResolver
+#### Example: Storing FHIR resources
+
+[FHIR](https://hl7.org/fhir/) (Fast Healthcare Interoperability Resources) is a standard for exchanging healthcare data,
+published by HL7.  
+The [Firely .NET SDK](https://docs.fire.ly/projects/Firely-NET-SDK/en/latest/) provides .NET classes for FHIR resources
+(e.g., `Patient`), along with its own JSON serializer and parser for these classes.
+
+In the following example, a converter hands the serialization of FHIR resources to the SDK's serializer and parser,
+so a `Patient` resource is stored in FHIR's JSON format and loaded back into a `Patient` object.  
+The converter's `WriteJson` method writes the serializer's output to the writer element by element,
+since the writer does not support [raw JSON text](../../../client-api/configuration/serialization.mdx#adding-a-converter).
+
+```csharp
+using System;
+using System.IO;
+// Firely .NET SDK namespaces, from the Hl7.Fhir.R4 NuGet package
+using Hl7.Fhir.ElementModel;
+using Hl7.Fhir.Model;
+using Hl7.Fhir.Serialization;
+using Newtonsoft.Json;
+
+public class FhirResourceConverter<T> : JsonConverter<T> where T : Base
+{
+    // Skip JSON properties that the SDK's class does not define
+    // (e.g., the @metadata property of a loaded RavenDB document)
+    private static readonly PocoBuilderSettings BuilderSettings = new() { IgnoreUnknownMembers = true };
+
+    public override void WriteJson(JsonWriter writer, T value, JsonSerializer serializer)
+    {
+        // Serialize the resource using the SDK's serializer
+        var json = new FhirJsonSerializer().SerializeToString(value);
+
+        // Write the resulting JSON to the writer element by element,
+        // keeping dates and decimal values exactly as the SDK wrote them
+        using (var reader = new JsonTextReader(new StringReader(json))
+               { DateParseHandling = DateParseHandling.None, FloatParseHandling = FloatParseHandling.Decimal })
+        {
+            writer.WriteToken(reader);
+        }
+    }
+
+    public override T ReadJson(JsonReader reader, Type objectType, T existingValue,
+        bool hasExistingValue, JsonSerializer serializer)
+    {
+        // Parse the stored JSON into the SDK's class
+        return FhirJsonNode.Read(reader).ToPoco<T>(BuilderSettings);
+    }
+}
+```
+<br />
+
+The following code uses `CustomizeJsonSerializer` to register the converter class defined above for the `Patient` class
+(`FhirResourceConverter<Patient>`), stores a `Patient` resource as a document, and loads the document back into a `Patient` object.
+
+```csharp
+using (var store = new DocumentStore
+{
+    Urls = new[] { "http://localhost:8080" },
+    Database = "Demo",
+    Conventions =
+    {
+        Serialization = new NewtonsoftJsonSerializationConventions
+        {
+            // Register a converter for each FHIR resource class you store
+            CustomizeJsonSerializer = serializer => serializer.Converters.Add(new FhirResourceConverter<Patient>())
+        }
+    }
+}.Initialize())
+{
+    using (var session = store.OpenSession())
+    {
+        var patient = new Patient
+        {
+            // The resource ID is used as the document ID;
+            // FHIR IDs may contain only letters, digits, '-', and '.'
+            Id = "pat-1001",
+            Active = true,
+            Name = new List<HumanName>
+            {
+                new HumanName { Family = "Patel", Given = new List<string> { "Sandeep" } }
+            }
+        };
+
+        session.Store(patient);
+        session.SaveChanges();
+    }
+
+    using (var session = store.OpenSession())
+    {
+        // Loaded back into a Patient object
+        var patient = session.Load<Patient>("pat-1001");
+    }
+}
+```
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="JsonContractResolver">
 
 * The default `JsonContractResolver` convention used by RavenDB will serialize
   **all** properties and **all** public fields.  
 * Change this behavior by providing your own implementation of the `IContractResolver`
   interface.  
-
-```csharp
-Serialization = new NewtonsoftJsonSerializationConventions
-{
-    JsonContractResolver = new CustomJsonContractResolver()
-}
-```
-
-```csharp
-public class CustomJsonContractResolver : IContractResolver
-{
-    public JsonContract ResolveContract(Type type)
-    {
-        throw new CodeOmitted();
-    }
-}
-```
-
+  <br /><br />
+  ```csharp
+  Conventions =
+  {
+      Serialization = new NewtonsoftJsonSerializationConventions
+      {
+          JsonContractResolver = new CustomJsonContractResolver()
+      }
+  }
+  ```
+  <br />
+  ```csharp
+  public class CustomJsonContractResolver : IContractResolver
+  {
+      public JsonContract ResolveContract(Type type)
+      {
+          throw new CodeOmitted();
+      }
+  }
+  ```
+  <br />
 * You can also customize the behavior of the **default resolver** by inheriting
   from `DefaultRavenContractResolver` and overriding specific methods.  
+  <br /><br />
+  ```csharp
+  public class CustomizedRavenJsonContractResolver : DefaultRavenContractResolver
+  {
+      public CustomizedRavenJsonContractResolver(ISerializationConventions conventions) : base(conventions)
+      {
+      }
 
-```csharp
-public class CustomizedRavenJsonContractResolver : DefaultRavenContractResolver
-{
-    public CustomizedRavenJsonContractResolver(ISerializationConventions conventions) : base(conventions)
-    {
-    }
+      protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
+      {
+          throw new CodeOmitted();
+      }
+  }
+  ```
 
-    protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
-    {
-        throw new CodeOmitted();
-    }
-}
-```
+</Panel>
 
-</ContentFrame>
-
----
-
-<ContentFrame>
-
-## BulkInsert.TrySerializeEntityToJsonStream
+<Panel heading="BulkInsert.TrySerializeEntityToJsonStream">
 
 * Adjust [Bulk Insert](../../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx)
   behavior by using the `TrySerializeEntityToJsonStream` convention to register a custom
   serialization implementation.  
+  <br /><br />
+  ```csharp
+  Conventions =
+  {
+      BulkInsert =
+      {
+          TrySerializeEntityToJsonStream = (entity, metadata, writer) => throw new CodeOmitted(),
+      }
+  }
+  ```
+  <br />
+* The registered function receives the entity, the entity's metadata, and the writer of the bulk insert stream
+  (a `StreamWriter` object).  
+  Return `true` after writing the entity to the writer as a JSON document, with the entity's metadata under the `@metadata` property.  
+  To have the client serialize the entity using the default serialization instead, return `false` without writing to the writer.  
+  <br /><br />
+  ```csharp
+  Conventions =
+  {
+      BulkInsert =
+      {
+          TrySerializeEntityToJsonStream = (entity, metadata, writer) =>
+          {
+              // Let the client serialize entities of other types
+              if (entity is not User)
+                  return false;
 
-```csharp
-BulkInsert =
-{
-    TrySerializeEntityToJsonStream = (entity, metadata, writer) => throw new CodeOmitted(),
-}
-```
+              // Convert the entity into a JSON document
+              var document = JObject.FromObject(entity);
 
-</ContentFrame>
+              // Add the entity's metadata under the @metadata property
+              var metadataObject = new JObject();
+              foreach (var keyValue in metadata)
+                  metadataObject.Add(keyValue.Key, new JValue(keyValue.Value));
+              document["@metadata"] = metadataObject;
 
----
+              // Write the document to the bulk insert stream
+              var jsonWriter = new JsonTextWriter(writer);
+              new JsonSerializer().Serialize(jsonWriter, document);
+              jsonWriter.Flush();
 
-<ContentFrame>
+              return true;
+          }
+      }
+  }
+  ```
 
-## IgnoreByRefMembers and IgnoreUnsafeMembers
+</Panel>
+
+<Panel heading="IgnoreByRefMembers and IgnoreUnsafeMembers">
 
 * By default, if you try to store an entity with `ref` or unsafe members,
   the Client will throw an exception when [`session.SaveChanges()`](../../../client-api/session/saving-changes.mdx)
@@ -149,4 +394,4 @@ BulkInsert =
 * `IgnoreByRefMembers` default value: `false`  
 * `IgnoreUnsafeMembers` default value: `false`  
 
-</ContentFrame>
+</Panel>
