@@ -234,7 +234,8 @@ docker pull ravendb/quill:latest
 
 If the setup-email command uses a different image registry or image name, pull that image instead.  
     
-If it uses a version tag for the expired build, obtain the current Quill image reference rather than recreating the container from the same expired tag.
+If it uses a version tag for the expired build, change the image to `ravendb/quill:latest` and add `--pull=always`, as in the Docker command
+RavenDB sends at sign-up, rather than recreating the container from the same expired tag.
 
 </ContentFrame>
 

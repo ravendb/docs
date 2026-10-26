@@ -130,9 +130,11 @@ Entering an address does not update the DNS records until you run the command on
 
 #### Check the container name
 
-* The Dashboard does not read the actual container name from Docker.  
-  The name in the generated command may therefore differ from the running container name,  
-  for example, if you changed the container name when running the setup command provided by Quill.
+* The Dashboard does not read the actual container name from Docker, and names the container in the generated command
+  by your Quill name alone (e.g., `baloo`).  
+  The Docker command you received at sign-up names the container `quill-` followed by your Quill name (e.g.,
+  `quill-baloo`), so the generated command names a container that does not exist unless you explicitly changed the
+  container's name to your Quill name.
 
 * Before running the command, run `docker ps` on the Docker host and verify the container name.  
   Replace the generated name if it does not match.
