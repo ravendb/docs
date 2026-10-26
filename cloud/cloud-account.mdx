@@ -35,8 +35,13 @@ Each account user can be assigned specific roles that extend the range of functi
 | API Access                       | Controls programmatic access to the platform. Generate, manage, and revoke API keys.              |
 | Support                          | Create and manage support requests for general issues or specific products, active or terminated. |
 | Account                          | Provides access to general account information.                                                   |
-| Account with User Management     | Grants permissions to manage account users — invite or remove members, assign their [account roles](#account-roles), and manage their [product permissions](#product-permissions). |
+| Account with User Management     | Grants permissions to manage account users — invite or remove members, assign their [account roles](#account-roles), and manage their [product permissions](#product-permissions). With [External SSO](./cloud-sso.mdx#who-can-configure-sso) set up, it also adds SSO users and edits the SCIM group to role mapping. |
 | Account with Billing Information | Update credit cards, billing addresses, and payment contacts for your account.                    |
+| External SSO & User Management   | Set up and manage single sign-on (OIDC) and SCIM user provisioning. See [External SSO & User Management](./cloud-sso.mdx). |
+
+<Admonition type="note" title="">
+Account owners hold every role, including **External SSO & User Management**.
+</Admonition>
 
 ## Product permissions
 
@@ -62,7 +67,7 @@ Per-product access is assigned as a single **preset** — you choose one preset 
 | Admin          | Everything a Manager can do, plus terminate the product. Does not include security settings.                         |
 | Security admin | Manages the product's security settings — client certificates, IP allowlists, monitoring IPs, and SNMP credentials.  |
 
-**Security admin** is an **add-on** enabled on top of a base preset (Viewer / Operator / Manager / Admin) with a dedicated toggle. It cannot be enabled for **No access**, and it cannot be toggled for a **Custom (legacy)** access level — an access level that predates the presets, shown (and locked) when editing such a user.
+**Security admin** is an **add-on** enabled on top of a base preset (Viewer / Operator / Manager / Admin). It is a switch at the bottom of each product's access-level menu, and an icon next to the selected level shows when it is on. It cannot be enabled for **No access**, and it cannot be toggled for a **Custom (legacy)** access level — an access level that predates the presets, shown (and locked) when editing such a user.
 
 <Admonition type="note" title="Security-related features">
 The **Monitoring/OpenTelemetry** and **Power BI** features are a special case. **Enabling or disabling** them requires the **Manager** (or **Admin**) preset **together with** the **Security admin** add-on. To only **configure** such a feature once it is enabled, the **Security admin** add-on is sufficient.
@@ -86,7 +91,7 @@ Permissions are assigned from the [Users & Access](./portal/cloud-portal-users-a
 
 Each account member carries a per-user **default product-permission set**. When a new product is provisioned, every member whose default is non-empty is automatically granted those permissions on the new product. A member with an empty default receives no access (this is the out-of-the-box value).
 
-* The default is set by the **Account Owner** only, in the invite-user and edit-user flows. Users with the **Account with User Management** role can manage per-product permissions, but they cannot change a user's default access for new products.
+* The default is set by the **Account Owner** only, in the **New products** section of the invite-user and edit-user panels. Users with the **Account with User Management** role can manage per-product permissions, but they cannot change a user's default access for new products.
 * It applies only to products created **after** it is set — it does not retroactively change access to existing products.
 
 <Admonition type="note" title="Product creator">

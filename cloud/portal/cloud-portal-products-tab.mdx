@@ -418,5 +418,7 @@ Changing your product deployment type is **irreversible**.
 
 The product view includes a **User Access** widget that lists the account users who have access to this product, together with their access level. If you can manage users, you can change a user's [preset](../cloud-account.mdx#permission-presets) and toggle the **Security admin** add-on directly in the widget, then click **Save changes** — without leaving the product view. The **Account Owner** is always shown with **full access**. Use **Manage in Users & Access** to open the [Users & Access](./cloud-portal-users-and-access-tab.mdx) page for the full user-management view. When no other users have been granted access yet, the widget shows an empty state.
 
+When [External SSO](../cloud-sso.mdx) is set up, SSO users are listed by their email address and marked with an **SSO** badge. In *Sign-in and user provisioning (SCIM)* mode, their rows are locked: a lock icon explains that the user is managed by your identity provider, and their access changes only through the [group to role mapping](../cloud-sso.mdx#group-to-role-mapping). If saving fails, the Portal shows the reason.
+
 ![Product Details: User Access widget](./assets/portal-product-details-user-access.png)
 

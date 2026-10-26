@@ -76,7 +76,7 @@ Key constraints to keep in mind:
 - On undersized tiers the backup job may time out, be terminated due to memory exhaustion,
   or fail mid-run — leaving you without a usable recovery point.
 
-**Example:** A product running on a **PS10** (entry-level Performance tier) that hosts a
+**Example:** A product running on a **PS10** (the smallest Production instance type) that hosts a
 **500 GB database** will reliably fail to complete backups. The instance does not have enough
 resources — disk IOPS, memory, or both — to snapshot a database of that size. Customers in this
 situation must upgrade to a higher tier before backups can succeed.
@@ -201,28 +201,33 @@ Backup files that have already been created, are listed in the backups tab.
 * Open your portal's Backups tab, and choose the product whose database you want to restore.  
   Its backups will be shown, listed by the databases they've been created for.  
 * Click "Generate Restore Link" for the database you want to restore.  
-  The backup link window will open.
+  The **Restore Link** dialog will open.
   ![Backups List](./assets/portal-backups-database-list.png "Backups List")  
 #### Restore the Database  
 Clicking the **Generate Restore Link** button will show you a simple procedure. Follow it to restore your database.  
 
-![Backup Link](./assets/portal-backups-restore-link-modal.png)  
+![Restore Link](./assets/portal-backups-restore-link-modal.png)  
 
-* **A.** Create a **New Database From Backup**  
+The restore link is valid for **2 hours** by default. The dialog also estimates how long the restore will take,
+based on the size of the backup. If you need more time, pick a validity of up to **36 hours** in **Token Expiration**
+and click **Regenerate restore link**.
+
+* **Steps 1-3.** Create a **New Database From Backup**  
   ![New DB From Backup](./assets/studio-databases-new-database-from-backup.png)  
-* **B.** Choose **Cloud** as your Source  
+* **Step 4.** Choose **Cloud** as your Source  
   ![Source Is Cloud](./assets/studio-new-database-from-backup-source-cloud.png)  
-* **C.** Copy the Backup Link you've been given in the Backups Tab, to the **Backup Link** box here.  
+* **Step 5.** Copy the Restore Link you've been given in the Backups Tab, to the **Backup Link** box here.  
   ![Paste Backup Link Here](./assets/studio-new-database-from-backup-backup-link.png)  
-* **D.** Choose a **Restore Point**  
+* **Step 6.** Choose a **Restore Point**  
   ![Choose Restore Point](./assets/studio-new-database-from-backup-restore-point.png)  
-* **E.** Encryption Key for an **Encrypted** Database  
-  If your original database **is** encrypted, its backup has been encrypted with the same key. Find it and paste it here.  
-  ![Encryption Key: Encrypted Database](./assets/studio-new-database-from-backup-encryption-key.png)  
-* **F.**  Encryption Key for an **Unencrypted** Database  
-  If your original database is **not** encrypted, we used your account-wide encryption key to encrypt your backup file.  
-  Copy it from the right Backups Tab box.  
-  ![Encryption Key: Unencrypted Database](./assets/portal-backups-restore-link-modal-restore-key.png)  
+* **Step 7.** Provide the key that decrypts the backup:  
+  * **Snapshot backup of an encrypted database**  
+    The backup has been encrypted with the database's own key. Find it and paste it here.  
+    ![Encryption Key: Encrypted Database](./assets/studio-new-database-from-backup-encryption-key.png)  
+  * **Standard backup, or a database that is not encrypted**  
+    We used your account-wide encryption key to encrypt your backup file.  
+    Click **Show** next to the **restore key** in the dialog, or **Copy to clipboard**, and paste it here.  
+    ![Restore key in the Restore Link dialog](./assets/portal-backups-restore-link-modal-restore-key.png)  
 
 
 
