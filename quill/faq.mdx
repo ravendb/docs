@@ -689,12 +689,12 @@ No. Quill's domain, hostnames, certificate, keys, and data stay as they are, sin
 Only the DNS records change. DNS is the service computers use to find the IP address of a hostname, and Quill's DNS
 records pair each of Quill's hostnames with the IP address of Quill's machine.  
 To pair the hostnames with the new address, run the `update-dns` command in Quill's container, as described in
-[Networking & DNS: Update the records](networking-and-dns.mdx#update-the-records). Until you run the command, users
-and applications keep reaching the old address.
+[DNS & IP Configuration: Update the records](networking/dns-and-ip-configuration.mdx#update-the-records).
+Until you run the command, users and applications keep reaching the old address.
 
 If you move Quill to another machine, also move Quill's data volume to the new machine, and start the new container with
 the same license key and dashboard API key, as described in
-[Networking & DNS: What remains unchanged](networking-and-dns.mdx#what-remains-unchanged).
+[DNS & IP Configuration: What remains unchanged](networking/dns-and-ip-configuration.mdx#what-remains-unchanged).
 
 </ContentFrame>
 

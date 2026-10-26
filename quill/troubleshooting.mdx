@@ -1200,7 +1200,7 @@ Find the symptoms of each channel type in:
 
 When you sign up, RavenDB adds Quill's hostnames to DNS, the service computers use to find the IP address of a hostname,
 and pairs each hostname with the IP address you give for Quill's machine, as described in
-[Networking & DNS: The published hostnames](networking-and-dns.mdx#the-published-hostnames).  
+[DNS & IP Configuration: The published hostnames](networking/dns-and-ip-configuration.mdx#the-published-hostnames).  
 Each hostname ends with your deployment name and `myquill.ai`, e.g., `dashboard.<name>.myquill.ai`, where `<name>` is your
 deployment name.  
 The symptoms below may appear when the IP address of Quill's machine changes, or when users and applications cannot reach
@@ -1223,7 +1223,7 @@ you run the `update-dns` command.
 
 1. If you moved Quill to another machine, complete the move: move the data volume to the new machine, and start the new
    container with the same `QUILL_LICENSE_KEY` and `QUILL_API_KEY` values, as described in
-   [Networking & DNS: What remains unchanged](networking-and-dns.mdx#what-remains-unchanged).
+   [DNS & IP Configuration: What remains unchanged](networking/dns-and-ip-configuration.mdx#what-remains-unchanged).
 2. Run the command below on Quill's machine, with your container's name instead of `quill-<name>` and the machine's new
    IP address instead of `<new-ip>`:
 
@@ -1235,7 +1235,8 @@ you run the `update-dns` command.
    When the DNS service completes the update, which may take up to 15 minutes, `update-dns` prints the message:
    `Successfully registered DNS record(s) for '<name>.myquill.ai' in api.ravendb.net.`
 
-Updating the records is described in [Networking & DNS: Update the records](networking-and-dns.mdx#update-the-records).
+Updating the records is described in
+[DNS & IP Configuration: Update the records](networking/dns-and-ip-configuration.mdx#update-the-records).
 
 </ContentFrame>
 
@@ -1275,7 +1276,8 @@ The DNS service may still complete the update.
 **What to do:**
 
 1. Look up Quill's hostnames, using the commands described in
-   [Networking & DNS: Verify the change](networking-and-dns.mdx#verify-the-change), and check the address the lookups show.  
+   [DNS & IP Configuration: Verify the change](networking/dns-and-ip-configuration.mdx#verify-the-change), and check the address
+   the lookups show.  
    A lookup may show the old address for up to 30 minutes after the update, since the computers and networks answering
    lookups may keep a copy of the old address for this long.
 2. If the lookups still show the old address 30 minutes after the `update-dns` command timed out, run the command again.
@@ -1306,7 +1308,7 @@ The DNS service may still complete the update.
   * The DNS service rejected the request.
 
   Follow the checks in the "The DNS update command exits with an error" row of the table in
-  [Networking & DNS: Diagnose failures](networking-and-dns.mdx#diagnose-failures).
+  [DNS & IP Configuration: Diagnose failures](networking/dns-and-ip-configuration.mdx#diagnose-failures).
 
 </ContentFrame>
 
@@ -1328,7 +1330,7 @@ some browsers and applications may keep their copy of the address even longer.
 Restarting an affected browser or application removes its copy of the old address, but a network's copy remains until
 the 30 minutes pass.  
 The 30-minute limit is described in
-[Networking & DNS: DNS propagation and TTL](networking-and-dns.mdx#dns-propagation-and-ttl).
+[DNS & IP Configuration: DNS propagation and TTL](networking/dns-and-ip-configuration.mdx#dns-propagation-and-ttl).
 
 </ContentFrame>
 
@@ -1388,7 +1390,8 @@ A lookup of one of Quill's hostnames shows the right address, but a connection t
     `api.ravendb.net` and through Let's Encrypt at `acme-v02.api.letsencrypt.org`. It tries again every hour, with no
     restart needed.
 
-The checks for each case are listed in [Networking & DNS: Diagnose failures](networking-and-dns.mdx#diagnose-failures).
+The checks for each case are listed in
+[DNS & IP Configuration: Diagnose failures](networking/dns-and-ip-configuration.mdx#diagnose-failures).
 
 </ContentFrame>
 
