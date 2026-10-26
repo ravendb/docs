@@ -1,0 +1,220 @@
+---
+title: "LAN Access on Windows"
+sidebar_label: "LAN Access on Windows"
+description: "Allow devices on your local network to reach Quill running on Windows with Docker Desktop's WSL 2 backend or Docker Engine inside WSL."
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from '@site/src/components/Panel';
+import ContentFrame from '@site/src/components/ContentFrame';
+
+<Admonition type="note" title="">
+
+* This article explains how to make Quill running on a Windows machine reachable from other devices on your local network.
+
+* In this article:
+  * [When other devices cannot reach Quill](#when-other-devices-cannot-reach-quill)
+  * [Enable mirrored networking](#enable-mirrored-networking)
+  * [Point the records at the LAN address](#point-the-records-at-the-lan-address)
+  * [Verify access from the LAN](#verify-access-from-the-lan)
+  * [Summary](#summary)
+
+</Admonition>
+
+<Panel heading="When other devices cannot reach Quill">
+
+On Windows, Quill runs in WSL 2 when you use Docker Desktop with its default WSL 2 backend, or Docker Engine installed in a WSL distribution.
+    
+In some setups, WSL's default networking mode or a firewall may prevent LAN traffic from reaching Quill.  
+Possible symptoms include:
+
+* Devices on your local network cannot connect to Quill, even when its hostnames resolve to the Windows machine's LAN address.
+* The Windows machine itself cannot connect to Quill through its own LAN address, although it can connect through `localhost`.
+
+A Linux host that runs Docker Engine directly is not affected.
+
+When Quill detects WSL, it prints a note with the `Status: READY` message at startup,  
+as described in [Starting Quill: Watching Quill come up](../getting-started/starting-quill.mdx#watching-quill-come-up).
+
+---
+    
+To let other devices reach Quill:
+
+1. [Enable mirrored networking](#enable-mirrored-networking) in WSL.
+2. [Point the records at the LAN address](#point-the-records-at-the-lan-address) of the Windows machine.
+3. [Verify access from the LAN](#verify-access-from-the-lan), on the Windows machine and on another device.
+
+In the commands below:
+
+* `<domain>` is your Quill's base domain, `<quill-name>.myquill.ai` (e.g., `acme.myquill.ai`).
+* `<container-name>` is the name specified by `docker run --name`.
+
+Run `docker` commands in PowerShell when you use Docker Desktop, or in the WSL distribution's shell when you use Docker Engine in WSL.
+
+<Admonition type="note" title="">
+
+#### Prerequisites
+
+* Windows 11, version 22H2 or later.  
+  WSL's mirrored networking mode is not available on earlier Windows versions.
+* The requirements of the `update-dns` command, listed in [Update the records](dns-and-ip-configuration.mdx#update-the-records).
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Enable mirrored networking">
+
+WSL reads its settings from the `.wslconfig` file in your Windows user profile folder.  
+These settings apply to every WSL 2 distribution on the Windows machine, including the one Docker Desktop runs.
+
+1. Create or open `%UserProfile%\.wslconfig` (e.g., `C:\Users\<user-name>\.wslconfig`), and add the following settings:
+
+   ```text
+   [wsl2]
+   networkingMode=mirrored
+
+   [experimental]
+   hostAddressLoopback=true
+   ```
+
+   If the file already has a `[wsl2]` or `[experimental]` section, add the setting to that section rather than adding the section again.
+
+   * `networkingMode=mirrored` mirrors the Windows machine's network interfaces into WSL,  
+     so devices on your network can connect to Quill through the Windows machine's LAN address.
+   * `hostAddressLoopback=true` lets the Windows machine connect to Quill through its own IPv4 LAN address,  
+     in addition to `127.0.0.1`. WSL lists this setting as experimental.
+
+2. Shut down WSL, so it restarts with the new settings:
+
+   ```powershell
+   wsl --shutdown
+   ```
+
+   This stops every running WSL distribution, including Docker Desktop's engine and the Quill container.
+
+3. Restart Docker Desktop.  
+   If you use Docker Engine in a WSL distribution, open the distribution again and make sure Docker is running.
+
+4. Start Quill again:
+
+   ```bash
+   docker start <container-name>
+   ```
+
+   The container keeps its data volume, so Quill starts with its existing apps and settings.
+
+</Panel>
+
+<Panel heading="Point the records at the LAN address">
+
+Other devices reach Quill through its hostnames, so the five DNS records must resolve to the Windows machine's LAN address.
+
+1. Find the LAN address:
+
+   ```powershell
+   ipconfig
+   ```
+
+   Use the **IPv4 Address** of the adapter that connects the Windows machine to your network,  
+   such as Wi-Fi or Ethernet (e.g., `192.168.1.20`).
+
+2. Check the address that the records currently return:
+
+   ```powershell
+   nslookup dashboard.<domain>
+   ```
+
+   If the lookup already returns the LAN address, continue with [Verify access from the LAN](#verify-access-from-the-lan).
+
+3. Otherwise, update the records, replacing `<lan-ip>` with the LAN address:
+
+   ```bash
+   docker exec <container-name> update-dns --ip <lan-ip>
+   ```
+
+   The command and its output are described in [Update the records](dns-and-ip-configuration.mdx#update-the-records).  
+   Resolvers that cached the previous address may keep returning it for about 30 minutes,  
+   as described in [DNS propagation and TTL](dns-and-ip-configuration.mdx#dns-propagation-and-ttl).
+
+A LAN address is usually private, so devices outside your network cannot reach Quill through it.  
+If your router later assigns the Windows machine a different address, update the records again.
+
+</Panel>
+
+<Panel heading="Verify access from the LAN">
+
+Verify access from the Windows machine that runs Quill, and from another device on the same network.
+
+---
+
+<ContentFrame>
+        
+### Check from the Windows machine
+
+Run the following commands in PowerShell:
+
+```powershell
+nslookup dashboard.<domain>
+curl.exe --fail --silent --show-error https://dashboard.<domain>/healthz
+```
+<br/>
+
+The lookup should return the LAN address, and the health check should print `Healthy`.  
+In Windows PowerShell, `curl` is an alias of `Invoke-WebRequest`, so type `curl.exe`.
+
+If the lookup returns the LAN address but the health check fails,
+make sure that `hostAddressLoopback=true` is in the `[experimental]` section of `.wslconfig`,
+and that WSL was shut down after the file was saved.
+
+</ContentFrame>
+<ContentFrame>    
+
+### Check from another device
+
+On another device on the same network:
+
+* `nslookup dashboard.<domain>` should return the LAN address.
+* `https://dashboard.<domain>` should open the management dashboard in a browser.  
+  To check without a browser, run `curl --fail --silent --show-error https://dashboard.<domain>/healthz`, which should print `Healthy`.
+
+</ContentFrame>
+<ContentFrame>
+
+### If another device cannot connect
+
+* If the lookup returns a different address, the records were not updated, or a resolver still returns the previous address.
+  See [Point the records at the LAN address](#point-the-records-at-the-lan-address) and [DNS propagation and TTL](dns-and-ip-configuration.mdx#dns-propagation-and-ttl).
+    
+* Make sure that the container publishes port `443`, as described in [Check the container and published port](dns-and-ip-configuration.mdx#check-the-container-and-published-port).
+    
+* Check Windows Firewall and any other firewall software on the Windows machine.  
+  Allow inbound TCP connections on port `443`.
+
+* If WSL's Hyper-V firewall blocks inbound traffic, allow TCP connections on port `443`.  
+  Microsoft's [Mirrored mode networking](https://learn.microsoft.com/en-us/windows/wsl/networking#mirrored-mode-networking) documentation gives the following command for allowing inbound connections on a port.  
+
+  Run it in PowerShell as an administrator:
+
+  ```powershell
+  New-NetFirewallHyperVRule -Name "Quill-HTTPS" -DisplayName "Quill HTTPS" -Direction Inbound -VMCreatorId '{40E0AC32-46A5-438A-A0B2-2B479E8F2E90}' -Protocol TCP -LocalPorts 443
+  ```
+
+</ContentFrame>    
+</Panel>
+
+<Panel heading="Summary">
+
+* On Windows, WSL's default networking mode or a firewall may prevent LAN access to Quill.
+
+* Enable WSL mirrored networking with `hostAddressLoopback` and shut down WSL.
+  Restart Docker Desktop, or reopen the WSL distribution if you use Docker Engine, and start Quill again.
+
+* Point Quill's five DNS records at the Windows machine's LAN address.  
+  A private LAN address is reachable only from within your network.
+
+* Verify DNS resolution and HTTPS access from both the Windows machine and another device on the same network.
+  If access fails, check port publishing, Windows Firewall, and WSL's Hyper-V firewall.
+
+</Panel>

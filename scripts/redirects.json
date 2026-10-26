@@ -1222,5 +1222,11 @@
         "value": {
             "targetUrl": "/quill/channels/slack"
         }
+    },
+    {
+        "key": "/quill/networking-and-dns",
+        "value": {
+            "targetUrl": "/quill/networking/dns-and-ip-configuration"
+        }
     }
 ]
