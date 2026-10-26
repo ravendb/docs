@@ -111,7 +111,8 @@ with configurations that suit your needs.
 
 *Production tier* clusters can be also extended by [additional product nodes](../cloud/portal/cloud-portal-products-tab.mdx#nodes-additional-product-nodes).  
 <Admonition type="info" title="">
-This option is not available for **PS** instance types.
+This option is not available for **PS** and **PN** instance types, for Serverless products, or for
+products on a yearly contract.
 </Admonition>
 
 ![Production Tier](./assets/portal-product-create-plan-tier-production.png)
@@ -216,8 +217,8 @@ For instructions on how to create a Serverless product, see
 ### Autoscaling
 
 The cluster scales up and down automatically within a band you choose, driven by three sustained signals:
-**load average**, **available memory** and **IO wait**. Scaling moves one step at a time, and a grace period is applied
-before each step to prevent flapping caused by short load spikes.
+**load average**, **available memory** and **IO wait**. Scaling moves one step at a time, a signal counts only once it
+has been sustained, and a grace period after each resize keeps the cluster from flapping between sizes.
 
 Serverless Autoscaling is always enabled, and only its instance range — the lowest and highest type — is configurable;
 the thresholds and grace periods are managed for you. See

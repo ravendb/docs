@@ -22,7 +22,7 @@ import ContentFrame from '@site/src/components/ContentFrame';
   Follow the steps in [Change the IP](#change-the-ip) to generate and run the command on the Docker host.
 
 * For details about Quill's DNS records, DNS propagation, and moving to another host,
-  see [Networking & DNS](../networking-and-dns.mdx).
+  see [DNS & IP Configuration](../networking/dns-and-ip-configuration.mdx).
 
 ---
     
@@ -171,12 +171,12 @@ the generated command also updates `a.<domain>`. It updates these five DNS recor
 When the update succeeds, the command prints a confirmation that the records were registered.
 
 For details about these hostnames, DNS propagation, assigning IPv6 or multiple addresses,
-and handling a timeout, see [Networking & DNS](../networking-and-dns.mdx).
+and handling a timeout, see [DNS & IP Configuration](../networking/dns-and-ip-configuration.mdx).
 
 <Admonition type="note" title="">
 
 * Repointing the DNS records does not move your Quill's data.
-* If you are moving your Quill instance to another host, see [Moving to another host](../networking-and-dns.mdx#moving-to-another-host).
+* If you are moving your Quill instance to another host, see [Moving to another host](../networking/dns-and-ip-configuration.mdx#moving-to-another-host).
 
 </Admonition>
 
@@ -201,7 +201,7 @@ Seeing the new address confirms that it has reached the DNS resolver used by the
 Other callers may continue receiving the previous address until their cached DNS records expire.
 
 For details about DNS propagation and how to verify the update from outside the Quill container,  
-see [DNS propagation and TTL](../networking-and-dns.mdx#dns-propagation-and-ttl)
-and [Verify the change](../networking-and-dns.mdx#verify-the-change).
+see [DNS propagation and TTL](../networking/dns-and-ip-configuration.mdx#dns-propagation-and-ttl)
+and [Verify the change](../networking/dns-and-ip-configuration.mdx#verify-the-change).
 
 </Panel>

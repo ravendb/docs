@@ -29,8 +29,9 @@ takes you to your account's Portal, which gives you access to all the different 
 
 ![Cloud Portal overview](./assets/portal-sidebar.png)
 
-You navigate the Portal from the **sidebar** on the left. It can be collapsed to icons only, using the control next to
-the logo, to give the current view more room.
+You navigate the Portal from the **sidebar** on the left. To give the current view more room, collapse it to icons
+only with the **Collapse sidebar** control next to the logo. While it is collapsed, hover an icon to see its label, and
+click the logo mark to expand the sidebar again.
 
 At the top of the sidebar, the **account switcher** lets you move between the cloud accounts you have access to. Each
 account is identified by its **domain name**. See
@@ -66,10 +67,15 @@ account is identified by its **domain name**. See
 * **[Account](../../cloud/portal/cloud-portal-account-tab.mdx)**  
   View and edit your invoices and credit card information.
 
+* **Account features**  
+  Set up features that apply to the whole account, such as
+  [External SSO & User Management](../../cloud/cloud-sso.mdx).
+
 <Admonition type="note" title="">
 Which views you see depends on your access — for example, *Billing & costs* requires the **Billing**
 [account role](../../cloud/cloud-account.mdx#account-roles), and *Users & Access* requires
-**Account with User Management**. Views you have no role for are not shown.
+**Account with User Management**. *Account features* requires **External SSO & User Management** or
+**Account with User Management**, so account owners always see it. Views you have no role for are not shown.
 
 **Products** is gated differently: it appears if you hold the **Products Creation**
 [account role](../../cloud/cloud-account.mdx#account-roles), or if you have
@@ -92,8 +98,17 @@ The **Help center** entry at the bottom of the sidebar opens a menu with:
 
 ### Profile
 
-The **profile** entry, also at the bottom of the sidebar, shows your user name and gives you access to your profile
-settings — including [Multi-Factor Authentication](../../cloud/cloud-security.mdx#mfa) — and to **Log out**.
+The **profile** entry, also at the bottom of the sidebar, shows your user name and opens a menu with:
+
+* **Organizations** — the cloud accounts your profile belongs to.
+* **Invitations** — pending invitations to join other cloud accounts. See
+  [Accepting an invitation](../../cloud/portal/cloud-portal-users-and-access-tab.mdx#accepting-an-invitation).
+* **Security** — [Multi-Factor Authentication](../../cloud/cloud-security.mdx#mfa), recovery codes and your
+  recovery phone number.
+* **Cookie settings** — review or change your cookie consent.
+* **Logout**.
+
+On small screens, the same entries are in the menu at the top of the page.
 
 
 

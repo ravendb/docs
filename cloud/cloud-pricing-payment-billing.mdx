@@ -30,7 +30,7 @@ details in any case). You can pay per minute without any commitment, or use one 
   * [Billing](../cloud/cloud-pricing-payment-billing.mdx#billing)  
     - [Billing Period](../cloud/cloud-pricing-payment-billing.mdx#billing-period)  
     - [Charging Failures](../cloud/cloud-pricing-payment-billing.mdx#charging-failures)  
-    - [Pay Now](../cloud/cloud-pricing-payment-billing.mdx#pay-now)  
+    - [Retry a failed payment](../cloud/cloud-pricing-payment-billing.mdx#pay-now)  
 
 </Admonition>
 
@@ -168,29 +168,29 @@ you and retry for 5 days. Failure to pay after that period may result in account
 Here's an example of the notification sent to the owner and all cloud account managers:
 
 ![Email notifying of a failed payment](./assets/email-payment-failed.png)
-#### Pay Now 
+#### Retry a failed payment {#pay-now}
 
-The `Pay Now` button becomes visible on your Billing tab dashboard once there are any unpaid costs from previous billing cycle(s).
+Once there are unpaid costs from previous billing cycles, the Billing & Costs tab shows a *We couldn't process your payment* banner with the date of the oldest unpaid cost, the total due, and a **Retry payment** button.
 
 <Admonition type="info" title="">
 After a failed charge attempt, another attempt can be made after **60** minutes.
 </Admonition>
 
-If you have resolved the issue associated with the charge failure (e.g., updated payment information), you can manually initiate the payment by clicking the `Pay Now` button.
-Upon clicking the `Pay Now` button, the system will process the payment for all outstanding amounts up to the end of the previous billing cycle. If the payment process fails, you will be notified again by email.
+If you have resolved the issue associated with the charge failure (e.g., updated payment information), you can initiate the payment yourself: click **Retry payment**, check the amount in the *Confirm payment* dialog, and click **Confirm and pay**.
+The system then processes the payment for all outstanding amounts up to the end of the previous billing cycle. If the payment process fails, you will be notified again by email.
 
 
-![The Pay Now widget](./portal/assets/portal-billing-costs-pay-now.png)
-![The Pay Now widget - confirmation](./portal/assets/portal-billing-costs-pay-now-modal.png)
+![The unpaid costs banner](./portal/assets/portal-billing-costs-pay-now.png)
+![Confirm payment dialog](./portal/assets/portal-billing-costs-pay-now-modal.png)
 
 #### Billing Cycle and Date Range 
 
-The `Pay Now` feature covers all unpaid costs up to the end of the previous billing cycle.
+A retried payment covers all unpaid costs up to the end of the previous billing cycle.
 It does not cover costs incurred in the current billing cycle.
 
 <Admonition type="note" title="">
 #### Example
-If you have unpaid costs from 13/12/2023 and today is 01/03/2024, using the `Pay Now` feature will bill you for the period from **13/12/2023** up to **27/02/2024**.
+If you have unpaid costs from December 13, 2023 and today is March 1, 2024, retrying the payment will bill you for the period from **December 13, 2023** up to **February 25, 2024**.
 </Admonition>
 
 #### Notifications
@@ -201,7 +201,7 @@ If you have unpaid costs from 13/12/2023 and today is 01/03/2024, using the `Pay
 
 Ensure that your payment information is up-to-date to avoid repeated charge failures.
 
-Contact support if you encounter any issues while using the `Pay Now` feature.
+Contact support if you encounter any issues while retrying a payment.
 
 </Admonition>
 

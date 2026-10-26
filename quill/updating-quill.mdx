@@ -116,7 +116,7 @@ In these names:
 For `https://dashboard.acme.myquill.ai`, the examples use `quill-acme` as the container name and `quill-acme-data` as the volume name. 
 If your deployment uses different names, use the actual names identified in the next panel.
 
-For the hostnames published beneath the base domain, see [The published hostnames](networking-and-dns.mdx#the-published-hostnames).
+For the hostnames published beneath the base domain, see [The published hostnames](networking/dns-and-ip-configuration.mdx#the-published-hostnames).
 
 Mounting the same data volume at `/var/lib/quill` reconnects the replacement container to the existing Quill data.  
 Preserve the same required environment values and port mapping so that Quill returns with the same credentials and at the same address.
@@ -319,7 +319,7 @@ The `state` field reports `Ready` when startup is complete.
 | The dashboard loads, but the expected apps or data are missing                      | The replacement mounted the wrong volume, or created a new empty volume                         | Stop the replacement container and follow [Recover the recorded data volume](#recover-the-recorded-data-volume).                                                                                                                                 |
 | The container does not remain running                                               | Startup failed                                                                                  | Read `docker logs --tail 100 <container-name>` and verify the image, port mapping, and environment options against the setup-email command.                                                                                                      |
 | The dashboard returns `401`                                                         | The replacement uses a different Dashboard API key, or you are signing in with the previous key | Sign in with the `QUILL_API_KEY` supplied to the replacement. If the key changed unintentionally, recreate the container with the recorded original value. See [Operator Authentication](security-and-architecture/operator-authentication.mdx). |
-| Quill is not reachable at its usual address                                         | The published port changed, or the host address or DNS records no longer match                  | Confirm the port mapping. If the host address changed, follow [Networking & DNS](networking-and-dns.mdx).                                                                                                                                        |
+| Quill is not reachable at its usual address                                         | The published port changed, or the host address or DNS records no longer match                  | Confirm the port mapping. If the host address changed, follow [DNS & IP Configuration](networking/dns-and-ip-configuration.mdx).                                                                                                                                        |
 
 <ContentFrame>
 

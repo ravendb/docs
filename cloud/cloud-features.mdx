@@ -200,15 +200,27 @@ You can read step by step OpenTelemetry & Grafana configuration [here](https://r
 *RavenDB Cloud* can resize your instance automatically, within a range you choose, so it follows your actual workload
 instead of being fixed to the size you provisioned.
 
-Scaling is driven by three sustained signals, each watched independently:
+Scaling is driven by three sustained signals:
 
 * **Load average** — how busy the node's CPUs are.
 * **Available memory** — how much memory is left for processing.
 * **IO wait** — how much time the node spends waiting on disk.
 
-Each signal has a low and a high limit, and each limit has its own duration. A limit must be breached for the whole of
-its duration before it counts, and a **grace period** then applies before the resize itself, so a brief spike never
-moves your instance.
+Each signal has a low and a high limit, and each limit has its own duration. Load average and available memory are
+averaged over that duration, and IO wait must stay past its limit for the whole of it, so a brief spike never moves
+your instance.
+
+The two directions combine the signals differently:
+
+* **Scaling up** takes one signal on one node. The cluster scales up when **any node** has a load average at or above
+  the high limit, available memory at or below the low limit, **or** IO wait above the max value.
+* **Scaling down** takes all three signals on every node. The cluster scales down only when **every node** has a load
+  average at or below the low limit, available memory at or above the high limit, **and** IO wait at or below the min
+  value.
+
+Each direction also has a **grace period**: a cooldown counted from the moment the last resize finished, including a
+resize you made yourself. The cluster does not scale up until the upscaling grace period has passed since then, and
+does not scale down until the downscaling grace period has passed.
 
 ### Autoscaling range
 
@@ -226,7 +238,7 @@ split into upscaling and downscaling parameters.
 
 | Parameter                            | Range       | Description                                                                                          |
 |--------------------------------------|-------------|------------------------------------------------------------------------------------------------------|
-| Upscaling grace period               | 3–60 min    | The delay before upscaling begins after a high resource threshold is exceeded, so short spikes do not trigger a resize. |
+| Upscaling grace period               | 3–1440 min  | The minimum time after the last resize, including a manual one, before the cluster can scale up again. |
 | High load average threshold          | 50–90%      | The average load percentage, over the *high load average threshold duration*, that triggers upscaling. |
 | High load average threshold duration | 180–600 sec | How long the average load must stay above the threshold before upscaling is triggered.               |
 | Low available memory threshold       | 1–15%       | The available memory percentage below which upscaling is triggered.                                  |
@@ -239,7 +251,7 @@ split into upscaling and downscaling parameters.
 
 | Parameter                           | Range       | Description                                                                                           |
 |-------------------------------------|-------------|-------------------------------------------------------------------------------------------------------|
-| Downscaling grace period            | 3–60 min    | The delay before downscaling begins after a low resource threshold is reached.                        |
+| Downscaling grace period            | 3–1440 min  | The minimum time after the last resize, including a manual one, before the cluster can scale down again. |
 | Low load average threshold          | 1–35%       | The average load percentage, over the *low load average threshold duration*, that triggers downscaling. |
 | Low load average threshold duration | 180–600 sec | How long the average load must stay below the threshold before downscaling is triggered.              |
 | High available memory threshold     | 20–90%      | The available memory percentage above which downscaling is allowed.                                   |
