@@ -1,15 +1,13 @@
 import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
-import ContentFrame from "@site/src/components/ContentFrame";
+import Panel from "@site/src/components/Panel";
 
 <Admonition type="note" title="">
 
-Use the methods described in this page to customize the [conventions](../../../client-api/configuration/conventions.mdx)
-by which entities are deserialized as they are received by the client.
-
-* In this page:  
+* The C# client deserializes documents loaded from the server into entities using the
+  [Newtonsoft.Json](https://www.newtonsoft.com/json/help/html/SerializingJSON.htm) library (also known as Json.NET).  
+* Use the [conventions](../../../client-api/configuration/conventions.mdx) described in this article
+  to customize the deserialization (e.g., to preserve document properties that your entity class does not define).  
+* In this article:  
   * [CustomizeJsonDeserializer](../../../client-api/configuration/deserialization.mdx#customizejsondeserializer)  
   * [DeserializeEntityFromBlittable](../../../client-api/configuration/deserialization.mdx#deserializeentityfromblittable)  
   * [PreserveDocumentPropertiesNotFoundOnModel](../../../client-api/configuration/deserialization.mdx#preservedocumentpropertiesnotfoundonmodel)  
@@ -18,35 +16,34 @@ by which entities are deserialized as they are received by the client.
 
 </Admonition>
 
-<ContentFrame>
+<Panel heading="CustomizeJsonDeserializer">
 
-## CustomizeJsonDeserializer
+* The client uses `JsonSerializer` objects of the [Newtonsoft.Json](https://www.newtonsoft.com/json/help/html/SerializingJSON.htm)
+  library to **deserialize** documents loaded from the server into entities.  
+* Use the `CustomizeJsonDeserializer` convention to register an action that modifies only the `JsonSerializer` objects
+  used to load documents (e.g., to keep a property's default value when the loaded document holds `null` for this property).  
+  <br /><br />
+  ```csharp
+  Conventions =
+  {
+      Serialization = new NewtonsoftJsonSerializationConventions
+      {
+          CustomizeJsonDeserializer = serializer => throw new CodeOmitted()
+      }
+  }
+  ```
+  <br />
+* Note that an action registered using [CustomizeJsonSerializer](../../../client-api/configuration/serialization.mdx#customizejsonserializer)
+  also applies when loading documents, and runs before the `CustomizeJsonDeserializer` action.  
+  A [converter](../../../client-api/configuration/serialization.mdx#adding-a-converter) registered using `CustomizeJsonSerializer`
+  therefore does not need to be registered using `CustomizeJsonDeserializer` as well.
 
-* The `JsonSerializer` object is used by the client to deserialize entities
-  loaded from the server.  
-* Use the `CustomizeJsonDeserializer` convention to modify `JsonSerializer`
-  by registering a deserialization customization action.  
+</Panel>
 
-```csharp
-Conventions =
-{
-    Serialization = new NewtonsoftJsonSerializationConventions
-    {
-        CustomizeJsonDeserializer = serializer => throw new CodeOmitted()
-    }
-}
-```
+<Panel heading="DeserializeEntityFromBlittable">
 
-</ContentFrame>
-
----
-
-<ContentFrame>
-
-## DeserializeEntityFromBlittable
-
-* Use the `DeserializeEntityFromBlittable` convention to customize entity
-  deserialization from a blittable JSON.  
+Use the `DeserializeEntityFromBlittable` convention to customize entity
+deserialization from a blittable JSON.
 
 ```csharp
 Conventions =
@@ -58,13 +55,9 @@ Conventions =
 }
 ```
 
-</ContentFrame>
+</Panel>
 
----
-
-<ContentFrame>
-
-## PreserveDocumentPropertiesNotFoundOnModel
+<Panel heading="PreserveDocumentPropertiesNotFoundOnModel">
 
 * Some document properties are not deserialized to an object.  
 * Set the `PreserveDocumentPropertiesNotFoundOnModel` convention to `true`
@@ -80,13 +73,9 @@ Conventions =
 }
 ```
 
-</ContentFrame>
+</Panel>
 
----
-
-<ContentFrame>
-
-## DefaultRavenSerializationBinder
+<Panel heading="DefaultRavenSerializationBinder">
 
 Use the `DefaultRavenSerializationBinder` convention and its methods to
 prevent gadgets from running RCE (Remote Code Execution) attacks while
@@ -95,18 +84,14 @@ data is deserialized by the client.
 Read about this security convention and maintaining deserialization security
 [here](../../../client-api/security/deserialization-security.mdx).
 
-</ContentFrame>
+</Panel>
 
----
-
-<ContentFrame>
-
-## Number Deserialization
+<Panel heading="Number Deserialization">
 
 * RavenDB client supports all common numeric value types (including `int`, `long`,
   `double`, `decimal`, etc.) out of the box.  
 * Note that although deserialization of `decimals` is fully supported, there are
   [server side limitations](../../../server/kb/numbers-in-ravendb.mdx) to numbers in this range.  
-* Other number types, like `BigInteger`, must be handled using custom deserialization.  
+* Other number types, like `BigInteger`, must be handled using a [converter](../../../client-api/configuration/serialization.mdx#adding-a-converter).  
 
-</ContentFrame>
+</Panel>
