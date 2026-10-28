@@ -1338,7 +1338,8 @@ The 30-minute limit is described in
 
 ##### Connections fail although the address is right
 
-A lookup of one of Quill's hostnames shows the right address, but a connection to the hostname times out, is refused, or fails with a certificate error.
+A lookup of one of Quill's hostnames shows the right address, but a connection to the hostname times out, is refused, fails with a certificate error,
+or fails only from other devices on your network.
 
 <Admonition type="note" title="">
 
@@ -1348,8 +1349,19 @@ A lookup of one of Quill's hostnames shows the right address, but a connection t
 
 * The connection times out: a firewall, cloud security rules, or NAT or load-balancer settings block connections on port
   443 to Quill's machine or its container.  
-  **What to do:** allow inbound connections on port 443 in these settings, and make sure port 443 of the container is
+    
+  **What to do:**   
+  Allow inbound connections on port 443 in these settings, and make sure port 443 of the container is
   published on Quill's machine.
+    
+* Other devices on your network cannot connect, while the Windows machine running Quill reaches it through `localhost`:
+  if Quill runs in WSL 2 (e.g., on Docker Desktop for Windows), WSL's default networking mode or a firewall may prevent
+  LAN traffic from reaching Quill.  
+
+  **What to do:**  
+  Enable WSL mirrored networking with `hostAddressLoopback`, point Quill's hostnames at the Windows machine's LAN address,
+  and verify access from another device, as described in [LAN Access on Windows](networking/lan-access-on-windows.mdx).
+    
 * The connection is refused: the container is stopped, or its port 443 is not published.  
 
   **What to do**, by the cause:
