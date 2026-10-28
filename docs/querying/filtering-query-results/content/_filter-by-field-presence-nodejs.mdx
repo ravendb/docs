@@ -1,0 +1,420 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import ContentFrame from '@site/src/components/ContentFrame';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* Documents in the same collection can have different fields.  
+  For example, a field added to newer documents might be missing from older documents.    
+  You can optionally use [schema validation](../../../documents/schema-validation/overview.mdx) to require specific fields when documents are written.
+    
+* To filter documents by field presence:  
+  * To find documents that **contain** a specified field, use `whereExists`.  
+  * To find documents that are **missing** a specified field, use `.not().whereExists`.  
+  * Both are available through the [query API](../../../querying/overview.mdx#query-api).  
+
+* An explicit `null` counts as **present** only when it is the value of the field you check.  
+  If a parent on a nested path is missing or `null`, or the field is an empty array, the field counts as **missing**.  
+  Learn more in [How field presence is determined](#how-field-presence-is-determined).
+    
+* You can check field presence when querying a **static index** or when making a **dynamic query**.  
+  When querying a static index, the check applies to the fields produced by the index's map function.
+
+* In this article:
+    * [Find documents that CONTAIN a field](#find-documents-that-contain-a-field)
+        * [Dynamic query](#dynamic-query-existing-field)
+        * [Static index query](#static-index-query-existing-field)
+    * [Find documents that are MISSING a field](#find-documents-that-are-missing-a-field)
+        * [Dynamic query](#dynamic-query-missing-field)
+        * [Static index query](#static-index-query-missing-field)
+    * [How field presence is determined](#how-field-presence-is-determined)
+    * [Syntax](#syntax)
+
+</Admonition>
+
+<Panel heading="Find documents that CONTAIN a field">
+
+### Dynamic query {/* #dynamic-query-existing-field */}
+
+* Use `whereExists` to return documents that contain the specified field.  
+  Documents that are missing the field are excluded from the results.
+
+* RavenDB uses an auto-index to process the filter, creating one if needed.  
+  Learn more about this query type in [Query a collection - with filtering](../../../querying/overview.mdx#2-query-a-collection---with-filtering).
+
+* You can check field presence using either a **field name** or a nested **field path**, as shown below.
+    
+---    
+
+<ContentFrame>
+
+#### Filter documents by field name
+
+The following query returns employees whose documents contain the `FirstName` field:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```javascript
+const employees = await session
+    .query({ collection: "Employees" })
+    .whereExists("FirstName")
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Employees
+where exists("FirstName")
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+<ContentFrame>
+
+#### Filter documents by nested field path
+
+You can also check for a nested field by specifying its full path.  
+The following query returns employees whose documents contain `Latitude` at `Address.Location.Latitude`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```javascript
+const employees = await session
+    .query({ collection: "Employees" })
+    .whereExists("Address.Location.Latitude")
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Employees
+where exists(Address.Location.Latitude)
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+---
+
+### Static index query {/* #static-index-query-existing-field */}
+
+* When querying a static index, use the **index-field name** in `whereExists`.  
+  The index must include the field whose presence you want to check.
+
+* The following index maps:
+  * `FirstName` to an index-field with the same name.
+  * `Address.Location.Latitude` to an index-field named `Latitude`.    
+  * The document ID to an index-field named `Id`, to retain entries for documents with missing fields.  
+    See [Static index query for missing fields](#static-index-query-missing-field) for details.
+
+    ```javascript
+    class Employees_ByFieldPresence extends AbstractJavaScriptIndexCreationTask {
+        constructor() {
+            super();
+
+            this.map("Employees", employee => {
+                return {
+                    // Include Id so documents with missing fields still have an index entry.
+                    Id: id(employee),
+
+                    FirstName: employee.FirstName,
+
+                    // Optional chaining keeps Latitude missing (not null) 
+                    // when Address or Location is missing.
+                    Latitude: employee.Address?.Location?.Latitude
+                };
+            });
+        }
+    }
+    ```
+    
+---    
+
+<ContentFrame>
+
+#### Filter documents by field name
+
+The following example queries the `Employees_ByFieldPresence` index and returns employee documents that contain the `FirstName` field:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```javascript
+const employees = await session
+    .query({ index: Employees_ByFieldPresence })
+    .whereExists("FirstName")
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Employees/ByFieldPresence"
+where exists("FirstName")
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+<ContentFrame>
+
+#### Filter documents by a mapped nested field
+
+The index maps the nested document field `Address.Location.Latitude` to an index-field named `Latitude`.  
+Use `Latitude` in the query:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```javascript
+const employees = await session
+    .query({ index: Employees_ByFieldPresence })
+    .whereExists("Latitude")
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Employees/ByFieldPresence"
+where exists("Latitude")
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Find documents that are MISSING a field">
+
+### Dynamic query {/* #dynamic-query-missing-field */}
+
+* Use `.not().whereExists` to return documents that are missing the specified field.
+* You can check for a missing field using either a **field name** or a nested **field path**, as shown below.
+
+---
+    
+<ContentFrame>
+
+#### Filter documents by field name
+
+The following query returns employees whose documents do **not** contain the field `FirstName`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```javascript
+const employeesWithoutFirstName = await session
+    .query({ collection: "Employees" })
+    .not()
+    .whereExists("FirstName")
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Employees
+where true and not exists("FirstName")
+```
+</TabItem>
+</Tabs>
+
+In RQL, `not` cannot appear immediately after `where`.  
+Use `where true and not exists(...)` when the missing-field condition is the first condition.  
+_session.query_ adds `true and` automatically in this case.
+
+</ContentFrame>
+
+<ContentFrame>
+
+#### Filter documents by nested field path
+
+Use the full path to check for a missing nested field.  
+The following query returns employees whose documents do **not** contain `Latitude` at `Address.Location.Latitude`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```javascript
+const employeesWithoutLatitude = await session
+    .query({ collection: "Employees" })
+    .not()
+    .whereExists("Address.Location.Latitude")
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Employees
+where true and not exists(Address.Location.Latitude)
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+---
+
+### Static index query {/* #static-index-query-missing-field */}
+
+* Use `.not().whereExists` with the **index-field name**.  
+  The field you want to check must be included in the index's map function.
+
+* The index must also retain an entry for documents that are missing that field.
+  The index used in this article maps the document ID to `Id`, ensuring that an entry is retained even when both `FirstName` and `Latitude` are missing.
+   
+* **Alternatively**, set [Indexing.IndexEmptyEntries](../../../server/configuration/indexing-configuration.mdx#indexingindexemptyentries) to `true` to retain entries for documents that are missing all mapped fields,
+  without needing to map `Id` for this purpose.    
+
+<Admonition type="note" title="">
+
+If [Indexing.IndexMissingFieldsAsNull](../../../server/configuration/indexing-configuration.mdx#indexingindexmissingfieldsasnull) is `true`,
+missing mapped fields are indexed as `null` and count as **present**.  
+Consequently, `.not().whereExists` does not return documents whose missing fields were indexed this way.  
+This setting does not affect auto-indexes.
+
+</Admonition>    
+    
+---
+    
+<ContentFrame>
+
+#### Filter documents by field name
+
+Query the `Employees_ByFieldPresence` index defined [above](#static-index-query-existing-field):
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```javascript
+const employeesWithoutFirstName = await session
+    .query({ index: Employees_ByFieldPresence })
+    .not()
+    .whereExists("FirstName")
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Employees/ByFieldPresence"
+where true and not exists("FirstName")
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+<ContentFrame>
+
+#### Filter documents by a mapped nested field
+
+The index maps the document field `Address.Location.Latitude` to an index-field named `Latitude`.  
+The following query checks the `Latitude` index-field and returns employee documents that do **not** contain `Latitude` at `Address.Location.Latitude`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```javascript
+const employeesWithoutLatitude = await session
+    .query({ index: Employees_ByFieldPresence })
+    .not()
+    .whereExists("Latitude")
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Employees/ByFieldPresence"
+where true and not exists("Latitude")
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="How field presence is determined">
+
+* `whereExists` checks field presence in the index used by the query:
+  * An explicit `null` counts as **present** only when it is the value of the field you check.
+  * If a parent on a nested path is missing or `null`, the field counts as **missing**.
+  * An empty array counts as **missing**.
+
+* These rules apply to both query types, with a configuration exception for static indexes:
+
+  * **For dynamic queries**, they apply to the document field name or nested path specified in the query.
+
+  * **For static index queries**, presence is checked on the fields produced by the index's map function.  
+    For example, with the direct index-field mapping `Latitude: employee.Address?.Location?.Latitude`,  
+    the query checks `Latitude`, not `Address.Location.Latitude`.
+
+    If `Address` is missing or `null`, optional chaining returns `undefined` for `Latitude`,  
+    which is not indexed by default. The `Latitude` index-field therefore counts as **missing**.
+
+    Use optional chaining (`?.`) so that missing nested fields stay missing in a JavaScript index.  
+    For example, if `Address` has no `Location` (as in `"Address": { "City": "Seattle" }`),  
+    mapping `Latitude: employee.Address.Location.Latitude` without optional chaining produces `null`  
+    through RavenDB's null propagation, so the mapped `Latitude` counts as **present**.
+
+    The [Indexing.IndexMissingFieldsAsNull](../../../server/configuration/indexing-configuration.mdx#indexingindexmissingfieldsasnull) configuration key is `false` by default.  
+    If set to `true`, missing mapped fields are indexed as `null` and count as **present**.  
+    Empty arrays still count as **missing**, regardless of this setting.
+
+    For `.not().whereExists` to return documents with missing fields, the index must retain entries for them.  
+    See [Static index query for missing fields](#static-index-query-missing-field) for details.
+
+---
+
+The following examples use document field names and paths and assume the default indexing settings.  
+For static indexes, they assume direct mappings (with optional chaining for nested fields)  
+and retained entries for documents with missing fields, as explained above.
+
+| Document content                                  | Checked path                | `whereExists` result     | `.not().whereExists` result |
+| ------------------------------------------------- | --------------------------- | ------------------------ | --------------------------- |
+| `"FirstName": null`                               | `FirstName`                 | Document returned&nbsp;✅ | Document excluded&nbsp;❌    |
+| No `FirstName` field                              | `FirstName`                 | Document excluded&nbsp;❌ | Document returned&nbsp;✅    |
+| `"Territories": []`                               | `Territories`               | Document excluded&nbsp;❌ | Document returned&nbsp;✅    |
+| `"Address": { "Location": { "Latitude": null } }` | `Address.Location.Latitude` | Document returned&nbsp;✅ | Document excluded&nbsp;❌    |
+| `"Address": null`                                 | `Address.Location.Latitude` | Document excluded&nbsp;❌ | Document returned&nbsp;✅    |
+| `"Address": { "City": "Seattle" }`                | `Address.Location.Latitude` | Document excluded&nbsp;❌ | Document returned&nbsp;✅    |
+
+</Panel>
+
+<Panel heading="Syntax">
+
+### whereExists
+
+```typescript
+whereExists(fieldName: Field<T>): TSelf;
+```
+
+| Parameter     | Type       | Description |
+|---------------|------------|-------------|
+| **fieldName** | `Field<T>` | For a dynamic query, the document field name or nested path.<br/>For a static index query, the index field name.<br/>`Field<T>` accepts a property name of `T` or any string. |
+
+Returns `TSelf`, the query instance (`IDocumentQuery<T>` for `session.query`), so calls can be chained.
+
+---
+    
+### not
+
+The `not()` method negates the next filtering condition.  
+Place it immediately before `whereExists` to search for missing fields:
+
+```javascript
+.not().whereExists("FirstName")
+```
+
+---
+    
+### RQL
+
+```sql
+// Find documents with the field.
+where exists(FieldName)
+
+// Find documents without the field.
+where true and not exists(FieldName)
+```
+
+</Panel>

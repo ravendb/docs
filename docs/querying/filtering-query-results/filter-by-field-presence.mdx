@@ -1,0 +1,51 @@
+---
+title: "Filter by Field Presence"
+sidebar_label: "Filter by Field Presence"
+description: "Find documents that contain a specified field or are missing it, using dynamic queries or static indexes."
+sidebar_position: 4
+supported_languages: ["csharp", "java", "python", "php", "nodejs"]
+see_also:
+     - title: "Filter Query Results"
+       link: "querying/filtering-query-results/filter-query-results"
+       source: "docs"
+       path: "Querying > Filtering Query Results"
+     - title: "What is a Document Query"
+       link: "querying/document-query/what-is-document-query"
+       source: "docs"
+       path: "Querying > DocumentQuery"
+     - title: "Query an Index"
+       link: "indexes/querying/query-index"
+       source: "docs"
+       path: "Indexes > Querying"
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import FilterByFieldPresenceCsharp from './content/_filter-by-field-presence-csharp.mdx';
+import FilterByFieldPresenceJava from './content/_filter-by-field-presence-java.mdx';
+import FilterByFieldPresencePython from './content/_filter-by-field-presence-python.mdx';
+import FilterByFieldPresencePhp from './content/_filter-by-field-presence-php.mdx';
+import FilterByFieldPresenceNodejs from './content/_filter-by-field-presence-nodejs.mdx';
+
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
+
+<LanguageContent language="csharp">
+   <FilterByFieldPresenceCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <FilterByFieldPresenceJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <FilterByFieldPresencePython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <FilterByFieldPresencePhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <FilterByFieldPresenceNodejs />
+</LanguageContent>

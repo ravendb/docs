@@ -1167,6 +1167,20 @@
         }
     },
     {
+        "key": "/client-api/session/querying/how-to-filter-by-field",
+        "value": {
+            "targetUrl": "/querying/filtering-query-results/filter-by-field-presence",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/client-api/session/querying/how-to-filter-by-non-existing-field",
+        "value": {
+            "targetUrl": "/querying/filtering-query-results/filter-by-field-presence",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/client-api/operations/maintenance/connection-strings/add-connection-string",
         "value": {
             "targetUrl": "/integrations/connection-strings/per-database/add-or-update-connection-string",
