@@ -1,52 +1,239 @@
 ---
-title: "RVN013 — Query result is not bounded by Take()"
+title: "RVN013 - Query result is not bounded by Take()"
 sidebar_label: RVN013
 sidebar_position: 13
+see_also:
+     - title: "C# code analyzers overview"
+       link: "client-api/csharp-code-analyzers/overview"
+       source: "docs"
+       path: "Client API > C# Code Analyzers"
+     - title: "Paging query results"
+       link: "indexes/querying/paging"
+       source: "docs"
+       path: "Indexes > Querying"
+     - title: "Stream query results"
+       link: "querying/stream-query-results"
+       source: "docs"
+       path: "Querying"
+     - title: "Paging performance hint"
+       link: "monitoring/alerts-and-notifications/performance-hints#paging"
+       source: "docs"
+       path: "Monitoring > Alerts and Notifications"
+     - title: "Query overview"
+       link: "querying/overview"
+       source: "docs"
+       path: "Querying"
 ---
 
-# RVN013 — Query result is not bounded by Take()
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-- **Severity**: Info (default)
-- **Code fix**: No
+<Admonition type="note" title="">
 
-## Description
+* **RVN013** reports RavenDB queries that materialize results with `ToList`, `ToArray`, `ToListAsync`, or `ToArrayAsync`,  
+  or register lazy execution with `Lazily` or `LazilyAsync`, without an explicit result bound.
 
-RavenDB queries default to returning at most **128 documents** per request (the server's default page size). Without an explicit `.Take(n)`, this limit is invisible in the code, and the query may silently fetch far more data than intended as the dataset grows. Making the limit explicit with `.Take(n)` communicates intent clearly and prevents accidental full-scan materializations.
+* **Default severity**: _Info_  
+  **Automated code fix**: _No_
 
-## Trigger condition
+* In this article:
+   * [Description](#description)
+   * [Trigger condition](#trigger-condition)
+      * [When is RVN013 reported?](#when-is-rvn013-reported)
+      * [When is RVN013 not reported?](#when-is-rvn013-not-reported)
+   * [How to resolve](#how-to-resolve)
+      * [Before (triggers RVN013)](#before-triggers-rvn013)
+      * [After (correct)](#after-correct)
+      * [Document queries and raw queries](#document-queries-and-raw-queries)
+      * [Retrieving all results](#retrieving-all-results)
+   * [Limitations](#limitations)
+   * [Related C# analyzers](#related-c-analyzers)
 
-The analyzer fires when a materializing call (`ToList`, `ToListAsync`, `ToArray`, `ToArrayAsync`) is made on an `IRavenQueryable<T>`, and walking back through the invocation chain finds no `.Take(…)` call.
+</Admonition>
 
-## What to do
+<Panel heading="Description">
 
-Add `.Take(n)` before the materializing call to make the result size explicit.
+RavenDB applies no default limit to query results.  
+When a query does not specify a page size, the server returns all matching results in a single call  
+(see [Paging query results](../../indexes/querying/paging.mdx)).
+
+Without `Take(n)`, the number of results depends on the data:  
+a query that returns a few documents against test data can return an entire collection in production,  
+and `ToList` or `ToArray` loads every result into memory.
+
+`Lazily()` and `LazilyAsync()` register a query for later execution.  
+They delay execution but do not limit how many results the query retrieves when it runs.
+
+By default, when a query returns more than 2048 results, the server raises a ["Page size too big"](../../monitoring/alerts-and-notifications/performance-hints.mdx#paging) performance hint.
+
+</Panel>
+
+<Panel heading="Trigger condition">
+
+<ContentFrame>
+
+### When is RVN013 reported?
+
+RVN013 checks calls to `ToList()`, `ToArray()`, `ToListAsync()`, `ToArrayAsync()`, `Lazily()`, and `LazilyAsync()`,  
+with or without arguments, made on a RavenDB query.
+The diagnostic highlights the method name, such as `ToList` or `Lazily`.
+    
+---    
+    
+**Query types checked**:
+
+- **LINQ queries**:  
+  queries that start from `session.Query<T>()`, in sync and async sessions,  
+  including after standard LINQ operators such as `OfType<T>()`, `Select`, and `GroupBy`.  
+  Queries written with `from … select …` and queries held in local variables are also checked.
+        
+- **Document queries**:  
+  queries that start from `session.Advanced.DocumentQuery<T>()` or `session.Advanced.AsyncDocumentQuery<T>()`.
+            
+- **Raw queries**:  
+  queries that start from `session.Advanced.RawQuery<T>(query)` or `session.Advanced.AsyncRawQuery<T>(query)`,  
+  when the RQL argument is a compile-time string constant that does not contain the word `limit`.  
+  This includes constant interpolated strings, such as `$"from Orders"` or `$"from {Collection}"` when `Collection` is a `const string`.
+
+---
+                
+**Where RVN013 looks for `Take()`**:
+
+The call is reported when the query has no `Take()` call in any of these places:
+
+- The method chain before the checked call, including the source of a query-syntax `from` clause,  
+  such as `from o in session.Query<Order>().Take(10) select o`.
+- The initializer of a local variable that holds the query.
+- An assignment to that local variable that appears before the checked call in the same method,  
+  such as `query = query.Take(10);`.
+
+RVN013 treats any `Take()` call in one of these places as an explicit bound, including `Take(int.MaxValue)`.
+
+</ContentFrame>
+<ContentFrame>
+
+### When is RVN013 not reported?
+
+- `First`, `FirstOrDefault`, `Single`, `SingleOrDefault`, `Any`, `Count`, `LongCount`, and their async forms.  
+  They return a single result or value.
+- Raw queries whose RQL text contains the word `limit` (case-insensitive),  
+  or whose RQL argument is not a compile-time string constant, such as a nonconstant variable, a parameter,  
+  a method result, or an interpolated string with a nonconstant hole.
+- LINQ over results already loaded into memory,  
+  such as the second `ToList()` in `session.Query<Order>().Take(10).ToList().Where(…).ToList()`.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="How to resolve">
+
+- In LINQ queries and document queries, call `.Take(n)` before the checked call.
+- In raw queries, add a `limit` clause to the RQL.
+- To retrieve all results, [page through them](../../indexes/querying/paging.mdx#paging-examples) with `Skip()` and `Take()`,  
+  or [stream](../../querying/stream-query-results.mdx) them instead of loading them all into memory.  
+  If the result set is known to be small, `Take(int.MaxValue)` states that retrieving all results is intentional.
+
+---
 
 ### Before (triggers RVN013)
 
 ```csharp
 var orders = session.Query<Order>()
-    .Where(x => x.Status == OrderStatus.Open)
-    .ToList();  // RVN013 — no Take(); will return at most 128 results silently
+    .Where(x => x.Company == "companies/1-A")
+     // Triggers RVN013: no Take(), so every matching order is returned.
+    .ToList();
 ```
+<br/>
 
 ### After (correct)
 
 ```csharp
 var orders = session.Query<Order>()
-    .Where(x => x.Status == OrderStatus.Open)
+    .Where(x => x.Company == "companies/1-A")
+    .Take(50)
+    .ToList();
+```
+<br/>
+
+### Document queries and raw queries
+
+```csharp
+// Document query: bounded by Take()
+var orders = session.Advanced.DocumentQuery<Order>()
+    .WhereEquals(x => x.Company, "companies/1-A")
     .Take(50)
     .ToList();
 ```
 
-If fetching all results is intentional and the dataset is known to be small, use `int.MaxValue` to make that explicit:
+```csharp
+// Raw query: bounded by a 'limit' clause in the RQL
+var orders = session.Advanced
+    .RawQuery<Order>("from Orders where Company = $company limit 50")
+    .AddParameter("company", "companies/1-A")
+    .ToList();
+```
+<br/>
+
+### Retrieving all results
 
 ```csharp
+var query = session.Query<Order>()
+    .Where(x => x.Company == "companies/1-A");
+
+// Stream the results: each result is read from the stream one at a time.
+using var stream = session.Advanced.Stream(query);
+while (stream.MoveNext())
+{
+    Order order = stream.Current.Document;
+    // Process the order...
+}
+```
+
+```csharp
+// The result set is known to be small: state that retrieving all results is intentional.
 var orders = session.Query<Order>()
-    .Where(x => x.Status == OrderStatus.Open)
+    .Where(x => x.Company == "companies/1-A")
     .Take(int.MaxValue)
     .ToList();
 ```
 
-## Note on single-result queries
+</Panel>
 
-`First`, `FirstOrDefault`, `Single`, `SingleOrDefault`, and their async variants inherently return one document and are not flagged by this rule.
+<Panel heading="Limitations">
+
+- Only `ToList`, `ToArray`, `ToListAsync`, `ToArrayAsync`, `Lazily`, and `LazilyAsync` are checked.  
+  Other ways to retrieve all results, such as iterating the query in a `foreach` loop,  
+  `ToDictionary`, or `AsEnumerable().ToList()`, are not reported.
+    
+- A `Take()` applied outside the method is not detected.  
+  A query typed as `IRavenQueryable<T>`, `IDocumentQuery<T>`, or another RavenDB query type is reported when it is received as a parameter,
+  read from a field or property, or returned by a method, even if it was bounded where it was created.
+    
+  A query typed as `IQueryable<T>` is followed only through local-variable initializers;  
+  as a parameter, field, or property, it is not checked.
+    
+- Conditions are not evaluated.  
+  An earlier assignment containing `Take()` inside an `if` block suppresses RVN013 even if the block does not run,  
+  while a `Take()` inside a conditional expression, such as `flag ? query.Take(10) : query`, is not detected.
+    
+- In raw queries, `limit` is matched anywhere in the RQL text,  
+  so a query that uses `limit` only as a field name or inside a string value is not reported.  
+        
+  Nonconstant interpolated RQL is not checked, even when only a filter value is interpolated.  
+  For example, `$"from Orders where Company = '{company}'"` is not reported when `company` is a nonconstant variable.
+
+</Panel>
+
+<Panel heading="Related C# analyzers">
+
+* [RVN012](./RVN012.mdx)  
+  Reports independent loads and materializing queries on the same session that can be sent in a single request using the lazy API.  
+    
+  Its code fix converts queries to `Lazily()` or `LazilyAsync()`. RVN013 checks these calls too,
+  so an unbounded query is still reported at the `Lazily` or `LazilyAsync` method name.  
+    
+  Add `Take()` before the lazy registration to resolve it.
+
+</Panel>

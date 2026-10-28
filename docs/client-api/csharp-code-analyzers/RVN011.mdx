@@ -1,42 +1,164 @@
 ---
-title: "RVN011 — Use batch.OpenSession inside a subscription Run delegate"
+title: "RVN011 - Use batch.OpenSession inside a subscription Run delegate"
 sidebar_label: RVN011
 sidebar_position: 11
+see_also:
+     - title: "C# code analyzers overview"
+       link: "client-api/csharp-code-analyzers/overview"
+       source: "docs"
+       path: "Client API > C# Code Analyzers"
+     - title: "Data subscriptions"
+       link: "client-api/data-subscriptions/what-are-data-subscriptions"
+       source: "docs"
+       path: "Client API > Data Subscriptions"
+     - title: "How to consume a data subscription"
+       link: "client-api/data-subscriptions/consumption/how-to-consume-data-subscription"
+       source: "docs"
+       path: "Client API > Data Subscriptions > Consumption"
+     - title: "SubscriptionBatch API"
+       link: "client-api/data-subscriptions/consumption/api-overview#subscriptionbatcht"
+       source: "docs"
+       path: "Client API > Data Subscriptions > Consumption"
+     - title: "Worker that operates with a session"
+       link: "client-api/data-subscriptions/consumption/examples#worker-that-operates-with-a-session"
+       source: "docs"
+       path: "Client API > Data Subscriptions > Consumption"
+     - title: "Subscription that uses included documents"
+       link: "client-api/data-subscriptions/consumption/examples#subscription-that-uses-included-documents"
+       source: "docs"
+       path: "Client API > Data Subscriptions > Consumption"
 ---
 
-# RVN011 — Use batch.OpenSession inside a subscription Run delegate
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-- **Severity**: Info (default)
-- **Code fix**: Yes
+<Admonition type="note" title="">
 
-## Description
+* **RVN011** reports sessions opened from the document store, instead of from the batch, inside a subscription worker's `Run` lambda.
 
-Inside a subscription worker `Run` delegate the session must be opened via the **batch object** (`batch.OpenSession()` / `batch.OpenAsyncSession()`), not via the document store. The batch creates a session that participates in the batch's internal acknowledge transaction. When the session is opened from the document store directly, it bypasses that tracking — the batch will acknowledge successfully, but the session's changes are not tied to the acknowledgement, so documents may be re-processed if the worker restarts between the store commit and the batch ack.
+* **Default severity**: _Info_  
+  **Automated code fix**: _Yes_
 
-## Trigger condition
+* In this article:
+   * [Description](#description)
+   * [Trigger condition](#trigger-condition)
+      * [When is RVN011 reported?](#when-is-rvn011-reported)
+      * [When is RVN011 not reported?](#when-is-rvn011-not-reported)
+   * [How to resolve](#how-to-resolve)
+      * [Before (triggers RVN011)](#before-triggers-rvn011)
+      * [After (correct)](#after-correct)
+   * [Automated code fix](#automated-code-fix)
+      * [How does the code fix rewrite your code?](#how-does-the-code-fix-rewrite-your-code)
+      * [When is the code fix not offered?](#when-is-the-code-fix-not-offered)
+      * [What should you check manually?](#what-should-you-check-manually)
+   * [Limitations](#limitations)
 
-The analyzer fires when `OpenSession` or `OpenAsyncSession` is called on a receiver whose type implements `IDocumentStore`, and the call appears inside a lambda (simple or parenthesized) that is passed as an argument to a `Run` method on a `SubscriptionWorker` or `AbstractSubscriptionWorker` instance. Named method-group references are not detected.
+</Admonition>
 
-## What to do
+<Panel heading="Description">
 
-Replace `store.OpenSession()` / `store.OpenAsyncSession()` with `batch.OpenSession()` / `batch.OpenAsyncSession()`, where `batch` is the parameter of the `Run` lambda. The automated code fix performs this replacement automatically.
+A subscription worker passes each batch of documents to the `Run` delegate as a `SubscriptionBatch<T>`.  
+
+---
+    
+**Sessions opened from the batch**:  
+A session opened from the batch (`batch.OpenSession()` / `batch.OpenAsyncSession()`) is bound to that batch:
+
+- It uses the subscription's database and sends its requests to the node the subscription worker is connected to.  
+  `store.OpenSession()` opens a session on the store's default database, which is not necessarily the subscription's database.
+    
+- The batch items are already tracked by the session.
+  Loading an item by its ID does not send a request to the server, and changes made to `item.Result` are saved when you call `SaveChanges()`.
+    
+- Documents, counters, and time series included by the subscription query are already loaded into the session,  
+  so accessing them does not send a request to the server.
+
+---
+    
+**The problem with opening a session from the store**:  
+A session opened directly from the store is not automatically preloaded with the batch items or included data.  
+Loading those documents may require additional server requests, and changes made directly to `item.Result` are not automatically tracked by that session.
+
+---
+    
+**Tracking and preloading exceptions**:  
+Nothing is preloaded into a batch session opened with `NoTracking = true`.  
+If the subscription returns projections or revisions, the items are not tracked; included data is still preloaded.
+
+</Panel>
+
+<Panel heading="Trigger condition">
+
+<ContentFrame>
+
+### When is RVN011 reported?
+
+RVN011 is reported when `OpenSession` or `OpenAsyncSession` is called on an `IDocumentStore` (or a type that implements it, such as `DocumentStore`)
+inside a lambda passed directly to the `Run` method of a subscription worker (`SubscriptionWorker<T>`).
+
+This includes calls in a nested lambda, anonymous method, or non-static local function inside the `Run` lambda.  
+All overloads are reported, including `OpenSession(SessionOptions)` and `OpenSession(string database)`.
+
+Reported on the method name.
+
+</ContentFrame>
+<ContentFrame>
+
+### When is RVN011 not reported?
+
+- A batch handler passed as a method group, such as `worker.Run(ProcessBatch)`.
+- A lambda stored in a variable and then passed to `Run`, such as `worker.Run(handler)`.
+- An anonymous method passed to `Run`,  
+  such as `worker.Run(delegate (SubscriptionBatch<Order> batch) { … })`.
+- Calls inside a `static` local function within the `Run` lambda, which cannot access the batch parameter.
+- Calls outside a subscription worker's `Run` lambda.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="How to resolve">
+
+Open the session from the batch: replace `store.OpenSession()` / `store.OpenAsyncSession()` with `batch.OpenSession()` / `batch.OpenAsyncSession()`,
+where `batch` is the parameter of the `Run` lambda.
+
+Note that:
+
+- A session can be opened from the batch only **once per batch**; a second call throws `InvalidOperationException`.  
+  If the `Run` delegate opens more than one session, for example a session per item inside a loop, use a single session for the whole batch.
+    
+- The batch session always uses the subscription's database; the batch has no `OpenSession(string database)` overload.
+  When passing `SessionOptions`, do not set `Database`, `RequestExecutor`, or a `TransactionMode` other than `SingleNode`;
+  setting any of these throws `InvalidOperationException`.
+    
+- Pass a new `SessionOptions` instance for each batch. Opening a batch session sets its `Database` and `RequestExecutor` properties,
+  so reusing the instance for another batch throws `InvalidOperationException`.
+
+If an operation intentionally requires another database or a cluster-wide transaction,  
+keep the store session and [suppress RVN011 for that call](./overview.mdx#suppressing-diagnostics).
+
+---
 
 ### Before (triggers RVN011)
 
 ```csharp
 worker.Run(async batch =>
 {
-    using var session = store.OpenAsyncSession();  // RVN011
+    // Triggers RVN011: the session is opened from the store.
+    using var session = store.OpenAsyncSession();
     foreach (var item in batch.Items)
     {
-        var doc = await session.LoadAsync<Order>(item.Id);
-        // ... process doc
+        // Sends a request to the server for each item.
+        var order = await session.LoadAsync<Order>(item.Id);
+        // ... process order
     }
     await session.SaveChangesAsync();
 });
 ```
+<br/>
 
-### After (correct / code fix result)
+### After (correct)
 
 ```csharp
 worker.Run(async batch =>
@@ -44,13 +166,74 @@ worker.Run(async batch =>
     using var session = batch.OpenAsyncSession();
     foreach (var item in batch.Items)
     {
-        var doc = await session.LoadAsync<Order>(item.Id);
-        // ... process doc
+        // Served from the session; no request to the server.
+        var order = await session.LoadAsync<Order>(item.Id);
+        // ... process order
     }
     await session.SaveChangesAsync();
 });
 ```
 
-## Code fix details
+</Panel>
 
-The fix replaces the store-typed receiver expression with the name of the first parameter of the enclosing `Run` lambda. It bails out when the call is inside a nested lambda (where the batch parameter is not directly in scope) to avoid producing incorrect code.
+<Panel heading="Automated code fix">
+
+<ContentFrame>
+
+### How does the code fix rewrite your code?
+
+The code fix replaces the store in the reported call with the `Run` lambda's batch parameter, keeping the method name and arguments.
+For example, `store.OpenSession(options)` becomes `batch.OpenSession(options)`,  
+and `store.OpenAsyncSession(options)` becomes `batch.OpenAsyncSession(options)`.
+
+The code fix uses the actual parameter name, even when it is not named `batch`.
+
+Applied to the [Before](#before-triggers-rvn011) example, it produces code equivalent to the [After](#after-correct) example.
+
+</ContentFrame>
+<ContentFrame>
+
+### When is the code fix not offered?
+
+RVN011 can report a call even when the automated code fix is unavailable.  
+In the following cases, change the code manually:
+
+- The call is inside a nested lambda or anonymous method within the `Run` lambda,  
+  which may run after the batch is processed.
+- The call is inside a loop within the `Run` lambda.
+- The `Run` lambda contains more than one call named `OpenSession` or `OpenAsyncSession`,  
+  including calls that already open a session from the batch.
+- The call uses the `OpenSession(string database)` or `OpenAsyncSession(string database)` overload,  
+  which the batch does not have.
+- `SessionOptions` is passed as a named argument, such as `sessionOptions: …` or `options: …`.
+- `SessionOptions` is constructed inline or in a local variable initializer that explicitly assigns
+  `Database`, `RequestExecutor`, or `TransactionMode`.  
+  This check also rejects explicitly setting `TransactionMode` to `SingleNode`.
+
+</ContentFrame>
+<ContentFrame>
+
+### What should you check manually?
+
+The code fix does not verify all [batch session constraints](#how-to-resolve) or all effects of tracking batch items.  
+Before applying the code fix, make sure that:
+
+- The `Run` delegate opens only one session per batch, including calls made through helper methods
+  or repeated calls to a local function.
+- The `SessionOptions` passed do not set `Database`, `RequestExecutor`, or a `TransactionMode` other than `SingleNode`.
+  The initializer check does not cover values assigned later or options supplied through a helper method, parameter, field, or property.
+- A new `SessionOptions` instance is passed for each batch; an instance used to open a previous batch session
+  already has `Database` and `RequestExecutor` set.
+- Changes made directly to tracked `item.Result` objects are intended to be saved when `SaveChanges()` / `SaveChangesAsync()` is called.
+- The code does not store a different object instance under an ID already tracked by the batch session.
+  For example, `session.Store(newObject, item.Id)` throws `NonUniqueObjectException` while `item.Result` is tracked under `item.Id`.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Limitations">
+
+- Null-conditional calls are not reported, such as `store?.OpenSession()` or `worker?.Run(…)`.
+
+</Panel>

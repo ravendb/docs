@@ -1,93 +1,353 @@
 ---
-title: "RVN015 — Correlated conditions over a nested collection in a dynamic query"
+title: "RVN015 - Correlated conditions over a nested collection in a dynamic query"
 sidebar_label: RVN015
 sidebar_position: 15
+see_also:
+     - title: "C# code analyzers overview"
+       link: "client-api/csharp-code-analyzers/overview"
+       source: "docs"
+       path: "Client API > C# Code Analyzers"
+     - title: "Indexing nested data"
+       link: "indexes/indexing-nested-data#fanout-index---multiple-index-entries-per-document"
+       source: "docs"
+       path: "Indexes"
+     - title: "Filter by values in a collection"
+       link: "querying/filtering-query-results/filter-query-results#filter-by-values-in-a-collection"
+       source: "docs"
+       path: "Querying > Filtering Query Results"
 ---
 
-# RVN015 — Correlated conditions over a nested collection in a dynamic query
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-- **Severity**: Info (default)
-- **Code fix**: No
+<Admonition type="note" title="">
+    
+* **RVN015** reports dynamic queries that use `Any` to check whether one item in a nested collection satisfies two or more conditions joined with `&&`.
+  The query asks for the same item to satisfy all the conditions, but an auto-index can match each condition against a different item.  
+    
+  RVN015 also reports `All` over a nested collection, because the client does not support `All` inside a query predicate.
 
-## Description
+* **Default severity**: _Info_  
+  **Automated code fix**: _No_
 
-A dynamic query (`session.Query<T>()` with no index specified) is served by an **auto index**. The auto index flattens a nested collection into one multi-valued field per member, e.g. `Members[].UserId` and `Members[].Role`. A predicate such as `p.Members.Any(m => m.UserId == userId && m.Role == Role.Contributor)` therefore becomes:
+* In this article:
+   * [Description](#description)
+      * [Indexing nested collections](#indexing-nested-collections)
+      * [Matching different elements](#matching-different-elements)
+      * [Runtime behavior](#runtime-behavior)
+   * [Trigger condition](#trigger-condition)
+      * [When is RVN015 reported?](#when-is-rvn015-reported)
+      * [When is RVN015 not reported?](#when-is-rvn015-not-reported)
+   * [How to resolve](#how-to-resolve)
+      * [Before (triggers RVN015)](#before-triggers-rvn015)
+      * [After (correct)](#after-correct)
+      * [Conditions that can match different elements](#conditions-that-can-match-different-elements)
+      * [When every element must match](#when-every-element-must-match)
+   * [Limitations](#limitations)
+   * [Related C# analyzers](#related-c-analyzers)
 
-```sql
-where Members[].UserId = $p0 and Members[].Role = $p1
-```
+</Admonition>
 
-Each condition is matched **independently**: a document matches when *some* member has the user id and *some* member (possibly a different one) has the role. The query returns documents where **no single element satisfies both conditions**, which is rarely what the code intends.
+<Panel heading="Description">
 
-The server never creates fan-out auto indexes, so per-element correlation requires a **static index** whose map emits one entry per element.
+A query that does not specify an index, such as `session.Query<Order>()`, is a dynamic query.  
+Filtering with `Where` on fields other than the document ID, or sorting with `OrderBy`, uses an [auto-index](../../querying/overview.mdx#2-query-a-collection---with-filtering).    
+RavenDB reuses a suitable existing auto-index or creates one if needed.  
 
-## Trigger condition
+---
+    
+#### Indexing nested collections:
 
-The analyzer fires when a `Where` predicate of a dynamic query calls `Any` or `All` on a collection reachable from the queried document, and the lambda joins **two or more conditions on the element** with `&&`. Both the method-chain form and the query-expression form are detected. Nested collections are checked at every level, so `Members.Any(m => m.UserId == id && m.Permissions.Any(p => p.Scope == scope && p.Granted))` reports once for `Members` and once for `Permissions`.
+For the nested-collection queries discussed here, the auto-index produces one index-entry per document.  
+The auto-index indexes a nested collection as one multi-valued index-field per property of the collection element.
+    
+For the `Lines` collection of an order, `Lines[].Product` holds the products of all order lines, and `Lines[].Quantity` holds their quantities.
+The index-entry does not keep track of which values belong to the same order line.
 
-## What to do
+---
+    
+#### Matching different elements:
 
-Replace the dynamic query with a query over a static index whose map fans out one entry per element, then filter on the fanned-out fields.
+As a result, the auto-index can match the conditions in an `Any` predicate independently.
+    
+For `x.Lines.Any(line => line.Product == "products/1-A" && line.Quantity > 10)`,
+the index would match an order when _some_ line has the product and _some_ line, possibly a different one, has more than 10 units.
+    
+To match all conditions on the same element, query a static fanout index, which produces an index-entry per element.  
+The server does not create fanout auto-indexes.
+
+---
+    
+#### Runtime behavior:
+
+The client handles `Any` and `All` differently:
+
+- **`Any`: conditions on different properties of the element**:  
+  for the example above, the client throws `InvalidOperationException`:  
+  _"Using multiple fields inside method 'Any' can lead to unexpected query results for auto index.  
+  A static fanout index should be used instead."_  
+    
+  RVN015 reports the query at compile time, before it runs.
+    
+  The client does not reject every predicate that combines conditions on different properties.  
+  For example, it accepts `(line.Product == "products/1-A" || line.Product == "products/2-A") && line.Quantity > 10` inside `Any`.  
+  Such a query runs, and different lines can satisfy the product and quantity conditions.  
+    
+  The client also does not throw for conditions on the `Key` and `Value` of a dictionary entry.  
+  For example, `x.Counters.Any(kv => kv.Key == "a" && kv.Value == 1)`  
+  can match a dictionary containing `{ "a": 2, "b": 1 }`:  
+  the key matches one entry and the value matches another. RVN015 warns about this at compile time.
+
+- **`Any`: non-range conditions on the same property**,  
+  such as `line.ProductName.StartsWith("Ch") && line.ProductName.EndsWith("ai")`:  
+  the client does not throw, and the query can return orders in which different lines satisfy the two conditions.
+
+- **`Any`: ranges on one property**:  
+  an inclusive range such as `line.Quantity >= 5 && line.Quantity <= 10` is sent as one `between` condition.  
+  A single indexed value must satisfy both bounds. RVN015 counts this range as one condition, so the range alone is not reported.  
+    
+  Ranges with an exclusive bound, such as `line.Quantity > 5 && line.Quantity < 10` or `line.Quantity >= 5 && line.Quantity < 10`, are still reported.  
+  Depending on the generated RQL grouping, the server may combine these bounds into one range,  
+  making the diagnostic a false positive (see [Limitations](#limitations)).
+
+- **`All` over a nested collection**:  
+  the client throws `NotSupportedException` (`Method not supported: All`) when the query is executed,  
+  regardless of the predicate.  
+  This also applies to queries over a static index. RVN015 reports this unsupported operation in dynamic queries.
+
+</Panel>
+
+<Panel heading="Trigger condition">
+
+<ContentFrame>
+
+### When is RVN015 reported?
+
+RVN015 checks dynamic queries that start from `session.Query<T>()` without specifying an index, in sync and async sessions,
+including after standard LINQ operators such as `OfType<T>()`, and through a local variable that holds the query.  
+Passing only a collection name, such as `session.Query<Order>(collectionName: "Orders")`,  
+still creates a dynamic query and is checked.
+
+RVN015 checks predicates passed to:
+
+- `Where`.
+- Predicate overloads of `First`, `FirstOrDefault`, `Single`, `SingleOrDefault`, `Any`, `Count`, and `LongCount`.
+- Predicate overloads of `FirstAsync`, `FirstOrDefaultAsync`, `SingleAsync`, `SingleOrDefaultAsync`, `AnyAsync`, and `CountAsync`.
+
+It also checks `where` clauses in query syntax, including clauses after an `into` continuation.
+
+In these predicates, RVN015 reports an `Any` call when:
+
+  - `Any` is called on a collection reached through the properties of the queried document, such as `x.Lines`,  
+    or through the properties of an element of another collection in the same predicate.
+        
+  - The `Any` predicate is a lambda that joins two or more conditions with `&&`,  
+    and at least two of these conditions use the lambda parameter (the collection element).  
+    Conditions that do not use the element, such as a captured variable, are not counted.  
+    An inclusive range on one property, such as `line.Quantity >= 5 && line.Quantity <= 10`,  
+    counts as one condition.  
+    The range alone is not reported, but combining it with another element-dependent condition can trigger RVN015.
+
+Each `Any` call is checked separately, including an `Any` call nested in the predicate of another `Any` call,  
+such as `m.Permissions.Any(…)` inside `x.Members.Any(m => …)`.
+
+RVN015 also reports `All` on a collection reached in the same way, regardless of the predicate or the number of conditions.
+It has a separate diagnostic message explaining that `All` is unsupported inside a query predicate.
+
+Reported on the `Any` or `All` method name.
+
+</ContentFrame>
+<ContentFrame>
+
+### When is RVN015 not reported?
+
+- An `Any` predicate with a single condition on the element, such as `x.Lines.Any(line => line.Product == "products/1-A")`.
+- An `Any` predicate consisting only of an inclusive range on one property, such as `x.Lines.Any(line => line.Quantity >= 5 && line.Quantity <= 10)`.
+- An `Any` predicate such as `Any(line => A || B)` whose conditions are joined only by `||`.  
+  This matches the same documents as `Any(line => A) || Any(line => B)`,  
+  so matching the conditions independently returns the correct results.
+- Separate `Any` calls, which state that each condition can be matched by a different element,
+  such as `x.Lines.Any(line => line.Product == "products/1-A") && x.Lines.Any(line => line.Quantity > 10)`.
+- An `Any` predicate with only one element-dependent condition and additional conditions on captured values,  
+  such as `x.Lines.Any(line => line.Product == productId && includeAll)`.
+- `Any` or `All` over a value that is not a collection of the queried document, such as a string, or a local list (`productIds.Any(…)`).
+- Queries over a static index: `session.Query<T, TIndex>()` or `session.Query<T>(indexName)`.  
+  For an `Any` predicate, whether the conditions are matched on the same element depends on the index map:  
+  a fanout map matches them on the same element, while a map that indexes the collection values in the index-fields of a single index-entry matches them independently
+  (see [Indexing nested data](../../indexes/indexing-nested-data.mdx)).
+- Document queries (`session.Advanced.DocumentQuery<T>()`) and raw queries (`session.Advanced.RawQuery<T>()`).  
+  The client’s check for multiple fields inside a LINQ `Any` predicate does not apply to these APIs.
+  When these queries filter nested collection fields through an auto-index, different elements can satisfy different conditions.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="How to resolve">
+
+For an `Any` diagnostic, decide whether the conditions must be matched on the same element.  
+For an `All` diagnostic, see [When every element must match](#when-every-element-must-match).
+
+- **To match all conditions on the same element**, query a static fanout index, whose map produces an index-entry per element of the collection.
+    
+  Filter by the index-fields of the element, and use `OfType<T>()` to return the documents.  
+  The fanout map triggers [RVN014](./RVN014.mdx).  
+    
+  When the fanout is intentional, suppress RVN014 for that index with `#pragma warning disable RVN014`.  
+  See [Suppressing diagnostics](./overview.mdx#suppressing-diagnostics) for how to disable and restore a diagnostic around a specific code block.
+    
+- **If each condition can be matched by a different element**, use a separate `Any` call for each condition.  
+  The query then states the intended matching explicitly, and the client does not throw.
+
+---
 
 ### Before (triggers RVN015)
 
 ```csharp
-var projects = session.Query<Project>()
-    .Where(p => p.Members.Any(m => m.UserId == userId && m.Role == Role.Contributor))  // RVN015
+// Orders that have a line with more than 10 units of products/1-A
+var orders = session.Query<Order>()
+     // Triggers RVN015: Any joins two conditions on the collection element with &&.
+     // When the query is executed, the client throws InvalidOperationException.
+    .Where(x => x.Lines.Any(line => line.Product == "products/1-A" && line.Quantity > 10))
     .Take(50)
     .ToList();
 ```
 
-The query-expression form is flagged the same way:
-
 ```csharp
-var projects = (from p in session.Query<Project>()
-                where p.Members.Any(m => m.UserId == userId && m.Role == Role.Contributor)  // RVN015
-                select p).ToList();
+// Query syntax is reported the same way
+var orders = (from x in session.Query<Order>()
+              // Triggers RVN015
+              where x.Lines.Any(line => line.Product == "products/1-A" && line.Quantity > 10)
+              select x)
+    .Take(50)
+    .ToList();
 ```
+<br/>
 
 ### After (correct)
 
 ```csharp
-public class Projects_ByMember : AbstractIndexCreationTask<Project>
+public class Orders_ByProductAndQuantity : AbstractIndexCreationTask<Order>
 {
-    public class Result
+    public class IndexEntry
     {
-        public string UserId { get; set; }
-        public Role Role { get; set; }
+        // The index-fields
+        public string Product { get; set; }
+        public int Quantity { get; set; }
     }
 
-    public Projects_ByMember()
+    public Orders_ByProductAndQuantity()
     {
-        Map = projects => from p in projects
-                          from m in p.Members
-                          select new { m.UserId, m.Role };
+        // The fanout is intentional: each order line is a separate index-entry,
+        // so a query can match the product and the quantity on the same line.
+        // Suppress RVN014 for this intentional fanout map.
+        #pragma warning disable RVN014
+        Map = orders => from order in orders
+                        from line in order.Lines
+                        select new IndexEntry
+                        {
+                            Product = line.Product,
+                            Quantity = line.Quantity
+                        };
+        #pragma warning restore RVN014
     }
 }
+```
 
-var projects = session.Query<Projects_ByMember.Result, Projects_ByMember>()
-    .Where(r => r.UserId == userId && r.Role == Role.Contributor)
-    .OfType<Project>()
+```csharp
+// Orders that have a line with more than 10 units of products/1-A
+var orders = session
+    .Query<Orders_ByProductAndQuantity.IndexEntry, Orders_ByProductAndQuantity>()
+    .Where(x => x.Product == "products/1-A" && x.Quantity > 10)
+    .OfType<Order>()
+    .Take(50)
+    .ToList();
+```
+<br/>
+
+### Conditions that can match different elements
+
+If the product and quantity conditions are allowed to match different order lines, use separate `Any` calls:
+
+```csharp
+// Orders that have a line with products/1-A,
+// and a line (the same line or another one) with more than 10 units
+var orders = session.Query<Order>()
+    .Where(x => x.Lines.Any(line => line.Product == "products/1-A") &&
+                x.Lines.Any(line => line.Quantity > 10))
     .Take(50)
     .ToList();
 ```
 
-The fan-out map itself triggers [RVN014](./RVN014.mdx). Here the fan-out is intentional, so suppress that rule for the index or accept the informational hint.
+<br/>
 
-## Not flagged
+### When every element must match
 
-- A single condition on the element: `p.Members.Any(m => m.UserId == userId)`.
-- Conditions joined with `||`, which match the same way with or without flattening.
-- Separate `Any` calls, which state the uncorrelated matching explicitly: `p.Members.Any(m => m.UserId == userId) && p.Members.Any(m => m.Role == Role.Contributor)`.
-- Conditions that do not reference the element, such as a captured flag: `p.Members.Any(m => m.UserId == userId && includeAll)`.
-- Queries over a static index (`session.Query<T, TIndex>()` or an index name), where [RVN014](./RVN014.mdx) covers the fan-out on the index side.
-- `Any`/`All` over something that is not a collection member of the queried document, such as a string or a captured local list.
+`All` requires every element of the collection to satisfy the predicate.  
+Filtering the per-element fields of a fanout index finds documents with a matching element; it does not establish that every element matches.
 
-## Note on DocumentQuery
+For a fixed requirement, compute a boolean in a static index with one index-entry per document, then query that field.  
+For example, to find orders where every line has a quantity above 10:
 
-Only LINQ queries via `session.Query<T>()` are detected. The low-level `session.Advanced.DocumentQuery<T>()` API is not covered.
+```csharp
+public class Orders_ByAllLineQuantities : AbstractIndexCreationTask<Order>
+{
+    public class IndexEntry
+    {
+        // The index-fields
+        public bool AllLinesAboveTen { get; set; }
+    }
 
-## See also
+    public Orders_ByAllLineQuantities()
+    {
+        Map = orders => from order in orders
+                        select new IndexEntry
+                        {
+                            AllLinesAboveTen = order.Lines.All(line => line.Quantity > 10)
+                        };
+    }
+}
+```
 
-- [Indexing nested data](../../indexes/indexing-nested-data.mdx) — how fan-out maps index collection elements.
-- [RVN014](./RVN014.mdx) — the index-side counterpart that flags fan-out maps.
+```csharp
+// Orders where every line has more than 10 units
+var orders = session
+    .Query<Orders_ByAllLineQuantities.IndexEntry, Orders_ByAllLineQuantities>()
+    .Where(x => x.AllLinesAboveTen)
+    .OfType<Order>()
+    .Take(50)
+    .ToList();
+```
+
+`All` is used in the index map to compute the field; the query predicate tests the boolean.  
+As with LINQ `All`, an order with an empty `Lines` collection also matches.
+
+</Panel>
+
+<Panel heading="Limitations">
+
+- The predicate passed to a checked query operator must be a lambda written in the call.
+  A predicate passed as a variable, such as `Where(filter)` where `filter` is an `Expression<Func<Order, bool>>`, is not checked.
+    
+- The query must start from `session.Query<T>()` in the same method,
+  either in the method chain or in the initializer of a local variable that holds the query.
+  A query received as a parameter, or read from a field or property, is not checked.
+    
+- A range on one property with at least one exclusive bound, such as `line.Quantity > 5 && line.Quantity < 10`  
+  or `line.Quantity >= 5 && line.Quantity < 10`, is reported.  
+  The client sends two comparisons, and the server combines them into one range only when the comparisons form their own `and` group in the generated RQL.  
+  When the bounds are combined, a single indexed value must satisfy both, so RVN015 is a false positive.  
+  This happens, for example, when the range is the only condition in `Where`, or is placed in a separate chained `Where` call.  
+            
+  Other arrangements can leave the comparisons separate.
+  For example, in `Where(x => x.Company == "companies/1-A" && x.Lines.Any(line => line.Quantity > 5 && line.Quantity < 10))`, different lines can satisfy the two bounds.
+
+</Panel>
+
+<Panel heading="Related C# analyzers">
+
+* [RVN014](./RVN014.mdx)  
+  Fires on index maps that fan out over a collection, including a fanout index created to resolve RVN015.
+
+</Panel>

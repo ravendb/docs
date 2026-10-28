@@ -1,48 +1,204 @@
 ---
-title: "RVN002 — RavenDB query operator after projection"
+title: "RVN002 - RavenDB query operator after projection"
 sidebar_label: RVN002
 sidebar_position: 2
+see_also:
+     - title: "C# code analyzers overview"
+       link: "client-api/csharp-code-analyzers/overview"
+       source: "docs"
+       path: "Client API > C# Code Analyzers"
+     - title: "Project query results"
+       link: "client-api/session/querying/how-to-project-query-results"
+       source: "docs"
+       path: "Client API > Session > Querying"
+     - title: "Project index query results"
+       link: "indexes/querying/projections"
+       source: "docs"
+       path: "Indexes > Querying"
+     - title: "Filter query results"
+       link: "querying/filtering-query-results/filter-query-results"
+       source: "docs"
+       path: "Querying > Filtering Query Results"
+     - title: "Sort query results"
+       link: "querying/sorting-query-results/sort-query-results"
+       source: "docs"
+       path: "Querying > Sorting Query Results"
 ---
 
-# RVN002 — RavenDB query operator after projection
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-- **Severity**: Info (default)
-- **Code fix**: No
+<Admonition type="note" title="">
 
-## Description
+* **RVN002** detects query operators placed after a `ProjectInto` or `Select` projection where they can refer to the wrong fields.
 
-RavenDB LINQ query operators such as `Where`, `OrderBy`, `Search`, `Spatial`, `VectorSearch`, `Filter`, `GroupBy`, and their variants bind against the **source document or index shape**. When `.ProjectInto<T>()` or `.Select(x => new { … })` appears earlier in the chain, it changes the element type. Any operator placed *after* the projection then operates on the projected type instead of the source type, silently producing incorrect results or throwing at runtime.
+* **Default severity**: _Info_  
+  **Automated code fix**: _No_
 
-## Operators covered
+* In this article:
+   * [Description](#description)
+   * [Operators flagged by RVN002](#operators-flagged-by-rvn002)
+      * [After `ProjectInto`](#after-projectinto)
+      * [After `Select`](#after-select)
+      * [Operators not flagged](#operators-not-flagged)
+   * [Trigger condition](#trigger-condition)
+      * [When is RVN002 reported?](#when-is-rvn002-reported)
+      * [When is RVN002 not reported?](#when-is-rvn002-not-reported)
+   * [How to resolve](#how-to-resolve)
+      * [Before (triggers RVN002)](#before-triggers-rvn002)
+      * [After (correct)](#after-correct)
+   * [Limitations](#limitations)
+   * [Related C# analyzers](#related-c-analyzers)
 
-The following methods are flagged when they appear after a projection: `Where`, `OrderBy`, `OrderByDescending`, `ThenBy`, `ThenByDescending`, `GroupBy`, `Search`, `Spatial`, `OrderByDistance`, `OrderByDistanceDescending`, `OrderByScore`, `OrderByScoreDescending`, `ThenByScore`, `ThenByScoreDescending`, `MoreLikeThis`, `VectorSearch`, `Filter`, `GroupByArrayValues`, `GroupByArrayContent`.
+</Admonition>
 
-## Trigger condition
+<Panel heading="Description">
 
-The analyzer fires when the immediate receiver of a forbidden method is an `IRavenQueryable<T>`, and walking back through the invocation chain finds a `.ProjectInto` or `.Select` call whose own receiver is also an `IRavenQueryable<T>`.
+RavenDB LINQ query operators such as `Where`, `OrderBy`, `Search`, `Spatial`, `VectorSearch`, `Filter`, `GroupBy`,  
+and their variants bind against the **source document or index fields**.
+    
+A projection such as `.ProjectInto<T>()` or `.Select(x => new { … })` can change the query's element type.  
+A lambda passed to an operator after the projection refers to members of the projected type, while the server still uses the source fields.
+If a projected member's name does not match its source field's name, the query can silently produce incorrect results or throw at runtime.
 
-## What to do
+RVN002 reports operator and projection combinations that can cause these problems.  
+A reported query may still work when the referenced field names match; see [Limitations](#limitations).
 
-Move the projection call to the **end** of the query chain, after all filtering and ordering.
+</Panel>
 
+<Panel heading="Operators flagged by RVN002">
+
+<ContentFrame>
+
+### After `ProjectInto`
+
+After `ProjectInto`, the following operators are flagged:  
+  - **Filtering:** `Where`, `Filter`.
+  - **Ordering:** `OrderBy`, `OrderByDescending`, `ThenBy`, `ThenByDescending`.
+  - **Ordering by score:** `OrderByScore`, `OrderByScoreDescending`, `ThenByScore`, `ThenByScoreDescending`.
+  - **Search:** `Search`, `MoreLikeThis`, `VectorSearch`.
+  - **Spatial:** `Spatial`, `OrderByDistance`, `OrderByDistanceDescending`.
+  - **Grouping:** `GroupBy`, `GroupByArrayValues`, `GroupByArrayContent`.
+
+</ContentFrame>
+<ContentFrame>
+
+### After `Select`
+
+After `Select`, the operators listed under [After `ProjectInto`](#after-projectinto) are flagged, with the exceptions below.
+
+`Where`, `OrderBy`, `OrderByDescending`, `ThenBy`, and `ThenByDescending` are not flagged when the `Select` either:    
+  - Returns the source element unchanged, such as `o => o`.
+  - Creates an anonymous object in which **every member** directly copies a top-level member of the lambda parameter under the same name,  
+    such as `o => new { o.Company, o.Total }` or `o => new { Company = o.Company }`.
+
+They are flagged after other projection forms, including renamed or computed members, nested member paths, DTO projections,
+and members read from captured variables, such as `o => new { captured.Name }`.
+
+</ContentFrame>
+<ContentFrame> 
+    
+### Operators not flagged
+
+Operators not in the list above, such as `Include`, `Skip`, and `Take`, are not flagged after a projection.
+    
+</ContentFrame>    
+
+</Panel>
+
+<Panel heading="Trigger condition">
+
+<ContentFrame>
+
+### When is RVN002 reported?
+
+RVN002 checks explicit method calls in RavenDB LINQ queries (`session.Query<T>()`, sync or async).  
+RVN002 is reported on the name of each flagged operator that follows `ProjectInto` or `Select`,
+according to the conditions described in [Operators flagged by RVN002](#operators-flagged-by-rvn002).
+
+For each operator, RVN002 uses the nearest preceding `ProjectInto` or `Select` in the chain to determine which conditions apply.
+
+RVN002 follows projected queries through local-variable initializers,
+so a flagged operator can appear in a later statement that uses the local variable.
+
+</ContentFrame>
+<ContentFrame>
+
+### When is RVN002 not reported?
+
+- Operators placed before a projection, or not listed under [Operators flagged by RVN002](#operators-flagged-by-rvn002).
+- `Where`, `OrderBy`, `OrderByDescending`, `ThenBy`, and `ThenByDescending` after a `Select` that meets the exceptions described in [After `Select`](#after-select).
+- Operators and projections written as C# query-syntax clauses, such as `select … into … where …`.
+- LINQ over in-memory collections, for example after `ToList()`, or other queries that do not use RavenDB's LINQ provider.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="How to resolve">
+
+Apply filtering, ordering, and other source-based operators **before** the projection, using the original document or index fields.
+Place the projection after these operators and before materializing the results, for example via `ToList()` or `ToListAsync()`.
+
+For `Where`, `OrderBy`, `OrderByDescending`, `ThenBy`, and `ThenByDescending` after `Select`, another option is to use an anonymous-object projection
+in which every member directly copies a top-level member of the lambda parameter under the same name; see [After `Select`](#after-select).
+
+---
+    
 ### Before (triggers RVN002)
 
+Here, `CompanyId` is a projection alias, not a source field.  
+The `Where` must use the source field `Company` before the projection.
+
 ```csharp
-var results = session.Query<Order, Orders_ByCompany>()
-    .ProjectInto<OrderDto>()
-    .Where(x => x.Company == "companies/1-A")  // RVN002: Where after ProjectInto
+var results = session.Query<Order>()
+    .Select(o => new { CompanyId = o.Company })
+    // Triggers RVN002: Where uses the projected alias CompanyId.
+    .Where(x => x.CompanyId == "companies/1-A")
+    .Take(50)
     .ToList();
 ```
-
+<br/>
+            
 ### After (correct)
 
 ```csharp
-var results = session.Query<Order, Orders_ByCompany>()
-    .Where(x => x.Company == "companies/1-A")
-    .ProjectInto<OrderDto>()
+var results = session.Query<Order>()
+    .Where(o => o.Company == "companies/1-A")
+    .Select(o => new { CompanyId = o.Company })
+    .Take(50)
     .ToList();
 ```
 
-## See also
+</Panel>
 
-- [RVN003](./RVN003.mdx) — fires when `.ProjectInto` is called twice on the same chain.
+<Panel heading="Limitations">
+
+- After `ProjectInto`, RVN002 reports every listed operator without checking whether the referenced field exists under the same name in the source.
+  A reported query may therefore still work correctly.
+
+- After `Select`, the exception for `Where` and the four ordering operators depends on the **entire projection**, rather than only the members used by the operator.
+  A renamed or computed member causes these operators to be flagged even when they use another member that keeps its source name. For example:
+
+  ```csharp
+  .Select(o => new { o.Company, RenamedTotal = o.Total })
+  .Where(x => x.Company == "companies/1-A")
+  ```
+
+- Tracking across statements is limited to local-variable initializers. Later assignments are not followed,  
+  so diagnostics may be missed or based on an earlier query value.
+
+- RVN002 does not trace a projected query through helper-method returns, parameters, fields, or properties.
+
+</Panel>
+
+<Panel heading="Related C# analyzers">
+
+* [RVN003](./RVN003.mdx)  
+  Reports repeated `ProjectInto` calls in the same query chain.
+
+* [RVN007](./RVN007.mdx)  
+  Reports fields used for filtering, sorting, or searching in a static-index query when the index's map function does not define them.
+
+</Panel>

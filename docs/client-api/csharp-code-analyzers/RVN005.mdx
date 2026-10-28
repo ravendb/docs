@@ -1,34 +1,125 @@
 ---
-title: "RVN005 — Multi-map index has no AddMap call in any constructor"
+title: "RVN005 - Multi-map index has no AddMap call in any constructor"
 sidebar_label: RVN005
 sidebar_position: 5
+see_also:
+     - title: "C# code analyzers overview"
+       link: "client-api/csharp-code-analyzers/overview"
+       source: "docs"
+       path: "Client API > C# Code Analyzers"
+     - title: "Multi-map indexes"
+       link: "indexes/multi-map-indexes"
+       source: "docs"
+       path: "Indexes"
+     - title: "Creating and deploying indexes"
+       link: "indexes/creating-and-deploying"
+       source: "docs"
+       path: "Indexes"
+     - title: "Indexing time series"
+       link: "document-extensions/timeseries/indexing"
+       source: "docs"
+       path: "Document Extensions > Time Series"
+     - title: "Indexing counters"
+       link: "document-extensions/counters/indexing"
+       source: "docs"
+       path: "Document Extensions > Counters"
 ---
 
-# RVN005 — Multi-map index has no AddMap call in any constructor
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-- **Severity**: Info (default)
-- **Code fix**: No
+<Admonition type="note" title="">
 
-## Description
+* **RVN005** reports multi-map index classes that have no `AddMap` or `AddMapForAll` calls reachable from a constructor.
 
-Every class that inherits from `AbstractMultiMapIndexCreationTask` (or the time-series and counters variants: `AbstractMultiMapTimeSeriesIndexCreationTask`, `AbstractMultiMapCountersIndexCreationTask`) must call `AddMap<TSource>(…)` at least once in its constructor. Without at least one `AddMap`, the index has no definition and will fail when deployed to the server.
+* **Default severity**: _Info_  
+  **Automated code fix**: _No_
 
-## Trigger condition
+* In this article:
+   * [Description](#description)
+   * [Trigger condition](#trigger-condition)
+      * [When is RVN005 reported?](#when-is-rvn005-reported)
+      * [When is RVN005 not reported?](#when-is-rvn005-not-reported)
+   * [How to resolve](#how-to-resolve)
+      * [Before (triggers RVN005)](#before-triggers-rvn005)
+      * [After (correct)](#after-correct)
+   * [Limitations](#limitations)
+   * [Related C# analyzers](#related-c-analyzers)
 
-The analyzer fires when a class whose base-type chain includes a multi-map index base class has no constructor that calls `AddMap` (or `AddMapForAll`) with the method resolving to the one defined on the multi-map base class.
+</Admonition>
 
-## What to do
+<Panel heading="Description">
 
-Add a constructor that calls `AddMap<TSource>(…)` for each document type the index should map.
+Every non-abstract class that derives from `AbstractMultiMapIndexCreationTask`
+(or the time-series and counters variants: `AbstractMultiMapTimeSeriesIndexCreationTask`, `AbstractMultiMapCountersIndexCreationTask`)
+and uses the standard `CreateIndexDefinition()` implementation must register at least one map with `AddMap` or `AddMapForAll` before the index definition is built.
+
+**Deployment failure**:  
+Without a map, the client throws `ArgumentNullException` while preparing the deployment request, before sending it to the server.
+The exception identifies the parameter as `Index definitions contains no Maps` and does not name the index.
+
+**Batch deployment**:  
+When indexes are deployed together through `IndexCreation.CreateIndexes()` or `store.ExecuteIndexes()`,
+an index with no maps prevents every index in that batch from being deployed.
+
+</Panel>
+
+<Panel heading="Trigger condition">
+
+<ContentFrame>
+
+### When is RVN005 reported?
+
+* RVN005 is reported on the class name when no `AddMap` or `AddMapForAll` call is reachable from any constructor of the index class or its base classes,
+  including a base class from a referenced project.
+
+* RVN005 is still reported when maps are registered only in a method that is not reachable from a constructor,
+  even if that method runs before the index definition is built.
+
+</ContentFrame>
+<ContentFrame>
+
+### When is RVN005 not reported?
+
+A call found in any constructor of the index class or its base classes is enough to suppress RVN005.
+Calls in methods of those classes also count when a constructor calls the method, directly or through other methods.  
+See [Limitations](#limitations) for cases where a call counts even though it may not execute.
+
+RVN005 is also not reported for the following index classes, even when no `AddMap` or `AddMapForAll` call is found:    
+    
+  - Abstract index classes. Their subclasses are checked instead.
+  - Indexes that override `CreateIndexDefinition()`.
+  - Single-map time-series and counters indexes (`AbstractTimeSeriesIndexCreationTask` and `AbstractCountersIndexCreationTask`).
+    Neither RVN004 nor RVN005 checks them.
+  - Index classes that are `private`, `protected`, or `private protected`, or nested in a class with one of these access levels.
+  - Indexes whose required base-class information cannot be obtained from generated metadata or available source.
+    This can happen when a base class is in a compiled assembly built with a client version that does not include the RavenDB analyzers.
+    See [Distribution](./overview.mdx#distribution).
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="How to resolve">
+
+Add a constructor (or update the existing one) that calls `AddMap<TSource>(…)` for each document type the index should map.
+Alternatively, use `AddMapForAll<TBase>(…)` to register maps for concrete types assignable to `TBase` in the assembly that defines `TBase`.
+
+For time-series and counters multi-map indexes, use `AddMap<TSource>("<name>", …)` or `AddMapForAll<TBase>("<name>", …)`,
+passing the time-series or counter name.
+
+---
 
 ### Before (triggers RVN005)
 
 ```csharp
+// Triggers RVN005: no AddMap or AddMapForAll call.
 public class Animals_ByName : AbstractMultiMapIndexCreationTask
 {
-    // No AddMap call anywhere — RVN005 fires on the class name
 }
 ```
+<br/>
 
 ### After (correct)
 
@@ -43,7 +134,34 @@ public class Animals_ByName : AbstractMultiMapIndexCreationTask
 }
 ```
 
-## See also
+</Panel>
 
-- [RVN004](./RVN004.mdx) — equivalent rule for regular single-map indexes.
-- [RVN006](./RVN006.mdx) — fires when a multi-map index has only one `AddMap` call.
+<Panel heading="Limitations">
+
+RVN005 does not verify that every constructor or execution path registers a map.
+
+**RVN005 can be suppressed even when no maps are registered at runtime:**
+
+- A call in any constructor counts, including a base constructor that the index never calls.
+- A call inside a condition or loop counts even when the condition prevents it from executing or the loop runs zero times.
+- A call inside a lambda or local function nested in a checked constructor or method counts even if the lambda or local function is never invoked.
+- Calls to helper methods are matched by name only. A registration in another overload with the same name can therefore suppress RVN005 even when that overload is never called.
+- An `AddMapForAll` call counts even if it finds no eligible concrete types and registers no maps.
+
+**RVN005 can be reported even when maps are registered at runtime:**
+
+- A registration made only in a property setter is not detected, even if a constructor sets that property.
+- A registration made only in a helper invoked through a delegate, such as `Action configure = Configure; configure();`, is not detected.
+
+</Panel>
+
+<Panel heading="Related C# analyzers">
+
+* [RVN004](./RVN004.mdx)  
+  Equivalent rule for regular single-map indexes.
+    
+* [RVN006](./RVN006.mdx)  
+  Suggests a regular index when only one `AddMap` call is found.  
+  Calls inside loops and indexes using `AddMapForAll` are excluded.
+
+</Panel>

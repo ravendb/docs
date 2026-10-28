@@ -1,38 +1,192 @@
 ---
-title: "RVN006 — Multi-map index uses only a single AddMap"
+title: "RVN006 - Multi-map index uses only a single AddMap"
 sidebar_label: RVN006
 sidebar_position: 6
+see_also:
+     - title: "C# code analyzers overview"
+       link: "client-api/csharp-code-analyzers/overview"
+       source: "docs"
+       path: "Client API > C# Code Analyzers"
+     - title: "Multi-map indexes"
+       link: "indexes/multi-map-indexes"
+       source: "docs"
+       path: "Indexes"
+     - title: "Map indexes"
+       link: "indexes/map-indexes"
+       source: "docs"
+       path: "Indexes"
+     - title: "Indexing time series"
+       link: "document-extensions/timeseries/indexing"
+       source: "docs"
+       path: "Document Extensions > Time Series"
+     - title: "Indexing counters"
+       link: "document-extensions/counters/indexing"
+       source: "docs"
+       path: "Document Extensions > Counters"
 ---
 
-# RVN006 — Multi-map index uses only a single AddMap
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-- **Severity**: Info (default)
-- **Code fix**: No
+<Admonition type="note" title="">
 
-## Description
+* **RVN006** suggests a single-map base class when it finds exactly one `AddMap` call site in a multi-map index.  
+  Review the index's behavior and configuration before converting it.
 
-Multi-map index base classes (`AbstractMultiMapIndexCreationTask` and its variants) are designed for indexes that map over multiple document types. When only one `AddMap` call is present across all constructors, a regular `AbstractIndexCreationTask<TDocument>` is simpler, equally expressive, and has slightly lower overhead.
+* **Default severity**: _Info_  
+  **Automated code fix**: _No_
 
-## Trigger condition
+* In this article:
+   * [Description](#description)
+   * [Trigger condition](#trigger-condition)
+      * [When is RVN006 reported?](#when-is-rvn006-reported)
+      * [When is RVN006 not reported?](#when-is-rvn006-not-reported)
+   * [How to resolve](#how-to-resolve)
+      * [Before (triggers RVN006)](#before-triggers-rvn006)
+      * [After (correct)](#after-correct)
+   * [Limitations](#limitations)
+   * [Related C# analyzers](#related-c-analyzers)
 
-The analyzer fires when the class inherits from a multi-map index base class, and the total count of `AddMap` / `AddMapForAll` calls across all constructors is exactly one.
+</Admonition>
 
-## What to do
+<Panel heading="Description">
 
-Replace the multi-map base class with `AbstractIndexCreationTask<TDocument>` and replace the `AddMap<T>(lambda)` call with a `Map = lambda` assignment.
+Multi-map index base classes (`AbstractMultiMapIndexCreationTask`
+and the time-series and counters variants: `AbstractMultiMapTimeSeriesIndexCreationTask`, `AbstractMultiMapCountersIndexCreationTask`)
+support multiple map definitions, including maps over different collections.
+
+When the index registers only one map, a matching single-map base class can simplify the definition.  
+Before converting, check that it preserves the index's source scope, result type, and field configuration  
+(see [How to resolve](#how-to-resolve)).
+
+RVN006 is a style suggestion: a multi-map index with a single map deploys and works correctly.
+
+</Panel>
+
+<Panel heading="Trigger condition">
+
+<ContentFrame>
+
+### When is RVN006 reported?
+
+RVN006 is reported on the class name when exactly one `AddMap` call site is found in the constructors of the index class or its base classes,
+including a base class from a referenced project.
+
+Calls in methods of those classes also count when a constructor calls the method, directly or through other methods.  
+    
+RVN006 counts call sites in the bodies it inspects; it does not verify whether each call executes or how often it runs.
+See [Limitations](#limitations) for cases where calls are missed or counted without being executed.
+
+</ContentFrame>
+<ContentFrame>
+
+### When is RVN006 not reported?
+
+- The only call is the multi-map `AddMapForAll<TBase>` method  
+  (`AddMapForAll<TBase>("<name>", …)` for time-series and counters indexes).  
+  It registers maps for concrete types assignable to `TBase` in the assembly that defines `TBase`.  
+  This type-based expansion has no direct single-map equivalent.  
+- The only call is inside a `for`, `foreach`, `while`, or `do` loop in the same constructor or method body,  
+  where it can register a map on each iteration.
+- No call is found. [RVN005](./RVN005.mdx) reports this case.
+- More than one call to `AddMap` or `AddMapForAll` is found. Both methods count toward the total.    
+
+RVN006 is also not reported for the following index classes:
+    
+- Abstract index classes. Their subclasses are checked instead.
+- Indexes that override `CreateIndexDefinition()`.
+- Index classes that are `private`, `protected`, or `private protected`, or nested in a class with one of these access levels.
+  Generic and `protected internal` index classes are checked when the other trigger conditions are met.
+- Indexes whose required base-class information cannot be obtained from generated metadata or available source.
+  This can happen when a base class is in a compiled assembly without the index information recorded by the RavenDB analyzer's source generator.
+  See [Distribution](./overview.mdx#distribution).
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="How to resolve">
+
+Consider the matching single-map base class below when the index registers only one map at runtime.  
+Preserve its result type and field configuration when converting.  
+    
+Keep the multi-map base if one call site registers multiple maps, or if the conversion would change the behavior described below
+(see also [Limitations](#limitations)).
+
+<ContentFrame>
+    
+**Document indexes**  
+    
+Replace `AbstractMultiMapIndexCreationTask` with `AbstractIndexCreationTask<TDocument>`.  
+Assign `Map = …` instead of calling `AddMap<TDocument>(…)`.  
+Use the same document type as the original `AddMap` type argument for `TDocument`.
+
+</ContentFrame>
+<ContentFrame>
+
+**Time-series indexes**  
+    
+Replace `AbstractMultiMapTimeSeriesIndexCreationTask` with `AbstractTimeSeriesIndexCreationTask<TDocument>`.  
+Keep `AddMap("<time series name>", …)` without the type argument.  
+Use the original `AddMap` type argument for `TDocument`: the document type whose collection owns the indexed time series.
+
+</ContentFrame>
+<ContentFrame>
+
+**Counters indexes**
+
+Replace `AbstractMultiMapCountersIndexCreationTask` with `AbstractCountersIndexCreationTask<TDocument>`.  
+Keep `AddMap("<counter name>", …)` without the type argument.  
+Use the original `AddMap` type argument for `TDocument`: the document type whose collection owns the indexed counters.
+
+</ContentFrame>
+
+---
+    
+**Preserve the result type**
+
+If the multi-map base specifies a result type, preserve it as the second type argument of the single-map base: `<TDocument, TResult>`.
+For example, replace `AbstractMultiMapTimeSeriesIndexCreationTask<TResult>` with `AbstractTimeSeriesIndexCreationTask<TDocument, TResult>`.
+This applies even when the index does not assign `Reduce`: `Index`, `Store`, `Analyze`, and other typed field options use `TResult`.  
+For map-reduce indexes, use the two-argument form with the reduce result type as `TResult`.
+
+---
+    
+**Time-series and counters: `AddMap<object>`**
+
+Keep the multi-map base when `AddMap<object>("<name>", …)` selects a named time series or counter across all collections.
+The single-map `AddMap(name, …)` method does not support `object`.
+
+A conversion is possible using `AbstractTimeSeriesIndexCreationTask<object>` or `AbstractCountersIndexCreationTask<object>`
+(or the corresponding `<object, TResult>` form to preserve a result type),
+and the single-map, non-generic `AddMapForAll(…)` method with a name filter inside the map expression.  
+However, this makes the index process every time series or counter in the database before filtering by name;
+the multi-map form selects the named source directly.
+
+---
+                
+**Time-series and counters: compound fields**
+
+Keep the multi-map base if the index uses `CompoundField(…)`.  
+The current single-map time-series and counters base classes do not copy this configuration into the generated index definition,
+so converting silently drops the compound fields.
+
+---
 
 ### Before (triggers RVN006)
 
 ```csharp
+// Triggers RVN006: only one AddMap call.
 public class Orders_ByCompany : AbstractMultiMapIndexCreationTask
 {
     public Orders_ByCompany()
     {
         AddMap<Order>(orders => from o in orders select new { o.Company });
-        // Only one AddMap — a regular index would suffice
     }
 }
 ```
+<br/>
 
 ### After (correct)
 
@@ -46,6 +200,38 @@ public class Orders_ByCompany : AbstractIndexCreationTask<Order>
 }
 ```
 
-## See also
+</Panel>
 
-- [RVN005](./RVN005.mdx) — fires when a multi-map index has zero `AddMap` calls.
+<Panel heading="Limitations">
+
+RVN006 counts recognized `AddMap` and `AddMapForAll` call sites, not the maps registered at runtime.  
+A call inside a lambda or local function nested in a checked constructor or method also counts, even if that lambda or local function is never invoked.
+
+**RVN006 can undercount the maps registered at runtime:**
+
+- A helper or local function containing one `AddMap` call can run more than once,
+  for example a generic helper called once per document type. The call site is counted once.
+- A helper can be called from a loop while its `AddMap` call is in another method body.  
+  That call is counted once, without the loop exclusion. A single call in a `List<T>.ForEach` callback is also counted once.
+- An unqualified `AddMap(…)` call with an inferred type argument is not counted.  
+  The equivalent `this.AddMap(…)` call is recognized.
+- A helper defined in a base class from another project is not followed when only a derived constructor calls it.  
+  Registrations reachable from that base class's own constructors still contribute through its recorded information.
+
+These cases can leave one recognized call and cause RVN006 to be reported even though multiple maps are registered.
+
+**RVN006 can be suppressed even when only one map is registered:**
+
+- Calls in different constructors are added together, so two constructors with one `AddMap` call each are not reported.
+- Calls in both branches of an `if` are added together, even though only one branch executes.
+- Helper methods are matched by name only. Calls in all overloads sharing that name are added together,
+  including overloads that are never invoked.
+
+</Panel>
+
+<Panel heading="Related C# analyzers">
+
+* [RVN005](./RVN005.mdx)  
+  Reports multi-map indexes for which no `AddMap` or `AddMapForAll` call is found.
+
+</Panel>

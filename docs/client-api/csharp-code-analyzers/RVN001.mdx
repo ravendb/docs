@@ -1,50 +1,141 @@
 ---
-title: "RVN001 — Index Map or Reduce assigned outside constructor"
+title: "RVN001 - Index Map or Reduce assigned outside constructor"
 sidebar_label: RVN001
 sidebar_position: 1
+see_also:
+     - title: "C# code analyzers overview"
+       link: "client-api/csharp-code-analyzers/overview"
+       source: "docs"
+       path: "Client API > C# Code Analyzers"
+     - title: "Creating and deploying indexes"
+       link: "indexes/creating-and-deploying"
+       source: "docs"
+       path: "Indexes"
+     - title: "Map indexes"
+       link: "indexes/map-indexes"
+       source: "docs"
+       path: "Indexes"
+     - title: "Map-reduce indexes"
+       link: "indexes/map-reduce-indexes"
+       source: "docs"
+       path: "Indexes"
 ---
 
-# RVN001 — Index Map or Reduce assigned outside constructor
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-- **Severity**: Info (default)
-- **Code fix**: No
+<Admonition type="note" title="">
 
-## Description
+* **RVN001** reports assignments to an index's `Map` or `Reduce` property inside a method instead of directly in the constructor.
 
-RavenDB reads the `Map` and `Reduce` expression trees during index registration, which happens when the index class constructor runs. Assigning `Map` or `Reduce` in a regular method, even one called from the constructor, means the assignment may never execute (e.g., when the method is only called conditionally), resulting in the index being deployed without a definition.
+* **Default severity**: _Info_  
+  **Automated code fix**: _No_
 
-## Trigger condition
+* In this article:
+   * [Description](#description)
+   * [Trigger condition](#trigger-condition)
+      * [When is RVN001 reported?](#when-is-rvn001-reported)
+      * [When is RVN001 not reported?](#when-is-rvn001-not-reported)
+   * [How to resolve](#how-to-resolve)
+      * [Before (triggers RVN001)](#before-triggers-rvn001)
+      * [After (correct)](#after-correct)
+   * [Limitations](#limitations)
+   * [Related C# analyzers](#related-c-analyzers)
 
-The analyzer fires when an assignment to `Map` or `Reduce` (the properties defined on `AbstractIndexCreationTask` and its variants) appears inside a regular `MethodDeclarationSyntax` rather than inside a constructor body. The check is semantic: it confirms the target identifier resolves to the actual `Map`/`Reduce` field or property on an index base class before reporting.
+</Admonition>
 
-## What to do
+<Panel heading="Description">
 
-Move the `Map` and `Reduce` for map-reduce indexes assignment into the constructor body.
+The RavenDB client builds the index definition from the `Map` and `Reduce` expressions when the index is deployed.  
+If these expressions are assigned in a separate method, that method may not run before the definition is built,  
+for example if it is called conditionally or not at all.
+    
+For single-map document indexes, the client throws `InvalidOperationException` if `Map` is still unset when the definition is built.
+If `Reduce` is unset, the resulting definition is map-only.
 
+</Panel>
+
+<Panel heading="Trigger condition">
+
+RVN001 checks index classes derived from the following bases:
+
+- `AbstractIndexCreationTask<TDocument>`, `AbstractIndexCreationTask<TDocument, TReduceResult>`,
+  or `AbstractGenericIndexCreationTask<TReduceResult>`.
+- `AbstractMultiMapIndexCreationTask`, `AbstractMultiMapTimeSeriesIndexCreationTask`,
+  or `AbstractMultiMapCountersIndexCreationTask`, including their generic variants.
+
+Abstract index classes are checked too.  
+Multi-map indexes have no `Map` property, so only `Reduce` assignments apply to them.
+
+RVN001 also reports `Reduce` assignments in JavaScript indexes derived from `AbstractJavaScriptIndexCreationTask`.
+Assignments to their `Maps` property are not checked.
+
+<ContentFrame>
+
+### When is RVN001 reported?
+
+RVN001 is reported when `Map` or `Reduce` is assigned inside an ordinary method of a supported index class,
+including assignments inside lambdas or local functions nested in that method.
+Both block-bodied and expression-bodied methods are checked.
+
+The assignment must use an unqualified property name (`Map` or `Reduce`),
+`this.Map` / `this.Reduce`, or `base.Map` / `base.Reduce`.
+
+RVN001 does not trace calls. It is still reported when the method is always called from a constructor,
+or when it reassigns a property the constructor already set.
+
+</ContentFrame>
+<ContentFrame>
+
+### When is RVN001 not reported?
+
+RVN001 is not reported for:
+
+- Assignments in constructors, including lambdas or local functions nested in them.
+- Assignments in property or indexer accessors, operators, or finalizers.
+- Assignments to local variables or parameters named `Map` or `Reduce`.
+- Assignments through another object, such as `other.Map` or `other.Reduce`.
+- Calls to `AddMap` or `AddMapForAll` inside methods.
+- Single-map time-series and counters indexes based on `AbstractTimeSeriesIndexCreationTask<...>`
+  or `AbstractCountersIndexCreationTask<...>`.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="How to resolve">
+
+Move the reported `Map` or `Reduce` assignment directly into the constructor body.
+
+---
+    
 ### Before (triggers RVN001)
 
 ```csharp
-public class OrdersByCompany : AbstractIndexCreationTask<Order>
+public class Orders_ByCompany : AbstractIndexCreationTask<Order>
 {
     public void Configure()
     {
+        // Triggers RVN001 even though the constructor always calls Configure().
         Map = orders => from o in orders
                         select new { o.Company, o.Employee };
     }
 
-    public OrdersByCompany()
+    public Orders_ByCompany()
     {
-        Configure(); // assignment happens in a method, not directly in ctor
+        Configure();
     }
 }
 ```
-
+<br/>
+    
 ### After (correct)
 
 ```csharp
-public class OrdersByCompany : AbstractIndexCreationTask<Order>
+public class Orders_ByCompany : AbstractIndexCreationTask<Order>
 {
-    public OrdersByCompany()
+    public Orders_ByCompany()
     {
         Map = orders => from o in orders
                         select new { o.Company, o.Employee };
@@ -52,7 +143,25 @@ public class OrdersByCompany : AbstractIndexCreationTask<Order>
 }
 ```
 
-## See also
+</Panel>
 
-- [RVN004](./RVN004.mdx) — fires when no constructor assigns `Map` at all.
-- [RVN005](./RVN005.mdx) — same concept for multi-map indexes missing `AddMap`.
+<Panel heading="Limitations">
+
+- A partial class declaration that lists neither a base class nor any interfaces is skipped.
+  Assignments in methods declared in that part are not checked, even when another part declares the index base class.
+    
+- RVN001 can also report assignments to custom fields or properties named `Map` or `Reduce` on an index class,  
+  even when they are unrelated to the index definition.
+
+</Panel>
+
+<Panel heading="Related C# analyzers">
+
+* [RVN004](./RVN004.mdx)  
+  Fires when no constructor sets `Map`, directly or through a method it calls.  
+  RVN001 and RVN004 can both be reported when `Map` is assigned only in a method that no constructor calls.
+    
+* [RVN005](./RVN005.mdx)  
+  Fires when no constructor registers a map through `AddMap` or `AddMapForAll`, directly or through a method it calls.
+
+</Panel>

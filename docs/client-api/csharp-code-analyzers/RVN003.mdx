@@ -1,43 +1,144 @@
 ---
-title: "RVN003 — ProjectInto called more than once in a query chain"
+title: "RVN003 - ProjectInto called more than once in a query chain"
 sidebar_label: RVN003
 sidebar_position: 3
+see_also:
+     - title: "C# code analyzers overview"
+       link: "client-api/csharp-code-analyzers/overview"
+       source: "docs"
+       path: "Client API > C# Code Analyzers"
+     - title: "Single projection per query"
+       link: "client-api/session/querying/how-to-project-query-results#single-projection-per-query"
+       source: "docs"
+       path: "Client API > Session > Querying"
+     - title: "Project index query results"
+       link: "indexes/querying/projections"
+       source: "docs"
+       path: "Indexes > Querying"
 ---
 
-# RVN003 — ProjectInto called more than once in a query chain
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-- **Severity**: Info (default)
-- **Code fix**: No
+<Admonition type="note" title="">
 
-## Description
+* **RVN003** reports repeated `ProjectInto` calls in the same RavenDB LINQ query chain.
 
-RavenDB's `ProjectInto<T>()` can only be called once per query chain. Calling it a second time throws `InvalidOperationException` at runtime because the projection is already registered on the query provider. This diagnostic catches the double-call at compile time.
+* **Default severity**: _Info_  
+  **Automated code fix**: _No_
 
-## Trigger condition
+* In this article:
+   * [Description](#description)
+   * [Trigger condition](#trigger-condition)
+      * [When is RVN003 reported?](#when-is-rvn003-reported)
+      * [When is RVN003 not reported?](#when-is-rvn003-not-reported)
+   * [How to resolve](#how-to-resolve)
+      * [Before (triggers RVN003)](#before-triggers-rvn003)
+      * [After (correct)](#after-correct)
+   * [Limitations](#limitations)
+   * [Related C# analyzers](#related-c-analyzers)
 
-The analyzer fires when a `.ProjectInto` invocation on an `IRavenQueryable<T>` receiver is found, and walking back through the invocation chain finds a previous `.ProjectInto` call whose own receiver is also an `IRavenQueryable<T>`.
+</Admonition>
 
-## What to do
+<Panel heading="Description">
 
-Remove the duplicate `.ProjectInto` call. If you need to project into a different type, restructure the query or use a single projection with a combined DTO.
+RavenDB allows only a [single projection per query](../session/querying/how-to-project-query-results.mdx#single-projection-per-query),
+whether the projection is defined with `ProjectInto<T>()` or `Select(...)`.
+
+RVN003 detects repeated `ProjectInto` calls in the same LINQ query chain at compile time.  
+Calling `ProjectInto` a second time throws `InvalidOperationException` ("_'ProjectInto' was already called…_")
+as soon as the second call is made, because the projection is already registered on the query provider.
+
+RVN003 does not report other combinations of projection methods, such as `ProjectInto` with `Select`.
+
+</Panel>
+
+<Panel heading="Trigger condition">
+
+RVN003 checks RavenDB LINQ queries from synchronous or asynchronous sessions.
+
+<ContentFrame>
+
+### When is RVN003 reported?
+
+RVN003 is reported on each `ProjectInto` call that follows an earlier `ProjectInto` call in the same query chain.  
+This includes a projected query stored in a local variable and projected again in a later statement.
+
+The calls can target the same type or different types, and other query operators can appear between them.
+
+</ContentFrame>
+<ContentFrame>
+
+### When is RVN003 not reported?
+
+RVN003 is not reported for:
+
+- A query with a single projection.
+- A combination of `ProjectInto` and `Select`, or multiple `Select` calls.
+- Separate `ProjectInto` calls that each start from the same local variable initialized with an unprojected query,
+  rather than from the result of an earlier projection.
+
+Separate branches are not necessarily independent query instances, so the absence of RVN003 does not guarantee
+that reusing a LINQ query is safe. For the supported base-query reuse pattern, see [How to resolve](#how-to-resolve).
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="How to resolve">
+
+Remove the duplicate `.ProjectInto` call.  
+If you need additional fields, use a single projection type that contains the fields you need.
+
+To run the same base query with multiple projections, keep the unprojected base query as a `DocumentQuery`  
+(or `AsyncDocumentQuery` for an asynchronous session).  
+Call `ToQueryable()` separately before each projection to create independent query instances.  
+See [Reusing the same base query for multiple projections](../session/querying/how-to-project-query-results.mdx#reusing-the-same-base-query-for-multiple-projections) for synchronous and asynchronous examples.
+
+---
 
 ### Before (triggers RVN003)
 
 ```csharp
-var results = session.Query<Order>()
-    .ProjectInto<OrderSummaryDto>()
-    .ProjectInto<OrderSummaryDto>()  // RVN003: second ProjectInto throws at runtime
+var projected = session.Query<Order>()
+    .ProjectInto<OrderSummaryDto>();
+
+var results = projected
+    // Triggers RVN003: the local variable already holds a projected query.
+    .ProjectInto<OrderDetailsDto>()
+    .Take(50)
     .ToList();
 ```
+<br/>
 
 ### After (correct)
 
 ```csharp
 var results = session.Query<Order>()
-    .ProjectInto<OrderSummaryDto>()
+    .ProjectInto<OrderDetailsDto>()
+    .Take(50)
     .ToList();
 ```
 
-## See also
+</Panel>
 
-- [RVN002](./RVN002.mdx) — fires when a query operator appears after a projection.
+<Panel heading="Limitations">
+
+- RVN003 follows only the value a local variable is declared with; later assignments are not taken into account.
+  Depending on the reassignment, this can miss a repeated projection or report one that is no longer present.
+
+- RVN003 does not trace earlier projections through helper-method return values, parameters, fields, properties,  
+  or C# query-syntax clauses. Explicit repeated calls in a visible chain can still be detected.
+
+- Within a recognized RavenDB query chain, RVN003 identifies `ProjectInto` calls by name without verifying
+  that they resolve to RavenDB's extension method. Custom methods with the same name can also cause a report.
+
+</Panel>
+
+<Panel heading="Related C# analyzers">
+
+* [RVN002](./RVN002.mdx)   
+  Reports certain query operators used after a projection, including a `Where` placed between two `ProjectInto` calls.
+
+</Panel>

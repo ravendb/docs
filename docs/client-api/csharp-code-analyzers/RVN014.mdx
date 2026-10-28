@@ -1,77 +1,305 @@
 ---
-title: "RVN014 — Index Map fans out over a collection"
+title: "RVN014 - Index Map fans out over a collection"
 sidebar_label: RVN014
 sidebar_position: 14
+see_also:
+     - title: "C# code analyzers overview"
+       link: "client-api/csharp-code-analyzers/overview"
+       source: "docs"
+       path: "Client API > C# Code Analyzers"
+     - title: "Indexing nested data"
+       link: "indexes/indexing-nested-data#fanout-index---multiple-index-entries-per-document"
+       source: "docs"
+       path: "Indexes"
+     - title: "Indexing performance hints"
+       link: "monitoring/alerts-and-notifications/performance-hints#indexing"
+       source: "docs"
+       path: "Monitoring > Alerts and Notifications"
+     - title: "Paging through tampered results"
+       link: "indexes/querying/paging#paging-through-tampered-results"
+       source: "docs"
+       path: "Indexes > Querying"
 ---
 
-# RVN014 — Index Map fans out over a collection
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-- **Severity**: Info (default)
-- **Code fix**: No
+<Admonition type="note" title="">
 
-## Description
+* **RVN014** reports index maps that iterate over a nested collection using `SelectMany` or a nested `from` clause,  
+  producing an index-entry for each element of the collection instead of a single index-entry per document.
 
-A *fan-out index* produces **multiple index entries per source document** by iterating over a nested collection. For example, an index that maps each order's line items produces one entry per line item instead of one per order. When collections are large or unbounded, this can significantly degrade indexing performance and storage. The RavenDB server independently fires a `WarnIndexOutputsPerDocument` warning at runtime for the same reason; this rule surfaces the issue at compile time before the index is deployed.
+* **Default severity**: _Info_  
+  **Automated code fix**: _No_
 
-**Fan-out is sometimes intentional.** The diagnostic is informational: verify that the fan-out is deliberate and that the collection's cardinality is acceptable for your workload.
+* In this article:
+   * [Description](#description)
+      * [What is a fanout index?](#what-is-a-fanout-index)
+      * [Performance and paging](#performance-and-paging)
+      * [Runtime performance hint and RVN014](#runtime-performance-hint-and-rvn014)
+   * [Trigger condition](#trigger-condition)
+      * [When is RVN014 reported?](#when-is-rvn014-reported)
+      * [When is RVN014 not reported?](#when-is-rvn014-not-reported)
+   * [How to resolve](#how-to-resolve)
+      * [Fanout map (triggers RVN014)](#fanout-map-triggers-rvn014)
+      * [Intentional fanout (suppress RVN014 with a pragma)](#intentional-fanout-suppress-rvn014-with-a-pragma)
+      * [Avoid fanout by indexing collection values in a single entry](#avoid-fanout-by-indexing-collection-values-in-a-single-entry)
+   * [Limitations](#limitations)
+   * [Related C# analyzers](#related-c-analyzers)
 
-## Trigger condition
+</Admonition>
 
-The analyzer fires when a `Map` assignment or `AddMap`/`AddMapForAll` call inside an index constructor contains a `SelectMany(…)` invocation in method-chain form, or a nested `from` clause in query-expression form. The `Reduce` lambda is intentionally excluded — a Reduce runs over already-mapped entries and cannot produce additional outputs per source document. JavaScript indexes (`AbstractJavaScriptIndexCreationTask`) are excluded.
+<Panel heading="Description">
 
-## What to do
+#### What is a fanout index?
 
-If the fan-out is intentional, no action is required. Consider suppressing the diagnostic if the noise is unwelcome:
+An index whose map iterates over a nested collection is a **fanout index**:  
+it produces an index-entry for each element of the collection, instead of a single index-entry per document.  
+For example, an index that maps the lines of each order produces one index-entry per order line,  
+so an order with 50 lines produces 50 index-entries.
 
-```ini
-[*.cs]
-dotnet_diagnostic.RVN014.severity = none
-```
+A fanout index is the right choice when a query must match several conditions on the same element,  
+such as an order line with a specific product _and_ a quantity above 10 (see [RVN015](./RVN015.mdx)).
 
-If the fan-out is accidental, refactor the map to project a single entry per document (e.g., aggregate the nested collection instead of flattening it).
+---
+    
+#### Performance and paging
 
-### Fan-out — method-chain form (triggers RVN014)
+The cost of a fanout index grows with the size of the collection:
+
+- Indexing takes longer and uses more CPU and memory, and the index takes more storage.
+- When a query returns full documents, `TotalResults` in the query statistics counts the matching index-entries,  
+  not the documents.  
+  Paging must account for the duplicate results the server skips (see [Paging through tampered results](../../indexes/querying/paging.mdx#paging-through-tampered-results)).
+
+---
+    
+#### Runtime performance hint and RVN014
+
+When a single document produces more index-entries than the [PerformanceHints.Indexing.MaxIndexOutputsPerDocument](../../monitoring/alerts-and-notifications/configuration.mdx#performancehintsindexingmaxindexoutputsperdocument) threshold (`1024` by default),  
+the server raises a ["High indexing fanout ratio"](../../monitoring/alerts-and-notifications/performance-hints.mdx#indexing) performance hint at runtime.  
+
+RVN014 is reported at compile time when the map contains a fanout pattern detected by the C# analyzer  
+(see [Trigger condition](#trigger-condition)).  
+    
+RVN014 does not check the collection's runtime size, so it is reported even when the server's performance-hint threshold is not exceeded.    
+
+</Panel>
+
+<Panel heading="Trigger condition">
+
+<ContentFrame>
+
+### When is RVN014 reported?
+
+RVN014 checks the map lambdas in the constructors of the index class:
+
+- **`Map` assignments** (including `this.Map = …` and `base.Map = …`), in indexes that derive from `AbstractIndexCreationTask<TDocument>`
+  or `AbstractIndexCreationTask<TDocument, TReduceResult>`.
+- **`AddMap` and `AddMapForAll` calls**, in multi-map indexes, including multi-map time-series and counters indexes.
+
+In these lambdas, RVN014 reports:
+
+- A `SelectMany` call in the lambda's method chain, such as `orders.SelectMany(order => order.Lines)`,  
+  or in the source of a `from` clause, such as `from line in orders.SelectMany(order => order.Lines)`.  
+  Reported on the `SelectMany` method name.
+- A `from` clause that follows the first `from` clause of the query expression, such as `from line in order.Lines`,  
+  including a `from` clause that follows an `into` continuation.  
+  This is also reported when the query expression is wrapped in parentheses or followed by a method call,  
+  such as `(from order in orders from line in order.Lines select …).Where(…)`.  
+  Reported on the `from` keyword.
+
+Each detected fanout operation is reported separately.
+
+</ContentFrame>
+<ContentFrame>
+
+### When is RVN014 not reported?
+
+- `Reduce` lambdas. A reduce function aggregates the index-entries that the map produced, so it does not add index-entries per document.
+    
+- A query expression or a `SelectMany` call inside the projection,  
+  such as `select new { Products = from line in order.Lines select line.Product }`.  
+  It computes a value for the document's single index-entry.
+    
+- In multi-map time-series indexes, the `from` clause that expands each time-series segment into its entries,  
+  such as `from entry in ts.Entries`.  
+  A further nested `from`, such as `from value in entry.Values`, is reported.
+    
+- JavaScript indexes (`AbstractJavaScriptIndexCreationTask`), which define their maps as strings.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="How to resolve">
+
+Decide whether the index needs an index-entry per element:
+
+- **If the fanout is intentional**, for example to match several conditions on the same element,  
+  make sure the collection size is acceptable for your workload, and suppress RVN014 for that index with  
+  `#pragma warning disable RVN014`.  
+  See [Suppressing diagnostics](./overview.mdx#suppressing-diagnostics) for how to disable and restore a diagnostic around a specific code block.
+    
+  Setting `dotnet_diagnostic.RVN014.severity = none` in `.editorconfig` disables RVN014 for all files matched by that configuration section,
+  which can also hide unintended fanout maps.
+    
+- **If the fanout is not needed**, produce a single index-entry per document:
+    
+  - To query documents by values from a nested collection, index the values as a collection in one index-field,  
+    such as `Products = order.Lines.Select(line => line.Product)`.  
+    A query on that index-field matches a document when any element holds the value,  
+    but conditions on two such index-fields can be matched by different elements.
+    
+  - To query by a value computed over the collection, aggregate it,  
+    such as `TotalQuantity = order.Lines.Sum(line => line.Quantity)`.
+
+---
+
+### Fanout map (triggers RVN014)
 
 ```csharp
-public class Orders_ByLineItem : AbstractIndexCreationTask<Order>
+public class Orders_ByProduct : AbstractIndexCreationTask<Order>
 {
-    public Orders_ByLineItem()
+    public class IndexEntry
     {
-        Map = orders => orders.SelectMany(           // RVN014
-            o => o.Lines,
-            (o, line) => new { line.Product, line.Quantity });
+        // The index-fields
+        public string Product { get; set; }
+        public int Quantity { get; set; }
+    }
+
+    public Orders_ByProduct()
+    {
+        // Triggers RVN014: SelectMany produces an index-entry per order line.
+        Map = orders => orders.SelectMany(
+            order => order.Lines,
+            (order, line) => new IndexEntry
+            {
+                Product = line.Product,
+                Quantity = line.Quantity
+            });
     }
 }
 ```
 
-### Fan-out — query-expression form (triggers RVN014)
+```csharp
+public class Orders_ByProduct : AbstractIndexCreationTask<Order>
+{
+    public class IndexEntry
+    {
+        // The index-fields
+        public string Product { get; set; }
+        public int Quantity { get; set; }
+    }
+
+    public Orders_ByProduct()
+    {
+        Map = orders => from order in orders
+                        // Triggers RVN014: the nested 'from' produces an index-entry per order line.
+                        from line in order.Lines
+                        select new IndexEntry
+                        {
+                            Product = line.Product,
+                            Quantity = line.Quantity
+                        };
+    }
+}
+```
+<br/>
+
+### Intentional fanout (suppress RVN014 with a pragma)
 
 ```csharp
-public class Orders_ByLineItem : AbstractIndexCreationTask<Order>
+public class Orders_ByProductAndQuantity : AbstractIndexCreationTask<Order>
 {
-    public Orders_ByLineItem()
+    public class IndexEntry
     {
-        Map = orders =>
-            from o in orders
-            from line in o.Lines                     // RVN014: nested from
-            select new { line.Product, line.Quantity };
+        // The index-fields
+        public string Product { get; set; }
+        public int Quantity { get; set; }
+    }
+
+    public Orders_ByProductAndQuantity()
+    {
+        // The fanout is intentional: each order line is a separate index-entry,
+        // so a query can match the product and the quantity on the same line.
+        // Suppress RVN014 for this intentional fanout map.
+        #pragma warning disable RVN014
+        Map = orders => from order in orders
+                        from line in order.Lines
+                        select new IndexEntry
+                        {
+                            Product = line.Product,
+                            Quantity = line.Quantity
+                        };
+        #pragma warning restore RVN014
     }
 }
 ```
 
-### Aggregated (no fan-out)
+```csharp
+// Orders that have a line with more than 10 units of products/1-A
+var orders = session
+    .Query<Orders_ByProductAndQuantity.IndexEntry, Orders_ByProductAndQuantity>()
+    .Where(x => x.Product == "products/1-A" && x.Quantity > 10)
+    .OfType<Order>()
+    .Take(50)
+    .ToList();
+```
+<br/>
+
+### Avoid fanout by indexing collection values in a single entry
 
 ```csharp
-public class Orders_ByTotalQuantity : AbstractIndexCreationTask<Order>
+public class Orders_ByProducts : AbstractIndexCreationTask<Order>
 {
-    public Orders_ByTotalQuantity()
+    public class IndexEntry
     {
-        Map = orders => from o in orders
-                        select new { TotalQuantity = o.Lines.Sum(l => l.Quantity) };
+        // The index-fields
+        public IEnumerable<string> Products { get; set; }
+    }
+
+    public Orders_ByProducts()
+    {
+        // A single index-entry per order:
+        // the 'Products' index-field holds the products of all order lines.
+        Map = orders => from order in orders
+                        select new IndexEntry
+                        {
+                            Products = order.Lines.Select(line => line.Product)
+                        };
     }
 }
 ```
 
-## See also
+```csharp
+// Orders that have a line with products/1-A
+var orders = session
+    .Query<Orders_ByProducts.IndexEntry, Orders_ByProducts>()
+    .Where(x => x.Products.Contains("products/1-A"))
+    .OfType<Order>()
+    .Take(50)
+    .ToList();
+```
 
-- Server-side `WarnIndexOutputsPerDocument` — the runtime counterpart to this compile-time rule.
+</Panel>
+
+<Panel heading="Limitations">
+
+- RVN014 checks only lambdas in constructor bodies.  
+  A `Map` assigned in a method is not checked (see [RVN001](./RVN001.mdx)).
+    
+- The map lambda must appear directly in the `Map` assignment or the `AddMap`/`AddMapForAll` call.  
+  A map expression stored in a variable and then assigned or passed to the call is not checked.
+    
+- Single-map time-series and counters indexes are not checked.
+
+</Panel>
+
+<Panel heading="Related C# analyzers">
+
+* [RVN015](./RVN015.mdx)  
+  Dynamic queries that need a fanout index to match conditions on the same element of a nested collection.
+
+</Panel>

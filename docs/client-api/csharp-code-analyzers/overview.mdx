@@ -1,5 +1,5 @@
 ---
-title: "C# Code Analyzers"
+title: "C# Code Analyzers - Overview"
 sidebar_label: Overview
 sidebar_position: 0
 see_also:
@@ -18,27 +18,59 @@ see_also:
 ---
 
 import Admonition from '@theme/Admonition';
-
-# C# Code Analyzers
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
-This page covers **compile-time C# code analyzers** that catch client-code mistakes at build time.
-If you're looking for **text-analysis analyzers** used in index definitions for full-text search (tokenizers, stemmers, language analyzers), see [Using Analyzers in Indexes](../../indexes/using-analyzers.mdx).
+
+* RavenDB ships a set of C# code analyzers embedded in the `RavenDB.Client` NuGet package.  
+  They inspect client code at compile time, identifying common misuse patterns before the application runs.
+    
+* These **C# code analyzers** are distinct from the **text analyzers** used in index definitions for full-text search.  
+  For tokenizers, stemmers, and language analyzers, see [Using Analyzers in Indexes](../../indexes/using-analyzers.mdx).    
+
+* In this article:
+   * [Installation and requirements](#installation-and-requirements)
+   * [Diagnostic severity](#diagnostic-severity)
+   * [Suppress diagnostics](#suppress-diagnostics)
+   * [Apply automated code fixes](#apply-automated-code-fixes)
+   * [Available rules](#available-rules)
+
 </Admonition>
 
-RavenDB ships a set of C# code analyzers embedded in the `RavenDB.Client` NuGet package. They run at compile time inside any project that references the client and catch common misuse patterns before tests, staging, or production.
+<a id="distribution"/>
 
-## Distribution
+<Panel heading="Installation and requirements">
 
-Both analyzer assemblies (`Raven.Analyzers.dll` and `Raven.Analyzers.CodeFixes.dll`) are embedded in `RavenDB.Client.nupkg` under `analyzers/dotnet/cs/`. No separate install is required. The analyzers activate automatically on every build once the client package is referenced.
+The analyzer assembly (`Raven.Analyzers.dll`) and code-fix assembly (`Raven.Analyzers.CodeFixes.dll`) are included in `RavenDB.Client.nupkg` under `analyzers/dotnet/cs/`. 
+No separate install is required.  
 
-## Severity
+The analyzers require Roslyn 4.4.0 or later, included in the .NET 7 SDK and Visual Studio 2022 version 17.4, and in later versions.
+Older compiler hosts cannot load the analyzers and may report `CS9057`.  
+This warning can fail the build when `TreatWarningsAsErrors` is enabled.
 
-<Admonition type="info" title="Severity defaults to Info" id="severity-defaults-to-info" href="#severity-defaults-to-info">
+Once the client package is referenced, the analyzers run automatically on every build.  
+See [Apply automated code fixes](#apply-automated-code-fixes) for applying fixes in the IDE or from the command line.
 
-All rules ship at **`DiagnosticSeverity.Info`** by default. They appear as informational hints in the IDE and in build output but **do not break existing builds on upgrade**.
+Some rules also inspect indexes defined in referenced assemblies. The checks performed by RVN004–RVN008 are skipped when the index information they require cannot be obtained from generated metadata or available source.
 
-Teams can promote individual rules to `Warning` or `Error` via `.editorconfig` once existing occurrences have been addressed:
+</Panel>
+
+<Panel heading="Diagnostic severity">
+    
+New rules default to `Info` severity in the client release that introduces them.  
+For the rules listed in this article, the default remains `Info` throughout the 7.2.x release line.
+
+Diagnostics reported at `Info` appear in the IDE but are not printed in `dotnet build` output.  
+They do not fail builds, even with `TreatWarningsAsErrors` enabled.
+
+Starting with the next major or minor client release after 7.2, these rules default to `Warning`,  
+except RVN006, RVN007, and RVN008, which remain at `Info`.
+
+If `TreatWarningsAsErrors` is enabled, diagnostics reported as `Warning` can fail the build.
+Address or suppress relevant occurrences before upgrading to a client version where these rules default to `Warning`.
+
+You can override the default severity of individual rules in `.editorconfig`:
 
 ```ini
 [*.cs]
@@ -46,33 +78,111 @@ dotnet_diagnostic.RVN012.severity = warning
 dotnet_diagnostic.RVN013.severity = error
 ```
 
-</Admonition>
+</Panel>
 
-## Code Fixes
+<Panel heading="Suppress diagnostics">
 
-<Admonition type="tip" title="Rules with automated code fixes" id="rules-with-automated-code-fixes" href="#rules-with-automated-code-fixes">
+You can suppress any RavenDB analyzer rule when the reported pattern is intentional.
 
-- **[RVN011](./RVN011.mdx)** — rewrites `store.OpenSession()` to `batch.OpenSession()` inside a subscription `Run` lambda.
-- **[RVN012](./RVN012.mdx)** — rewrites a block of independent eager `Load` / `Query` calls into lazy registrations followed by a single `ExecuteAllPendingLazyOperations[Async]()` call.
+<ContentFrame>
 
-</Admonition>
+### Suppress a diagnostic in a code region
 
-## Rules
+Use `#pragma warning disable` followed by the rule ID before the relevant code,  
+and `#pragma warning restore` followed by the same ID after the code:
 
-| ID | Title | Category | Code Fix |
-|----|-------|----------|----------|
-| [RVN001](./RVN001.mdx) | Index Map or Reduce assigned outside constructor | Index definition | No |
-| [RVN002](./RVN002.mdx) | RavenDB query operator after projection | Query | No |
-| [RVN003](./RVN003.mdx) | ProjectInto called more than once in a query chain | Query | No |
-| [RVN004](./RVN004.mdx) | AbstractIndexCreationTask subclass is missing a Map assignment | Index definition | No |
-| [RVN005](./RVN005.mdx) | Multi-map index has no AddMap call in any constructor | Index definition | No |
-| [RVN006](./RVN006.mdx) | Multi-map index uses only a single AddMap | Index definition | No |
-| [RVN007](./RVN007.mdx) | Query field not present in the index projection | Query | No |
-| [RVN008](./RVN008.mdx) | Projected field not retrievable under the applied ProjectionBehavior | Query | No |
-| [RVN009](./RVN009.mdx) | Unsupported method call inside index Map/Reduce expression | Index definition | No |
-| [RVN010](./RVN010.mdx) | Unsupported method call inside RavenDB query expression | Query | No |
-| [RVN011](./RVN011.mdx) | Use batch.OpenSession inside a subscription Run delegate | Subscriptions | Yes |
-| [RVN012](./RVN012.mdx) | Batch independent session operations using the lazy API | Session | Yes |
-| [RVN013](./RVN013.mdx) | Query result is not bounded by Take() | Query | No |
-| [RVN014](./RVN014.mdx) | Index Map fans out over a collection | Index definition | No |
-| [RVN015](./RVN015.mdx) | Correlated conditions over a nested collection in a dynamic query | Query | No |
+```csharp
+#pragma warning disable RVN014
+// Code where RVN014 is intentionally suppressed.
+#pragma warning restore RVN014
+```
+<br/>
+    
+The suppression starts on the line after `disable` and lasts until `restore` or the end of the source file.  
+The `restore` directive restores the rule's configured reporting behavior from the following line.
+
+Replace `RVN014` with the ID of any RavenDB analyzer rule.  
+To suppress multiple rules, list their IDs separated by commas in both directives, such as `RVN009, RVN014`.
+
+For more information, see the [C# pragma warning reference](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/preprocessor-directives#pragma-warning).
+
+</ContentFrame>
+<ContentFrame>
+
+### Suppress a diagnostic in matching files
+
+Set the rule's severity to `none` in `.editorconfig`:
+
+```ini
+[*.cs]
+dotnet_diagnostic.RVN014.severity = none
+```
+<br/>    
+
+The rule is suppressed in all files matched by that configuration section.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Apply automated code fixes">
+    
+Automated code fixes are suggested code changes that you can choose to apply.  
+RVN011 and RVN012 provide fixes for supported code patterns.  
+A diagnostic can still be reported when no automated fix is available; in that case, change the code manually.
+
+<ContentFrame>
+
+### Rules with automated code fixes    
+
+- **[RVN011](./RVN011.mdx)**  
+  Rewrites `store.OpenSession()` / `store.OpenAsyncSession()` to `batch.OpenSession()` / `batch.OpenAsyncSession()` inside a subscription `Run` lambda.
+    
+- **[RVN012](./RVN012.mdx)**  
+  Rewrites independent eager `Load` calls and queries materialized with `ToList` or `ToArray` (including supported async forms)
+  into lazy registrations whose results are read through `.Value` (awaited for async calls).  
+  Reading the first value sends all pending lazy operations in the same session to the server in a single request.
+
+</ContentFrame>
+<ContentFrame>
+
+### How to apply a code fix
+
+Apply a fix through your IDE's quick actions, or run the following command:
+
+```shell
+dotnet format analyzers MySolution.sln --diagnostics RVN011 RVN012 --severity info
+```
+<br/>
+    
+Replace `MySolution.sln` with the path to your project or solution file.
+
+The `--severity info` option includes diagnostics reported at `Info`.  
+By default, `dotnet format analyzers` fixes only diagnostics reported at `Warning` or `Error`.  
+For more options, see the [`dotnet format` documentation](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-format).
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Available rules">
+
+| ID                     | Title                                                                | Area             | Automated Fix      |
+|------------------------|----------------------------------------------------------------------|------------------|--------------------|
+| [RVN001](./RVN001.mdx) | Index Map or Reduce assigned outside constructor                     | Index definition | No                 |
+| [RVN002](./RVN002.mdx) | RavenDB query operator after projection                              | Query            | No                 |
+| [RVN003](./RVN003.mdx) | ProjectInto called more than once in a query chain                   | Query            | No                 |
+| [RVN004](./RVN004.mdx) | AbstractIndexCreationTask subclass is missing a Map assignment       | Index definition | No                 |
+| [RVN005](./RVN005.mdx) | Multi-map index has no AddMap call in any constructor                | Index definition | No                 |
+| [RVN006](./RVN006.mdx) | Multi-map index uses only a single AddMap                            | Index definition | No                 |
+| [RVN007](./RVN007.mdx) | Query field not defined in the index                                 | Query            | No                 |
+| [RVN008](./RVN008.mdx) | Projected field not retrievable under the applied ProjectionBehavior | Query            | No                 |
+| [RVN009](./RVN009.mdx) | Unsupported method call inside index Map/Reduce expression           | Index definition | No                 |
+| [RVN010](./RVN010.mdx) | Unsupported method call inside RavenDB query expression              | Query            | No                 |
+| [RVN011](./RVN011.mdx) | Use batch.OpenSession inside a subscription Run delegate             | Subscriptions    | Yes                |
+| [RVN012](./RVN012.mdx) | Batch independent session operations using the lazy API              | Session          | Yes                |
+| [RVN013](./RVN013.mdx) | Query result is not bounded by Take()                                | Query            | No                 |
+| [RVN014](./RVN014.mdx) | Index Map fans out over a collection                                 | Index definition | No                 |
+| [RVN015](./RVN015.mdx) | Correlated conditions over a nested collection in a dynamic query    | Query            | No                 |
+
+</Panel>

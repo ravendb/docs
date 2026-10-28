@@ -1,35 +1,119 @@
 ---
-title: "RVN004 — AbstractIndexCreationTask subclass is missing a Map assignment"
+title: "RVN004 - AbstractIndexCreationTask subclass is missing a Map assignment"
 sidebar_label: RVN004
 sidebar_position: 4
+see_also:
+     - title: "C# code analyzers overview"
+       link: "client-api/csharp-code-analyzers/overview"
+       source: "docs"
+       path: "Client API > C# Code Analyzers"
+     - title: "Creating and deploying indexes"
+       link: "indexes/creating-and-deploying"
+       source: "docs"
+       path: "Indexes"
+     - title: "Map indexes"
+       link: "indexes/map-indexes"
+       source: "docs"
+       path: "Indexes"
+     - title: "Map-reduce indexes"
+       link: "indexes/map-reduce-indexes"
+       source: "docs"
+       path: "Indexes"
 ---
 
-# RVN004 — AbstractIndexCreationTask subclass is missing a Map assignment
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-- **Severity**: Info (default)
-- **Code fix**: No
+<Admonition type="note" title="">
 
-## Description
+* **RVN004** reports a missing `Map` assignment in a RavenDB index class.
 
-Every class that inherits from `AbstractIndexCreationTask<TDocument>` (or `AbstractGenericIndexCreationTask`) must assign the `Map` property in its constructor. Without a `Map` expression, the index has no definition and will fail when deployed to the server.
+* **Default severity**: _Info_  
+  **Automated code fix**: _No_
 
-## Trigger condition
+* In this article:
+   * [Description](#description)
+   * [Trigger condition](#trigger-condition)
+      * [When is RVN004 reported?](#when-is-rvn004-reported)
+      * [When is RVN004 not reported?](#when-is-rvn004-not-reported)
+   * [How to resolve](#how-to-resolve)
+      * [Before (triggers RVN004)](#before-triggers-rvn004)
+      * [After (correct)](#after-correct)
+   * [Limitations](#limitations)
+   * [Related C# analyzers](#related-c-analyzers)
 
-The analyzer fires when a class has a base-type chain that includes `AbstractIndexCreationTask` or `AbstractGenericIndexCreationTask`, and none of its constructors contains an assignment to the `Map` property that resolves to the field or property defined on the index base class. JavaScript indexes (`AbstractJavaScriptIndexCreationTask`) are excluded because they express their maps differently.
+</Admonition>
 
-## What to do
+<Panel heading="Description">
+
+Indexes that derive from `AbstractIndexCreationTask<TDocument>` or `AbstractIndexCreationTask<TDocument, TReduceResult>`
+and use the standard `CreateIndexDefinition()` implementation must assign `Map` before the client builds the index definition.
+    
+Without a `Map`, the client throws `InvalidOperationException` ("_Map is required to generate an index…_") when it builds the index definition,
+so the index is never deployed.
+
+When indexes are deployed together through `IndexCreation.CreateIndexes()` or `store.ExecuteIndexes()`,  
+a missing `Map` prevents every index in that batch from being deployed.
+
+</Panel>
+
+<Panel heading="Trigger condition">
+
+<ContentFrame>
+
+### When is RVN004 reported?
+
+RVN004 is reported when no `Map` assignment is reachable from any constructor of the index class or its base classes,
+including a base class from a referenced project.
+
+RVN004 is still reported when `Map` is assigned only in a method that no constructor calls,  
+even if that method runs before the client builds the index definition.
+
+</ContentFrame>
+<ContentFrame>
+
+### When is RVN004 not reported?
+
+An assignment found in any constructor of the index class or its base classes is enough to suppress RVN004.
+Assignments in methods of those classes also count when a constructor calls the method, directly or through other methods.
+
+RVN004 recognizes assignments written as `Map = ...`, `this.Map = ...`, or `base.Map = ...`.  
+See [Limitations](#limitations) for cases where an assignment counts even though it may not execute.
+
+RVN004 is also not reported for the following index classes, even when no `Map` assignment is found:    
+    
+  - Abstract index classes. Their subclasses are checked instead.
+  - Indexes that override `CreateIndexDefinition()`.
+  - Multi-map indexes. See [RVN005](./RVN005.mdx).
+  - JavaScript indexes (`AbstractJavaScriptIndexCreationTask`), which define their maps as strings.
+  - Index classes that are `private`, `protected`, or `private protected`, or nested in a class with one of these access levels.
+  - Indexes whose required base-class information cannot be obtained from generated metadata or available source.
+    This can happen when a base class is in a compiled assembly built with a client version that does not include the RavenDB analyzers.
+    See [Distribution](./overview.mdx#distribution).
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="How to resolve">
 
 Add a constructor (or update the existing one) that assigns the `Map` property.
 
+If the class is only a base for other indexes, declare it `abstract`.
+
+---
+    
 ### Before (triggers RVN004)
 
 ```csharp
+// Triggers RVN004: Map is never assigned.
 public class Orders_ByCompany : AbstractIndexCreationTask<Order>
 {
-    // No constructor — Map is never assigned; RVN004 fires on the class name
 }
 ```
-
+<br/>
+        
 ### After (correct)
 
 ```csharp
@@ -43,7 +127,33 @@ public class Orders_ByCompany : AbstractIndexCreationTask<Order>
 }
 ```
 
-## See also
+</Panel>
 
-- [RVN001](./RVN001.mdx) — fires when `Map` is assigned in a method rather than a constructor.
-- [RVN005](./RVN005.mdx) — equivalent rule for multi-map indexes.
+<Panel heading="Limitations">
+
+RVN004 does not verify that every constructor or execution path assigns `Map`.
+
+**RVN004 can be suppressed even when `Map` remains unset:**
+
+- An assignment in any constructor counts, including a base constructor that the index never calls.
+- An assignment inside a condition counts even when the condition prevents it from executing.
+- An assignment inside a lambda or local function nested in a checked constructor or method counts even if the lambda or local function is never invoked.
+- Calls to methods are matched by name only. An assignment in another overload with the same name can therefore suppress RVN004 even when that overload is never called.
+
+**RVN004 can be reported even when `Map` is assigned at runtime:**
+
+- An assignment made only in a property setter is not detected, even if the constructor sets that property.
+- An assignment made through another reference, such as `index.Map = ...`, is not recognized.
+
+</Panel>
+
+<Panel heading="Related C# analyzers">
+
+* [RVN001](./RVN001.mdx)  
+  Fires when `Map` is assigned in a method rather than a constructor.  
+  RVN001 and RVN004 can both be reported when `Map` is assigned only in a method that no constructor calls.
+        
+* [RVN005](./RVN005.mdx)  
+  Equivalent rule for multi-map indexes.
+
+</Panel>

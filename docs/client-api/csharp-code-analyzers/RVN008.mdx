@@ -1,66 +1,271 @@
 ---
-title: "RVN008 — Projected field not retrievable under the applied ProjectionBehavior"
+title: "RVN008 - Projected field not retrievable under the applied ProjectionBehavior"
 sidebar_label: RVN008
 sidebar_position: 8
+see_also:
+     - title: "C# code analyzers overview"
+       link: "client-api/csharp-code-analyzers/overview"
+       source: "docs"
+       path: "Client API > C# Code Analyzers"
+     - title: "Projection behavior with a static-index"
+       link: "indexes/querying/projections#projection-behavior-with-a-static-index"
+       source: "docs"
+       path: "Indexes > Querying"
+     - title: "Storing data in index"
+       link: "indexes/storing-data-in-index"
+       source: "docs"
+       path: "Indexes"
+     - title: "Customize query"
+       link: "querying/customize-query"
+       source: "docs"
+       path: "Querying"
 ---
 
-# RVN008 — Projected field not retrievable under the applied ProjectionBehavior
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-- **Severity**: Info (default)
-- **Code fix**: No
+<Admonition type="note" title="">
 
-## Description
+* **RVN008** reports fields in a static-index query projection that cannot be retrieved under the query's `ProjectionBehavior`.
 
-RavenDB projections retrieve each field from the stored index entry first, then fall back to the source document if the field is not stored. If a field is absent from **both** the stored index entry and the source document type, the projected value will be `null` or missing at runtime. Under `ProjectionBehavior.FromIndex` or `ProjectionBehavior.FromIndexOrThrow` the fallback to the source document is disabled, making unstored fields silently empty or a hard error respectively.
+* **Default severity**: _Info_  
+  **Automated code fix**: _No_
 
-## Analyzed projection forms
+* In this article:
+   * [Description](#description)
+   * [Trigger condition](#trigger-condition)
+      * [When is RVN008 reported?](#when-is-rvn008-reported)
+      * [When is RVN008 not reported?](#when-is-rvn008-not-reported)
+   * [How to resolve](#how-to-resolve)
+      * [Before (triggers RVN008)](#before-triggers-rvn008)
+      * [After (correct)](#after-correct)
+   * [Limitations](#limitations)
+   * [Related C# analyzers](#related-c-analyzers)
 
-- `ProjectInto<TDto>()` — all public readable members of `TDto` are checked.
-- `Select(x => new { x.Field1, x.Field2 })` — anonymous object member initializers.
-- `Select(x => new MyDto { Field1 = x.Field1 })` — named object member initializers.
+</Admonition>
 
-Constructor-call projections (`new MyDto(x.Field1, x.Field2)`) and identity selects (`Select(x => x.SubProperty)`) are **not** analyzed.
+<Panel heading="Description">
 
-## Trigger condition
+**Field retrieval**:  
+When a query on a static index projects its results, RavenDB retrieves each projected field according to the query's `ProjectionBehavior`:    
+  - **`Default`**: from the index if the field is stored, otherwise from the source document.
+  - **`FromIndex`**, **`FromIndexOrThrow`**: only from stored index-fields.
+  - **`FromDocument`**, **`FromDocumentOrThrow`**: only from the source document.
 
-The analyzer fires when a projection is used on an `IRavenQueryable<T>` with an explicit index type, a projected member is neither stored in the index nor a member of the source document type, and the applicable `ProjectionBehavior` would not silently fall through (or the behavior is `Default` and the field would simply be `null`).
+For map-reduce indexes, projected fields come from the reduce results.  
+`FromDocument` and `FromDocumentOrThrow` are not supported; the query fails.
 
-## What to do
+---    
+    
+**Unavailable fields**:  
+An unavailable field is skipped with `Default`, `FromIndex`, or `FromDocument`.  
+With `FromIndexOrThrow` or `FromDocumentOrThrow`, the query throws instead.
 
-Either store the field in the index (`Store(x => x.MyField, FieldStorage.Yes)`) or ensure the field exists on the source document type, or remove the field from the projection.
+---    
+    
+**What RVN008 checks**:  
+RVN008 reports these fields at compile time by comparing each projected field with the index's stored fields and with the members of the source document type.
+
+</Panel>
+
+<Panel heading="Trigger condition">
+
+<ContentFrame>
+
+### When is RVN008 reported?
+
+RVN008 checks projections on queries that target a static index, in sync and async sessions:
+
+- **By index class:** `session.Query<T, TIndex>()`  
+  The index class can be generic and can be defined in the current project or a referenced project.
+- **By index name:** `session.Query<T>("IndexName")` or `session.Query<T>(indexName: "IndexName")`,   
+  where the name is a string literal, matched to an index class as described in [RVN007](./RVN007.mdx#when-is-rvn007-reported).
+
+RVN008 also checks projections applied to a query stored in a local variable, following the query from the variable's declaration initializer.
+See [Limitations](#limitations) for subsequent reassignments.
+
+RVN008 reports projected fields that are not retrievable under the query's `ProjectionBehavior`,  
+in the following projection forms:
+
+- **`ProjectInto<TProjection>()`**:  
+  every public instance property and field of `TProjection`, including inherited members.  
+  Reported on the type argument.
+        
+- **`Select` with an anonymous object or object initializer**:  
+  each member whose value is a member of the lambda parameter, such as `x.Company`.  
+  Reported on that member.
+        
+- **Query syntax**:  
+  the final `select` clause, checked the same way as `Select`.
+
+---        
+        
+**A field is retrievable**:
+
+- From the index when it is stored:  
+  registered with `Store(…)`, `Stores[…]`, `StoresStrings[…]`, `Stores.Add(…)`, or `StoresStrings.Add(…)` with `FieldStorage.Yes`.
+  All index-fields count as stored when the index calls `StoreAllFields(FieldStorage.Yes)` or defines a `Reduce` function.
+    
+- From the source document when it is a public instance property or field of the document type the index maps,
+  the `TDocument` of `AbstractIndexCreationTask<TDocument>`, even when the query uses another type, such as the index's `IndexEntry` class.
+
+---
+            
+**Projection behavior**
+
+RVN008 reads the behavior from `.Customize(x => x.Projection(ProjectionBehavior.…))` calls that precede the projection.
+If more than one such call is recognized, the last one before the projection applies.  
+When no such customization is found, `Default` is assumed.
+
+</ContentFrame>
+<ContentFrame>
+
+### When is RVN008 not reported?
+
+RVN008 skips some fields and projection forms, and is also not reported when the index, its fields, or the projection behavior cannot be determined.
+
+<details>
+<summary>Full list of cases not checked</summary>
+
+RVN008 is not reported for the following fields and projections:
+
+- `Id` in a `Select` projection or query-syntax `select`, which is always retrievable.  
+  In `ProjectInto`, `Id` is checked like any other member.
+- Constructor projections (`new OrderDto(x.Company)`), single-member selects (`Select(x => x.Company)`),  
+  and members whose value is computed or a nested path, such as `x.Address.City`.
+- **Method syntax:**  
+  a projection that follows `Select`, `ProjectInto`, `SelectMany`, `GroupBy`, `OfType`, `Cast`, or `As` in the chain.
+- **Query syntax:**  
+  any query expression containing an `into` continuation or ending with a `group … by` clause.
+- Queries that do not target a static index.
+
+RVN008 is also not reported when the index, its fields, or the behavior cannot be determined:
+
+- Multi-map indexes, which have no single source document type.
+- Time-series and counters indexes.
+- The `Projection(…)` argument is not written as `ProjectionBehavior.Member`,  
+  for example a variable or a fully qualified enum name.
+- A stored-field registration uses a field name other than a string literal or a lambda that selects a direct field, such as `x => x.Company`.
+  For example, `Store(x => x.Address.City, FieldStorage.Yes)` and `Store(nameof(Order.Company), FieldStorage.Yes)` stop analysis.
+- The `StoreAllFields(…)` argument cannot be recognized as `FieldStorage.Yes` or `FieldStorage.No`,
+  for example when it is supplied through a variable.
+- The index name is not a string literal, does not match an index class in the current project,  
+  or matches more than one index class.
+- The index class overrides `IndexName` with a value other than a string literal (string form only).
+- The index map uses `CreateField`, `CreateSpatialField`, or `AsJson`, which create field names at runtime.
+- A map is not an expression-bodied lambda, for example `Map = GetMap()` or a lambda with a block body,  
+  or its final `select`, `Select`, or `SelectMany` projection is not an anonymous object or object initializer.
+- JavaScript indexes, and indexes that override `CreateIndexDefinition()`.
+- Index classes declared `private`, `protected`, or `private protected`, or nested in a class with one of these access levels.
+- The index class or a base class cannot be analyzed, for example because it comes from a compiled assembly
+  without information recorded by the RavenDB source generator.
+
+</details>
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="How to resolve">
+
+Make each projected field retrievable under the query's behavior:
+
+- Store the field in the index (`Default`, `FromIndex`, and `FromIndexOrThrow`).
+- Project a field that exists on the source document (`Default`, `FromDocument`, and `FromDocumentOrThrow`).
+- Otherwise, remove the field from the projection or change the `ProjectionBehavior`.
+
+---
 
 ### Before (triggers RVN008)
 
 ```csharp
-public class Orders_WithTotal : AbstractIndexCreationTask<Order>
+public class Orders_WithTotal : AbstractIndexCreationTask<Order, Orders_WithTotal.IndexEntry>
 {
-    public Orders_WithTotal()
+    public class IndexEntry
     {
-        Map = orders => from o in orders select new { o.Company };
-        // 'Total' is not a property of Order and is not stored in the index
+        public string Company { get; set; }
     }
-}
 
-// OrderDto has Company and Total; Total won't be filled
-var results = session.Query<Order, Orders_WithTotal>()
-    .ProjectInto<OrderDto>()
-    .ToList();
-```
-
-### After (store the computed field)
-
-```csharp
-public class Orders_WithTotal : AbstractIndexCreationTask<Order>
-{
     public Orders_WithTotal()
     {
         Map = orders => from o in orders
-                        select new { o.Company, Total = o.Lines.Sum(l => l.PricePerUnit) };
+                        select new IndexEntry
+                        {
+                            Company = o.Company
+                        };
+    }
+}
+
+public class OrderDto
+{
+    public string Company { get; set; }
+    // Total is not stored in the index and is not a property of Order.
+    public decimal Total { get; set; }
+}
+
+var results = session.Query<Orders_WithTotal.IndexEntry, Orders_WithTotal>()
+     // Triggers RVN008 on OrderDto: Total is not retrievable.
+    .ProjectInto<OrderDto>()
+    .Take(50)
+    .ToList();
+```
+<br/>
+
+### After (correct)
+
+```csharp
+public class Orders_WithTotal : AbstractIndexCreationTask<Order, Orders_WithTotal.IndexEntry>
+{
+    public class IndexEntry
+    {
+        public string Company { get; set; }
+        public decimal Total { get; set; }
+    }
+
+    public Orders_WithTotal()
+    {
+        Map = orders => from o in orders
+                        select new IndexEntry
+                        {
+                            Company = o.Company,
+                            Total = o.Lines.Sum(l => l.Quantity * l.PricePerUnit * (1 - l.Discount))
+                        };
+
+        // Store Total so the projection can retrieve it from the index.
         Store(x => x.Total, FieldStorage.Yes);
     }
 }
+
+var results = session.Query<Orders_WithTotal.IndexEntry, Orders_WithTotal>()
+    .ProjectInto<OrderDto>()
+    .Take(50)
+    .ToList();
 ```
 
-## See also
+</Panel>
 
-- [RVN007](./RVN007.mdx) — fires when a query filter field is not in the index projection.
+<Panel heading="Limitations">
+
+- RVN008 reads index-fields and stored-field registrations only from constructor bodies of the index class and its base classes,
+  not from helper methods they call.  
+  Maps assigned entirely in a helper and fields stored only in a helper can be missed.  
+    
+  RVN008 may therefore report a retrievable field under `FromIndex` or `FromIndexOrThrow`,
+  or under `Default` when the field is not a member of the source document.
+    
+- RVN008 follows local-variable declaration initializers but does not track subsequent reassignments.
+  Later assignments can therefore make RVN008 check the original query or behavior instead of the one used at runtime.
+
+- RVN008 only reads expression-bodied `Customize` lambdas whose final call is `Projection(…)`, and only before the query projection.
+  For example, `x => x.Projection(…).WaitForNonStaleResults()` is not recognized.  
+  An ignored customization can cause RVN008 to assume `Default` or use an earlier recognized behavior.
+
+</Panel>
+
+<Panel heading="Related C# analyzers">
+
+* [RVN007](./RVN007.mdx)  
+  Fires when a query filters, sorts, or searches on a field that the index's map function does not define.
+
+</Panel>

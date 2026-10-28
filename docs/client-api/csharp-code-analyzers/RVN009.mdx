@@ -1,42 +1,170 @@
 ---
-title: "RVN009 — Unsupported method call inside index Map/Reduce expression"
+title: "RVN009 - Unsupported method call inside index Map/Reduce expression"
 sidebar_label: RVN009
 sidebar_position: 9
+see_also:
+     - title: "C# code analyzers overview"
+       link: "client-api/csharp-code-analyzers/overview"
+       source: "docs"
+       path: "Client API > C# Code Analyzers"
+     - title: "Extending indexes"
+       link: "indexes/extending-indexes"
+       source: "docs"
+       path: "Indexes"
+     - title: "Additional assemblies"
+       link: "indexes/additional-assemblies"
+       source: "docs"
+       path: "Indexes"
+     - title: "Indexing LINQ extensions"
+       link: "indexes/indexing-linq-extensions"
+       source: "docs"
+       path: "Indexes"
+     - title: "Map indexes"
+       link: "indexes/map-indexes"
+       source: "docs"
+       path: "Indexes"
 ---
 
-# RVN009 — Unsupported method call inside index Map/Reduce expression
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-- **Severity**: Info (default)
-- **Code fix**: No
+<Admonition type="note" title="">
 
-## Description
+* **RVN009** reports calls to methods declared in your own code inside an index's `Map`, `Reduce`, `AddMap`,  
+  or `AddMapForAll` lambda.
 
-RavenDB compiles index `Map` and `Reduce` expressions to server-side IL using its own expression compiler. User-defined helper methods (methods declared in your own code) cannot be translated by this compiler and will cause the index to fail at deployment or produce incorrect results. Only constructs that RavenDB understands natively are allowed: standard LINQ operators, BCL string and math operations, `LoadDocument`, `CreateField`, `CreateSpatialField`, and a small set of RavenDB-specific functions.
+* **Default severity**: _Info_  
+  **Automated code fix**: _No_
 
-## Trigger condition
+* In this article:
+   * [Description](#description)
+   * [Trigger condition](#trigger-condition)
+      * [When is RVN009 reported?](#when-is-rvn009-reported)
+      * [When is RVN009 not reported?](#when-is-rvn009-not-reported)
+   * [How to resolve](#how-to-resolve)
+      * [Before (triggers RVN009)](#before-triggers-rvn009)
+      * [After (correct)](#after-correct)
+   * [Limitations](#limitations)
+   * [Related C# analyzers](#related-c-analyzers)
 
-The analyzer fires when an invocation inside a `Map`, `Reduce`, or `AddMap` lambda resolves to a method that is defined in user code (not in a framework assembly), is not an extension method (extension methods are excluded to reduce false positives), and is not a known-translatable BCL or RavenDB method. JavaScript indexes (`AbstractJavaScriptIndexCreationTask`) are excluded entirely.
+</Admonition>
 
-## What to do
+<Panel heading="Description">
 
-Inline the helper method's logic directly in the lambda, or replace it with supported constructs.
+An index's `Map` and `Reduce` expressions run on the server, not in your application.  
+The client sends them to the server as C# source text, and the server compiles that text when the index is deployed.  
+    
+---
+    
+**Calls to custom methods**:
+
+Methods declared in your own code are not part of that source, so the server cannot call them.  
+Depending on the call, one of the following happens:
+
+- The server fails to compile the index, and deploying it throws `IndexCompilationException`.  
+  For example, a call to a static helper such as `TextHelpers.Normalize(p.Name)`.
+    
+- The index compiles, but your method never runs:  
+  on the server, documents are dynamic JSON objects, not instances of your classes.  
+  For example, suppose your `Product` class defines a custom `ComputeKey()` method that calculates a value from the product's properties.
+  Calling `p.ComputeKey()` in the map, where `p` represents a product document, does not execute that method.
+  The index field does not get the value your method would compute.
+
+---
+    
+**Supported methods**:
+
+The server can compile LINQ operators, standard .NET methods such as `string` and `Math` methods,  
+and RavenDB indexing methods such as `LoadDocument` and `CreateField`.
+    
+To run your own logic on the server, you can deploy a static helper with the index using `AdditionalSources` or `AdditionalAssemblies`.
+
+</Panel>
+
+<Panel heading="Trigger condition">
+
+<ContentFrame>
+
+### When is RVN009 reported?
+
+RVN009 checks the lambdas that define the index in the constructors of the index class:
+
+- **`Map` and `Reduce` assignments** (including `this.Map = …` and `base.Reduce = …`),  
+  in document indexes that derive from `AbstractIndexCreationTask<TDocument>`, `AbstractIndexCreationTask<TDocument, TReduceResult>`, or `AbstractMultiMapIndexCreationTask`.  
+  `Reduce` assignments in multi-map time-series and counters indexes are also checked.
+    
+- **`AddMap` and `AddMapForAll` calls**, in multi-map indexes.
+
+In these lambdas, including nested lambdas, RVN009 reports each call to a method
+declared in the source code of the project that contains the index:
+
+- Static methods, such as a helper in a utility class or in the index class itself.
+- Instance methods of your own types, such as a method of the document class.
+- Extension methods you declared.
+- User-written overrides of `ToString()`, `Equals(object)`, and `GetHashCode()`.  
+  When called on a document, these run on the server's JSON object, so your override is not used.  
+  For example, `p.ToString()` returns the document's JSON text.
+
+Reported on the method name.
+
+</ContentFrame>
+<ContentFrame>
+
+### When is RVN009 not reported?
+
+- The index class, or one of its base classes, writes to `AdditionalSources` or `AdditionalAssemblies`:  
+  assigns the property, sets an entry (`AdditionalSources["Key"] = …`), or calls `Add(…)` on it.  
+  RVN009 then assumes the server can compile the methods the index calls, and reports nothing for that index.  
+  Only reading these properties does not count.  
+  RVN009 does not verify that the additional code actually provides the called methods.
+- Members generated by the compiler, such as the `Equals` and `ToString` methods of a record.
+- Delegate invocations, such as calling a `Func<…>`.
+- Calls outside the `Map`, `Reduce`, `AddMap`, and `AddMapForAll` lambdas.
+- JavaScript indexes (`AbstractJavaScriptIndexCreationTask`), which define their maps as strings.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="How to resolve">
+
+Do one of the following:
+
+- Inline the method's logic in the lambda, using only constructs the server can compile.
+- Use a static helper that takes the document values it needs as parameters, for example `KeyHelpers.ComputeKey(p.Name)`,
+  and deploy the helper with the index using [AdditionalSources](../../indexes/extending-indexes.mdx#including-additional-sources-from-client-code)
+  or [AdditionalAssemblies](../../indexes/additional-assemblies.mdx).
+
+Deploying the document class itself does not make calls to its instance methods, such as `p.ComputeKey()`, work.  
+On the server, `p` is a dynamic JSON object, not an instance of your class.
+
+When RVN009 detects a write to `AdditionalSources` or `AdditionalAssemblies`, it suppresses diagnostics for the whole index.
+This can hide calls such as `p.ComputeKey()` that still do not run your method.
+
+---
 
 ### Before (triggers RVN009)
 
 ```csharp
-private static string Normalize(string s) => s.Trim().ToLower();
+public static class TextHelpers
+{
+    public static string Normalize(string s) => s.Trim().ToLower();
+}
 
 public class Products_ByName : AbstractIndexCreationTask<Product>
 {
     public Products_ByName()
     {
         Map = products => from p in products
-                          select new { Name = Normalize(p.Name) };  // RVN009
+                          // Triggers RVN009: Normalize is declared in your code.
+                          select new { Name = TextHelpers.Normalize(p.Name) };
     }
 }
 ```
+<br/>
 
-### After (inline the logic)
+### After (correct)
 
 ```csharp
 public class Products_ByName : AbstractIndexCreationTask<Product>
@@ -49,6 +177,37 @@ public class Products_ByName : AbstractIndexCreationTask<Product>
 }
 ```
 
-## See also
+</Panel>
 
-- [RVN010](./RVN010.mdx) — equivalent rule for user-defined methods inside query lambdas.
+<Panel heading="Limitations">
+
+- RVN009 checks only lambdas in constructor bodies.  
+  Lambdas in `Map` or `Reduce` assignments and `AddMap` or `AddMapForAll` calls in a separate method are not checked,
+  even when a constructor calls that method.  
+    
+  See [RVN001](./RVN001.mdx) for `Map` and `Reduce` assignments outside constructors.
+  RVN001 does not cover `AddMap` or `AddMapForAll` calls.
+    
+- A partial class declaration that lists neither a base class nor any interfaces is skipped.
+  Lambdas in constructors declared in that part are not checked, even when another part declares the index base class.
+    
+- A lambda stored in a variable and then assigned to `Map` or `Reduce`, or passed to `AddMap` or `AddMapForAll`, is not checked.
+  For example, RVN009 does not inspect the lambda referenced by `Map = map;`.
+    
+- Methods from compiled assemblies, such as a NuGet package or a referenced DLL, are not reported,  
+  although the server cannot call them either unless the index deploys them using `AdditionalAssemblies`.
+    
+- Single-map time-series and counters indexes are not checked.
+    
+- RVN009 cannot detect `AdditionalSources` or `AdditionalAssemblies` writes in a base class from another assembly
+  when neither its source nor usable generated index metadata can be read.  
+  In that case, it can report a call even when the base class deploys the called method.
+
+</Panel>
+
+<Panel heading="Related C# analyzers">
+
+* [RVN010](./RVN010.mdx)  
+  The query equivalent: fires when a method declared in your code is called inside a RavenDB query lambda.
+
+</Panel>

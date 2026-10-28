@@ -1,60 +1,259 @@
 ---
-title: "RVN010 — Unsupported method call inside RavenDB query expression"
+title: "RVN010 - Unsupported method call inside RavenDB query expression"
 sidebar_label: RVN010
 sidebar_position: 10
+see_also:
+     - title: "C# code analyzers overview"
+       link: "client-api/csharp-code-analyzers/overview"
+       source: "docs"
+       path: "Client API > C# Code Analyzers"
+     - title: "Custom methods and extensions for LINQ"
+       link: "querying/overview#custom-methods-and-extensions-for-linq"
+       source: "docs"
+       path: "Querying"
+     - title: "What is RQL"
+       link: "querying/rql/what-is-rql"
+       source: "docs"
+       path: "Querying > RQL"
+     - title: "Project query results"
+       link: "client-api/session/querying/how-to-project-query-results"
+       source: "docs"
+       path: "Client API > Session > Querying"
+     - title: "Map indexes"
+       link: "indexes/map-indexes"
+       source: "docs"
+       path: "Indexes"
 ---
 
-# RVN010 — Unsupported method call inside RavenDB query expression
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-- **Severity**: Info (default)
-- **Code fix**: No
+<Admonition type="note" title="">
 
-## Description
+* **RVN010** reports calls to methods declared in your own code inside the lambdas and clauses of a RavenDB LINQ query.
 
-RavenDB translates LINQ query lambdas (`Where`, `OrderBy`, `Select`, `Filter`, `Spatial`, `VectorSearch`, `OrderByDistance`, `MoreLikeThis`, etc.) to RQL on the server. User-defined methods called inside these lambdas cannot be translated and will throw at runtime during RQL generation. Extension methods are excluded from this check to reduce false positives.
+* **Default severity**: _Info_  
+  **Automated code fix**: _No_
 
-## Query methods checked
+* In this article:
+   * [Description](#description)
+   * [Trigger condition](#trigger-condition)
+      * [When is RVN010 reported?](#when-is-rvn010-reported)
+      * [When is RVN010 not reported?](#when-is-rvn010-not-reported)
+   * [How to resolve](#how-to-resolve)
+      * [Before (triggers RVN010)](#before-triggers-rvn010)
+      * [After (correct)](#after-correct)
+   * [Limitations](#limitations)
+   * [Related C# analyzers](#related-c-analyzers)
 
-Lambdas inside the following query chain methods are analyzed: `Where`, `OrderBy`, `OrderByDescending`, `ThenBy`, `ThenByDescending`, `Select`, `SelectMany`, `GroupBy`, `Search`, `ProjectInto`, `Filter`, `Spatial`, `VectorSearch`, `OrderByDistance`, `OrderByDistanceDescending`, `MoreLikeThis`, `GroupByArrayValues`, `GroupByArrayContent`.
+</Admonition>
 
-## Trigger condition
+<Panel heading="Description">
 
-The analyzer fires when one of the above methods is called on an `IRavenQueryable<T>`, and a lambda argument contains an invocation that resolves to a user-defined, non-extension method.
+The RavenDB client translates a LINQ query, including the lambdas passed to `Where`, `OrderBy`, `Select`, and similar methods, into RQL, and sends the RQL to the server.  
+    
+The RavenDB client can translate member access, operators, and a set of supported .NET and RavenDB methods,  
+but does not automatically translate the code inside methods you define.
+    
+* **Calls that need document data**:  
+  For example, `EmployeeHelpers.FullName(e)` calculates a full name from the `FirstName` and `LastName` properties of employee document `e`.
+  For calls like this, the outcome depends on where the call appears:    
 
-## What to do
+    - In a filter or sort, such as `Where` or `OrderBy`, a call without a supported translation causes `NotSupportedException` during client-side query translation.
+     
+    - In a projection (`Select`), expressions can be translated to JavaScript that runs on the server.
+      Such a call can fail during translation or on the server, or behave differently from your C# implementation.
+      For example, a call to your `ToString()` override becomes JavaScript's `toString()`; your C# override is not executed.
 
-1. **Compute the value before the query** — capture the result in a local variable and use it in the lambda.
-2. **Inline the logic** — replace the method call with the equivalent LINQ/BCL expression that RavenDB can translate.
-3. **Materialize client-side** — call `.ToList()` first and apply the filter/projection in memory using regular LINQ to Objects.
+* **Calls that do not need document data**:  
+  A method call such as `Defaults.Status()` can return a default value, such as `"Active"`, without using data from a document being queried.
+  In `o.Status == Defaults.Status()`, the condition uses the document's `Status`, but the `Defaults.Status()` call does not depend on `o`.
+  In this `Where` condition, the client evaluates `Defaults.Status()` before sending the query, and RVN010 does not report the call.
+
+  In a projection, a static call such as `Defaults.Status()` is reported even though it does not use document data.
+  The call may be translated to JavaScript instead of being evaluated locally, or fail during translation.
+
+</Panel>
+
+<Panel heading="Trigger condition">
+
+<ContentFrame>
+
+### When is RVN010 reported?
+
+RVN010 checks calls to methods declared in the source code of the project that contains the query.
+Inside a checked lambda or query clause of a RavenDB LINQ query, RVN010 reports such a call when either condition is met:
+
+- The call references a lambda parameter or range variable declared within the checked lambda or C# query,
+  either in an argument or in the expression the method is called on.
+- The call appears in a projection (a `Select` or `SelectMany` lambda, or a `let` or `select` clause)
+  and is not an instance call on an object captured from outside the query.
+  Captured objects include local variables, parameters, and instance fields or properties.
+
+For example, using `EmployeeHelpers.FullName` from the [Before example](#before-triggers-rvn010) section below:
+
+```csharp
+var query = session.Query<Employee>()
+    .Where(e => EmployeeHelpers.FullName(e) == "Nancy Davolio");
+```
+<br/>
+    
+RVN010 is reported on `FullName`, which is declared in your code and receives `e`.
+
+Both method syntax and C# query syntax are checked.
+
+<details>
+<summary>Query methods and clauses checked by RVN010</summary>
+
+**Query methods**
+
+RVN010 checks lambda arguments passed to:
+
+- `Where`, `OrderBy`, `OrderByDescending`, `ThenBy`, `ThenByDescending`
+- `Select`, `SelectMany`, `GroupBy`
+- `Search`, `Filter`, `Spatial`, `VectorSearch`
+- `OrderByDistance`, `OrderByDistanceDescending`, `MoreLikeThis`
+- `GroupByArrayValues`, `GroupByArrayContent`
+
+---    
+    
+**C# query clauses**
+
+RVN010 checks expressions in `where`, `orderby`, `let`, and `select`,
+both expressions in `group … by`, and the key expressions on both sides of `equals` in a `join`.
+Clauses after an `into` continuation are also checked.
+
+---    
+    
+**Additional coverage**
+
+- Static, instance, and extension methods, as well as local functions.
+  User-defined overrides of `ToString()`, `Equals(object)`, and `GetHashCode()` are also checked.
+- Queries in sync and async sessions, including through local variables and after operators such as `OfType<T>()`.
+- Calls inside nested lambdas within checked expressions, such as a helper call inside an `Any(…)` predicate.
+- Calls inside nested C# queries within checked expressions, such as `from l in o.Lines where Helper(l) select l` inside a projection.
+
+</details>
+
+</ContentFrame>
+<ContentFrame>
+
+### When is RVN010 not reported?
+
+- Outside projections, calls that do not use a lambda parameter or range variable declared in the query,
+  such as `Defaults.Status()` in `.Where(o => o.Status == Defaults.Status())`.
+  This also applies to calls that use only a variable from outside the query, even a parameter of an enclosing lambda.
+- Inside projections, instance calls on objects captured from outside the query, provided the call does not reference a query lambda parameter or range variable.
+  For example, `formatter.Label()` is not reported in `Select(o => new { o.Status, Label = formatter.Label() })`
+  when `formatter` is a local variable, a parameter, or an instance field or property.
+  A call such as `formatter.Label(o.Status)` is still reported because it uses document data.
+  The exception also does not apply to calls through static fields or properties, such as `Formatter.Shared.Label()`.
+- Calls inside the lambda passed to a time-series `GroupBy`, such as `RavenQuery.TimeSeries(x, "Readings").GroupBy(g => …)`, which the client runs locally.
+- Arguments that are not lambdas, such as the coordinates passed to `OrderByDistance`.
+- Members generated by the compiler, such as the `Equals` and `ToString` methods of a record.
+- Delegate invocations, such as calling a `Func<…>`.
+- LINQ over results already loaded into memory, for example after `ToList()`.
+- Document queries (`session.Advanced.DocumentQuery<T>()`).
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="How to resolve">
+
+Do one of the following:
+
+- **Compute the value before the query** if the call does not depend on document data.  
+  Store the result in a local variable and use that variable in the query. For example:
+
+  ```csharp
+  var status = Defaults.Status();
+  var query = session.Query<Order>()
+      .Select(o => new { o.Id, Status = status });
+  ```
+
+- **Compute the value at indexing time**:  
+  move the logic into the `Map` of a [static index](../../indexes/map-indexes.mdx#combining-multiple-fields), and query the resulting index-field.  
+  The index map runs on the server; see [RVN009](./RVN009.mdx) for the methods it can call.
+    
+- **Rewrite the condition or projection** using document fields and operators the client can translate.
+    
+- **Apply the method on the client** after loading the results.  
+  Filter and limit the query as much as possible first: every result the query returns is loaded into memory  
+  (see [RVN013](./RVN013.mdx)).
+
+---
 
 ### Before (triggers RVN010)
 
 ```csharp
-private static string GetCategory(string name) => name.Split('/')[0];
+public static class EmployeeHelpers
+{
+    public static string FullName(Employee e) => e.FirstName + " " + e.LastName;
+}
 
-var results = session.Query<Product>()
-    .Where(x => GetCategory(x.Name) == "electronics")  // RVN010
+var employees = session.Query<Employee>()
+     // Triggers RVN010: FullName is declared in your code.
+    .Where(e => EmployeeHelpers.FullName(e) == "Nancy Davolio")
+    .Take(50)
     .ToList();
 ```
+<br/>
 
-### After (option 1: compute before the query)
+### After (correct)
 
 ```csharp
-string category = "electronics";
-var results = session.Query<Product>()
-    .Where(x => x.Category == category)
+public class Employees_ByFullName : AbstractIndexCreationTask<Employee, Employees_ByFullName.IndexEntry>
+{
+    public class IndexEntry
+    {
+        public string FullName { get; set; }
+    }
+
+    public Employees_ByFullName()
+    {
+        // The full name is computed on the server during indexing.
+        Map = employees => from e in employees
+                           select new IndexEntry
+                           {
+                               FullName = e.FirstName + " " + e.LastName
+                           };
+    }
+}
+
+var employees = session.Query<Employees_ByFullName.IndexEntry, Employees_ByFullName>()
+    .Where(x => x.FullName == "Nancy Davolio")
+    .OfType<Employee>()
+    .Take(50)
     .ToList();
 ```
 
-### After (option 3: materialize client-side)
+</Panel>
 
-```csharp
-var results = session.Query<Product>()
-    .ToList()
-    .Where(x => GetCategory(x.Name) == "electronics")
-    .ToList();
-```
+<Panel heading="Limitations">
 
-## See also
+- Only the methods and clauses listed above are checked. A predicate passed directly to another query operator,  
+  such as `session.Query<Order>().FirstOrDefault(o => …)`, or to `First`, `Single`, `Any`, or `Count`, is not checked.
+    
+- Methods from compiled assemblies, such as a NuGet package or a referenced DLL, are not reported.  
+  The absence of RVN010 does not guarantee that such calls can be translated.
+    
+- Custom query translations registered through client conventions are not considered by RVN010.  
+  A method with a registered translation can still be reported.
+    
+- Queries typed as `IRavenQueryable<T>` are recognized directly.  
+  For queries typed as `IQueryable<T>`, RVN010 follows method chains and local-variable initializers to identify a RavenDB query.
+  It does not follow `IQueryable<T>` parameters, fields, or properties.
 
-- [RVN009](./RVN009.mdx) — equivalent rule for unsupported methods inside index `Map`/`Reduce` lambdas.
+</Panel>
+
+<Panel heading="Related C# analyzers">
+
+* [RVN009](./RVN009.mdx)  
+  The index equivalent: fires when a method declared in your code is called inside an index `Map` or `Reduce` lambda.
+
+* [RVN013](./RVN013.mdx)  
+  Fires when a query result is not bounded by `Take()`.
+
+</Panel>

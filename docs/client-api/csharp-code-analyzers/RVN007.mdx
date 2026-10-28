@@ -1,59 +1,243 @@
 ---
-title: "RVN007 — Query field not present in the index projection"
+title: "RVN007 - Query field not defined in the index"
 sidebar_label: RVN007
 sidebar_position: 7
+see_also:
+     - title: "C# code analyzers overview"
+       link: "client-api/csharp-code-analyzers/overview"
+       source: "docs"
+       path: "Client API > C# Code Analyzers"
+     - title: "Querying an index"
+       link: "indexes/querying/query-index"
+       source: "docs"
+       path: "Indexes > Querying"
+     - title: "Map indexes"
+       link: "indexes/map-indexes"
+       source: "docs"
+       path: "Indexes"
+     - title: "Filter query results"
+       link: "querying/filtering-query-results/filter-query-results"
+       source: "docs"
+       path: "Querying > Filtering Query Results"
+     - title: "Sort query results"
+       link: "querying/sorting-query-results/sort-query-results"
+       source: "docs"
+       path: "Querying > Sorting Query Results"
 ---
 
-# RVN007 — Query field not present in the index projection
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-- **Severity**: Info (default)
-- **Code fix**: No
+<Admonition type="note" title="">
 
-## Description
+* **RVN007** reports fields used for filtering, sorting, or searching in a static-index query when the index's map function does not define those fields.
 
-When querying a specific index (via `session.Query<T, TIndex>()`), all fields referenced in `Where`, `OrderBy`, and `Search` lambdas should match the fields projected by the index's `Map` expression. A field that is not part of the index projection cannot be searched or sorted by the server, and the query will return no results for that field.
+* **Default severity**: _Info_  
+  **Automated code fix**: _No_
 
-## Trigger condition
+* In this article:
+   * [Description](#description)
+   * [Trigger condition](#trigger-condition)
+      * [When is RVN007 reported?](#when-is-rvn007-reported)
+      * [When is RVN007 not reported?](#when-is-rvn007-not-reported)
+   * [How to resolve](#how-to-resolve)
+      * [Before (triggers RVN007)](#before-triggers-rvn007)
+      * [After (correct)](#after-correct)
+   * [Limitations](#limitations)
+   * [Related C# analyzers](#related-c-analyzers)
 
-The analyzer fires when a `Where`, `OrderBy`, `OrderByDescending`, `ThenBy`, `ThenByDescending`, or `Search` lambda is found on an `IRavenQueryable<T>`, the query was created with an explicit index type argument (e.g., `Query<Order, MyIndex>()`), and a member referenced in the lambda does not appear in the set of fields extracted from the index's `Map` expression. The index class must be available in the same compilation for the field extraction to succeed; if the index is in a separate assembly the check is skipped conservatively.
+</Admonition>
 
-## What to do
+<Panel heading="Description">
 
-Ensure the fields you query on are part of the index projection, or switch to a different index that includes those fields.
+The map function defines the index-fields in each index entry.  
+A query on a static index uses these fields for filtering, sorting, and searching.
+
+If the query references a field the index does not contain, the server rejects the query with an error such as  
+_"The field '…' is not indexed in '…', cannot query/sort on fields that are not indexed"_.
+
+RVN007 reports these fields at compile time by comparing the fields referenced in the query with the index-fields defined by the map function.
+
+</Panel>
+
+<Panel heading="Trigger condition">
+
+<ContentFrame>
+
+### When is RVN007 reported?
+
+---
+    
+**Supported queries**:  
+RVN007 checks queries that target a static index, in sync and async sessions:
+
+- **By index class:** `session.Query<T, TIndex>()`  
+  The index class can be defined in the current project or a referenced project.
+- **By index name:** `session.Query<T>("IndexName")` or `session.Query<T>(indexName: "IndexName")`,  
+  where the name is a string literal.
+  The name is matched to an index class in the same project, using the class's `IndexName` override when it returns a string literal,
+  or the class name with `_` replaced by `/`.
+
+---
+    
+**Checked operators**:  
+RVN007 reports references to fields not defined by the index's map function in the following parts of the query:
+
+  - **Method syntax**:  
+    the first lambda argument of `Where`, `OrderBy`, `OrderByDescending`, `ThenBy`, `ThenByDescending`, and `Search`.
+  - **Query syntax**:  
+    the `where` and `orderby` clauses of a query whose first `from` clause is the `Query` call.
+
+---    
+    
+**How fields are checked**:  
+RVN007 identifies index-fields from the members of the anonymous object or object initializer in the final projection of each `Map`, `AddMap`,
+or `AddMapForAll` expression. The projection can use query syntax (`select`) or method syntax (`Select` or `SelectMany`).
+RVN007 reads these expressions from constructor bodies of the index class and its base classes, including classes from referenced projects.
+
+A field used as the receiver of a method call without a lambda argument, such as `x.Tags.Contains("a")` or `x.Name.StartsWith("A")`, is checked too.
+The field in an indexer access, such as `x.Tags[0]`, is also checked.  
+Each missing field is reported once per lambda, `where` condition, or individual expression in an `orderby` clause.
+
+</ContentFrame>
+<ContentFrame>
+
+### When is RVN007 not reported?
+
+RVN007 skips some field references and query operators, and is also not reported when the target index or its fields cannot be determined.
+
+<details>
+<summary>Full list of cases not checked</summary>
+
+RVN007 is not reported for the following references and operators:
+
+- `Id`, which a static-index query can always filter and sort by.
+- Nested property paths, such as `x.Address.City` or `x.Name.Length`.
+- A collection field used with a lambda operator, such as `x.Lines.Any(l => l.Product == "products/1")`,  
+  as in a fanout index.
+- Operators that follow `Select`, `ProjectInto`, `SelectMany`, or `GroupBy` in method syntax,  
+  or that follow `select … into` or `group … into` in query syntax. These operators bind to the new shape. See [RVN002](./RVN002.mdx).
+
+RVN007 is also not reported when the target index or its fields cannot be determined:
+
+- The index name is not a string literal, does not match an index class in the current project,  
+  or matches more than one index class.
+- The index class overrides `IndexName` with a value other than a string literal (string form only).
+- The index map uses `CreateField`, `CreateSpatialField`, or `AsJson`, which create field names at runtime.
+- A map is not a lambda with a readable body (for example, a block body or a method call),  
+  or its final `select`, `Select`, or `SelectMany` projection is not an anonymous object or object initializer.
+- JavaScript indexes, and indexes that override `CreateIndexDefinition()`.
+- Single-map time-series and counters indexes. Their multi-map variants are checked.
+- Index classes declared `private`, `protected`, or `private protected`, or nested in a class with one of these access levels.
+- The index class or a base class cannot be analyzed, for example because it comes from a compiled assembly
+  without information recorded by the RavenDB source generator.
+- Stored-field configuration cannot be analyzed, for example `Store(nameof(Order.Company), FieldStorage.Yes)`.
+  RVN007 recognizes stored-field names supplied as string literals or supported field lambdas, such as `x => x.Company`.
+
+</details>
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="How to resolve">
+
+Define the missing index-field in the map function, or query an index that already defines it.
+
+---
 
 ### Before (triggers RVN007)
 
 ```csharp
 public class Orders_ByCompany : AbstractIndexCreationTask<Order>
 {
+    public class IndexEntry
+    {
+        public string Company { get; set; }
+        public string Employee { get; set; }
+    }
+
     public Orders_ByCompany()
     {
-        Map = orders => from o in orders select new { o.Company };
-        // 'Employee' is not in the projection
+        // Employee is declared in IndexEntry but not set by the map,
+        // so it is not an index-field.
+        Map = orders => from o in orders
+                        select new IndexEntry
+                        {
+                            Company = o.Company
+                        };
     }
 }
 
-var results = session.Query<Order, Orders_ByCompany>()
-    .Where(x => x.Employee == "employees/1-A")  // RVN007: Employee not indexed
+var results = session.Query<Orders_ByCompany.IndexEntry, Orders_ByCompany>()
+    // Triggers RVN007: Employee is not defined as an index-field.
+    .Where(x => x.Employee == "employees/1-A")
+    // Return the matching Order documents.
+    .OfType<Order>()
+    .Take(50)
     .ToList();
 ```
+<br/>
 
 ### After (correct)
 
 ```csharp
 public class Orders_ByCompany : AbstractIndexCreationTask<Order>
 {
+    public class IndexEntry
+    {
+        // The index-fields:
+        public string Company { get; set; }
+        public string Employee { get; set; }
+    }
+
     public Orders_ByCompany()
     {
-        Map = orders => from o in orders select new { o.Company, o.Employee };
+        Map = orders => from o in orders
+                        select new IndexEntry
+                        {
+                            Company = o.Company,
+                            Employee = o.Employee
+                        };
     }
 }
 
-var results = session.Query<Order, Orders_ByCompany>()
+var results = session.Query<Orders_ByCompany.IndexEntry, Orders_ByCompany>()
     .Where(x => x.Employee == "employees/1-A")
+    // Return the matching Order documents.
+    .OfType<Order>()
+    .Take(50)
     .ToList();
 ```
 
-## See also
+</Panel>
 
-- [RVN008](./RVN008.mdx) — fires when a projected field is not retrievable from the index or source document.
+<Panel heading="Limitations">
+
+- RVN007 reads map fields only from constructor bodies; it does not follow helper methods called by constructors.  
+  If the map is assigned entirely in a helper, RVN007 finds no index-fields and reports every otherwise checked field except `Id`,
+  even when the map defines those fields. [RVN004](./RVN004.mdx) does not report a missing map in this case,
+  while [RVN001](./RVN001.mdx) reports the assignment outside the constructor.
+    
+- Only operators in the same method chain starting with the `Query` call are checked.  
+  A query stored in a variable and filtered in a later statement is not checked.
+
+- RVN007 does not stop at `ToList()` or `AsEnumerable()` when following a method chain.  
+  Supported operators after these calls are still checked even though they run in memory.  
+  The exclusions for operators after a projection or grouping still apply.
+    
+- In query syntax, the first `from` clause must be the `Query` call itself.
+  A source with other operators applied, such as `session.Query<Order, Orders_ByCompany>().Customize(…)`, is not checked.
+
+</Panel>
+
+<Panel heading="Related C# analyzers">
+
+* [RVN002](./RVN002.mdx)  
+  Reports query operators placed after a projection. RVN007 does not check those operators.
+
+* [RVN008](./RVN008.mdx)  
+  Fires when a projected field is not retrievable from the index or the source document.
+
+</Panel>

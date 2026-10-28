@@ -1,73 +1,351 @@
 ---
-title: "RVN012 — Batch independent session operations using the lazy API"
+title: "RVN012 - Batch independent session operations using the lazy API"
 sidebar_label: RVN012
 sidebar_position: 12
+see_also:
+     - title: "C# code analyzers overview"
+       link: "client-api/csharp-code-analyzers/overview"
+       source: "docs"
+       path: "Client API > C# Code Analyzers"
+     - title: "Perform requests lazily"
+       link: "client-api/session/how-to/perform-operations-lazily#multiple-lazy-requests"
+       source: "docs"
+       path: "Client API > Session > How To"
+     - title: "Perform a lazy query"
+       link: "client-api/session/querying/how-to-perform-queries-lazily"
+       source: "docs"
+       path: "Client API > Session > Querying"
+     - title: "Loading entities"
+       link: "client-api/session/loading-entities"
+       source: "docs"
+       path: "Client API > Session"
+     - title: "Reducing server calls (best practices)"
+       link: "client-api/session/what-is-a-session-and-how-does-it-work#reducing-server-calls-best-practices"
+       source: "docs"
+       path: "Client API > Session"
 ---
 
-# RVN012 — Batch independent session operations using the lazy API
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-- **Severity**: Info (default)
-- **Code fix**: Yes
+<Admonition type="note" title="">
 
-## Description
+* **RVN012** reports independent `Load` calls and materializing queries on the same session that can be sent to the server in a single request using the lazy API.
 
-Each eager `Load` or materializing query (`ToList`, `First`, `Single`, etc.) sends a separate HTTP request to the RavenDB server. When a method contains two or more independent operations on the same session, they can be registered as lazy and executed together in a single **multi-get** request, reducing network round-trips and latency.
+* **Default severity**: _Info_  
+  **Automated code fix**: _Yes_
 
-An operation is considered **independent** when its input (the document ID for `Load`, the query definition for a query) does not depend on the result of another operation in the same method.
+* In this article:
+   * [Description](#description)
+   * [Trigger condition](#trigger-condition)
+      * [When is RVN012 reported?](#when-is-rvn012-reported)
+      * [When is RVN012 not reported?](#when-is-rvn012-not-reported)
+   * [How to resolve](#how-to-resolve)
+      * [Before (triggers RVN012)](#before-triggers-rvn012)
+      * [After (correct)](#after-correct)
+      * [Async session](#async-session)
+      * [Mixing loads and queries](#mixing-loads-and-queries)
+   * [Automated code fix](#automated-code-fix)
+      * [Which operations does the code fix rewrite?](#which-operations-does-the-code-fix-rewrite)
+      * [How does the code fix rewrite your code?](#how-does-the-code-fix-rewrite-your-code)
+      * [When is the code fix not offered?](#when-is-the-code-fix-not-offered)
+   * [Limitations](#limitations)
+   * [Related C# analyzers](#related-c-analyzers)
 
-## Detected operations
+</Admonition>
 
-- `session.Load<T>(id)` / `session.LoadAsync<T>(id)` — when the `id` argument is a literal, a method parameter, a field, a property, or a local variable not derived from a prior load or query result.
-- Materializing query calls (`ToList`, `ToListAsync`, `ToArray`, `ToArrayAsync`, `First`, `Single`, `Any`, `Count`, etc.) on an `IRavenQueryable<T>`.
+<Panel heading="Description">
+    
+**Separate requests**:  
+Each eager `Load` call or materializing query (`ToList`, `ToArray`) can send a separate request to the server.
 
-## Trigger condition
+**Batching requires independent operations**:  
+To combine these operations into one request, each operation's inputs (the document ID or IDs for a load, or the query definition)
+must be available without waiting for another operation's result.  
+Operations that meet this condition are called **independent**.
 
-The analyzer fires when, inside a single method body (excluding nested lambdas and local functions), two or more of the above operations resolve to the same session symbol and are determined to be independent.
+**Batching with the lazy API**:    
+When a method performs two or more independent operations on the same session,
+they can be registered as lazy operations and sent together in a single **multi-get** request, reducing network round-trips and latency.
 
-## What to do
+</Panel>
 
-Convert the eager calls to their lazy equivalents, then call `session.Advanced.Eagerly.ExecuteAllPendingLazyOperations()` (or the async variant) once to trigger the batch. The automated code fix performs the complete transformation when all flagged statements are consecutive and refer to the same session.
+<Panel heading="Trigger condition">
+
+<ContentFrame>
+
+### When is RVN012 reported?
+
+RVN012 reports two or more independent loads or materializing queries that meet all of the following conditions:
+  - Use the same session, referenced through a local variable, parameter, or field.
+  - Occur in the same block and branch within the same method.  
+    See [Operations in separate blocks, branches, or nested functions](#operations-in-separate-blocks-branches-or-nested-functions).
+  - Use one of the forms listed under [Supported operations](#supported-operations).
+  - Are not separated by a call that prevents grouping, such as `SaveChanges()`.  
+    See [Calls that separate operations](#calls-that-separate-operations).
+
+The operations must also be distinct. Repeated loads with the same `T` and either the same constant ID
+or the same unmodified local variable or parameter as the ID or IDs argument count as one operation.
+
+RVN012 is reported on the method name of each qualifying operation.
+
+---
+    
+#### Supported operations
+
+RVN012 checks the following operations in both sync and async sessions:
+
+- **Loads:**  
+  `session.Load<T>(id)`, `session.Load<T>(ids)`, `session.LoadAsync<T>(id)`, and `session.LoadAsync<T>(ids)`. Only single-argument overloads qualify.  
+  Here, `id` is a single document ID, and `ids` is an `IEnumerable<string>` of document IDs.
+            
+    <details>
+    <summary>Requirements for load arguments</summary>
+    
+    The ID or IDs argument must be a literal or a simple identifier referring to one of the following:
+      - A parameter, field, or property.
+      - A local variable initialized from a literal or another simple identifier.
+    <br/>
+        
+    For example, `CustomerId` qualifies, while `this.CustomerId` is treated as dependent.
+    
+    The argument must not hold a value taken from another load or query result in the method.
+    
+    </details>            
+
+- **Queries:**  
+  `ToList()`, `ToArray()`, `ToListAsync()`, and `ToArrayAsync()`, called without arguments on a query that starts from `session.Query<T>()`.
+  The query can be stored in a local variable, and its chain can include standard `System.Linq` operators such as `Where`.  
+  The query, including its predicates, must not use a value taken from another load or query result in the method.
+
+</ContentFrame>
+<ContentFrame>
+
+### When is RVN012 not reported?
+
+- `First`, `FirstOrDefault`, `Single`, `SingleOrDefault`, `Any`, `Count`, `LongCount`, and their async forms.  
+  RVN012 checks only the query materializers listed under [Supported operations](#supported-operations).
+- `Load<T>(id, includes)`, `LoadAsync<T>(id, token)`,  
+  and query materializers called with an argument, such as `ToListAsync(token)`.
+- A load whose ID or IDs argument is any other expression, such as string concatenation or interpolation,  
+  a member access like `order.CustomerId`, a method call, or an inline array such as `new[] { "orders/1-A" }`.  
+  These are treated as dependent. A local variable initialized directly with `new[] { ... }` is also excluded.
+- Queries via `session.Advanced.DocumentQuery<T>()` or `session.Advanced.RawQuery<T>()`.
+- Operations on a session reached through a property or a method call, such as `Session.Load<T>(id)` or `GetSession().Load<T>(id)`.  
+  Only a local variable, a parameter, or a field is treated as a single session instance.
+
+---
+
+#### Operations in separate blocks, branches, or nested functions
+
+- Operations in separate `if`/`else` branches, `try`/`catch` blocks, loop bodies, `switch` sections, or `switch` expression arms are not grouped.
+- Each arm of `?:`, the right-hand side of `??`, `??=`, `&&`, and `||`, and the part after `?.` are also treated as separate branches.
+- Operations inside lambdas and anonymous methods are not reported.
+- Operations inside local functions are excluded from the enclosing method's group.
+
+---            
+            
+#### Calls that separate operations
+
+Operations separated by certain session calls are not grouped together by RVN012.  
+These intervening calls are called **session barriers**.
+
+Each side of a barrier is checked separately.  
+RVN012 can still report a group if either side contains at least two qualifying operations.
+
+For example:
+
+```csharp
+var order = session.Load<Order>("orders/1-A");
+
+session.SaveChanges();
+
+var product = session.Load<Product>("products/1-A");
+```
+<br/>
+
+`SaveChanges()` separates these loads into two groups, each containing only one operation.  
+RVN012 therefore does not report a diagnostic for this example.
+
+<details>
+<summary>Which calls are session barriers?</summary>
+
+The following are barriers:
+
+- Calls on the session or directly on `session.Advanced`, except for the method names listed below.  
+  Examples include `Store`, `Delete`, `SaveChanges`, `Advanced.Evict`, `Advanced.Clear`,
+  `Advanced.Refresh`, `Advanced.Exists`, `CountersFor`, and `TimeSeriesFor`.
+- Calls that pass the session as an argument.
+- A lambda, or a call to a local function, containing one of the above.
+
+Calls on the session or directly on `session.Advanced` with the following method names are not barriers,  
+unless the session is passed as an argument:
+
+- `Load`, `LoadAsync`, `Query`, and `Include`.
+- `DocumentQuery`, `AsyncDocumentQuery`, `RawQuery`, and `AsyncRawQuery`.
+- `IsLoaded`, `HasChanged`, `WhatChanged`, and `WhatChangedFor`.
+- `GetDocumentId`, `GetMetadataFor`, `GetChangeVectorFor`, `GetCountersFor`, `GetTimeSeriesFor`,
+  `GetLastModifiedFor`, `GetTrackedEntities`, and `GetCurrentSessionNode`.
+
+Calls on objects reached through `session.Advanced`, such as `Advanced.Lazily`, `Advanced.Eagerly`,
+`Advanced.Attachments`, or `Advanced.Revisions`, are not barriers unless the session is passed as an argument.
+
+A direct call on another session splits only that session's operations.  
+A lambda or a local function call containing a barrier splits the operations of all sessions.
+
+</details>
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="How to resolve">
+
+* Register the operations with `session.Advanced.Lazily.Load<T>(id)` and `query.Lazily()`,  
+  or with `session.Advanced.Lazily.LoadAsync<T>(id)` and `query.LazilyAsync()` in an async session,  
+  then read the values.
+        
+* Reading the first `.Value` (awaiting it in an async session) sends all pending lazy operations to the server in a single request.  
+        
+* Calling `session.Advanced.Eagerly.ExecuteAllPendingLazyOperations()`  
+  (or `ExecuteAllPendingLazyOperationsAsync()`) before reading the values is optional.
+
+* The automated code fix converts eligible loads and queries to lazy operations and adds code to read their values.  
+  See [Automated code fix](#automated-code-fix).
+
+---
 
 ### Before (triggers RVN012)
 
 ```csharp
-var order   = session.Load<Order>("orders/1-A");        // RVN012 — round-trip 1
-var product = session.Load<Product>("products/1-A");    // RVN012 — round-trip 2
+// Triggers RVN012: two independent loads that may send two separate requests.
+var order = session.Load<Order>("orders/1-A");
+var product = session.Load<Product>("products/1-A");
 ```
+<br/>
 
-### After (manual)
+### After (correct)
 
 ```csharp
-var lazyOrder   = session.Advanced.Lazily.Load<Order>("orders/1-A");
+var lazyOrder = session.Advanced.Lazily.Load<Order>("orders/1-A");
 var lazyProduct = session.Advanced.Lazily.Load<Product>("products/1-A");
-session.Advanced.Eagerly.ExecuteAllPendingLazyOperations();
 
-var order   = lazyOrder.Value;
+// Reading the first value sends both loads in a single request.
+var order = lazyOrder.Value;
 var product = lazyProduct.Value;
 ```
+<br/>
 
-### Async variant
+### Async session
 
 ```csharp
-var lazyOrder   = session.Advanced.Lazily.LoadAsync<Order>("orders/1-A");
-var lazyProduct = session.Advanced.Lazily.LoadAsync<Product>("products/1-A");
-await session.Advanced.Eagerly.ExecuteAllPendingLazyOperationsAsync();
+var lazyOrder = asyncSession.Advanced.Lazily.LoadAsync<Order>("orders/1-A");
+var lazyProduct = asyncSession.Advanced.Lazily.LoadAsync<Product>("products/1-A");
 
-var order   = await lazyOrder.Value;
+// Awaiting the first value sends both loads in a single request.
+var order = await lazyOrder.Value;
 var product = await lazyProduct.Value;
 ```
+<br/>
 
 ### Mixing loads and queries
 
 ```csharp
-var lazyOrder   = session.Advanced.Lazily.Load<Order>("orders/1-A");
-var lazySummary = session.Query<Order>().Where(x => x.Company == "companies/1").Lazily();
-session.Advanced.Eagerly.ExecuteAllPendingLazyOperations();
+var lazyCompany = session.Advanced.Lazily.Load<Company>("companies/1-A");
+var lazyOrders = session.Query<Order>()
+    .Where(x => x.Company == "companies/1-A")
+    .Take(50)
+    .Lazily();
 
-var order   = lazyOrder.Value;
-var summary = lazySummary.Value.ToList();
+// Reading the first value sends the load and the query in a single request.
+var company = lazyCompany.Value;
+var orders = lazyOrders.Value.ToList();
 ```
 
-## Code fix details
+</Panel>
 
-The fix rewrites all flagged consecutive statements: replaces each `Load` with `session.Advanced.Lazily.Load[Async]<T>(id)`, replaces each materializing query call with `query.Lazily()`, inserts `ExecuteAllPendingLazyOperations[Async]()` after the last lazy registration, then replaces each original variable declaration with `.Value`. The fix bails out entirely if any statement cannot be safely rewritten, to avoid partial transformations.
+<Panel heading="Automated code fix">
+
+<ContentFrame>
+
+### Which operations does the code fix rewrite?
+
+When you apply the code fix to a reported operation, it selects a **group of consecutive declarations**
+around that operation in the same block.
+
+Each declaration must declare one variable whose entire initializer is a single-argument load
+or a supported query materializer called without arguments, such as
+`var x = session.Load<T>(id);`, `var x = await session.LoadAsync<T>(id);`, or `var xs = session.Query<T>().ToList();`.
+
+The selection extends both before and after the reported declaration.  
+It stops at a statement that is not such a declaration, that contains a session barrier, or whose load or query fails
+the independence checks described under [Supported operations](#supported-operations).
+
+Reported operations outside this group, such as operations after a `SaveChanges()` call, are not changed.  
+Apply the code fix to them separately.
+
+For example, the code fix batches `order` and `employee` and leaves `company` unchanged after them:
+
+```csharp
+var order = session.Load<Order>(orderId);            // Reported
+var employee = session.Load<Employee>(employeeId);   // Reported
+var company = session.Load<Company>(order.Company);  // Not reported; ends the selection
+```
+
+</ContentFrame>
+<ContentFrame>
+
+### How does the code fix rewrite your code?
+
+The code fix:
+
+1. Renames each selected variable, for example from `order` to `lazyOrder`,  
+   and replaces its initializer with `session.Advanced.Lazily.Load<T>(id)` / `LoadAsync<T>(id)`,  
+   or with `query.Lazily()` / `query.LazilyAsync()`.
+2. After all lazy registrations, re-declares each original variable with its original type, reading the lazy value:
+   `lazyX.Value`, `await lazyX.Value`, `lazyXs.Value.ToList()`, or `(await lazyXs.Value).ToList()`.  
+   Array queries use `ToArray()` instead of `ToList()`.
+3. Adds `using Raven.Client.Documents;` when a query was rewritten and the namespace is not already in scope.
+
+Reading the first value (awaiting it for async operations) sends the batch.  
+The code fix does not add an `ExecuteAllPendingLazyOperations` call.
+
+Applied to the [Before](#before-triggers-rvn012) example, it produces code equivalent to the [After](#after-correct) example.
+
+</ContentFrame>
+<ContentFrame>
+
+### When is the code fix not offered?
+
+RVN012 can report operations even when the automated code fix is unavailable.  
+In the following cases, change the code manually:
+
+- The reported operation is not the whole initializer of a declaration that declares one variable,  
+  for example when it is assigned to an existing variable, returned, or passed as an argument.
+- The selected group has fewer than two operations.
+- The group mixes sync and async operations, or uses more than one session.
+- An async operation in the group is not directly awaited.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Limitations">
+
+- Only operations in the same method body are grouped.  
+  Operations split across helper methods are not detected.
+    
+- Dependency tracking does not follow the order of statements.  
+  Once a local variable, parameter, field, or property receives a value taken from a load or query result anywhere in the method,
+  it is treated as dependent throughout, so a load or query that uses it is not reported, even after it is reassigned to an independent value.
+
+</Panel>
+
+<Panel heading="Related C# analyzers">
+
+* [RVN013](./RVN013.mdx)  
+  Fires when a query result is not bounded by `Take()`, including queries registered with `Lazily()` or `LazilyAsync()`,  
+  such as those produced by the RVN012 code fix.
+
+</Panel>
