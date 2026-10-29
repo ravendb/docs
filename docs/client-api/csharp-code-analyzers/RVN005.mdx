@@ -152,6 +152,8 @@ RVN005 does not verify that every constructor or execution path registers a map.
 
 - A registration made only in a property setter is not detected, even if a constructor sets that property.
 - A registration made only in a helper invoked through a delegate, such as `Action configure = Configure; configure();`, is not detected.
+- A helper method defined in a base class from a referenced project is not followed when only a derived constructor calls it.
+  `AddMap` or `AddMapForAll` calls reachable from that base class's own constructors still count through its generated index metadata.    
 
 </Panel>
 

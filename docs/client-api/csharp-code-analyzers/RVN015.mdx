@@ -195,7 +195,7 @@ For an `All` diagnostic, see [When every element must match](#when-every-element
   The fanout map triggers [RVN014](./RVN014.mdx).  
     
   When the fanout is intentional, suppress RVN014 for that index with `#pragma warning disable RVN014`.  
-  See [Suppressing diagnostics](./overview.mdx#suppressing-diagnostics) for how to disable and restore a diagnostic around a specific code block.
+  See [Suppress diagnostics](./overview.mdx#suppress-diagnostics) for how to disable and restore a diagnostic around a specific code block.
     
 - **If each condition can be matched by a different element**, use a separate `Any` call for each condition.  
   The query then states the intended matching explicitly, and the client does not throw.

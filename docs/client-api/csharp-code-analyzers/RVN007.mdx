@@ -117,7 +117,7 @@ RVN007 is not reported for the following references and operators:
 - A collection field used with a lambda operator, such as `x.Lines.Any(l => l.Product == "products/1")`,  
   as in a fanout index.
 - Operators that follow `Select`, `ProjectInto`, `SelectMany`, or `GroupBy` in method syntax,  
-  or that follow `select … into` or `group … into` in query syntax. These operators bind to the new shape. See [RVN002](./RVN002.mdx).
+  or that follow `select … into` or `group … into` in query syntax.
 
 RVN007 is also not reported when the target index or its fields cannot be determined:
 
@@ -235,7 +235,7 @@ var results = session.Query<Orders_ByCompany.IndexEntry, Orders_ByCompany>()
 <Panel heading="Related C# analyzers">
 
 * [RVN002](./RVN002.mdx)  
-  Reports query operators placed after a projection. RVN007 does not check those operators.
+  Reports query operators placed after a `ProjectInto` or `Select` projection.
 
 * [RVN008](./RVN008.mdx)  
   Fires when a projected field is not retrievable from the index or the source document.

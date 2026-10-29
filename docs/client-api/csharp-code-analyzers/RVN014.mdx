@@ -140,7 +140,7 @@ Decide whether the index needs an index-entry per element:
 - **If the fanout is intentional**, for example to match several conditions on the same element,  
   make sure the collection size is acceptable for your workload, and suppress RVN014 for that index with  
   `#pragma warning disable RVN014`.  
-  See [Suppressing diagnostics](./overview.mdx#suppressing-diagnostics) for how to disable and restore a diagnostic around a specific code block.
+  See [Suppress diagnostics](./overview.mdx#suppress-diagnostics) for how to disable and restore a diagnostic around a specific code block.
     
   Setting `dotnet_diagnostic.RVN014.severity = none` in `.editorconfig` disables RVN014 for all files matched by that configuration section,
   which can also hide unintended fanout maps.

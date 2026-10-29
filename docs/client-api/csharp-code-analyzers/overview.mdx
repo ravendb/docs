@@ -46,10 +46,13 @@ The analyzer assembly (`Raven.Analyzers.dll`) and code-fix assembly (`Raven.Anal
 No separate install is required.  
 
 The analyzers require Roslyn 4.4.0 or later, included in the .NET 7 SDK and Visual Studio 2022 version 17.4, and in later versions.
+    
 Older compiler hosts cannot load the analyzers and may report `CS9057`.  
-This warning can fail the build when `TreatWarningsAsErrors` is enabled.
-
-Once the client package is referenced, the analyzers run automatically on every build.  
+This warning can fail the build when `TreatWarningsAsErrors` is enabled.  
+    
+To use the client package without loading the analyzers, see [Disable all RavenDB analyzers for a project](#disable-all-ravendb-analyzers-for-a-project).
+    
+Unless excluded, the analyzers run automatically on every build once the client package is referenced.    
 See [Apply automated code fixes](#apply-automated-code-fixes) for applying fixes in the IDE or from the command line.
 
 Some rules also inspect indexes defined in referenced assemblies. The checks performed by RVN004–RVN008 are skipped when the index information they require cannot be obtained from generated metadata or available source.
@@ -82,7 +85,8 @@ dotnet_diagnostic.RVN013.severity = error
 
 <Panel heading="Suppress diagnostics">
 
-You can suppress any RavenDB analyzer rule when the reported pattern is intentional.
+You can suppress individual RavenDB analyzer rules in a code region or matching files,  
+or disable all RavenDB analyzers for a project.
 
 <ContentFrame>
 
@@ -122,7 +126,19 @@ dotnet_diagnostic.RVN014.severity = none
 The rule is suppressed in all files matched by that configuration section.
 
 </ContentFrame>
+<ContentFrame>
 
+### Disable all RavenDB analyzers for a project
+
+To skip loading all analyzers supplied by `RavenDB.Client`, add `ExcludeAssets="analyzers"` to its `PackageReference` in the project file.
+Keep your existing package version:
+
+```xml
+<PackageReference Include="RavenDB.Client" Version="..." ExcludeAssets="analyzers" />
+```
+
+</ContentFrame> 
+    
 </Panel>
 
 <Panel heading="Apply automated code fixes">

@@ -69,6 +69,9 @@ A reported query may still work when the referenced field names match; see [Limi
 
 <Panel heading="Operators flagged by RVN002">
 
+RVN002 checks the operators listed below after `ProjectInto` or `Select`.  
+After `Select`, some of these operators are not flagged; see [After `Select`](#after-select).    
+
 <ContentFrame>
 
 ### After `ProjectInto`
@@ -130,7 +133,9 @@ so a flagged operator can appear in a later statement that uses the local variab
 - Operators placed before a projection, or not listed under [Operators flagged by RVN002](#operators-flagged-by-rvn002).
 - `Where`, `OrderBy`, `OrderByDescending`, `ThenBy`, and `ThenByDescending` after a `Select` that meets the exceptions described in [After `Select`](#after-select).
 - Operators and projections written as C# query-syntax clauses, such as `select … into … where …`.
-- LINQ over in-memory collections, for example after `ToList()`, or other queries that do not use RavenDB's LINQ provider.
+- LINQ over in-memory collections, for example after `ToList()`, or other queries that do not use RavenDB's LINQ provider.  
+- Operators after `SelectMany` or `GroupBy`, when the chain contains no earlier `Select` or `ProjectInto`.  
+  RVN002 does not treat `SelectMany` or `GroupBy` as projections.
 
 </ContentFrame>
 

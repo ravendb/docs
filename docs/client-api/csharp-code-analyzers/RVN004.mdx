@@ -144,6 +144,8 @@ RVN004 does not verify that every constructor or execution path assigns `Map`.
 
 - An assignment made only in a property setter is not detected, even if the constructor sets that property.
 - An assignment made through another reference, such as `index.Map = ...`, is not recognized.
+- A helper method defined in a base class from a referenced project is not followed when only a derived constructor calls it.
+  `Map` assignments reachable from that base class's own constructors still count through its generated index metadata.    
 
 </Panel>
 

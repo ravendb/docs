@@ -120,23 +120,26 @@ Reported on the method name.
 
 <Panel heading="How to resolve">
 
+**Use a batch session**:  
 Open the session from the batch: replace `store.OpenSession()` / `store.OpenAsyncSession()` with `batch.OpenSession()` / `batch.OpenAsyncSession()`,
 where `batch` is the parameter of the `Run` lambda.
 
-Note that:
+**Batch session requirements**:  
 
-- A session can be opened from the batch only **once per batch**; a second call throws `InvalidOperationException`.  
-  If the `Run` delegate opens more than one session, for example a session per item inside a loop, use a single session for the whole batch.
+  - A session can be opened from the batch only **once per batch**; a second call throws `InvalidOperationException`.  
+    If the `Run` delegate opens more than one session, for example a session per item inside a loop, use a single session for the whole batch.
     
-- The batch session always uses the subscription's database; the batch has no `OpenSession(string database)` overload.
-  When passing `SessionOptions`, do not set `Database`, `RequestExecutor`, or a `TransactionMode` other than `SingleNode`;
-  setting any of these throws `InvalidOperationException`.
+  - The batch session always uses the subscription's database; the batch has no `OpenSession(string database)` overload.
+    When passing `SessionOptions`, do not set `Database`, `RequestExecutor`, or a `TransactionMode` other than `SingleNode`;
+    setting any of these throws `InvalidOperationException`.
     
-- Pass a new `SessionOptions` instance for each batch. Opening a batch session sets its `Database` and `RequestExecutor` properties,
-  so reusing the instance for another batch throws `InvalidOperationException`.
+  - Pass a new `SessionOptions` instance for each batch. Opening a batch session sets its `Database` and `RequestExecutor` properties,
+    so reusing the instance for another batch throws `InvalidOperationException`.
 
+**When to keep the store session**:  
 If an operation intentionally requires another database or a cluster-wide transaction,  
-keep the store session and [suppress RVN011 for that call](./overview.mdx#suppressing-diagnostics).
+keep the store session and suppress RVN011 for that call.  
+Learn how to suppress RVN011 in [Suppress diagnostics](./overview.mdx#suppress-diagnostics).
 
 ---
 
