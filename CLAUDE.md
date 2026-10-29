@@ -28,6 +28,7 @@ npm test                   # Run unit tests (custom Docusaurus plugins)
 ```
 docs/                        # Current (7.2) doc content — EDIT HERE
 cloud/                       # RavenDB Cloud portal docs
+cloud-whats-new/             # Cloud What's New: a folder per deployment (index.mdx + images), blog instance + JSON feed for the Cloud Portal
 quill/                       # Quill docs
 guides/                      # Community guides (frontmatter-driven, tag-indexed)
 templates/                   # Doc authoring templates
@@ -73,6 +74,7 @@ versions.json                # Active version list
   - asserts every legacy-version page carries `<meta name="robots" content="noindex,...">`. The injection itself is delegated to Docusaurus' native per-version `noIndex` config (see `docusaurus.config.ts`); the plugin only audits.
   - Both checks fail the build under `DOCUSAURUS_STRICT_SEO=true`. Registered **after** all `content-docs` instances so HTML is already emitted when it runs.
 - `agent-hint-plugin`: puts a hidden pointer to the hosted agent skill at the top of every page's `<body>`. See "Hosted Agent Skill" below.
+- `whats-new-feed`: the `createFeedItems` of the `cloud-whats-new` blog instance. It adds to every item of `/cloud/whats-new/feed.json` the entry's excerpt (above the truncate marker) as `_ravendb.excerpt`, a list of `heading`, `paragraph` and `image` blocks with plain text and built image URLs, so the Cloud Portal can show what the list page shows. See "Cloud What's New" below.
 
 Noindex for legacy versions is set declaratively in `docusaurus.config.ts` (`versions[v].noIndex: true`); template pages are marked `unlisted: true` in frontmatter. No custom plugin writes the meta tag — the versioned-seo-plugin only verifies it landed.
 
@@ -195,6 +197,44 @@ Each folder contains `_category_.json`:
 - ❌ Wrong: `publishedAt`, `proficiencyLevel`, `externalUrl`, `imgAlt`, `repositoryUrl`, `licenseUrl`
 - Standard Docusaurus fields (e.g., `title`, `description`, `slug`) remain as-is.
 - Tag values in guides and samples MUST use `kebab-case` (e.g., `vector-search`, `azure-storage-queues-etl`).
+
+---
+
+## Cloud What's New
+- The author's guide is `cloud-whats-new/README.md`; keep it in step with the rules below. It is excluded from the entries by the blog instance's `include: ["**/*.mdx"]`.
+- One folder per Cloud deployment in `cloud-whats-new/`, `YYYY-MM-DD-<deployment>/index.mdx` with the entry's images next to it. The date is the day the deployment reached PROD; `<deployment>` is the deployment's name as in YouTrack, lowercased with dashes: `october-2026` for the first deployment of a month, `october-ii-2026` for a second one (the first never becomes "October I"). The `cloud-whats-new` blog instance serves the entries at `/cloud/whats-new` (under `/cloud`, so `scripts/handle_redirects.js` adds no version prefix) and publishes `/cloud/whats-new/feed.json`, which the Cloud Portal reads.
+- The portal shows only the newest entry, the way the list page shows it - `title`, the date and the excerpt above `{/* truncate */}`, images included - with a Read more link to the full entry here; the history stays in the docs. It picks the newest entry and treats it as new by its date. Nothing below the truncate marker reaches the portal. Date the entry on the deployment day, never in the future (a future-dated entry stays the one the portal shows), and merge it only after that Cloud deployment reached PROD: merging earlier announces features customers do not have yet.
+- One entry per day: a second entry with the same date does not show as new to someone who saw the first.
+- When copying the previous entry, change the folder name, `title` and `slug`, and replace its images. `slug` is the folder name without the date; without it the URL carries the date. A repeated `slug` puts two entries on one URL.
+- `title` is `<deployment> - <the headline change>`, e.g. `October II 2026 - ...`. `description` is one sentence for search results and the feed's `summary`; the portal shows the excerpt instead.
+- Excerpt: one block per feature released in the deployment - the feature name as a bold line on its own (`**Email alerts for your products**`), one line on what the customer can now do, and an image only where it helps. The feed carries these as `heading`, `paragraph` and `image` blocks. Keep feature names bold lines, not headings, so the entry's table of contents lists only the `##` sections, and keep lists out of the excerpt: the portal shows them as plain text.
+- Below the truncate marker: a `##` section per feature, named like its bold line, with the details and a link to the Cloud page.
+- Images go in the entry's folder and are referenced as `./<file>.png`, so two deployments in one month never mix them. They are copied from `cloud/assets` or `cloud/portal/assets` or shot for the entry, never referenced from there: an entry records one deployment and must not change when the docs re-shoot a figure.
+- Link to the Cloud pages by URL (`/cloud/...`), not by file path: links to files of the `cloud` docs instance are not resolved from a blog post. Take anchors from the built HTML, not from guessed slugs.
+
+### Cloud What's New Entry Example
+`cloud-whats-new/2026-10-26-october-2026/index.mdx`:
+```yaml
+---
+title: "October 2026 - Sign in with your own identity provider"
+description: "Sign in with your own identity provider, change storage without losing what you've tuned, a simpler profile, and more."
+slug: october-2026
+---
+
+**Sign in with your own identity provider**
+
+Let your team sign in with the work accounts they already use, and let your identity provider manage who gets in.
+
+![Connecting an identity provider](./portal-sso-connect-wizard-identity-provider.png)
+
+**A simpler profile**
+
+Your profile is now three pages, with two-factor authentication behind a single switch.
+
+{/* truncate */}
+
+## Sign in with your own identity provider
+```
 
 ---
 
@@ -523,6 +563,9 @@ related_resources:
 
 ### `cloud/` — RavenDB Cloud service documentation (~24 files)
 Account management, instance configuration, security (TLS, MFA, certificates), pricing/billing, scaling, backup/restore, migration, AWS/Azure Marketplace setup, and the cloud portal UI (home, products, billing, backups, support tabs).
+
+### `cloud-whats-new/` - Cloud What's New entries
+One entry per Cloud deployment, served at `/cloud/whats-new` by the `cloud-whats-new` blog instance, with a JSON feed for the Cloud Portal. Sidebar link in `sidebarsCloud.js`. See "Cloud What's New" above.
 
 ### `quill/` — Quill documentation (~1 file)
 Docs for Quill, served at `/quill` by its own `content-docs` instance (versionless, same wiring as `cloud/`). Sidebar in `sidebarsQuill.js`.

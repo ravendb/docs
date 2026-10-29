@@ -3,6 +3,7 @@ import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
 import remarkPanelHeadings from "./src/plugins/remark-panel-headings";
 import { createVideoEmbedChecks } from "./src/plugins/remark-video-embeds";
+import { createWhatsNewFeedItems } from "./src/plugins/whats-new-feed";
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { CURRENT_VERSION, ACTIVE_VERSIONS, LEGACY_VERSIONS } = require("./scripts/lib/version-policy.js") as {
     CURRENT_VERSION: string;
@@ -139,6 +140,28 @@ const config: Config = {
                 routeBasePath: "cloud",
                 sidebarPath: require.resolve("./sidebarsCloud.js"),
                 editUrl: "https://github.com/ravendb/docs/edit/main",
+            },
+        ],
+        [
+            "content-blog",
+            {
+                id: "cloud-whats-new",
+                path: "cloud-whats-new",
+                // Under /cloud so scripts/handle_redirects.js serves it without a version prefix.
+                routeBasePath: "cloud/whats-new",
+                // The README.md next to the entry folders is the authoring guide, not an entry.
+                include: ["**/*.mdx"],
+                blogTitle: "What's New in RavenDB Cloud",
+                blogDescription: "New in RavenDB Cloud, one entry per deployment.",
+                blogSidebarTitle: "All updates",
+                blogSidebarCount: "ALL",
+                showReadingTime: false,
+                feedOptions: {
+                    type: "json",
+                    title: "What's New in RavenDB Cloud",
+                    description: "New in RavenDB Cloud, one entry per deployment.",
+                    createFeedItems: createWhatsNewFeedItems,
+                },
             },
         ],
         [
