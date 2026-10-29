@@ -120,7 +120,8 @@ pre[class*="language-"] {
 }
 
 /* Custom Cloud themes */
-.plugin-id-cloud:root {
+.plugin-id-cloud:root,
+.plugin-id-cloud-whats-new:root {
     --ifm-color-primary: #417c5a;
     --ifm-color-primary-dark: #3b7051;
     --ifm-color-primary-darker: #37694d;
@@ -130,7 +131,8 @@ pre[class*="language-"] {
     --ifm-color-primary-lightest: #45835f;
 }
 
-.plugin-id-cloud[data-theme="dark"] {
+.plugin-id-cloud[data-theme="dark"],
+.plugin-id-cloud-whats-new[data-theme="dark"] {
     --ifm-color-primary: #63ffa6;
     --ifm-color-primary-dark: #40ff92;
     --ifm-color-primary-darker: #2eff88;
