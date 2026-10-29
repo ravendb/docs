@@ -1,9 +1,10 @@
-import React, { type ReactNode } from "react";
+import React, { type MouseEvent, type ReactNode } from "react";
 import Link from "@docusaurus/Link";
 import Heading from "@theme/Heading";
 import clsx from "clsx";
 import { Icon } from "@site/src/components/Common/Icon";
 import ShineBorder from "@site/src/components/Common/ShineBorder";
+import { IconName } from "@site/src/typescript/iconName";
 import IntegrationBlobField from "./IntegrationBlobField";
 
 export interface QuillHeroAction {
@@ -28,6 +29,41 @@ const buttonBase = clsx(
     "text-sm font-semibold leading-5",
     "!no-underline hover:!no-underline !transition-all"
 );
+
+function isInPageAnchor(url: string): boolean {
+    return url.startsWith("#");
+}
+
+function actionIcon(action: QuillHeroAction): IconName | null {
+    if (action.external) {
+        return "newtab";
+    }
+    return isInPageAnchor(action.url) ? null : "arrow-thin-right";
+}
+
+function scrollToAnchor(event: MouseEvent<HTMLAnchorElement>, url: string) {
+    const target = document.getElementById(url.slice(1));
+    if (!target) {
+        return;
+    }
+    event.preventDefault();
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    target.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth" });
+}
+
+function HeroAction({ action, className }: { action: QuillHeroAction; className: string }): ReactNode {
+    const icon = actionIcon(action);
+    return (
+        <Link
+            to={action.url}
+            onClick={isInPageAnchor(action.url) ? (event) => scrollToAnchor(event, action.url) : undefined}
+            className={clsx(buttonBase, className)}
+        >
+            {action.label}
+            {icon && <Icon icon={icon} size="xs" />}
+        </Link>
+    );
+}
 
 /**
  * Start-page hero for the Quill docs: a one-sentence pitch, two actions, and a product visual, over a
@@ -88,29 +124,21 @@ export default function QuillHero({
                         {lead}
                     </p>
                     <div className="flex flex-wrap items-center gap-3 pt-1">
-                        <Link
-                            to={primary.url}
+                        <HeroAction
+                            action={primary}
                             className={clsx(
-                                buttonBase,
                                 "bg-primary !text-white hover:bg-primary-dark hover:!text-white",
                                 "dark:!text-black dark:hover:bg-primary-light dark:hover:!text-black"
                             )}
-                        >
-                            {primary.label}
-                            <Icon icon={primary.external ? "newtab" : "arrow-thin-right"} size="xs" />
-                        </Link>
+                        />
                         {secondary && (
-                            <Link
-                                to={secondary.url}
+                            <HeroAction
+                                action={secondary}
                                 className={clsx(
-                                    buttonBase,
                                     "border border-black/15 bg-black/5 !text-inherit hover:bg-black/10 hover:!text-inherit",
                                     "dark:border-white/15 dark:bg-white/5 dark:hover:bg-white/10"
                                 )}
-                            >
-                                {secondary.label}
-                                <Icon icon={secondary.external ? "newtab" : "arrow-thin-right"} size="xs" />
-                            </Link>
+                            />
                         )}
                     </div>
                     {note && <p className="!mb-0 text-sm text-[color:var(--ifm-color-emphasis-600)]">{note}</p>}

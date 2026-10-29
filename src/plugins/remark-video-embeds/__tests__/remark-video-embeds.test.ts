@@ -77,6 +77,34 @@ describe("remarkVideoEmbeds: <Video>", () => {
     });
 });
 
+describe("remarkVideoEmbeds: <QuillWalkthrough>", () => {
+    function walkthrough(url: Attribute["value"], line = 1): MarkdownNode {
+        return jsx("QuillWalkthrough", [attribute("url", url), attribute("title", "Demo")], line);
+    }
+
+    it("accepts a YouTube url", () => {
+        compile({ "quill/home.mdx": [walkthrough(`https://www.youtube.com/watch?v=${ID}`)] });
+    });
+
+    it("rejects a url that is not a YouTube video, naming the component, file and line", () => {
+        assert.throws(
+            () => compile({ "quill/home.mdx": [walkthrough("https://vimeo.com/123456", 5)] }),
+            mentions(`quill/home.mdx:5: <QuillWalkthrough> url "https://vimeo.com/123456" is not a YouTube watch`)
+        );
+    });
+
+    it("has its video checked with YouTube like a <Video>'s", async () => {
+        const checks = compile(
+            { "quill/home.mdx": [walkthrough(ID, 3)] },
+            { checkWithYouTube: true, fetchImpl: youTubeAnswering(404).fetchImpl }
+        );
+        await assert.rejects(
+            checks.videoAvailabilityPlugin().postBuild(),
+            mentions(`${ID} (YouTube answered 404)`, "used in: quill/home.mdx:3")
+        );
+    });
+});
+
 describe("remarkVideoEmbeds: hand-written iframes", () => {
     it("rejects a YouTube iframe written as JSX", () => {
         const iframe = jsx("iframe", [attribute("src", `https://www.youtube.com/embed/${ID}?si=Fxk7alyTQ9bDcf5O`)], 3);
