@@ -89,6 +89,11 @@ export default {
                 },
                 {
                     type: "doc",
+                    id: "tabs",
+                    label: "Tabs",
+                },
+                {
+                    type: "doc",
                     id: "gallery-example",
                     label: "Gallery example",
                 },
