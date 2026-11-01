@@ -61,7 +61,12 @@ Choose a provider based on your needs.
   <TabItem value="open-ai-cs" label="open-ai-cs">
 
   ```csharp
-  using (var store = new DocumentStore())
+  using (var store = new DocumentStore
+  {
+      // Replace the server URL and database name with your own values.
+      Urls = new[] { "https://your-ravendb-server" },
+      Database = "YourDatabase"
+  }.Initialize())
   {
     // Define the connection string to OpenAI
     var connectionString = new AiConnectionString
@@ -89,7 +94,12 @@ Choose a provider based on your needs.
   <TabItem value="azure-open-ai-cs" label="azure-open-ai-cs">
 
   ```csharp
-  using (var store = new DocumentStore())
+  using (var store = new DocumentStore
+  {
+      // Replace the server URL and database name with your own values.
+      Urls = new[] { "https://your-ravendb-server" },
+      Database = "YourDatabase"
+  }.Initialize())
   {
     // Define the connection string to Azure OpenAI
     var connectionString = new AiConnectionString
@@ -119,7 +129,12 @@ Choose a provider based on your needs.
   <TabItem value="google-cs" label="google-cs">
 
   ```csharp
-  using (var store = new DocumentStore())
+  using (var store = new DocumentStore
+  {
+      // Replace the server URL and database name with your own values.
+      Urls = new[] { "https://your-ravendb-server" },
+      Database = "YourDatabase"
+  }.Initialize())
   {
     // Define the connection string to Google AI
     var connectionString = new AiConnectionString
@@ -146,7 +161,12 @@ Choose a provider based on your needs.
   <TabItem value="ollama-cs" label="ollama-cs">
 
   ```csharp
-  using (var store = new DocumentStore())
+  using (var store = new DocumentStore
+  {
+      // Replace the server URL and database name with your own values.
+      Urls = new[] { "https://your-ravendb-server" },
+      Database = "YourDatabase"
+  }.Initialize())
   {
     // Define the connection string to Ollama
     var connectionString = new AiConnectionString
@@ -170,6 +190,40 @@ Choose a provider based on your needs.
     var putConnectionStringResult = store.Maintenance.Send(operation);
   }
   ```
+  </TabItem>
+  <TabItem value="anthropic-cs" label="anthropic-cs">
+
+  ```csharp
+  using (var store = new DocumentStore
+  {
+      // Replace the server URL and database name with your own values.
+      Urls = new[] { "https://your-ravendb-server" },
+      Database = "YourDatabase"
+  }.Initialize())
+  {
+    // Define the connection string to Anthropic
+    var connectionString = new AiConnectionString
+    {
+        // Connection string name & identifier
+        Name = "anthropic-cs",
+
+        // Connection type
+        // Anthropic supports chat models only
+        ModelType = AiModelType.Chat,
+
+        // Anthropic connection settings
+        AnthropicSettings = new AnthropicSettings(
+            apiKey: "your-api-key",
+            // LLM model for text generation
+            model: "claude-sonnet-5-5")
+    };
+
+    // Deploy the connection string to the server
+    var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
+    var putConnectionStringResult = store.Maintenance.Send(operation);
+  }
+  ```
+
   </TabItem>
   </Tabs>
 
@@ -267,6 +321,30 @@ Choose a provider based on your needs.
   {
     public string Model { get; set; }
     public string Uri { get; set; }
+  }
+  ```
+  </TabItem>
+  <TabItem value="anthropic-cs-syntax" label="anthropic-cs-syntax">
+
+  ```csharp
+  public class AiConnectionString
+  {
+    public string Name { get; set; }
+    public AiModelType ModelType { get; set; }
+    public string Identifier { get; set; }
+    public AnthropicSettings AnthropicSettings { get; set; }
+    ...
+  }
+
+  public sealed class AnthropicSettings : AbstractAiSettings
+  {
+    public string ApiKey { get; set; }
+    public string Model { get; set; }
+    public string Endpoint { get; set; }
+    public int? MaxOutputTokens { get; set; }
+    public string ReasoningEffort { get; set; }
+    public bool? EnablePromptCache { get; set; }
+    public string ApiVersion { get; set; }
   }
   ```
   </TabItem>
@@ -1301,7 +1379,12 @@ details in its final response as well.
 ```csharp
 public async Task createAndRunAiAgent_full()
 {
-    var store = new DocumentStore();
+    using var store = new DocumentStore
+    {
+        // Replace the server URL and database name with your own values.
+        Urls = new[] { "https://your-ravendb-server" },
+        Database = "YourDatabase"
+    }.Initialize();
 
     // Define connection string to OpenAI
     var connectionString = new AiConnectionString

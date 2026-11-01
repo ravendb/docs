@@ -88,7 +88,7 @@ import Panel from '@site/src/components/Panel';
 3. **Prompt Cache Key** (optional)
     
    * Controls whether RavenDB includes the `prompt_cache_key` field in chat completion 
-     requests sent to the AI provider when using [AI Agents](../../../ai-integration/ai-agents/overview.mdx).
+     requests sent to the AI provider by [AI agents](../../../ai-integration/ai-agents/overview.mdx) and [GenAI tasks](../../../ai-integration/gen-ai-integration/overview.mdx).
     
    * When enabled (set to _True_), RavenDB sends the [Conversation's document ID](../../../ai-integration/ai-agents/overview.mdx#what-is-a-conversation) 
      in the `prompt_cache_key` field with each request.
@@ -116,7 +116,12 @@ import Panel from '@site/src/components/Panel';
 <Tabs groupId='languageSyntax'>    
 <TabItem value="Connection_string_for_text_embedding_model" label="Connection_string_for_text_embedding_model">
 ```csharp
-using (var store = new DocumentStore())
+using (var store = new DocumentStore
+{
+    // Replace the server URL and database name with your own values.
+    Urls = new[] { "https://your-ravendb-server" },
+    Database = "YourDatabase"
+}.Initialize())
 {
     // Define the connection string to Google AI
     var connectionString = new AiConnectionString
@@ -148,7 +153,12 @@ using (var store = new DocumentStore())
 </TabItem>
 <TabItem value="Connection_string_for_chat_model" label="Connection_string_for_chat_model">
 ```csharp
-using (var store = new DocumentStore())
+using (var store = new DocumentStore
+{
+    // Replace the server URL and database name with your own values.
+    Urls = new[] { "https://your-ravendb-server" },
+    Database = "YourDatabase"
+}.Initialize())
 {
     // Define the connection string to Google AI
     var connectionString = new AiConnectionString
@@ -158,17 +168,16 @@ using (var store = new DocumentStore())
         Identifier = "identifier-to-the-connection-string", // optional
         
         // Model type
-        ModelType = AiModelType.TextEmbeddings,
+        ModelType = AiModelType.Chat,
     
         // Google AI connection settings
         GoogleSettings = new GoogleSettings(
             apiKey: "your-api-key",
-            model: "text-embedding-004",
-            aiVersion: GoogleAIVersion.V1)
+            // Name of chat model to use
+            model: "gemini-3.8-flash")
     };
     
-    // Optionally, enable or disable prompt prefix caching
-    connectionString.GoogleSettings.EnablePromptCache = true;
+    // Leave EnablePromptCache unset so RavenDB omits prompt_cache_key for Google AI.
     
     // Deploy the connection string to the server
     var operation = 

@@ -17,7 +17,7 @@ await store.Maintenance.SendAsync(new PutConnectionStringOperation<AiConnectionS
     }));
 ```
 
-Exactly one settings property may be set: `OpenAiSettings`, `AzureOpenAiSettings`, `OllamaSettings`, `EmbeddedSettings`, `GoogleSettings`, `HuggingFaceSettings`, `MistralAiSettings`, `VertexSettings`.
+Exactly one settings property may be set: `OpenAiSettings`, `AzureOpenAiSettings`, `OllamaSettings`, `EmbeddedSettings`, `GoogleSettings`, `HuggingFaceSettings`, `MistralAiSettings`, `VertexSettings`, `AnthropicSettings` (Chat only).
 
 ## Define the agent
 

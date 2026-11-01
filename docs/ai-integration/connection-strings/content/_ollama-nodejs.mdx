@@ -105,6 +105,13 @@ import Panel from '@site/src/components/Panel';
 <Tabs groupId='languageSyntax'>
 <TabItem value="Connection_string_for_text_embedding_model" label="Connection_string_for_text_embedding_model">
 ```js
+// Replace the server URL and database name with your own values.
+const store = new DocumentStore(
+    "https://your-ravendb-server",
+    "YourDatabase"
+);
+store.initialize();
+
 // Define the connection string to Ollama
 const connectionString = new AiConnectionString();
 
@@ -131,6 +138,13 @@ const putConnectionStringResult = await store.maintenance.send(putConnectionStri
 </TabItem>
 <TabItem value="Connection_string_for_chat_model" label="Connection_string_for_chat_model">
 ```js
+// Replace the server URL and database name with your own values.
+const store = new DocumentStore(
+    "https://your-ravendb-server",
+    "YourDatabase"
+);
+store.initialize();
+
 // Define the connection string to Ollama
 const connectionString = new AiConnectionString();
 
