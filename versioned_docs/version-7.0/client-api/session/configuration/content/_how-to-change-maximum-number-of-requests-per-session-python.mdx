@@ -5,28 +5,53 @@ import Panel from "@site/src/components/Panel";
 
 * This article describes the limit on the number of requests that a session can send to the server,  
   and explains how to change this limit for a single session or for all sessions.  
+* Also learn in this article about the advantages of using multiple short-lived sessions rather than a single long-lived session.  
 * In this article:  
-  * [Default limit](../../../../client-api/session/configuration/how-to-change-maximum-number-of-requests-per-session.mdx#default-limit)  
+  * [Request limit](../../../../client-api/session/configuration/how-to-change-maximum-number-of-requests-per-session.mdx#request-limit)  
+  * [Short-lived vs long-lived sessions](../../../../client-api/session/configuration/how-to-change-maximum-number-of-requests-per-session.mdx#short-lived-vs-long-lived-sessions)  
   * [Single session](../../../../client-api/session/configuration/how-to-change-maximum-number-of-requests-per-session.mdx#single-session)  
   * [All sessions](../../../../client-api/session/configuration/how-to-change-maximum-number-of-requests-per-session.mdx#all-sessions)  
 
 </Admonition>
 
-<Panel heading="Default limit">
+<Panel heading="Request limit">
 
-By default, the maximum number of requests that a session can send the server is **30**.  
-This number, if everything is done correctly, should never be reached since remote calls are expensive and the number of remote
-calls per "session" should be as close to **1** as possible.  
-If the limit is reached, it may indicate a `Select N+1` problem or some other misuse of the session object.
+By default, the limit on the number of requests that a session can send to the server is **30**.  
+A session that has reached this limit raises an exception instead of sending any further request to the server.
 
-Nevertheless, if needed, this number can be changed for a single session or for all sessions.
+The limit serves as an early warning of a session that sends too many requests to the server.  
+A session represents a single [unit of work](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern) (e.g., handling one web request).  
+Since each request is a remote call to the server, keep the number of requests per session as low as possible.  
+e.g., to load multiple documents, use **a single `load` call** rather than **one call per document**
+
+Reaching the limit may indicate a [Select N+1 problem](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#the-select-n1-problem), or a session that you keep open
+across several units of work (e.g., a single session that processes all the items of a batch job).
+
+If a single unit of work does need more requests than the limit allows, you can raise the limit
+[for a single session](../../../../client-api/session/configuration/how-to-change-maximum-number-of-requests-per-session.mdx#single-session) or [for all sessions](../../../../client-api/session/configuration/how-to-change-maximum-number-of-requests-per-session.mdx#all-sessions).
+
+</Panel>
+
+<Panel heading="Short-lived vs long-lived sessions">
+
+Opening a session is inexpensive.  
+When you open a session, the client sends no request to the server, and the new session reuses the document store's
+connections to the server and HTTP cache.
+
+The cost of a long-lived session, on the other hand, grows with the number of documents the session tracks.  
+By default, a session tracks every document it loads or receives from queries, and keeps these documents in memory.  
+Each time you call `save_changes`, the session checks all the tracked documents for changes, so each `save_changes` call
+takes longer as the number of tracked documents grows.
+
+To handle a series of independent operations (e.g., processing the items of a batch job), it is therefore best to open
+a separate session for each operation rather than a single long-lived session for the whole series.
 
 </Panel>
 
 <Panel heading="Single session">
 
-To change the maximum number of requests for a **single** session, modify the value
-of the `session` `_max_number_of_requests_per_session` property.
+To change the request limit for a **single** session, set the session's `_max_number_of_requests_per_session` attribute.  
+The new limit applies only to this session.
 
 ```python
 session._max_number_of_requests_per_session = 50
@@ -36,19 +61,33 @@ session._max_number_of_requests_per_session = 50
 
 <Panel heading="All sessions">
 
-To change the maximum number of requests for **all** sessions (on a particular store),
-change the value of the DocumentStore `conventions` `max_number_of_requests_per_session` property.
+To change the request limit for **all** the sessions of a document store, set the store's
+`max_number_of_requests_per_session` convention.
+
+<Admonition type="note" title="">
+
+Set this convention **before** calling the store's `initialize` method to start using the store.  
+A value set after calling `initialize` may not apply to the store's sessions.
+
+</Admonition>
 
 ```python
+store = DocumentStore()
+
+# Set the convention before calling initialize
 store.conventions.max_number_of_requests_per_session = 100
+
+store.initialize()
 ```
 <br />
 
-<Admonition type="info" title="Injecting max_number_of_requests_per_session from the Server" id="injecting-max_number_of_requests_per_session-from-the-server" href="#injecting-max_number_of_requests_per_session-from-the-server">
+<Admonition type="info" title={<>Injecting <code>max_number_of_requests_per_session</code> from the server:</>} id="injecting-max_number_of_requests_per_session-from-the-server" href="#injecting-max_number_of_requests_per_session-from-the-server">
 
-The maximum number of requests for all sessions can also be configured via injected client
-configuration from the Server.  
-See [Client Configuration (server-wide)](../../../../studio/server/client-configuration.mdx)
+The server can also set the limit for all sessions, server-wide or per database, using the client configuration it sends
+to clients.  
+A limit set by the server overrides the store's `max_number_of_requests_per_session` convention.  
+See [Client Configuration (server-wide)](../../../../studio/server/client-configuration.mdx) and
+[Client Configuration (for database)](../../../../studio/database/settings/client-configuration-per-database.mdx)
 
 </Admonition>
 
