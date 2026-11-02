@@ -9,6 +9,11 @@ const { CURRENT_VERSION, ACTIVE_VERSIONS, LEGACY_VERSIONS } = require("./scripts
     ACTIVE_VERSIONS: string[];
     LEGACY_VERSIONS: string[];
 };
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { ALGOLIA_APP_ID, ALGOLIA_INDEX_NAME } = require("./scripts/lib/algolia.js") as {
+    ALGOLIA_APP_ID: string;
+    ALGOLIA_INDEX_NAME: string;
+};
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -409,12 +414,12 @@ const config: Config = {
         },
         algolia: {
             // The application ID provided by Algolia
-            appId: "GYTCYX561T",
+            appId: ALGOLIA_APP_ID,
 
             // Public API key: it is safe to commit it
             apiKey: "a97a73adcd8ac27ce741f4f663e9f554",
 
-            indexName: "ProductionDocsCrawler",
+            indexName: ALGOLIA_INDEX_NAME,
 
             contextualSearch: true,
 
