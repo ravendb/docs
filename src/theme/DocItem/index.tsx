@@ -6,8 +6,6 @@ import DocsTopbar from "@site/src/components/DocsTopbar";
 import LanguageUrlSync from "@site/src/components/LanguageUrlSync";
 import { SupportedLanguagesContext } from "@site/src/components/LanguageStore";
 import { CustomDocFrontMatter } from "@site/src/typescript/docMetadata";
-import { useActivePlugin } from "@docusaurus/plugin-content-docs/client";
-import Head from "@docusaurus/Head";
 
 type Props = WrapperProps<typeof DocItemType>;
 
@@ -15,8 +13,6 @@ export default function DocItemWrapper(props: Props): ReactNode {
     const title = props.content.metadata?.title;
     const source = props.content.metadata?.source as string | undefined;
     const frontMatter = props.content.frontMatter as CustomDocFrontMatter;
-    const activePlugin = useActivePlugin();
-    const pluginId = activePlugin?.pluginId;
 
     const isDocsOrVersioned =
         source?.startsWith("@site/docs/") ||
@@ -31,15 +27,8 @@ export default function DocItemWrapper(props: Props): ReactNode {
 
     const showTopbar = Boolean(isDocsOrVersioned && !isExcluded);
 
-    const isTemplatesPlugin = pluginId === "templates";
-
     return (
         <SupportedLanguagesContext.Provider value={supportedLanguages}>
-            {isTemplatesPlugin && (
-                <Head>
-                    <meta name="robots" content="noindex, nofollow" />
-                </Head>
-            )}
             {supportedLanguages?.length ? <LanguageUrlSync supportedLanguages={supportedLanguages} /> : null}
             {showTopbar && <DocsTopbar title={title} supportedLanguages={supportedLanguages} />}
             <div className="wrapper row">

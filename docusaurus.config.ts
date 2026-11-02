@@ -172,6 +172,9 @@ const config: Config = {
                 routeBasePath: "templates",
                 sidebarPath: require.resolve("./sidebarsTemplates.js"),
                 showLastUpdateTime: true,
+                // Noindex every templates page. Not `unlisted` frontmatter: that also hides
+                // the page from the sidebar unless it is the active one.
+                versions: { current: { noIndex: true } },
             },
         ],
         [
