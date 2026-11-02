@@ -1,0 +1,116 @@
+---
+title: "Tabs"
+unlisted: true
+hide_table_of_contents: false
+sidebar_label: Tabs
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Tabs
+
+`<Tabs>` shows alternatives in one place: the same operation as C# code and as an RQL query, the sync and async
+variant of a method, or the syntax of related classes. Only the selected tab is visible. The others stay in the page,
+hidden.
+
+`Tabs` and `TabItem` are not registered globally, so import them in every file that uses them, language partials
+included:
+
+```mdx
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+```
+
+## Basic usage
+
+````mdx
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```csharp
+var employees = session.Query<Employee>()
+    .Where(x => x.FirstName == "Robert")
+    .ToList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Employees" where FirstName == "Robert"
+```
+</TabItem>
+</Tabs>
+````
+
+#### Live example
+
+<Tabs groupId='templates-tabs-live'>
+<TabItem value="Query" label="Query">
+```csharp
+var employees = session.Query<Employee>()
+    .Where(x => x.FirstName == "Robert")
+    .ToList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Employees" where FirstName == "Robert"
+```
+</TabItem>
+</Tabs>
+
+## Linking to content inside a tab
+
+Put an anchor inside the `TabItem`: an `<a id="..."/>` or a Markdown heading. A link to it opens the tab and scrolls to
+it, whether it comes from another page, from the same page or from the "In this article" TOC. Link to it the same way
+as to any other anchor.
+
+````mdx
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+...
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<a id="robert-rql"/>
+
+```sql
+from "Employees" where FirstName == "Robert"
+```
+</TabItem>
+</Tabs>
+
+[See this query in RQL](#robert-rql)
+````
+
+#### Live example
+
+<Tabs groupId='templates-tabs-live'>
+<TabItem value="Query" label="Query">
+```csharp
+var employees = session.Query<Employee>()
+    .Where(x => x.FirstName == "Robert")
+    .ToList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<a id="robert-rql"/>
+
+```sql
+from "Employees" where FirstName == "Robert"
+```
+</TabItem>
+</Tabs>
+
+[See this query in RQL](#robert-rql)
+
+- Hidden tabs are part of the page, so every anchor needs an id that is unique on the whole page, not just in its tab.
+- Opening a tab from a link works like clicking it: with a `groupId`, the other `Tabs` in the group switch too and the
+  choice is remembered.
+
+## Props
+
+| Prop      | On        | Description                                                                                                         |
+| --------- | --------- | ------------------------------------------------------------------------------------------------------------------- |
+| `groupId` | `Tabs`    | `Tabs` sharing a `groupId` switch together, and the choice is remembered across pages. API pages use `languageSyntax`. |
+| `value`   | `TabItem` | Required. Identifies the tab within its `Tabs`. In a group, tabs with the same `value` switch together.             |
+| `label`   | `TabItem` | Text on the tab. Defaults to `value`.                                                                               |
+| `default` | `TabItem` | Selects this tab when the page opens. Without it the first tab is selected. A choice remembered through `groupId` wins. |
