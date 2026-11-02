@@ -228,6 +228,16 @@ pre[class*="language-"] {
             transform: translateY(0);
         }
     }
+
+    /* VideoDialog (src/components/Common): the dialog rises into place each time it opens. */
+    --animate-dialog-in: dialog-in 240ms cubic-bezier(0.16, 1, 0.3, 1);
+
+    @keyframes dialog-in {
+        from {
+            opacity: 0;
+            transform: translateY(0.625rem) scale(0.98);
+        }
+    }
 }
 
 /* Custom font-faces — fonts served from static/css/fonts/ (unhashed) so preload links work */
