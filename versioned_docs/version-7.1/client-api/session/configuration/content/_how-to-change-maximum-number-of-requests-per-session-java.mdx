@@ -1,44 +1,55 @@
 import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+
+<Admonition type="note" title="">
+
+* This article describes the limit on the number of requests that a session can send to the server,  
+  and explains how to change this limit for a single session or for all sessions.  
+* In this article:  
+  * [Default limit](../../../../client-api/session/configuration/how-to-change-maximum-number-of-requests-per-session.mdx#default-limit)  
+  * [Single session](../../../../client-api/session/configuration/how-to-change-maximum-number-of-requests-per-session.mdx#single-session)  
+  * [All sessions](../../../../client-api/session/configuration/how-to-change-maximum-number-of-requests-per-session.mdx#all-sessions)  
+
+</Admonition>
+
+<Panel heading="Default limit">
 
 By default, the maximum number of requests that a session can send the server is **30**.  
-This number, if everything is done correctly, should never be reached since remote 
-calls are expensive and the number of remote calls per "session" should be as close 
-to **1** as possible.  
-If the limit is reached, it may indicate a `Select N+1` problem or some other misuse 
-of the session object.
+This number, if everything is done correctly, should never be reached since remote calls are expensive and the number of remote
+calls per "session" should be as close to **1** as possible.  
+If the limit is reached, it may indicate a `Select N+1` problem or some other misuse of the session object.
 
 Nevertheless, if needed, this number can be changed for a single session or for all sessions.
 
-## Single session
+</Panel>
 
-To change the maximum number of requests in a single session, modify the `maxNumberOfRequestsPerSession` 
+<Panel heading="Single session">
+
+To change the maximum number of requests in a single session, modify the `maxNumberOfRequestsPerSession`
 field value using the `advanced` session operations.
 
-<TabItem value="max_requests_1" label="max_requests_1">
-<CodeBlock language="java">
-{`session.advanced().setMaxNumberOfRequestsPerSession(50);
-`}
-</CodeBlock>
-</TabItem>
+```java
+session.advanced().setMaxNumberOfRequestsPerSession(50);
+```
 
-## All sessions
+</Panel>
 
-To change the maximum number of requests for **all** sessions (on a particular store), 
+<Panel heading="All sessions">
+
+To change the maximum number of requests for **all** sessions (on a particular store),
 the `maxNumberOfRequestsPerSession` field from DocumentStore `conventions` must be changed.
 
-<TabItem value="max_requests_2" label="max_requests_2">
-<CodeBlock language="java">
-{`store.getConventions().setMaxNumberOfRequestsPerSession(100);
-`}
-</CodeBlock>
-</TabItem>
+```java
+store.getConventions().setMaxNumberOfRequestsPerSession(100);
+```
+<br />
 
 <Admonition type="info" title="Injecting maxNumberOfRequestsPerSession from the Server" id="injecting-maxnumberofrequestspersession-from-the-server" href="#injecting-maxnumberofrequestspersession-from-the-server">
-The maximum number of requests for all sessions can also be configured via injected client 
-configuration from the Server. Read more about this [here](../../../../studio/server/client-configuration.mdx).
+
+The maximum number of requests for all sessions can also be configured via injected client
+configuration from the Server.  
+See [Client Configuration (server-wide)](../../../../studio/server/client-configuration.mdx)
+
 </Admonition>
 
-
+</Panel>

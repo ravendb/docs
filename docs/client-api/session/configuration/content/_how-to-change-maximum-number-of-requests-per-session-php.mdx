@@ -1,48 +1,59 @@
 import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+
+<Admonition type="note" title="">
+
+* This article describes the limit on the number of requests that a session can send to the server,  
+  and explains how to change this limit for a single session or for all sessions.  
+* In this article:  
+  * [Default limit](../../../../client-api/session/configuration/how-to-change-maximum-number-of-requests-per-session.mdx#default-limit)  
+  * [Single session](../../../../client-api/session/configuration/how-to-change-maximum-number-of-requests-per-session.mdx#single-session)  
+  * [All sessions](../../../../client-api/session/configuration/how-to-change-maximum-number-of-requests-per-session.mdx#all-sessions)  
+
+</Admonition>
+
+<Panel heading="Default limit">
 
 By default, the maximum number of requests that a session can send the server is **30**.  
-This number, if everything is done correctly, should never be reached since remote 
-calls are expensive and the number of remote calls per "session" should be as close 
-to **1** as possible.  
-If the limit is reached, it may indicate a `Select N+1` problem or some other misuse 
-of the session object.
+This number, if everything is done correctly, should never be reached since remote calls are expensive and the number of remote
+calls per "session" should be as close to **1** as possible.  
+If the limit is reached, it may indicate a `Select N+1` problem or some other misuse of the session object.
 
 Nevertheless, if needed, this number can be changed for a single session or for all sessions.
 
-## Single session
+</Panel>
 
-To modify the maximum number of requests for a **single** session, 
+<Panel heading="Single session">
+
+To modify the maximum number of requests for a **single** session,
 set the value of the session `maxNumberOfRequestsPerSession` property.
 
 You can do this using the **advanced session** `setMaxNumberOfRequestsPerSession` method.
 
-<TabItem value="max_requests_1" label="max_requests_1">
-<CodeBlock language="php">
-{`$session->advanced()->setMaxNumberOfRequestsPerSession(50);
-`}
-</CodeBlock>
-</TabItem>
+```php
+$session->advanced()->setMaxNumberOfRequestsPerSession(50);
+```
 
-## All sessions
+</Panel>
 
-To modify the maximum number of requests for **all** sessions (on a particular store), 
+<Panel heading="All sessions">
+
+To modify the maximum number of requests for **all** sessions (on a particular store),
 set the value of the DocumentStore conventions `maxNumberOfRequestsPerSession` property.
 
 You can do this using the **store** `setMaxNumberOfRequestsPerSession` method.
 
-<TabItem value="max_requests_2" label="max_requests_2">
-<CodeBlock language="php">
-{`$store->getConventions()->setMaxNumberOfRequestsPerSession(100);
-`}
-</CodeBlock>
-</TabItem>
+```php
+$store->getConventions()->setMaxNumberOfRequestsPerSession(100);
+```
+<br />
 
 <Admonition type="info" title="">
-The maximum number of requests for all sessions can also be configured by via injected client 
-configuration from the Server. Read more about this [here](../../../../studio/server/client-configuration.mdx).
+
+The maximum number of requests for all sessions can also be configured via injected client
+configuration from the Server.  
+See [Client Configuration (server-wide)](../../../../studio/server/client-configuration.mdx)
+
 </Admonition>
 
-
+</Panel>
