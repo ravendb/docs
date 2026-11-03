@@ -96,8 +96,12 @@ if ($CrawlerId -and $env:ALGOLIA_CRAWLER_USER_ID -and $env:ALGOLIA_CRAWLER_API_K
         }
 
         Write-Host '  Updating the crawler config' -ForegroundColor Cyan
-        Invoke-RestMethod -Uri "$crawlerUri/config" -Headers $crawlerHeaders -Method Patch `
-            -Body $crawlerJson -ContentType 'application/json; charset=utf-8' | Out-Null
+        $task = Invoke-RestMethod -Uri "$crawlerUri/config" -Headers $crawlerHeaders -Method Patch `
+            -Body ([Text.Encoding]::UTF8.GetBytes($crawlerJson)) -ContentType 'application/json'
+        for ($i = 0; (Invoke-RestMethod -Uri "$crawlerUri/tasks/$($task.taskId)" -Headers $crawlerHeaders).pending; $i++) {
+            if ($i -ge 60) { throw "Crawler config task $($task.taskId) is still pending after 2 minutes" }
+            Start-Sleep -Seconds 2
+        }
 
         # Fail if the API rewrote anything, or every deploy would recrawl.
         $left = @(& $getCrawlerDrift)
@@ -123,7 +127,7 @@ if ($env:ALGOLIA_API_KEY) {
     $drift = Get-ManagedDrift -Live $live -Local $settings -Noun 'index settings' -Unmanaged 'version'
 
     if (Test-ShouldPush -Drift $drift -Noun 'index settings' -SourcePath $IndexSettingsPath) {
-        Invoke-RestMethod @settingsRequest -Method Put -Body $settingsJson -ContentType 'application/json; charset=utf-8' | Out-Null
+        Invoke-RestMethod @settingsRequest -Method Put -Body ([Text.Encoding]::UTF8.GetBytes($settingsJson)) -ContentType 'application/json' | Out-Null
         Write-Host 'Index settings updated.' -ForegroundColor Green
     }
 } else {
