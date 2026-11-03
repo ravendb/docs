@@ -301,7 +301,7 @@ Production endpoints make up the rest of the server's REST API, used in normal o
 | `/databases/*/admin/etl/snowflake/test-connection` | POST | Test the connection to Snowflake for the database. |
 | `/databases/*/admin/etl/sql/test` | POST | Test a SQL ETL script for the database. |
 | `/databases/*/admin/etl/sql/test-connection` | POST | Test the connection to the SQL ETL target for the database. |
-| `/databases/*/admin/expiration/config` | POST | Configure [document expiration](../../server/extensions/expiration.mdx) for the database. |
+| `/databases/*/admin/expiration/config` | POST | Configure [document expiration](../../documents/document-expiration/client-api.mdx) for the database. |
 | `/databases/*/admin/features` | POST | Modify the supported features for the database. |
 | `/databases/*/admin/indexes` | PUT | Create or update static indexes for the database. |
 | `/databases/*/admin/indexes/disable` | POST | Disable an index. |
@@ -321,7 +321,7 @@ Production endpoints make up the rest of the server's REST API, used in normal o
 | `/databases/*/admin/queue-sink/test` | POST | Test a queue sink script for the database and return the result without persisting anything. |
 | `/databases/*/admin/rachis/wait-for-index-notifications` | POST | Wait until the database has applied cluster (Rachis) state changes up to a specified command index. |
 | `/databases/*/admin/record` | GET | Get the database record (the database's configuration document) for the database. |
-| `/databases/*/admin/refresh/config` | POST | Configure [document refresh](../../server/extensions/refresh.mdx) for the database. |
+| `/databases/*/admin/refresh/config` | POST | Configure [document refresh](../../documents/document-refresh/client-api.mdx) for the database. |
 | `/databases/*/admin/restart` | POST | Restart the database. |
 | `/databases/*/admin/revisions` | DELETE | Delete revisions of specified documents in the database. |
 | `/databases/*/admin/revisions/bin-cleaner/config` | POST | Configure the revisions bin cleaner for the database. |
