@@ -241,40 +241,14 @@ the include will search for the specified paths in the projected fields rather t
 
 ## Create subscription - include counters
 
-`SubscriptionIncludeBuilder` has three methods for including counters:  
+In this example, the subscription sends to the worker every `Order` and includes the values of the named counters in the batch.
 
-<TabItem value="include_builder_counter_methods" label="include_builder_counter_methods">
+<TabItem value="create_subscription_include_counters_rql" label="create_subscription_include_counters_rql">
 <CodeBlock language="python">
-{`def include_counter(self, name: str) -> SubscriptionIncludeBuilder: ...
-
-def include_counters(self, *names: str) -> SubscriptionIncludeBuilder: ...
-
-def include_all_counters(self) -> SubscriptionIncludeBuilder: ...
-`}
-</CodeBlock>
-</TabItem>
-
-`include_counter` is used to specify a single counter.  
-`include_counters` is used to specify multiple counters.  
-`include_all_counters` retrieves all counters from all subscribed documents.  
-
-| Parameter   | Type  | Description                                                                                                                                      |
-|-------------|-------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-| **name**    | `str` | The name of a counter. The subscription will include all counters with this name that are contained in the documents the subscription retrieves. |
-| **\*names** | `str` | Array of counter names.                                                                                                                          |
-
-The following subscription, which includes multiple counters in the batch sent to the client,  
-demonstrates how the methods can be chained.
-
-<TabItem value="create_subscription_include_counters_builder" label="create_subscription_include_counters_builder">
-<CodeBlock language="python">
-{`store.subscriptions.create_for_class(
-    Order,
+{`store.subscriptions.create_for_options(
     SubscriptionCreationOptions(
-        includes=lambda builder: builder
-        .include_counter("Likes")
-        .include_counters("Pros", "Cons")
-    ),
+        query="from Orders include counters('Likes'), counters('Pros'), counters('Cons')"
+    )
 )
 `}
 </CodeBlock>
@@ -295,26 +269,8 @@ In this example we update the filtering query of an existing subscription named 
 </CodeBlock>
 </TabItem>
 <Admonition type="note" title="">
-
-**Modifying the subscription's name**:
-
-In addition to the subscription name, each subscription is assigned a **subscription ID** when it is created by the server. 
-This ID can be used to identify the subscription, instead of the name, when updating the subscription.
-
-This allows users to change an existing subscription's **name** by specifying the subscription's ID  
-and submitting a new string in the `name` field of `SubscriptionUpdateOptions`.
-
-<TabItem value="update_subscription_example_1" label="update_subscription_example_1">
-<CodeBlock language="python">
-{`my_subscription = store.subscriptions.get_subscription_state("my subscription")
-
-subscription_id = my_subscription.subscription_id
-
-store.subscriptions.update(SubscriptionUpdateOptions(key=subscription_id, name="new name"))
-`}
-</CodeBlock>
-</TabItem>
-
+You cannot rename a subscription by providing its `key` and a new `name`.  
+Doing this keeps the existing subscription under its current name and adds a second subscription with the new name and the same ID.
 </Admonition>
 
 

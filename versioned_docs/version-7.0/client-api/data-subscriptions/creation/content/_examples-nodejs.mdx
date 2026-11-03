@@ -395,22 +395,10 @@ const subscriptionName = await documentStore.subscriptions.update(\{
 </CodeBlock>
 </TabItem>
 
-Using the subscription ID allows you to modify the subscription name:
-
-<TabItem value="update_3" label="update_3">
-<CodeBlock language="js">
-{`// Get the subscription's ID
-const mySubscription = await documentStore.subscriptions.getSubscriptionState("my subscription");
-const subscriptionId = mySubscription.subscriptionId;
-
-// Update the subscription's name
-const subscriptionName = await documentStore.subscriptions.update(\{
-    id: subscriptionId,
-    name: "new name"
-\});
-`}
-</CodeBlock>
-</TabItem>
+<Admonition type="note" title="">
+You cannot rename a subscription by providing its `id` and a new `name`.  
+Doing this keeps the existing subscription under its current name and adds a second subscription with the new name and the same ID.
+</Admonition>
 
 
 

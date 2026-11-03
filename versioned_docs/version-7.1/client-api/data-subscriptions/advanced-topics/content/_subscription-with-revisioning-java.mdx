@@ -50,8 +50,13 @@ The data subscriptions revisions processing mechanism will receive pairs of revi
 | 3 | `{ Name:'James', Age:'22' }` | `{ Name:'James', Age:'23' }` |
  
 <Admonition type="warning" title="">
-The revisions subscription will be able to function properly only if the revisions it needs to process are available.
-Please make sure that your revisions configuration doesn't purge revisions before the subscription had the chance to process them.  
+
+* A document that has no revisions is not processed, so make sure your revisions configuration does not purge revisions
+  before the subscription has had a chance to process them.
+
+* A revisions subscription **ignores** the [processing behavior for archived documents](../../../../server/configuration/subscription-configuration.mdx#subscriptionsarchiveddataprocessingbehavior)
+  and selects the revisions of archived and non-archived documents alike.
+
 </Admonition>
 
 
@@ -106,17 +111,23 @@ Creation:
 <TabItem value="create_projected_revisions_subscription_RQL" label="create_projected_revisions_subscription_RQL">
 <CodeBlock language="java">
 {`SubscriptionCreationOptions options = new SubscriptionCreationOptions();
-options.setQuery("declare function getOrderLinesSum(doc) \{" +
-    "    var sum = 0;" +
-    "    for (var i in doc.Lines) \{ sum += doc.Lines[i]; \} " +
-    "    return sum;" +
-    "\}" +
-    "" +
-    "  from orders (Revisions = true) " +
-    " where getOrderLinesSum(this.Current) > getOrderLinesSum(this.Previous) " +
-    " select \{" +
-    "  previousRevenue: getOrderLinesSum(this.Previous)," +
-    "  currentRevenue: getOrderLinesSum(this.Current)" +
+options.setQuery(
+    "declare function isRevenueDeltaAboveThreshold(doc, threshold) \{\\n" +
+    "    return doc.Previous !== null && doc.Current.Lines.map(function(x) \{\\n" +
+    "        return x.PricePerUnit * x.Quantity;\\n" +
+    "    \}).reduce((a, b) => a + b, 0) > doc.Previous.Lines.map(function(x) \{\\n" +
+    "        return x.PricePerUnit * x.Quantity;\\n" +
+    "    \}).reduce((a, b) => a + b, 0) + threshold\\n" +
+    "\}\\n" +
+    "from 'Orders' (Revisions = true) as doc\\n" +
+    "where isRevenueDeltaAboveThreshold(doc, 2500)\\n" +
+    "select \{\\n" +
+    "    previousRevenue: doc.Previous.Lines.map(function(x) \{\\n" +
+    "        return x.PricePerUnit * x.Quantity;\\n" +
+    "    \}).reduce((a, b) => a + b, 0),\\n" +
+    "    currentRevenue: doc.Current.Lines.map(function(x) \{\\n" +
+    "        return x.PricePerUnit * x.Quantity;\\n" +
+    "    \}).reduce((a, b) => a + b, 0)\\n" +
     "\}");
 
 name = store.subscriptions().create(options);
@@ -124,18 +135,45 @@ name = store.subscriptions().create(options);
 </CodeBlock>
 </TabItem>
 
-Consumption:
-<TabItem value="use_simple_revision_subscription_generic" label="use_simple_revision_subscription_generic">
+The projection targets this class:
+<TabItem value="order_revenues_class" label="order_revenues_class">
 <CodeBlock language="java">
-{`SubscriptionWorker<Revision<Order>> revisionWorker = store
-    .subscriptions().getSubscriptionWorkerForRevisions(Order.class, name);
-revisionWorker.run(x -> \{
-    for (SubscriptionBatch.Item<Revision<Order>> documentsPair : x.getItems()) \{
+{`public class OrderRevenues \{
+    private double previousRevenue;
+    private double currentRevenue;
 
-        Order prev = documentsPair.getResult().getPrevious();
-        Order current = documentsPair.getResult().getCurrent();
+    public double getPreviousRevenue() \{
+        return previousRevenue;
+    \}
 
-        processOrderChanges(prev, current);
+    public void setPreviousRevenue(double previousRevenue) \{
+        this.previousRevenue = previousRevenue;
+    \}
+
+    public double getCurrentRevenue() \{
+        return currentRevenue;
+    \}
+
+    public void setCurrentRevenue(double currentRevenue) \{
+        this.currentRevenue = currentRevenue;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Consumption:
+<TabItem value="use_projected_revisions_subscription" label="use_projected_revisions_subscription">
+<CodeBlock language="java">
+{`SubscriptionWorker<OrderRevenues> revenuesComparisonWorker = store
+    // Use the projected class type for the items the worker processes
+    .subscriptions().getSubscriptionWorker(OrderRevenues.class, name);
+revenuesComparisonWorker.run(x -> \{
+    for (SubscriptionBatch.Item<OrderRevenues> item : x.getItems()) \{
+        OrderRevenues revenues = item.getResult();
+
+        System.out.printf("Revenue for order %s grew from %f to %f%n",
+            item.getId(), revenues.getPreviousRevenue(), revenues.getCurrentRevenue());
     \}
 \});
 `}
