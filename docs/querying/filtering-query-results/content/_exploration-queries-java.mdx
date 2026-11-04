@@ -1469,7 +1469,7 @@ Learn more in [Sharding: Filtering query results](../../../sharding/querying.mdx
 
 <ContentFrame>
 
-### Supported RQL expressions {/* #supported-in-rql */}
+### Supported RQL expressions
 
 The following expressions can be used in an RQL `filter` clause:
 
@@ -1505,6 +1505,9 @@ Starting the condition directly with `not` can return no results without reporti
 from Companies
 filter true and not (Address.Country == "USA")
 ```
+<br/>
+    
+The Java `filter` API handles this automatically. See [API behavior](#api-behavior).
 
 ---
     
@@ -1522,7 +1525,7 @@ For strict equality and string ordering rules, see [How exploration queries work
 </ContentFrame>
 <ContentFrame>
 
-### Unsupported RQL expressions {/* #unsupported-filter-expressions */}
+### Unsupported RQL expressions
 
 These restrictions also apply when using `rawQuery`:
 
@@ -1562,14 +1565,24 @@ These restrictions also apply when using `rawQuery`:
   To compare two document fields, use `rawQuery` with a condition such as `filter UnitsInStock < ReorderLevel`.
 
 <Admonition type="note" title="">
-    
----    
 
 #### API behavior
 
 * Calling `search()` on the query adds a `where search(...)` condition; it does not add a filter condition.
 
 * Calling `filter` more than once combines the conditions with `and`.
+
+* Starting the condition with `not()` is handled by the client,  
+  so the RQL pitfall described in [Negating the entire condition](#negating-the-entire-condition) does not apply.  
+  The generated RQL depends on what follows `not()`:
+
+  | Java                                            | Generated RQL                                            |
+  |-------------------------------------------------|----------------------------------------------------------|
+  | `f.not().equals("Address.Country", "USA")`      | `filter Address.Country != $p0`                          |
+  | `f.not().greaterThan("PricePerUnit", 10)`       | `filter exists(PricePerUnit) and not PricePerUnit > $p0` |
+  | `f.not().openSubclause() ... .closeSubclause()` | `filter true and not (...)`                              |
+
+  The `exists(...)` form excludes documents that don't have the field.
 
 </Admonition>
 
@@ -1603,7 +1616,7 @@ The following queries and operations cannot include a `filter` clause:
 
 <ContentFrame>
 
-### Query and DocumentQuery {/* #documentquery-asyncdocumentquery-and-group-by-queries */}
+### Query and DocumentQuery
 
 ```java
 IDocumentQuery<T> filter(Consumer<IFilterFactory<T>> builder);
@@ -1623,7 +1636,7 @@ The server evaluates the generated condition for each examined candidate.
 </ContentFrame>
 <ContentFrame>
 
-### Filter parameters {/* #parameters */}
+### Filter parameters
 
 | Parameter     | Type                          | Description                                                                                                                       |
 | ------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
