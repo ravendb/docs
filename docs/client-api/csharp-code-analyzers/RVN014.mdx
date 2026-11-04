@@ -138,8 +138,13 @@ Each detected fanout operation is reported separately.
 Decide whether the index needs an index-entry per element:
 
 - **If the fanout is intentional**, for example to match several conditions on the same element,  
+  or to aggregate nested elements in a map-reduce index, such as the total quantity ordered per product,  
   make sure the collection size is acceptable for your workload, and suppress RVN014 for that index with  
   `#pragma warning disable RVN014`.  
+
+  A single `#pragma warning disable`/`restore` pair around the map suppresses every RVN014 report in it,  
+  including the reports for several nested `from` clauses.  
+
   See [Suppress diagnostics](./overview.mdx#suppress-diagnostics) for how to disable and restore a diagnostic around a specific code block.
     
   Setting `dotnet_diagnostic.RVN014.severity = none` in `.editorconfig` disables RVN014 for all files matched by that configuration section,

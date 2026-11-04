@@ -108,11 +108,20 @@ Reported on the method name.
 ### When is RVN011 not reported?
 
 - A batch handler passed as a method group, such as `worker.Run(ProcessBatch)`.
+
 - A lambda stored in a variable and then passed to `Run`, such as `worker.Run(handler)`.
+
 - An anonymous method passed to `Run`,  
   such as `worker.Run(delegate (SubscriptionBatch<Order> batch) { … })`.
+
+- Calls to session-opening wrappers on types that do not implement `IDocumentStore`,  
+  or with a name other than `OpenSession` or `OpenAsyncSession`.  
+  For example, `provider.OpenAsyncSession()` is not reported when `provider` does not implement `IDocumentStore`,
+  even if the wrapper calls `provider.Store.OpenAsyncSession()`.
+
 - Calls inside a `static` local function within the `Run` lambda, which cannot access the batch parameter.
-- Calls outside a subscription worker's `Run` lambda.
+
+- Calls outside a subscription worker's `Run` lambda, including calls in methods that the `Run` lambda calls.
 
 </ContentFrame>
 
