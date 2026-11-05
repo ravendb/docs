@@ -10,7 +10,8 @@ JSON feed at `/cloud/whats-new/feed.json`, which the Cloud Portal reads.
 The docs list page shows every entry, newest first, and for each one:
 
 - the title and the date,
-- for each feature, its name, one line about it and an image where there is one,
+- a lead image, where there is one,
+- a bulleted list of the features, each as its name and one line about it,
 - a **Read more** link to the full entry here.
 
 The Cloud Portal shows only the newest entry, the same way; the history stays here. It opens a **What's new** window
@@ -45,7 +46,7 @@ deployment named February 2026 that reached PROD on 12 March 2026 goes to `2026-
 
 1. Create the entry's folder, `cloud-whats-new/YYYY-MM-DD-<deployment>/`, and an `index.mdx` in it.
 2. Fill in the frontmatter.
-3. Write the excerpt: one block per feature.
+3. Write the excerpt: a lead image and a bullet list of features.
 4. Add the `{/* truncate */}` marker.
 5. Below it, write a `##` section per feature.
 6. Put the images in the entry's folder.
@@ -71,31 +72,22 @@ Don't set `date`, `authors` or `tags`. The date comes from the folder name, and 
 
 ### Excerpt
 
-The excerpt is everything above `{/* truncate */}`. Give each feature three parts, each separated by a blank line:
-
-1. the feature name as a bold line on its own,
-2. one line on what the customer can now do,
-3. an image, only where it helps.
+The excerpt is everything above `{/* truncate */}`. It is a lead image, where one helps, followed by a bullet list with
+one item per feature: the feature name in bold, a colon, and one line on what the customer can now do.
 
 ```mdx
-**Sign in with your own identity provider**
+![Sign in with Google, GitHub, Microsoft or your own identity provider](./cover-oct2026.webp)
 
-Let your team sign in with the work accounts they already use, and let your identity provider manage who gets in.
-
-![Connecting an identity provider](./portal-sso-connect-wizard-identity-provider.png)
-
-**A simpler profile**
-
-Your profile is now three pages, with two-factor authentication behind a single switch.
+- **Sign in with your own identity provider:** Let your team sign in with the work accounts they already use, and let your identity provider manage who gets in.
+- **A simpler profile:** Your profile is now three pages, with two-factor authentication behind a single switch.
 
 {/* truncate */}
 ```
 
-- Write the feature name as `**bold**`, not as a `###` heading. A heading would also show up in the entry's table of
-  contents, next to the `##` sections below.
-- Don't use lists, tables or components in the excerpt. The portal shows the excerpt's text as plain paragraphs, so a
-  list arrives as one run-on line. Links keep their text but lose their target, and bold or code formatting is dropped.
-- Keep it short. The details belong below the marker, behind Read more.
+- Write each feature as one bullet, `- **Name:** description`. The feed carries each bullet as a `feature` block (its
+  `name` and `text`), and the list page and the portal both render them as bullets.
+- Put the colon inside the bold (`**Name:**`) so the name reads as a label; the feed drops it from `name`.
+- Keep each line to one sentence. The details belong below the marker, behind Read more.
 
 ### Below the truncate marker
 
@@ -104,8 +96,10 @@ Add a `##` section for each feature, named like its bold line, with the details:
 
 ### Images
 
-- Put them in the entry's folder, next to `index.mdx`, and reference them with a relative path: `./<file>.png`. Each
+- Put them in the entry's folder, next to `index.mdx`, and reference them with a relative path: `./<file>.webp`. Each
   deployment keeps its own images, so two deployments in one month never mix them.
+- Use `.webp` and keep each file lean (re-encode at quality ~80; covers land well under 100 KB). Name the lead image
+  `cover-<month><year>.webp` (e.g. `cover-oct2026.webp`), so two deployments never collide on one `cover` file.
 - Copy a screenshot from `cloud/assets` or `cloud/portal/assets`, or take a new one. Never reference those folders
   directly: an entry records one deployment and must not change when the docs re-shoot a figure.
 - Give each image alt text that says what it shows.
@@ -130,7 +124,7 @@ npm run serve
 ```
 
 Then open `http://localhost:3000/cloud/whats-new/feed.json`. Each item carries the excerpt the portal shows in
-`_ravendb.excerpt`, as `heading`, `paragraph` and `image` blocks.
+`_ravendb.excerpt`, as `feature` (name + text), `paragraph` and `image` blocks.
 
 ## Rules that are easy to miss
 

@@ -141,17 +141,22 @@ export function getSidebarNav(path: string, versionLabel: string): SidebarNav {
         pathType,
         isActive: isCurrentPage(path, landingPage) && !resources.some((item) => item.isActive),
     };
-    const whatsNew =
+    const whatsNewPath =
         pathType === PathType.Documentation
-            ? [
-                  activeOnItsPage({
-                      label: "What's new",
-                      icon: "star-filled",
-                      to: `/${versionLabel}/whats-new`,
-                      pathType,
-                  }),
-              ]
-            : [];
+            ? `/${versionLabel}/whats-new`
+            : pathType === PathType.Cloud
+              ? "/cloud/whats-new"
+              : null;
+    const whatsNew = whatsNewPath
+        ? [
+              activeOnItsPage({
+                  label: "What's new",
+                  icon: "star-filled",
+                  to: whatsNewPath,
+                  pathType,
+              }),
+          ]
+        : [];
 
     return {
         links: [start, ...resources],
