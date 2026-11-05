@@ -99,6 +99,47 @@ List<Product> products = session.Advanced
 // with smaller values listed first.
 ```
 </TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<Product> products = await asyncSession.Advanced
+     // Make a DocumentQuery on the Products collection    
+    .AsyncDocumentQuery<Product>()
+     // Apply filtering (optional)
+    .WhereGreaterThan(x => x.UnitsInStock, 10)
+     // Call 'OrderBy', pass the document-field by which to order the results
+    .OrderBy(x => x.UnitsInStock)
+    .ToListAsync();
+
+// Results will be sorted by the 'UnitsInStock' value in ascending order,
+// with smaller values listed first.
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<Product> products = session.Advanced
+    .RawQuery<Product>(@"from Products
+                         where UnitsInStock > $units
+                         order by UnitsInStock as long")
+    .AddParameter("units", 10)
+    .ToList();
+
+// Results will be sorted by the 'UnitsInStock' value in ascending order,
+// with smaller values listed first.
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+List<Product> products = await asyncSession.Advanced
+    .AsyncRawQuery<Product>(@"from Products
+                              where UnitsInStock > $units
+                              order by UnitsInStock as long")
+    .AddParameter("units", 10)
+    .ToListAsync();
+
+// Results will be sorted by the 'UnitsInStock' value in ascending order,
+// with smaller values listed first.
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
@@ -160,6 +201,48 @@ List<Product> products = session.Advanced
     .OrderByDescending(x => x.UnitsInStock)
     .OfType<Product>() 
     .ToList();
+
+// Results will be sorted by the 'UnitsInStock' value in descending order,
+// with higher values listed first.
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<Product> products = await asyncSession.Advanced
+     // Query the index
+    .AsyncDocumentQuery<Products_ByUnitsInStock.IndexEntry, Products_ByUnitsInStock>()
+     // Apply filtering (optional)
+    .WhereGreaterThan(x => x.UnitsInStock, 10)
+     // Call 'OrderByDescending', pass the index-field by which to order the results
+    .OrderByDescending(x => x.UnitsInStock)
+    .OfType<Product>() 
+    .ToListAsync();
+
+// Results will be sorted by the 'UnitsInStock' value in descending order,
+// with higher values listed first.
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<Product> products = session.Advanced
+    .RawQuery<Product>(@"from index 'Products/ByUnitsInStock'
+                         where UnitsInStock > $units
+                         order by UnitsInStock as long desc")
+    .AddParameter("units", 10)
+    .ToList();
+
+// Results will be sorted by the 'UnitsInStock' value in descending order,
+// with higher values listed first.
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+List<Product> products = await asyncSession.Advanced
+    .AsyncRawQuery<Product>(@"from index 'Products/ByUnitsInStock'
+                              where UnitsInStock > $units
+                              order by UnitsInStock as long desc")
+    .AddParameter("units", 10)
+    .ToListAsync();
 
 // Results will be sorted by the 'UnitsInStock' value in descending order,
 // with higher values listed first.
@@ -295,6 +378,41 @@ List<Employee> employees = session.Advanced
 // Documents with a null FirstName value will be listed last.
 ```
 </TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<Employee> employees = await asyncSession.Advanced
+    .AsyncDocumentQuery<Employee>()
+     // Order by 'FirstName' as a string in ascending order,
+     // placing employees with a null 'FirstName' at the end of the results
+    .OrderBy("FirstName", NullsOrdering.Last, OrderingType.String)
+    .ToListAsync();
+
+// Results will be sorted by the 'FirstName' value in ascending order.
+// Documents with a null FirstName value will be listed last.
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<Employee> employees = session.Advanced
+    .RawQuery<Employee>(@"from Employees
+                          order by FirstName nulls last")
+    .ToList();
+
+// Results will be sorted by the 'FirstName' value in ascending order.
+// Documents with a null FirstName value will be listed last.
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+List<Employee> employees = await asyncSession.Advanced
+    .AsyncRawQuery<Employee>(@"from Employees
+                               order by FirstName nulls last")
+    .ToListAsync();
+
+// Results will be sorted by the 'FirstName' value in ascending order.
+// Documents with a null FirstName value will be listed last.
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Employees"
@@ -348,6 +466,41 @@ List<Employee> employees = session.Advanced
      // placing employees with a null 'FirstName' at the beginning of the results.
     .OrderByDescending("FirstName", NullsOrdering.First, OrderingType.String)
     .ToList();
+
+// Results will be sorted by the 'FirstName' value in descending order.
+// Documents with a null FirstName value will be listed first.
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<Employee> employees = await asyncSession.Advanced
+    .AsyncDocumentQuery<Employee>()
+     // Order by 'FirstName' as a string in descending order,
+     // placing employees with a null 'FirstName' at the beginning of the results.
+    .OrderByDescending("FirstName", NullsOrdering.First, OrderingType.String)
+    .ToListAsync();
+
+// Results will be sorted by the 'FirstName' value in descending order.
+// Documents with a null FirstName value will be listed first.
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<Employee> employees = session.Advanced
+    .RawQuery<Employee>(@"from Employees
+                          order by FirstName desc nulls first")
+    .ToList();
+
+// Results will be sorted by the 'FirstName' value in descending order.
+// Documents with a null FirstName value will be listed first.
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+List<Employee> employees = await asyncSession.Advanced
+    .AsyncRawQuery<Employee>(@"from Employees
+                               order by FirstName desc nulls first")
+    .ToListAsync();
 
 // Results will be sorted by the 'FirstName' value in descending order.
 // Documents with a null FirstName value will be listed first.
@@ -410,6 +563,41 @@ List<Product> products = session.Advanced
      // placing products with a null 'ReorderLevel' at the end of the results
     .OrderBy("ReorderLevel", NullsOrdering.Last, OrderingType.Long)
     .ToList();
+
+// Results will be sorted by 'ReorderLevel' as a number (ascending).
+// Documents with a null ReorderLevel value will be listed last.
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<Product> products = await asyncSession.Advanced
+    .AsyncDocumentQuery<Product>()
+     // Order by 'ReorderLevel' numerically,
+     // placing products with a null 'ReorderLevel' at the end of the results
+    .OrderBy("ReorderLevel", NullsOrdering.Last, OrderingType.Long)
+    .ToListAsync();
+
+// Results will be sorted by 'ReorderLevel' as a number (ascending).
+// Documents with a null ReorderLevel value will be listed last.
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<Product> products = session.Advanced
+    .RawQuery<Product>(@"from Products
+                         order by ReorderLevel as long nulls last")
+    .ToList();
+
+// Results will be sorted by 'ReorderLevel' as a number (ascending).
+// Documents with a null ReorderLevel value will be listed last.
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+List<Product> products = await asyncSession.Advanced
+    .AsyncRawQuery<Product>(@"from Products
+                              order by ReorderLevel as long nulls last")
+    .ToListAsync();
 
 // Results will be sorted by 'ReorderLevel' as a number (ascending).
 // Documents with a null ReorderLevel value will be listed last.
@@ -483,6 +671,39 @@ List<Product> products = session.Advanced
     .ToList();
 ```
 </TabItem>     
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<Product> products = await asyncSession.Advanced
+    .AsyncDocumentQuery<Product>()
+     // Call 'Search':
+     // Search for products with a name that contains 'sauce'.
+    .Search("Name", "sauce")
+     // Call 'OrderBy':
+     // Order the results by the original value of field 'Name'.
+    .OrderBy("Name")
+    .ToListAsync();
+```
+</TabItem>     
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<Product> products = session.Advanced
+    .RawQuery<Product>(@"from Products
+                         where search(Name, $term)
+                         order by Name")
+    .AddParameter("term", "sauce")
+    .ToList();
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+List<Product> products = await asyncSession.Advanced
+    .AsyncRawQuery<Product>(@"from Products
+                              where search(Name, $term)
+                              order by Name")
+    .AddParameter("term", "sauce")
+    .ToListAsync();
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from Products
@@ -630,6 +851,42 @@ List<Product> products = session.Advanced
     .ToList();
 ```
 </TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<Product> products = await asyncSession.Advanced
+     // Query the index
+    .AsyncDocumentQuery<Products_BySearchName.IndexEntry, Products_BySearchName>()
+     // Call 'Search':
+     // Pass the index-field that was configured for FTS and the term to search for.
+     // Here we search for terms that start with "ch" within index-field 'Name'.
+    .Search("Name", "ch*")
+     // Call 'OrderBy':
+     // Pass the other index-field by which to order the results.
+    .OrderBy("NameForSorting")
+    .OfType<Product>()
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<Product> products = session.Advanced
+    .RawQuery<Product>(@"from index 'Products/BySearchName'
+                         where search(Name, $term)
+                         order by NameForSorting")
+    .AddParameter("term", "ch*")
+    .ToList();
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+List<Product> products = await asyncSession.Advanced
+    .AsyncRawQuery<Product>(@"from index 'Products/BySearchName'
+                              where search(Name, $term)
+                              order by NameForSorting")
+    .AddParameter("term", "ch*")
+    .ToListAsync();
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from index "Products/BySearchName" 
@@ -707,6 +964,41 @@ List<Employee> employees = session.Advanced
     .ToList();
 ```
 </TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<Employee> employees = await asyncSession.Advanced
+    .AsyncDocumentQuery<Employee>()
+    .Search(x => x.Notes, "English")
+    .OrElse()
+    .Search(x => x.Notes, "Italian")
+    .Boost(10)
+     // Highest scores (best matches) first
+    .OrderByScore()
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<Employee> employees = session.Advanced
+    .RawQuery<Employee>(@"from Employees
+                          where search(Notes, $term1) or boost(search(Notes, $term2), 10)
+                          order by score()")
+    .AddParameter("term1", "English")
+    .AddParameter("term2", "Italian")
+    .ToList();
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+List<Employee> employees = await asyncSession.Advanced
+    .AsyncRawQuery<Employee>(@"from Employees
+                               where search(Notes, $term1) or boost(search(Notes, $term2), 10)
+                               order by score()")
+    .AddParameter("term1", "English")
+    .AddParameter("term2", "Italian")
+    .ToListAsync();
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Employees"
@@ -756,6 +1048,41 @@ List<Employee> employees = session.Advanced
      // Lowest scores (weakest matches) first
     .OrderByScoreDescending()
     .ToList();
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<Employee> employees = await asyncSession.Advanced
+    .AsyncDocumentQuery<Employee>()
+    .Search(x => x.Notes, "English")
+    .OrElse()
+    .Search(x => x.Notes, "Italian")
+    .Boost(10)
+     // Lowest scores (weakest matches) first
+    .OrderByScoreDescending()
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<Employee> employees = session.Advanced
+    .RawQuery<Employee>(@"from Employees
+                          where search(Notes, $term1) or boost(search(Notes, $term2), 10)
+                          order by score() desc")
+    .AddParameter("term1", "English")
+    .AddParameter("term2", "Italian")
+    .ToList();
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+List<Employee> employees = await asyncSession.Advanced
+    .AsyncRawQuery<Employee>(@"from Employees
+                               where search(Notes, $term1) or boost(search(Notes, $term2), 10)
+                               order by score() desc")
+    .AddParameter("term1", "English")
+    .AddParameter("term2", "Italian")
+    .ToListAsync();
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -847,7 +1174,7 @@ List<Product> products = session
      // Call 'Customize' with 'RandomOrdering'
     .Customize(x => x.RandomOrdering())
      // An optional seed can be passed, e.g.:
-     // .Customize(x => x.RandomOrdering('someSeed'))
+     // .Customize(x => x.RandomOrdering("someSeed"))
     .ToList();
 
 // Results will be randomly ordered.
@@ -861,7 +1188,7 @@ List<Product> products = await asyncSession
      // Call 'Customize' with 'RandomOrdering'
     .Customize(x => x.RandomOrdering())
      // An optional seed can be passed, e.g.:
-     // .Customize(x => x.RandomOrdering('someSeed'))
+     // .Customize(x => x.RandomOrdering("someSeed"))
     .ToListAsync();
 
 // Results will be randomly ordered.
@@ -875,8 +1202,46 @@ List<Product> products = session.Advanced
      // Call 'RandomOrdering'
     .RandomOrdering()
      // An optional seed can be passed, e.g.:
-     // .RandomOrdering('someSeed')
+     // .RandomOrdering("someSeed")
     .ToList();
+
+// Results will be randomly ordered.
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<Product> products = await asyncSession.Advanced  
+    .AsyncDocumentQuery<Product>()
+    .WhereGreaterThan(x => x.UnitsInStock, 10)
+     // Call 'RandomOrdering'
+    .RandomOrdering()
+     // An optional seed can be passed, e.g.:
+     // .RandomOrdering("someSeed")
+    .ToListAsync();
+
+// Results will be randomly ordered.
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<Product> products = session.Advanced
+    .RawQuery<Product>(@"from Products
+                         where UnitsInStock > $units
+                         order by random()")
+    .AddParameter("units", 10)
+    .ToList();
+
+// Results will be randomly ordered.
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+List<Product> products = await asyncSession.Advanced
+    .AsyncRawQuery<Product>(@"from Products
+                              where UnitsInStock > $units
+                              order by random()")
+    .AddParameter("units", 10)
+    .ToListAsync();
 
 // Results will be randomly ordered.
 ```
@@ -886,7 +1251,7 @@ List<Product> products = session.Advanced
 from "Products"
 where UnitsInStock > 10
 order by random()
-// order by random(someSeed)
+// order by random('someSeed')
 ```
 </TabItem>
 </Tabs>
@@ -913,7 +1278,7 @@ var numberOfProductsPerCategory = session
     .Query<Product>()
      // Make an aggregation query
     .GroupBy(x => x.Category)
-    .Select(x => new
+    .Select(x => new ProductsCount
     {
         // Group by Category
         Category = x.Key,
@@ -934,7 +1299,7 @@ var numberOfProductsPerCategory = await asyncSession
     .Query<Product>()
      // Make an aggregation query
     .GroupBy(x => x.Category)
-    .Select(x => new
+    .Select(x => new ProductsCount
     {
         // Group by Category
         Category = x.Key,
@@ -961,10 +1326,66 @@ var numberOfProductsPerCategory = session.Advanced
      // Order by the Count value
      // Here you need to specify the ordering type explicitly 
     .OrderBy("Count", OrderingType.Long)
+    .OfType<ProductsCount>()
     .ToList();
 
 // Results will contain the number of Product documents per category
 // ordered by that count in ascending order.
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+var numberOfProductsPerCategory = await asyncSession.Advanced
+    .AsyncDocumentQuery<Product>()
+     // Group by Category
+    .GroupBy("Category")
+    .SelectKey("Category")
+     // Count the number of product documents per category
+    .SelectCount()
+     // Order by the Count value
+     // Here you need to specify the ordering type explicitly 
+    .OrderBy("Count", OrderingType.Long)
+    .OfType<ProductsCount>()
+    .ToListAsync();
+
+// Results will contain the number of Product documents per category
+// ordered by that count in ascending order.
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<ProductsCount> numberOfProductsPerCategory = session.Advanced
+    .RawQuery<ProductsCount>(@"from Products
+                               group by Category
+                               order by count() as long
+                               select key() as Category, count()")
+    .ToList();
+
+// Results will contain the number of Product documents per category
+// ordered by that count in ascending order.
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+List<ProductsCount> numberOfProductsPerCategory = await asyncSession.Advanced
+    .AsyncRawQuery<ProductsCount>(@"from Products
+                                    group by Category
+                                    order by count() as long
+                                    select key() as Category, count()")
+    .ToListAsync();
+
+// Results will contain the number of Product documents per category
+// ordered by that count in ascending order.
+```
+</TabItem>
+<TabItem value="ProjectedClass" label="ProjectedClass">
+```csharp
+// The query results are projected into this class
+public class ProductsCount
+{
+    public string Category { get; set; }
+    public int Count { get; set; }
+}
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -990,7 +1411,7 @@ var numberOfUnitsInStockPerCategory = session
     .Query<Product>()
      // Make an aggregation query
     .GroupBy(x => x.Category)
-    .Select(x => new
+    .Select(x => new ProductsSum
     {
         // Group by Category
         Category = x.Key,
@@ -1011,7 +1432,7 @@ var numberOfUnitsInStockPerCategory = await asyncSession
     .Query<Product>()
      // Make an aggregation query
     .GroupBy(x => x.Category)
-    .Select(x => new
+    .Select(x => new ProductsSum
     {
         // Group by Category
         Category = x.Key,
@@ -1042,12 +1463,73 @@ var numberOfUnitsInStockPerCategory = await asyncSession
      // Order by the Sum value
      // Here you need to specify the ordering type explicitly 
     .OrderBy("Sum", OrderingType.Long)
+    .OfType<ProductsSum>()
     .ToList();
 
 // Results will contain the total number of units in stock per category
 // ordered by that number in ascending order.
 `}
 </CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+<CodeBlock language="csharp">
+{`var numberOfUnitsInStockPerCategory = await asyncSession.Advanced
+    .AsyncDocumentQuery<Product>()
+     // Group by Category
+    .GroupBy("Category")
+    .SelectKey("Category")
+     // Sum the number of units in stock per category
+    .SelectSum(new GroupByField
+    {
+        FieldName = "UnitsInStock",
+        ProjectedName = "Sum"
+    })
+     // Order by the Sum value
+     // Here you need to specify the ordering type explicitly 
+    .OrderBy("Sum", OrderingType.Long)
+    .OfType<ProductsSum>()
+    .ToListAsync();
+
+// Results will contain the total number of units in stock per category
+// ordered by that number in ascending order.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<ProductsSum> numberOfUnitsInStockPerCategory = session.Advanced
+    .RawQuery<ProductsSum>(@"from Products
+                             group by Category
+                             order by Sum as long
+                             select key() as Category, sum(UnitsInStock) as Sum")
+    .ToList();
+
+// Results will contain the total number of units in stock per category
+// ordered by that number in ascending order.
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+List<ProductsSum> numberOfUnitsInStockPerCategory = await asyncSession.Advanced
+    .AsyncRawQuery<ProductsSum>(@"from Products
+                                  group by Category
+                                  order by Sum as long
+                                  select key() as Category, sum(UnitsInStock) as Sum")
+    .ToListAsync();
+
+// Results will contain the total number of units in stock per category
+// ordered by that number in ascending order.
+```
+</TabItem>
+<TabItem value="ProjectedClass" label="ProjectedClass">
+```csharp
+// The query results are projected into this class
+public class ProductsSum
+{
+    public string Category { get; set; }
+    public int Sum { get; set; }
+}
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
@@ -1079,6 +1561,35 @@ List<Order> recent = session.Advanced
     .OrderByDescending("@metadata.@last-modified")
     .Take(20)
     .ToList();
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<Order> recent = await asyncSession.Advanced
+    .AsyncDocumentQuery<Order>()
+     // Order by the document's last modification time,
+     // with the most recently modified documents listed first
+    .OrderByDescending("@metadata.@last-modified")
+    .Take(20)
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<Order> recent = session.Advanced
+    .RawQuery<Order>(@"from Orders
+                       order by @metadata.@last-modified desc
+                       limit 20")
+    .ToList();
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+List<Order> recent = await asyncSession.Advanced
+    .AsyncRawQuery<Order>(@"from Orders
+                            order by @metadata.@last-modified desc
+                            limit 20")
+    .ToListAsync();
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -1152,6 +1663,32 @@ List<Product> products = session.Advanced
      // Pass a second param, requesting to order the text alphanumerically
     .OrderBy(x => x.QuantityPerUnit, OrderingType.AlphaNumeric)
     .ToList();
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<Product> products = await asyncSession.Advanced
+    .AsyncDocumentQuery<Product>()
+     // Call 'OrderBy', order by field 'QuantityPerUnit'
+     // Pass a second param, requesting to order the text alphanumerically
+    .OrderBy(x => x.QuantityPerUnit, OrderingType.AlphaNumeric)
+    .ToListAsync();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<Product> products = session.Advanced
+    .RawQuery<Product>(@"from Products
+                         order by QuantityPerUnit as alphanumeric")
+    .ToList();
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+List<Product> products = await asyncSession.Advanced
+    .AsyncRawQuery<Product>(@"from Products
+                              order by QuantityPerUnit as alphanumeric")
+    .ToListAsync();
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -1306,6 +1843,77 @@ List<Product> products = session.Advanced
 // will then be sorted by 'Name', with null Name values listed first.
 ```
 </TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<Product> products = await asyncSession.Advanced
+    .AsyncDocumentQuery<Product>()
+    .Search(x => x.QuantityPerUnit, "bottles")
+    .OrElse()
+    .Search(x => x.QuantityPerUnit, "boxes")
+    .Boost(10)
+     // Apply the primary sort by 'UnitsInStock' in descending order,
+     // placing products with a null UnitsInStock value at the end of the results
+    .OrderByDescending("UnitsInStock", NullsOrdering.Last, OrderingType.Long)
+     // Apply a secondary sort by the score, highest scores first
+     // for products with the same UnitsInStock value
+    .OrderByScore()
+     // Apply another sort by 'Name' in ascending order,
+     // placing products with a null Name value at the beginning of each group
+    .OrderBy("Name", NullsOrdering.First, OrderingType.String)
+    .ToListAsync();
+
+// Results will be sorted by the 'UnitsInStock' value in descending order,
+// with null UnitsInStock values listed last.
+
+// Products that have the same UnitsInStock value will then be sorted by score,
+// highest scores first.
+
+// Products that have the same UnitsInStock value and same score
+// will then be sorted by 'Name', with null Name values listed first.
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<Product> products = session.Advanced
+    .RawQuery<Product>(@"from Products
+                         where search(QuantityPerUnit, $term1)
+                            or boost(search(QuantityPerUnit, $term2), 10)
+                         order by UnitsInStock as long desc nulls last, score(), Name nulls first")
+    .AddParameter("term1", "bottles")
+    .AddParameter("term2", "boxes")
+    .ToList();
+
+// Results will be sorted by the 'UnitsInStock' value in descending order,
+// with null UnitsInStock values listed last.
+
+// Products that have the same UnitsInStock value will then be sorted by score,
+// highest scores first.
+
+// Products that have the same UnitsInStock value and same score
+// will then be sorted by 'Name', with null Name values listed first.
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+List<Product> products = await asyncSession.Advanced
+    .AsyncRawQuery<Product>(@"from Products
+                              where search(QuantityPerUnit, $term1)
+                                 or boost(search(QuantityPerUnit, $term2), 10)
+                              order by UnitsInStock as long desc nulls last, score(), Name nulls first")
+    .AddParameter("term1", "bottles")
+    .AddParameter("term2", "boxes")
+    .ToListAsync();
+
+// Results will be sorted by the 'UnitsInStock' value in descending order,
+// with null UnitsInStock values listed last.
+
+// Products that have the same UnitsInStock value will then be sorted by score,
+// highest scores first.
+
+// Products that have the same UnitsInStock value and same score
+// will then be sorted by 'Name', with null Name values listed first.
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
@@ -1386,6 +1994,45 @@ List<Product> products = session.Advanced
      // Order by field 'UnitsInStock', pass the name of your custom sorter class
     .OrderBy(x => x.UnitsInStock, "MyCustomSorter")
     .ToList();
+
+// Results will be sorted by the 'UnitsInStock' value
+// according to the logic from 'MyCustomSorter' class
+```
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+```csharp
+List<Product> products = await asyncSession.Advanced
+    .AsyncDocumentQuery<Product>()
+    .WhereGreaterThan(x => x.UnitsInStock, 10)
+     // Order by field 'UnitsInStock', pass the name of your custom sorter class
+    .OrderBy(x => x.UnitsInStock, "MyCustomSorter")
+    .ToListAsync();
+
+// Results will be sorted by the 'UnitsInStock' value
+// according to the logic from 'MyCustomSorter' class
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<Product> products = session.Advanced
+    .RawQuery<Product>(@"from Products
+                         where UnitsInStock > $units
+                         order by custom(UnitsInStock, 'MyCustomSorter')")
+    .AddParameter("units", 10)
+    .ToList();
+
+// Results will be sorted by the 'UnitsInStock' value
+// according to the logic from 'MyCustomSorter' class
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+List<Product> products = await asyncSession.Advanced
+    .AsyncRawQuery<Product>(@"from Products
+                              where UnitsInStock > $units
+                              order by custom(UnitsInStock, 'MyCustomSorter')")
+    .AddParameter("units", 10)
+    .ToListAsync();
 
 // Results will be sorted by the 'UnitsInStock' value
 // according to the logic from 'MyCustomSorter' class

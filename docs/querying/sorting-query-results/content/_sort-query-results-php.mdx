@@ -1,7 +1,6 @@
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import ContentFrame from '@site/src/components/ContentFrame';
 import Panel from '@site/src/components/Panel';
 
@@ -52,46 +51,41 @@ Use `orderBy` or `orderByDescending` (see below) to order the results by the spe
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="php">
-{`/** @var array<Product> $products */
+```php
+/** @var array<Product> $products */
 $products = $session
     // Make a dynamic query on the Products collection
     ->query(Product::class)
     // Apply filtering (optional)
     ->whereGreaterThan("UnitsInStock", 10)
     // Call 'OrderBy', pass the document-field by which to order the results
-    ->orderBy("UnitsInStock")
+    ->orderBy("UnitsInStock", OrderingType::long())
     ->toList();
 
 // Results will be sorted by the 'UnitsInStock' value in ascending order,
 // with smaller values listed first.
-`}
-</CodeBlock>
+```
 </TabItem>
-<TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="php">
-{`/** @var array<Product> $products */
+<TabItem value="RawQuery" label="RawQuery">
+```php
+/** @var array<Product> $products */
 $products = $session->advanced()
-    // Make a DocumentQuery on the Products collection
-    ->documentQuery(Product::class)
-    // Apply filtering (optional)
-    ->whereGreaterThan("UnitsInStock", 10)
-    // Call 'OrderBy', pass the document-field by which to order the results
-    ->orderBy("UnitsInStock")
+    ->rawQuery(Product::class, "from Products
+                                where UnitsInStock > \$units
+                                order by UnitsInStock as long")
+    ->addParameter("units", 10)
     ->toList();
 
 // Results will be sorted by the 'UnitsInStock' value in ascending order,
 // with smaller values listed first.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Products"
+```sql
+from "Products"
 where UnitsInStock > 10
 order by UnitsInStock as long
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
@@ -105,44 +99,39 @@ Use `orderByDescending` to order the results by the specified index-field.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="php">
-{`/** @var array<Product> $products */
+```php
+/** @var array<Product> $products */
 $products = $session
      // Query the index
     ->query(Products_ByUnitsInStock_IndexEntry::class, Products_ByUnitsInStock::class)
      // Apply filtering (optional)
     ->whereGreaterThan("UnitsInStock", 10)
      // Call 'OrderByDescending', pass the index-field by which to order the results
-    ->orderByDescending("UnitsInStock")
+    ->orderByDescending("UnitsInStock", OrderingType::long())
     ->ofType(Product::class)
     ->toList();
 
 // Results will be sorted by the 'UnitsInStock' value in descending order,
 // with higher values listed first.
-`}
-</CodeBlock>
+```
 </TabItem>
-<TabItem value="documentQuery" label="documentQuery">
-<CodeBlock language="php">
-{`/** @var array<Product> $products */
+<TabItem value="RawQuery" label="RawQuery">
+```php
+/** @var array<Product> $products */
 $products = $session->advanced()
-     // Query the index
-    ->documentQuery(Products_ByUnitsInStock_IndexEntry::class, Products_ByUnitsInStock::class)
-     // Apply filtering (optional)
-    ->whereGreaterThan("UnitsInStock", 10)
-     // Call 'OrderByDescending', pass the index-field by which to order the results
-    ->orderByDescending("UnitsInStock")
-    ->ofType(Product::class)
+    ->rawQuery(Product::class, "from index 'Products/ByUnitsInStock'
+                                where UnitsInStock > \$units
+                                order by UnitsInStock as long desc")
+    ->addParameter("units", 10)
     ->toList();
 
 // Results will be sorted by the 'UnitsInStock' value in descending order,
 // with higher values listed first.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="php">
-{`class Products_ByUnitsInStock_IndexEntry
+```php
+class Products_ByUnitsInStock_IndexEntry
 {
     private ?int $unitsInStock = null;
 
@@ -167,16 +156,14 @@ class Products_ByUnitsInStock extends AbstractIndexCreationTask
             "})";
     }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from index "Products/ByUnitsInStock"
+```sql
+from index "Products/ByUnitsInStock"
 where UnitsInStock > 10
 order by UnitsInStock as long desc
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs> 
 
@@ -186,10 +173,9 @@ order by UnitsInStock as long desc
 
 ### Ordering Type
 
-* By default, the `orderBy` methods will determine the `OrderingType` from the property path expression  
-  and specify that ordering type in the generated RQL that is sent to the server.  
+* By default, the `orderBy` methods use `OrderingType::string`, which orders the values lexicographically.  
 
-* E.g. in the above example, ordering by `UnitsInStock` will result in `OrderingType::long`  
+* E.g. in the above example, `OrderingType::long()` is passed to order `UnitsInStock` as a number,  
   because this property's data type is integer.
 
 * Different ordering can be forced - see [Force ordering type](../../../querying/sorting-query-results/sort-query-results.mdx#force-ordering-type) below.
@@ -213,8 +199,8 @@ For example, consider the following dynamic query:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="php">
-{`$products = $session
+```php
+$products = $session
     // Make a dynamic query on the 'Products' collection
     ->query(Product::class)
      // Call 'search':
@@ -224,9 +210,18 @@ For example, consider the following dynamic query:
      // Order the results by the original value of field 'Name'.
     ->orderBy("Name")
     ->toList();
-`}
-</CodeBlock>
+```
 </TabItem>   
+<TabItem value="RawQuery" label="RawQuery">
+```php
+$products = $session->advanced()
+    ->rawQuery(Product::class, "from Products
+                                where search(Name, \$term)
+                                order by Name")
+    ->addParameter("term", "sauce")
+    ->toList();
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from Products
@@ -271,8 +266,8 @@ See the following static-index example.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Index" label="Index">
-<CodeBlock language="php">
-{`class Products_BySearchName_IndexEntry
+```php
+class Products_BySearchName_IndexEntry
 {
     // Index-field 'Name' will be configured below for full-text search
     private ?string $name = null;
@@ -314,12 +309,11 @@ class Products_BySearchName extends AbstractIndexCreationTask
         $this->index("Name", FieldIndexing::search());
     }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query" label="Query">
-<CodeBlock language="php">
-{`/** @var array<Product> $products */
+```php
+/** @var array<Product> $products */
 $products = $session
      // Query the index
     ->query(Products_BySearchName_IndexEntry::class, Products_BySearchName::class)
@@ -359,8 +353,18 @@ $products = $session
 // "Teatime Chocolate Biscuits"
 // "Chef Anton's Gumbo Mix"
 // "Jack's New England Clam Chowder"
-`}
-</CodeBlock>
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```php
+/** @var array<Product> $products */
+$products = $session->advanced()
+    ->rawQuery(Product::class, "from index 'Products/BySearchName'
+                                where search(Name, \$term)
+                                order by NameForSorting")
+    ->addParameter("term", "ch*")
+    ->toList();
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
@@ -405,8 +409,8 @@ Only the score ordering changes between the examples.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="php">
-{`/** @var array<Employee> $employees */
+```php
+/** @var array<Employee> $employees */
 $employees = $session
     ->query(Employee::class)
     ->search("Notes", "English")
@@ -415,30 +419,26 @@ $employees = $session
     // Highest scores (best matches) first
     ->orderByScore()
     ->toList();
-`}
-</CodeBlock>
+```
 </TabItem>
-<TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="php">
-{`/** @var array<Employee> $employees */
+<TabItem value="RawQuery" label="RawQuery">
+```php
+/** @var array<Employee> $employees */
 $employees = $session->advanced()
-    ->documentQuery(Employee::class)
-    ->search("Notes", "English")
-    ->search("Notes", "Italian")
-    ->boost(10)
-    // Highest scores (best matches) first
-    ->orderByScore()
+    ->rawQuery(Employee::class, "from Employees
+                                 where search(Notes, \$term1) or boost(search(Notes, \$term2), 10)
+                                 order by score()")
+    ->addParameter("term1", "English")
+    ->addParameter("term2", "Italian")
     ->toList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Employees"
+```sql
+from "Employees"
 where search(Notes, "English") or boost(search(Notes, "Italian"), 10)
 order by score()
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
@@ -450,8 +450,8 @@ order by score()
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="php">
-{`/** @var array<Employee> $employees */
+```php
+/** @var array<Employee> $employees */
 $employees = $session
     ->query(Employee::class)
     ->search("Notes", "English")
@@ -460,30 +460,26 @@ $employees = $session
     // Lowest scores (weakest matches) first
     ->orderByScoreDescending()
     ->toList();
-`}
-</CodeBlock>
+```
 </TabItem>
-<TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="php">
-{`/** @var array<Employee> $employees */
+<TabItem value="RawQuery" label="RawQuery">
+```php
+/** @var array<Employee> $employees */
 $employees = $session->advanced()
-    ->documentQuery(Employee::class)
-    ->search("Notes", "English")
-    ->search("Notes", "Italian")
-    ->boost(10)
-    // Lowest scores (weakest matches) first
-    ->orderByScoreDescending()
+    ->rawQuery(Employee::class, "from Employees
+                                 where search(Notes, \$term1) or boost(search(Notes, \$term2), 10)
+                                 order by score() desc")
+    ->addParameter("term1", "English")
+    ->addParameter("term2", "Italian")
     ->toList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Employees"
+```sql
+from "Employees"
 where search(Notes, "English") or boost(search(Notes, "Italian"), 10)
 order by score() desc
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
@@ -517,8 +513,8 @@ The score details can be retrieved by either:
     The following example shows how to get the score from the metadata of the resulting entities that were loaded to the session:
 
 <TabItem>
-<CodeBlock language="php">
-{`// Make a query:
+```php
+// Make a query:
 // =============
 
 $employees = $session
@@ -536,8 +532,7 @@ $metadata = $session->advanced()->getMetadataFor($employees[0]);
 
 // Score is available in the 'INDEX_SCORE' metadata property
 $score = $metadata[DocumentsMetadata::INDEX_SCORE];
-`}
-</CodeBlock>
+```
 </TabItem>
 
 </Admonition>
@@ -552,8 +547,8 @@ $score = $metadata[DocumentsMetadata::INDEX_SCORE];
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="php">
-{`/** @var array<Product> $products */
+```php
+/** @var array<Product> $products */
 $products = $session->query(Product::class)
     ->whereGreaterThan("UnitsInStock", 10)
     // Call 'randomOrdering'
@@ -563,33 +558,28 @@ $products = $session->query(Product::class)
     ->toList();
 
 // Results will be randomly ordered.
-`}
-</CodeBlock>
+```
 </TabItem>
-<TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="php">
-{`/** @var array<Product> $products */
+<TabItem value="RawQuery" label="RawQuery">
+```php
+/** @var array<Product> $products */
 $products = $session->advanced()
-    ->documentQuery(Product::class)
-    ->whereGreaterThan("UnitsInStock", 10)
-    // Call 'randomOrdering'
-    ->randomOrdering()
-    // An optional seed can be passed, e.g.:
-    // ->randomOrdering('someSeed')
+    ->rawQuery(Product::class, "from Products
+                                where UnitsInStock > \$units
+                                order by random()")
+    ->addParameter("units", 10)
     ->toList();
 
 // Results will be randomly ordered.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Products"
+```sql
+from "Products"
 where UnitsInStock > 10
 order by random()
-// order by random(someSeed)
-`}
-</CodeBlock>
+// order by random('someSeed')
+```
 </TabItem>
 </Tabs>
 
@@ -610,51 +600,74 @@ order by random()
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="php">
-{`$numberOfProductsPerCategory = $session
+```php
+$numberOfProductsPerCategory = $session
     ->query(Product::class)
     // Make an aggregation query
     ->groupBy("Category")
     ->selectKey("Category")
     // Count the number of product documents per category
     ->selectCount()
-    // Order by the Count value
+    // Order by the count value
     // Here you need to specify the ordering type explicitly
-    ->orderBy("Count", OrderingType::long())
+    ->orderBy("count", OrderingType::long())
+    ->ofType(ProductsCount::class)
     ->toList();
 
 // Results will contain the number of Product documents per category
 // ordered by that count in ascending order.
-`}
-</CodeBlock>
+```
 </TabItem>
-<TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="php">
-{`$numberOfProductsPerCategory = $session->advanced()
-    ->documentQuery(Product::class)
-    // Group by Category
-    ->groupBy("Category")
-    ->selectKey("Category")
-    // Count the number of product documents per category
-    ->selectCount()
-    // Order by the Count value
-    // Here you need to specify the ordering type explicitly
-    ->orderBy("Count", OrderingType::long())
+<TabItem value="RawQuery" label="RawQuery">
+```php
+$numberOfProductsPerCategory = $session->advanced()
+    ->rawQuery(ProductsCount::class, "from Products
+                                      group by Category
+                                      order by count as long
+                                      select Category, count() as count")
     ->toList();
 
 // Results will contain the number of Product documents per category
 // ordered by that count in ascending order.
-`}
-</CodeBlock>
+```
+</TabItem>
+<TabItem value="ProjectedClass" label="ProjectedClass">
+```php
+// The query results are projected into this class
+class ProductsCount
+{
+    private ?string $category = null;
+    private ?int $count = null;
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?string $category): void
+    {
+        $this->category = $category;
+    }
+
+    public function getCount(): ?int
+    {
+        return $this->count;
+    }
+
+    public function setCount(?int $count): void
+    {
+        $this->count = $count;
+    }
+}
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Products"
+```sql
+from "Products"
 group by Category
-order by count() as long
-select key() as "Category", count()
-`}
-</CodeBlock>
+order by count as long
+select Category, count() as count
+```
 </TabItem>
 </Tabs>
 
@@ -666,8 +679,8 @@ select key() as "Category", count()
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="php">
-{`$numberOfUnitsInStockPerCategory = $session
+```php
+$numberOfUnitsInStockPerCategory = $session
     ->query(Product::class)
     // Make an aggregation query
     // Group by Category
@@ -675,41 +688,64 @@ select key() as "Category", count()
     // Order by the Sum value
     ->selectKey("Category")
     ->selectSum(new GroupByField("UnitsInStock", "Sum"))
-    ->orderBy("Sum")
-    ->toList();
-
-// Results will contain the total number of units in stock per category
-// ordered by that number in ascending order.
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="php">
-{`$numberOfUnitsInStockPerCategory = $session->advanced()
-    ->documentQuery(Product::class)
-    // Group by Category
-    ->groupBy("Category")
-    ->selectKey("Category")
-    // Sum the number of units in stock per category
-    ->selectSum(new GroupByField("UnitsInStock", "Sum"))
-    // Order by the Sum value
-    // Here you need to specify the ordering type explicitly
     ->orderBy("Sum", OrderingType::long())
+    ->ofType(ProductsSum::class)
     ->toList();
 
 // Results will contain the total number of units in stock per category
 // ordered by that number in ascending order.
-`}
-</CodeBlock>
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```php
+$numberOfUnitsInStockPerCategory = $session->advanced()
+    ->rawQuery(ProductsSum::class, "from Products
+                                    group by Category
+                                    order by Sum as long
+                                    select key() as Category, sum(UnitsInStock) as Sum")
+    ->toList();
+
+// Results will contain the total number of units in stock per category
+// ordered by that number in ascending order.
+```
+</TabItem>
+<TabItem value="ProjectedClass" label="ProjectedClass">
+```php
+// The query results are projected into this class
+class ProductsSum
+{
+    private ?string $category = null;
+    private ?int $sum = null;
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?string $category): void
+    {
+        $this->category = $category;
+    }
+
+    public function getSum(): ?int
+    {
+        return $this->sum;
+    }
+
+    public function setSum(?int $sum): void
+    {
+        $this->sum = $sum;
+    }
+}
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Products"
+```sql
+from "Products"
 group by Category
 order by Sum as long
 select key() as 'Category', sum(UnitsInStock) as Sum
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
@@ -725,8 +761,8 @@ select key() as 'Category', sum(UnitsInStock) as Sum
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="php">
-{`/** @var array<Order> $recent */
+```php
+/** @var array<Order> $recent */
 $recent = $session->advanced()
     ->documentQuery(Order::class)
     // Order by the document's last modification time,
@@ -734,16 +770,24 @@ $recent = $session->advanced()
     ->orderByDescending("@metadata.@last-modified")
     ->take(20)
     ->toList();
-`}
-</CodeBlock>
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```php
+/** @var array<Order> $recent */
+$recent = $session->advanced()
+    ->rawQuery(Order::class, "from Orders
+                              order by @metadata.@last-modified desc
+                              limit 20")
+    ->toList();
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Orders"
+```sql
+from "Orders"
 order by @metadata.@last-modified desc
 limit 20
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
@@ -751,8 +795,7 @@ limit 20
 
 <Panel heading="Force ordering type">
 
-* By default, the `orderBy` methods will determine the `OrderingType` from the property path expression  
-  and specify that ordering type in the generated RQL that is sent to the server.
+* By default, the `orderBy` methods use `OrderingType::string`, which orders the values lexicographically.
 
 * You can force a different ordering type by passing it explicitly to `orderBy` or `orderByDescending`.   
   The following ordering types are available:
@@ -782,35 +825,30 @@ limit 20
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="php">
-{`/** @var array<Product> $products */
+```php
+/** @var array<Product> $products */
 $products = $session
     ->query(Product::class)
     // Call 'OrderBy', order by field 'QuantityPerUnit'
     // Pass a second param, requesting to order the text alphanumerically
     ->orderBy("QuantityPerUnit", OrderingType::alphaNumeric())
     ->toList();
-`}
-</CodeBlock>
+```
 </TabItem>
-<TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="php">
-{`/** @var array<Product> $products */
+<TabItem value="RawQuery" label="RawQuery">
+```php
+/** @var array<Product> $products */
 $products = $session->advanced()
-    ->documentQuery(Product::class)
-    // Call 'OrderBy', order by field 'QuantityPerUnit'
-    // Pass a second param, requesting to order the text alphanumerically
-    ->orderBy("QuantityPerUnit", OrderingType::alphaNumeric())
+    ->rawQuery(Product::class, "from Products
+                                order by QuantityPerUnit as alphanumeric")
     ->toList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Products"
+```sql
+from "Products"
 order by QuantityPerUnit as alphanumeric
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
@@ -845,8 +883,8 @@ The example below searches the `QuantityPerUnit` field for "bottles" or "boxes",
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="php">
-{`/** @var array<Product> $products */
+```php
+/** @var array<Product> $products */
 $products = $session
     ->query(Product::class)
     ->search("QuantityPerUnit", "bottles")
@@ -864,38 +902,31 @@ $products = $session
 // Results will be sorted by the 'UnitsInStock' value (descending),
 // then by score (highest scores first),
 // and then by 'Name' (ascending).
-`}
-</CodeBlock>
+```
 </TabItem>
-<TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="php">
-{`/** @var array<Product> $products */
+<TabItem value="RawQuery" label="RawQuery">
+```php
+/** @var array<Product> $products */
 $products = $session->advanced()
-    ->documentQuery(Product::class)
-    ->search("QuantityPerUnit", "bottles")
-    ->search("QuantityPerUnit", "boxes")
-    ->boost(10)
-    // Apply the primary sort by 'UnitsInStock'
-    ->orderByDescending("UnitsInStock", OrderingType::long())
-    // Apply a secondary sort by the score, highest scores first
-    ->orderByScore()
-    // Apply another sort by 'Name'
-    ->orderBy("Name")
+    ->rawQuery(Product::class, "from Products
+                                where search(QuantityPerUnit, \$term1)
+                                   or boost(search(QuantityPerUnit, \$term2), 10)
+                                order by UnitsInStock as long desc, score(), Name")
+    ->addParameter("term1", "bottles")
+    ->addParameter("term2", "boxes")
     ->toList();
 
 // Results will be sorted by the 'UnitsInStock' value (descending),
 // then by score (highest scores first),
 // and then by 'Name' (ascending).
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Products"
+```sql
+from "Products"
 where search(QuantityPerUnit, "bottles") or boost(search(QuantityPerUnit, "boxes"), 10)
 order by UnitsInStock as long desc, score(), Name
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
@@ -931,8 +962,8 @@ In the query above:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="php">
-{`/** @var array<Product> $products */
+```php
+/** @var array<Product> $products */
 $products = $session
     ->query(Product::class)
     ->whereGreaterThan("UnitsInStock", 10)
@@ -942,34 +973,31 @@ $products = $session
 
 // Results will be sorted by the 'UnitsInStock' value
 // according to the logic from 'MyCustomSorter' class
-`}
-</CodeBlock>
+```
 </TabItem>
-<TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="php">
-{`/** @var array<Product> $products */
+<TabItem value="RawQuery" label="RawQuery">
+```php
+/** @var array<Product> $products */
 $products = $session->advanced()
-    ->documentQuery(Product::class)
-    ->whereGreaterThan("UnitsInStock", 10)
-    // Order by field 'UnitsInStock', pass the name of your custom sorter class
-    ->orderBy("UnitsInStock", "MyCustomSorter")
+    ->rawQuery(Product::class, "from Products
+                                where UnitsInStock > \$units
+                                order by custom(UnitsInStock, 'MyCustomSorter')")
+    ->addParameter("units", 10)
     ->toList();
 
 // Results will be sorted by the 'UnitsInStock' value
 // according to the logic from 'MyCustomSorter' class
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from "Products"
+```sql
+from "Products"
 where UnitsInStock > 10
 order by custom(UnitsInStock, "MyCustomSorter")
     
 // Results will be sorted by the 'UnitsInStock' value
 // according to the logic from 'MyCustomSorter' class    
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
@@ -992,8 +1020,8 @@ order by custom(UnitsInStock, "MyCustomSorter")
 <Panel heading="Syntax">
 
 <TabItem>
-<CodeBlock language="php">
-{`/**
+```php
+/**
  * Usage:
  *   - orderBy("lastName"); // same as call: orderBy("lastName", OrderingType::string())
  *   - orderBy("lastName", OrderingType::string());
@@ -1012,8 +1040,7 @@ function orderBy(string $field, $sorterNameOrOrdering = null): DocumentQueryInte
  *     // Results will be sorted by the 'units_in_stock' value according to the logic from 'MySorter' class
  */
 function orderByDescending(string $field, $sorterNameOrOrdering = null): DocumentQueryInterface;
-`}
-</CodeBlock>
+```
 </TabItem>
 
 | Parameter  | Type     | Description          |

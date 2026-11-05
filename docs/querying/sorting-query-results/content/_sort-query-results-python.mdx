@@ -70,6 +70,20 @@ products = list(
 # with smaller values listed first
 ```
 </TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```python
+products = list(
+    session.advanced
+    .raw_query("""from Products
+                  where UnitsInStock > $units
+                  order by UnitsInStock as long""", Product)
+    .add_parameter("units", 10)
+)
+
+# Results will be sorted by the 'UnitsInStock' value in ascending order,
+# with smaller values listed first
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
@@ -98,6 +112,20 @@ products = list(
     .where_greater_than("UnitsInStock", 10)
     # Call 'order_by_descending', pass the index-field by which to order the results
     .order_by_descending("UnitsInStock").of_type(Product)
+)
+
+# Results will be sorted by the 'UnitsInStock' value in descending order,
+# with higher values listed first.
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```python
+products = list(
+    session.advanced
+    .raw_query("""from index 'Products/ByUnitsInStock'
+                  where UnitsInStock > $units
+                  order by UnitsInStock as long desc""", Product)
+    .add_parameter("units", 10)
 )
 
 # Results will be sorted by the 'UnitsInStock' value in descending order,
@@ -207,6 +235,18 @@ employees = list(
 # Documents with a null FirstName value will be listed last.
 ```
 </TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```python
+employees = list(
+    session.advanced
+    .raw_query("""from Employees
+                  order by FirstName nulls last""", Employee)
+)
+
+# Results will be sorted by the 'FirstName' value in ascending order.
+# Documents with a null FirstName value will be listed last.
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Employees"
@@ -233,6 +273,18 @@ employees = list(
     # Order by 'FirstName' in descending order,
     # placing employees with a null 'FirstName' at the beginning of the results
     .order_by_descending("FirstName", nulls=NullsOrdering.FIRST)
+)
+
+# Results will be sorted by the 'FirstName' value in descending order.
+# Documents with a null FirstName value will be listed first.
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```python
+employees = list(
+    session.advanced
+    .raw_query("""from Employees
+                  order by FirstName desc nulls first""", Employee)
 )
 
 # Results will be sorted by the 'FirstName' value in descending order.
@@ -269,6 +321,18 @@ products = list(
     # Order by 'ReorderLevel' numerically,
     # placing products with a null 'ReorderLevel' at the end of the results
     .order_by("ReorderLevel", OrderingType.LONG, NullsOrdering.LAST)
+)
+
+# Results will be sorted by 'ReorderLevel' as a number (ascending).
+# Documents with a null ReorderLevel value will be listed last.
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```python
+products = list(
+    session.advanced
+    .raw_query("""from Products
+                  order by ReorderLevel as long nulls last""", Product)
 )
 
 # Results will be sorted by 'ReorderLevel' as a number (ascending).
@@ -319,6 +383,17 @@ products = list(
 )
 ```
 </TabItem>   
+<TabItem value="RawQuery" label="RawQuery">
+```python
+products = list(
+    session.advanced
+    .raw_query("""from Products
+                  where search(Name, $term)
+                  order by Name""", Product)
+    .add_parameter("term", "sauce")
+)
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from Products
@@ -428,6 +503,17 @@ products = list(
 # "Jack's New England Clam Chowder"
 ```
 </TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```python
+products = list(
+    session.advanced
+    .raw_query("""from index 'Products/BySearchName'
+                  where search(Name, $term)
+                  order by NameForSorting""", Product)
+    .add_parameter("term", "ch*")
+)
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from index "Products/BySearchName" 
@@ -483,6 +569,18 @@ employees = list(
 )
 ```
 </TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```python
+employees = list(
+    session.advanced
+    .raw_query("""from Employees
+                  where search(Notes, $term1) or boost(search(Notes, $term2), 10)
+                  order by score()""", Employee)
+    .add_parameter("term1", "English")
+    .add_parameter("term2", "Italian")
+)
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Employees"
@@ -509,6 +607,18 @@ employees = list(
     .boost(10)
     # Lowest scores (weakest matches) first
     .order_by_score_descending()
+)
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```python
+employees = list(
+    session.advanced
+    .raw_query("""from Employees
+                  where search(Notes, $term1) or boost(search(Notes, $term2), 10)
+                  order by score() desc""", Employee)
+    .add_parameter("term1", "English")
+    .add_parameter("term2", "Italian")
 )
 ```
 </TabItem>
@@ -608,12 +718,25 @@ products = list(
 # Results will be randomly ordered
 ```
 </TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```python
+products = list(
+    session.advanced
+    .raw_query("""from Products
+                  where UnitsInStock > $units
+                  order by random()""", Product)
+    .add_parameter("units", 10)
+)
+
+# Results will be randomly ordered
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
 where UnitsInStock > 10
 order by random()
-// order by random(someSeed)
+// order by random('someSeed')
 ```
 </TabItem>
 </Tabs>
@@ -644,18 +767,42 @@ number_of_products_per_category = list(
     .select_count()
     # Order by the count value
     .order_by("count", OrderingType.LONG)
+    .of_type(ProductsCount)
 )
 
 # Results will contain the number of Product documents per category
 # ordered by that count in ascending order.
 ```
 </TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```python
+number_of_products_per_category = list(
+    session.advanced
+    .raw_query("""from Products
+                  group by Category
+                  order by count as long
+                  select Category, count() as count""", ProductsCount)
+)
+
+# Results will contain the number of Product documents per category
+# ordered by that count in ascending order.
+```
+</TabItem>
+<TabItem value="ProjectedClass" label="ProjectedClass">
+```python
+# The query results are projected into this class
+class ProductsCount:
+    def __init__(self, category: str = None, count: int = None):
+        self.category = category
+        self.count = count
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
 group by Category
-order by count() as long
-select key() as "Category", count()
+order by count as long
+select Category, count() as count
 ```
 </TabItem>
 </Tabs>
@@ -677,10 +824,34 @@ number_of_units_in_stock_per_category = list(
     .select_sum(GroupByField("UnitsInStock", "Sum"))
     # Order by the sum value
     .order_by("Sum", OrderingType.LONG)
+    .of_type(ProductsSum)
 )
 
 # Results will contain the total number of units in stock per category
 # ordered by that number in ascending order.
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```python
+number_of_units_in_stock_per_category = list(
+    session.advanced
+    .raw_query("""from Products
+                  group by Category
+                  order by Sum as long
+                  select key() as Category, sum(UnitsInStock) as Sum""", ProductsSum)
+)
+
+# Results will contain the total number of units in stock per category
+# ordered by that number in ascending order.
+```
+</TabItem>
+<TabItem value="ProjectedClass" label="ProjectedClass">
+```python
+# The query results are projected into this class
+class ProductsSum:
+    def __init__(self, category: str = None, sum: int = None):
+        self.category = category
+        self.sum = sum
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -713,6 +884,16 @@ recent = list(
     # with the most recently modified documents listed first
     .order_by_descending("@metadata.@last-modified")
     .take(20)
+)
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```python
+recent = list(
+    session.advanced
+    .raw_query("""from Orders
+                  order by @metadata.@last-modified desc
+                  limit 20""", Order)
 )
 ```
 </TabItem>
@@ -766,6 +947,15 @@ products = list(
     # Call 'order_by', order by field 'QuantityPerUnit'
     # Pass a second param, requesting to order the text alphanumerically
     .order_by("QuantityPerUnit", OrderingType.ALPHA_NUMERIC)
+)
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```python
+products = list(
+    session.advanced
+    .raw_query("""from Products
+                  order by QuantityPerUnit as alphanumeric""", Product)
 )
 ```
 </TabItem>
@@ -838,6 +1028,28 @@ products = list(
 # will then be sorted by 'Name', with null Name values listed first.
 ```
 </TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```python
+products = list(
+    session.advanced
+    .raw_query("""from Products
+                  where search(QuantityPerUnit, $term1)
+                     or boost(search(QuantityPerUnit, $term2), 10)
+                  order by UnitsInStock as long desc nulls last, score(), Name nulls first""", Product)
+    .add_parameter("term1", "bottles")
+    .add_parameter("term2", "boxes")
+)
+
+# Results will be sorted by the 'UnitsInStock' value in descending order,
+# with null UnitsInStock values listed last.
+
+# Products that have the same UnitsInStock value will then be sorted by score,
+# highest scores first.
+
+# Products that have the same UnitsInStock value and same score
+# will then be sorted by 'Name', with null Name values listed first.
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
@@ -896,14 +1108,28 @@ products = list(
 # according to the logic from 'MyCustomSorter' class
 ```
 </TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```python
+products = list(
+    session.advanced
+    .raw_query("""from Products
+                  where UnitsInStock > $units
+                  order by custom(UnitsInStock, 'MyCustomSorter')""", Product)
+    .add_parameter("units", 10)
+)
+
+# Results will be sorted by the 'UnitsInStock' value
+# according to the logic from 'MyCustomSorter' class
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
 where UnitsInStock > 10
 order by custom(UnitsInStock, "MyCustomSorter")
     
-# Results will be sorted by the 'UnitsInStock' value
-# according to the logic from 'MyCustomSorter' class    
+// Results will be sorted by the 'UnitsInStock' value
+// according to the logic from 'MyCustomSorter' class    
 ```
 </TabItem>
 </Tabs>

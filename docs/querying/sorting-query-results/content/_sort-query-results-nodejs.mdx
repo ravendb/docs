@@ -70,6 +70,19 @@ const products = await session
 // with smaller values listed first.
 ```
 </TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const products = await session.advanced
+    .rawQuery(`from Products
+               where UnitsInStock > $units
+               order by UnitsInStock as long`)
+    .addParameter("units", 10)
+    .all();
+
+// Results will be sorted by the 'UnitsInStock' value in ascending order,
+// with smaller values listed first.
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
@@ -98,6 +111,19 @@ const products = await session
      // Call 'orderByDescending'
      // Pass the index-field by which to order the results and the ordering type
     .orderByDescending("unitsInStock", "Long")
+    .all();
+
+// Results will be sorted by the 'unitsInStock' value in descending order,
+// with higher values listed first.
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const products = await session.advanced
+    .rawQuery(`from index 'Products/ByUnitsInStock'
+               where unitsInStock > $units
+               order by unitsInStock as long desc`)
+    .addParameter("units", 10)
     .all();
 
 // Results will be sorted by the 'unitsInStock' value in descending order,
@@ -201,6 +227,17 @@ const employees = await session
 // Documents with a null FirstName value will be listed last.
 ```
 </TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const employees = await session.advanced
+    .rawQuery(`from Employees
+               order by FirstName nulls last`)
+    .all();
+
+// Results will be sorted by the 'FirstName' value in ascending order.
+// Documents with a null FirstName value will be listed last.
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Employees"
@@ -227,6 +264,17 @@ const employees = await session
      // Order by 'FirstName' in descending order,
      // placing employees with a null 'FirstName' at the beginning of the results
     .orderByDescending("FirstName", "First")
+    .all();
+
+// Results will be sorted by the 'FirstName' value in descending order.
+// Documents with a null FirstName value will be listed first.
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const employees = await session.advanced
+    .rawQuery(`from Employees
+               order by FirstName desc nulls first`)
     .all();
 
 // Results will be sorted by the 'FirstName' value in descending order.
@@ -263,6 +311,17 @@ const products = await session
      // Order by 'ReorderLevel' numerically,
      // placing products with a null 'ReorderLevel' at the end of the results
     .orderBy("ReorderLevel", "Last", "Long")
+    .all();
+
+// Results will be sorted by 'ReorderLevel' as a number (ascending).
+// Documents with a null ReorderLevel value will be listed last.
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const products = await session.advanced
+    .rawQuery(`from Products
+               order by ReorderLevel as long nulls last`)
     .all();
 
 // Results will be sorted by 'ReorderLevel' as a number (ascending).
@@ -311,6 +370,16 @@ const products = await session
     .all();
 ```
 </TabItem>   
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const products = await session.advanced
+    .rawQuery(`from Products
+               where search(Name, $term)
+               order by Name`)
+    .addParameter("term", "sauce")
+    .all();
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from Products
@@ -421,6 +490,16 @@ const products = await session
 // "Jack's New England Clam Chowder"
 ```
 </TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const products = await session.advanced
+    .rawQuery(`from index 'Products/BySearchName'
+               where search(name, $term)
+               order by nameForSorting`)
+    .addParameter("term", "ch*")
+    .all();
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from index "Products/BySearchName" 
@@ -475,6 +554,17 @@ const employees = await session
     .all();
 ```
 </TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const employees = await session.advanced
+    .rawQuery(`from Employees
+               where search(Notes, $term1) or boost(search(Notes, $term2), 10)
+               order by score()`)
+    .addParameter("term1", "English")
+    .addParameter("term2", "Italian")
+    .all();
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Employees"
@@ -500,6 +590,17 @@ const employees = await session
     .boost(10)
      // Lowest scores (weakest matches) first
     .orderByScoreDescending()
+    .all();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const employees = await session.advanced
+    .rawQuery(`from Employees
+               where search(Notes, $term1) or boost(search(Notes, $term2), 10)
+               order by score() desc`)
+    .addParameter("term1", "English")
+    .addParameter("term2", "Italian")
     .all();
 ```
 </TabItem>
@@ -601,12 +702,24 @@ const products = await session
 // Results will be randomly ordered.
 ```
 </TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const products = await session.advanced
+    .rawQuery(`from Products
+               where UnitsInStock > $units
+               order by random()`)
+    .addParameter("units", 10)
+    .all();
+
+// Results will be randomly ordered.
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
 where UnitsInStock > 10
 order by random()
-// order by random(someSeed)
+// order by random('someSeed')
 ```
 </TabItem>
 </Tabs>
@@ -644,12 +757,25 @@ const numberOfProductsPerCategory = await session
 // ordered by that count in ascending order.
 ```
 </TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const numberOfProductsPerCategory = await session.advanced
+    .rawQuery(`from Products
+               group by Category
+               order by count as long
+               select Category, count() as count`)
+    .all();
+
+// Results will contain the number of Product documents per category
+// ordered by that count in ascending order.
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
 group by Category
-order by count() as long
-select key() as "Category", count()
+order by count as long
+select Category, count() as count
 ```
 </TabItem>
 </Tabs>
@@ -672,6 +798,19 @@ const numberOfUnitsInStockPerCategory = await session
     .selectSum(new GroupByField("UnitsInStock", "sum"))
      // Order by the sum value
     .orderBy("sum", "Long")
+    .all();
+
+// Results will contain the total number of units in stock per category
+// ordered by that number in ascending order.
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const numberOfUnitsInStockPerCategory = await session.advanced
+    .rawQuery(`from Products
+               group by Category
+               order by sum as long
+               select key() as Category, sum(UnitsInStock) as sum`)
     .all();
 
 // Results will contain the total number of units in stock per category
@@ -707,6 +846,15 @@ const recent = await session.advanced
      // with the most recently modified documents listed first
     .orderByDescending("@metadata.@last-modified")
     .take(20)
+    .all();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const recent = await session.advanced
+    .rawQuery(`from Orders
+               order by @metadata.@last-modified desc
+               limit 20`)
     .all();
 ```
 </TabItem>
@@ -759,6 +907,14 @@ const products = await session
      // Call 'OrderBy', order by field 'QuantityPerUnit'
      // Pass a second param, requesting to order the text alphanumerically
     .orderBy("QuantityPerUnit", "AlphaNumeric")
+    .all();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const products = await session.advanced
+    .rawQuery(`from Products
+               order by QuantityPerUnit as alphanumeric`)
     .all();
 ```
 </TabItem>
@@ -856,6 +1012,27 @@ const products = await session
 // will then be sorted by 'Name', with null Name values listed first.
 ```
 </TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const products = await session.advanced
+    .rawQuery(`from Products
+               where search(QuantityPerUnit, $term1)
+                  or boost(search(QuantityPerUnit, $term2), 10)
+               order by UnitsInStock as long desc nulls last, score(), Name nulls first`)
+    .addParameter("term1", "bottles")
+    .addParameter("term2", "boxes")
+    .all();
+
+// Results will be sorted by the 'UnitsInStock' value in descending order,
+// with null UnitsInStock values listed last.
+
+// Products that have the same UnitsInStock value will then be sorted by score,
+// highest scores first.
+
+// Products that have the same UnitsInStock value and same score
+// will then be sorted by 'Name', with null Name values listed first.
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
@@ -909,6 +1086,19 @@ const products = await session
     .whereGreaterThan("UnitsInStock", 10)
      // Order by field 'UnitsInStock', pass the name of your custom sorter class
     .orderBy("UnitsInStock", { sorterName: "MyCustomSorter" })
+    .all();
+
+// Results will be sorted by the 'UnitsInStock' value
+// according to the logic from 'MyCustomSorter' class
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const products = await session.advanced
+    .rawQuery(`from Products
+               where UnitsInStock > $units
+               order by custom(UnitsInStock, 'MyCustomSorter')`)
+    .addParameter("units", 10)
     .all();
 
 // Results will be sorted by the 'UnitsInStock' value

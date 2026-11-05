@@ -70,6 +70,19 @@ List<Product> products = session
 // with smaller values listed first.
 ```
 </TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Product> products = session.advanced()
+    .rawQuery(Product.class, "from Products " +
+                             "where UnitsInStock > $units " +
+                             "order by UnitsInStock as long")
+    .addParameter("units", 10)
+    .toList();
+
+// Results will be sorted by the 'UnitsInStock' value in ascending order,
+// with smaller values listed first.
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
@@ -97,6 +110,19 @@ List<Product> products = session
     .whereGreaterThan("UnitsInStock", 10)
      // Call 'orderByDescending', pass the index-field by which to order the results
     .orderByDescending("UnitsInStock", OrderingType.LONG)
+    .toList();
+
+// Results will be sorted by the 'UnitsInStock' value in descending order,
+// with higher values listed first.
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Product> products = session.advanced()
+    .rawQuery(Product.class, "from index 'Products/ByUnitsInStock' " +
+                             "where UnitsInStock > $units " +
+                             "order by UnitsInStock as long desc")
+    .addParameter("units", 10)
     .toList();
 
 // Results will be sorted by the 'UnitsInStock' value in descending order,
@@ -196,6 +222,17 @@ List<Employee> employees = session
 // Documents with a null FirstName value will be listed last.
 ```
 </TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Employee> employees = session.advanced()
+    .rawQuery(Employee.class, "from Employees " +
+                              "order by FirstName nulls last")
+    .toList();
+
+// Results will be sorted by the 'FirstName' value in ascending order.
+// Documents with a null FirstName value will be listed last.
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Employees"
@@ -222,6 +259,17 @@ List<Employee> employees = session
      // Order by 'FirstName' as a string in descending order,
      // placing employees with a null 'FirstName' at the beginning of the results.
     .orderByDescending("FirstName", NullsOrdering.FIRST, OrderingType.STRING)
+    .toList();
+
+// Results will be sorted by the 'FirstName' value in descending order.
+// Documents with a null FirstName value will be listed first.
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Employee> employees = session.advanced()
+    .rawQuery(Employee.class, "from Employees " +
+                              "order by FirstName desc nulls first")
     .toList();
 
 // Results will be sorted by the 'FirstName' value in descending order.
@@ -258,6 +306,17 @@ List<Product> products = session
      // Order by 'ReorderLevel' numerically,
      // placing products with a null 'ReorderLevel' at the end of the results
     .orderBy("ReorderLevel", NullsOrdering.LAST, OrderingType.LONG)
+    .toList();
+
+// Results will be sorted by 'ReorderLevel' as a number (ascending).
+// Documents with a null ReorderLevel value will be listed last.
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Product> products = session.advanced()
+    .rawQuery(Product.class, "from Products " +
+                             "order by ReorderLevel as long nulls last")
     .toList();
 
 // Results will be sorted by 'ReorderLevel' as a number (ascending).
@@ -306,6 +365,16 @@ List<Product> products = session
     .toList();
 ```
 </TabItem>     
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Product> products = session.advanced()
+    .rawQuery(Product.class, "from Products " +
+                             "where search(Name, $term) " +
+                             "order by Name")
+    .addParameter("term", "sauce")
+    .toList();
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from Products
@@ -407,6 +476,16 @@ List<Product> products = session
 // "Jack's New England Clam Chowder"
 ```
 </TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Product> products = session.advanced()
+    .rawQuery(Product.class, "from index 'Products/BySearchName' " +
+                             "where search(Name, $term) " +
+                             "order by NameForSorting")
+    .addParameter("term", "ch*")
+    .toList();
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from index "Products/BySearchName" 
@@ -461,6 +540,17 @@ List<Employee> employees = session
     .toList();
 ```
 </TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Employee> employees = session.advanced()
+    .rawQuery(Employee.class, "from Employees " +
+                              "where search(Notes, $term1) or boost(search(Notes, $term2), 10) " +
+                              "order by score()")
+    .addParameter("term1", "English")
+    .addParameter("term2", "Italian")
+    .toList();
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Employees"
@@ -486,6 +576,17 @@ List<Employee> employees = session
     .boost(10)
      // Lowest scores (weakest matches) first
     .orderByScoreDescending()
+    .toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Employee> employees = session.advanced()
+    .rawQuery(Employee.class, "from Employees " +
+                              "where search(Notes, $term1) or boost(search(Notes, $term2), 10) " +
+                              "order by score() desc")
+    .addParameter("term1", "English")
+    .addParameter("term2", "Italian")
     .toList();
 ```
 </TabItem>
@@ -587,6 +688,18 @@ List<Product> products = session
 // Results will be randomly ordered.
 ```
 </TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Product> products = session.advanced()
+    .rawQuery(Product.class, "from Products " +
+                             "where UnitsInStock > $units " +
+                             "order by random()")
+    .addParameter("units", 10)
+    .toList();
+
+// Results will be randomly ordered.
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
@@ -632,6 +745,19 @@ List<ProductsCount> numberOfProductsPerCategory = session
 // ordered by that count in ascending order.
 ```
 </TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<ProductsCount> numberOfProductsPerCategory = session.advanced()
+    .rawQuery(ProductsCount.class, "from Products " +
+                                   "group by Category " +
+                                   "order by count as long " +
+                                   "select Category, count() as count")
+    .toList();
+
+// Results will contain the number of Product documents per category
+// ordered by that count in ascending order.
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
@@ -668,6 +794,19 @@ List<ProductsSum> numberOfUnitsInStockPerCategory = session
 // ordered by that number in ascending order.
 ```
 </TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<ProductsSum> numberOfUnitsInStockPerCategory = session.advanced()
+    .rawQuery(ProductsSum.class, "from Products " +
+                                 "group by Category " +
+                                 "order by sum as long " +
+                                 "select Category, sum(UnitsInStock) as sum")
+    .toList();
+
+// Results will contain the total number of units in stock per category
+// ordered by that number in ascending order.
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
@@ -697,6 +836,15 @@ List<Order> recent = session.advanced()
      // with the most recently modified documents listed first
     .orderByDescending("@metadata.@last-modified")
     .take(20)
+    .toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Order> recent = session.advanced()
+    .rawQuery(Order.class, "from Orders " +
+                           "order by @metadata.@last-modified desc " +
+                           "limit 20")
     .toList();
 ```
 </TabItem>
@@ -749,6 +897,14 @@ List<Product> products = session
      // Call 'orderBy', order by field 'QuantityPerUnit'
      // Pass a second param, requesting to order the text alphanumerically
     .orderBy("QuantityPerUnit", OrderingType.ALPHA_NUMERIC)
+    .toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Product> products = session.advanced()
+    .rawQuery(Product.class, "from Products " +
+                             "order by QuantityPerUnit as alphaNumeric")
     .toList();
 ```
 </TabItem>
@@ -846,6 +1002,27 @@ List<Product> products = session
 // will then be sorted by 'Name', with null Name values listed first.
 ```
 </TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Product> products = session.advanced()
+    .rawQuery(Product.class, "from Products " +
+                             "where search(QuantityPerUnit, $term1) " +
+                             "or boost(search(QuantityPerUnit, $term2), 10) " +
+                             "order by UnitsInStock as long desc nulls last, score(), Name nulls first")
+    .addParameter("term1", "bottles")
+    .addParameter("term2", "boxes")
+    .toList();
+
+// Results will be sorted by the 'UnitsInStock' value in descending order,
+// with null UnitsInStock values listed last.
+
+// Products that have the same UnitsInStock value will then be sorted by score,
+// highest scores first.
+
+// Products that have the same UnitsInStock value and same score
+// will then be sorted by 'Name', with null Name values listed first.
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
@@ -899,6 +1076,19 @@ List<Product> products = session
     .whereGreaterThan("UnitsInStock", 10)
      // Order by field 'UnitsInStock', pass the name of your custom sorter class
     .orderBy("UnitsInStock", "MyCustomSorter")
+    .toList();
+
+// Results will be sorted by the 'UnitsInStock' value
+// according to the logic from 'MyCustomSorter' class
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Product> products = session.advanced()
+    .rawQuery(Product.class, "from Products " +
+                             "where UnitsInStock > $units " +
+                             "order by custom(UnitsInStock, 'MyCustomSorter')")
+    .addParameter("units", 10)
     .toList();
 
 // Results will be sorted by the 'UnitsInStock' value
