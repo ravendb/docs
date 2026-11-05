@@ -1,0 +1,71 @@
+---
+title: "Exploration Queries"
+sidebar_label: "Exploration Queries"
+description: "Use the RQL filter clause (exploration queries) to filter retrieved query results on the server without creating an index: filter full-collection, dynamic, and static-index queries, limit scanned results with filter_limit, and use JavaScript functions."
+sidebar_position: 5
+supported_languages: ["csharp", "java", "python", "php", "nodejs"]
+see_also:
+     - title: "Query Overview"
+       link: "querying/overview"
+       source: "docs"
+       path: "Querying"
+     - title: "Filter Query Results"
+       link: "querying/filtering-query-results/filter-query-results"
+       source: "docs"
+       path: "Querying > Filtering Query Results"
+     - title: "What is RQL"
+       link: "querying/rql/what-is-rql"
+       source: "docs"
+       path: "Querying > RQL"
+     - title: "Paging"
+       link: "indexes/querying/paging"
+       source: "docs"
+       path: "Indexes > Querying"
+     - title: "Project Query Results"
+       link: "client-api/session/querying/how-to-project-query-results"
+       source: "docs"
+       path: "Client API > Session > Querying"
+     - title: "Get Query Statistics"
+       link: "client-api/session/querying/how-to-get-query-statistics"
+       source: "docs"
+       path: "Client API > Session > Querying"
+     - title: "Querying a Sharded Database"
+       link: "sharding/querying"
+       source: "docs"
+       path: "Sharding"
+     - title: "Studio Configuration"
+       link: "studio/database/settings/studio-configuration"
+       source: "docs"
+       path: "Studio > Database > Settings"
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import ExplorationQueriesCsharp from './content/_exploration-queries-csharp.mdx';
+import ExplorationQueriesJava from './content/_exploration-queries-java.mdx';
+import ExplorationQueriesPython from './content/_exploration-queries-python.mdx';
+import ExplorationQueriesPhp from './content/_exploration-queries-php.mdx';
+import ExplorationQueriesNodejs from './content/_exploration-queries-nodejs.mdx';
+
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
+
+<LanguageContent language="csharp">
+   <ExplorationQueriesCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <ExplorationQueriesJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <ExplorationQueriesPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <ExplorationQueriesPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <ExplorationQueriesNodejs />
+</LanguageContent>

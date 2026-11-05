@@ -1,0 +1,1703 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+import ContentFrame from '@site/src/components/ContentFrame';
+
+<Admonition type="note" title="">
+
+* An **exploration query** uses the RQL `filter` clause (the `filter()` method in the Java API)  
+  to evaluate a condition on the server against the results a query retrieves.
+    
+* Processing has two main stages:   
+  1. **Retrieve** - the query retrieves results from a collection or an index, as defined by `from` and any `where` condition.
+  2. **Filter** - the server examines the retrieved results one by one and keeps those that match the `filter` condition.  
+     No index is used or created for the `filter` condition.  
+     The matching results are returned to the client.
+
+* Because `filter` examines results individually, its cost grows with the number of results it scans.  
+  Use `filter_limit` to cap the number of results examined on large datasets. See [Limit the number of scanned results](#limit-the-number-of-scanned-results).  
+  For recurring queries, prefer `where` when the condition can be indexed. See [When to use exploration queries](#when-to-use-exploration-queries). 
+
+* In this article:
+    * [How exploration queries work](#how-exploration-queries-work)
+    * [When to use exploration queries](#when-to-use-exploration-queries)
+    * [Exploration queries vs disabling auto-index creation](#exploration-queries-vs-disabling-auto-index-creation)
+    * [Exploration queries by query type](#exploration-queries-by-query-type)
+        * [Filter with a full-collection query](#filter-with-a-full-collection-query)
+        * [Filter with a dynamic query](#filter-with-a-dynamic-query)
+        * [Filter with a static index query](#filter-with-a-static-index-query)
+        * [Filter with a Map-Reduce index query - static Map-Reduce index](#filter-with-a-map-reduce-index-query)
+        * [Filter with a Map-Reduce index query - dynamic group-by query](#filter-with-a-map-reduce-index-query-dynamic-group-by-query)
+    * [Limit the number of scanned results](#limit-the-number-of-scanned-results)
+    * [Filter and sorting](#filter-and-sorting)
+    * [Filter and paging](#filter-and-paging)
+    * [Filter and projections](#filter-and-projections)
+    * [Filter by a related document](#filter-by-a-related-document)
+    * [Filter with a JavaScript function](#filter-with-a-javascript-function)
+    * [Filter and sharding](#filter-and-sharding)
+    * [Supported operators and limitations](#supported-operators-and-limitations)
+    * [Syntax](#syntax)
+
+</Admonition>
+
+<Panel heading="How exploration queries work">
+
+Java queries written with `query` or `documentQuery` are translated into RQL before being sent to the server.  
+The processing described below applies to these APIs as well as to queries written directly in RQL.
+
+---
+    
+* **An exploration query is processed on the server in two main stages**:
+
+    1. **Retrieve**  
+       The query retrieves results from the specified collection or index (static or auto), applying any initial query conditions.
+       In RQL, these are specified by the `from` and `where` clauses.  
+       The retrieved results are the **candidate results** for filtering.  
+       If sorting is specified, it determines the order in which the filter examines them.
+
+    2. **Filter**  
+       The server examines the candidate results one by one and evaluates the filter condition using its JavaScript engine.
+       Matching results are kept; results that fail the condition are skipped.  
+       No index is used or created for the filter condition.
+
+    If a projection is specified, the matching results are projected before being returned to the client.  
+    Otherwise, the matching results are returned without projection.
+
+* **What the filter condition is evaluated against**:
+    * **Full documents** for full-collection queries and queries on a Map index (static or auto).  
+      The filter condition can reference document fields that aren't indexed.
+    * **Aggregation results** for Map-Reduce indexes and dynamic aggregation queries (`group by` in RQL).  
+      Learn more in [Filter with a static Map-Reduce index](#filter-with-a-map-reduce-index-query) and [Filter with a dynamic group-by query](#filter-with-a-map-reduce-index-query-dynamic-group-by-query).
+
+* **Filtering stops when any of the following occurs**:
+    * Enough results have been collected to fill the requested page. See [Filter and paging](#filter-and-paging).
+    * No further candidates remain to be examined.
+    * The number of examined candidates reaches the configured scan limit (`filter_limit` in RQL),  
+      including candidates rejected by the filter. See [Limit the number of scanned results](#limit-the-number-of-scanned-results).
+
+* **RQL filter comparison semantics**:
+    * `=` and `==` use strict equality (`===`); `!=` and `<>` use strict inequality (`!==`).  
+      Equality compares both type and value.
+    * String comparisons are **case-sensitive**, unlike the default behavior of the RQL `where` clause.  
+      This applies to equality and inequality (`==`, `!=`) and range comparisons (`<`, `<=`, `>`, `>=`).  
+      Uppercase ASCII letters come before lowercase ASCII letters in character-code order.  
+      For example:
+        * `filter Address.Country == "usa"` does not match `"USA"`.
+        * `filter Name >= "a"` excludes `"Apple"` but includes `"apple"`.
+
+* **The RQL structure illustrates this processing flow**:   
+  * `filter` comes after `group by`, `where`, `order by`, and `load`, and before `select` and `include`.  
+    `limit` and `filter_limit` come last: `limit` controls paging, and `filter_limit` caps the number of candidates examined.  
+
+  * The outline below shows these clauses together. Optional clauses can be omitted:
+
+    ```sql
+    declare function ...         // Optional: define a function to call from 'filter'
+    from <collection-name>       // Or: from index "<index-name>"
+    group by ...                 // Optional: 'filter' then evaluates the aggregation results
+    where ...                    // Optional: narrow the candidate results
+    order by ...                 // Optional: sort candidates before filtering
+    load ...                     // Optional: load related documents for 'filter'
+    filter <condition>           // Evaluated per candidate, without using an index
+    select ...                   // Optional: projection
+    include ...                  // Optional: send related documents to the client with the results
+    limit <offset>, <pageSize>   // Optional: paging
+    filter_limit <number>        // Optional: maximum number of candidates to examine
+    ```                
+
+* **Query statistics on a non-sharded database**:  
+  When an exploration query is executed, the [query statistics](../../../client-api/session/querying/how-to-get-query-statistics.mdx) report:
+    * `scannedResults` counts the candidates actually examined by the filter.
+    * `skippedResults` includes candidates rejected by the filter.  
+      It can also include results skipped for other reasons, such as duplicate elimination.
+
+* For sharded databases, see [Filter and sharding](#filter-and-sharding).
+
+</Panel>
+
+<Panel heading="When to use exploration queries">
+
+<ContentFrame>
+
+### Use `filter` when:
+
+* You need a one-time or occasional look at your data, for example during development, debugging, or a support investigation,
+  without creating an index solely for that condition.
+
+* Use `filter` when you need to evaluate a condition on fields that aren't indexed.  
+  Using `where` for the same condition has these implications:
+    * In a static-index query, `where` can use only the index fields.  
+      A `where` condition on any other field throws an error.
+    * In a dynamic query, a `where` condition on a new field makes RavenDB create an auto-index that includes it.
+
+  Using `filter` avoids these indexing requirements because it evaluates the condition directly against the retrieved results.
+
+* Use `filter` when the required condition cannot be expressed as an ordinary RQL `where` comparison,  
+  for example:  
+    * Comparing two fields of the same document, for example `filter UnitsInStock < ReorderLevel`.  
+      See [Supported operators and limitations](#supported-operators-and-limitations).  
+    * Checking a field of a related document. See [Filter by a related document](#filter-by-a-related-document).
+
+* On a **sharded database**, use `filter` when the condition applies to an aggregated value of a Map-Reduce or `group by` query, such as `Count`.
+  `filter` evaluates the combined results, while `where` evaluates each shard's partial results and can miss matches.
+  See [Filter and sharding](#filter-and-sharding).
+
+</ContentFrame>
+<ContentFrame>
+
+### Prefer `where` when:
+
+* The query runs repeatedly and the condition can be evaluated using an index.  
+  A dynamic query reuses a suitable auto-index or creates one when needed. Subsequent queries can use that index.
+
+* The condition can be indexed and `filter` would otherwise need to scan a large dataset.  
+  The cost of `filter` grows with the number of results it examines.
+
+</ContentFrame>
+<ContentFrame>
+
+### `where` vs `filter`:
+
+| Feature               | `where`                                                                                         | `filter`                                                                                                   |
+|-----------------------|-------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
+| **Evaluated against** | An index, for ordinary field conditions                                                         | A document or aggregation result                                                                           |
+| **Index usage**       | Uses the queried index.<br/>A dynamic query reuses a suitable auto-index or creates one when needed | No index is used or created for the filter condition                                                       |
+| **Work**              | Uses indexed fields to find matches                                                             | Examines results individually, until the page is full, `filter_limit` is reached, or results are exhausted |
+| **String comparison** | Case-insensitive by default                                                                     | Case-sensitive                                                                                             |
+| **Typical use**       | Recurring queries                                                                               | Ad-hoc exploration or additional filtering logic                                                           |
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Exploration queries vs disabling auto-index creation">
+
+**Exploration queries** use `filter` to evaluate a condition without requiring an index.  
+**Disabling auto-index creation** prevents RavenDB from automatically creating new auto-indexes.  
+    
+The table below compares their purposes and effects on query execution:
+
+| Feature                           | Purpose                                                       | Effect on query execution                                                                                                                                |
+|-----------------------------------|---------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Disabling auto-index creation** | Prevent RavenDB from automatically creating new auto-indexes. | **Blocks** a query that would need a new auto-index - the query fails.<br/>The server setting also blocks queries that would use an existing auto-index. |
+| **Exploration query** (`filter`)  | Evaluate a filter condition without requiring an index.       | Scans the retrieved results and evaluates the filter condition without using or creating an index for that condition.                                    |
+
+---
+
+### Example
+
+The table below compares queries against the `Products` collection.   
+Each product document has a `UnitsInStock` field containing the number of units currently in stock.  
+Assume auto-index creation is **disabled** and no existing auto-index covers the UnitsInStock field.   
+
+| Query                                    | Result                                                                    |
+|------------------------------------------|---------------------------------------------------------------------------|
+| `from Products where UnitsInStock > 10`  | ❌ **Fails**<br/>`where` needs an auto-index, and creating one is disabled.  |
+| `from Products filter UnitsInStock > 10` | ✅ **Runs**<br/>`filter` scans the _Products_ documents. No index is needed. |
+
+---
+
+### Use them together
+
+* Disable auto-index creation to protect the database from unplanned indexes,  
+  and use `filter` to explore data that no index covers.
+
+* `filter` doesn't exempt the **rest** of the query:  
+  Conditions on ordinary document fields in `where`, or sorting by document fields with `order by`,  
+  still require an auto-index in a collection query, so the settings still apply.
+
+---
+
+### Where to disable auto-index creation
+
+| Setting                                                                                                                                                                | Applies to                                            | Effect                                                                                |
+|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|---------------------------------------------------------------------------------------|
+| **Studio**:<br/>[Disable creating new Auto-Indexes](../../../studio/database/settings/studio-configuration.mdx#disabling-auto-index-creation-on-studio-queries-or-patches) | Queries and patches run from the Studio, per database | Queries that need a new auto-index fail.<br/>Existing auto-indexes can still be used. |
+| **Server**:<br/>[Indexing.DisableQueryOptimizerGeneratedIndexes](../../../server/configuration/indexing-configuration.mdx#indexingdisablequeryoptimizergeneratedindexes)   | All queries and patches, from any client including the Studio.<br/>Server-wide or per database | Queries that need an auto-index fail, even if a suitable one already exists.<br/>Database-level changes take effect after the database is reloaded. |    
+<br/>    
+    
+_Patch-by-query_ and _delete-by-query_ operations do not support `filter`.  
+You therefore cannot use `filter` to avoid the auto-index requirements of these operations.  
+See [Query and operation restrictions](#query-and-operation-restrictions).  
+
+</Panel>
+
+<Panel heading="Exploration queries by query type">
+
+* You can use `filter` with each of the following query types:
+    * **[Full-collection query](../../../querying/overview.mdx#3-query-a-collection---query-full-collection--query-by-id)** -  
+      Reads documents directly from a collection, without using a static index or an auto-index.
+    * **[Dynamic query](../../../querying/overview.mdx#2-query-a-collection---with-filtering)** -  
+      Queries a collection using an auto-index, for example to evaluate `where` conditions or sort by a document field.  
+      RavenDB reuses a suitable auto-index or creates one when needed.
+    * **[Static-index query](../../../querying/overview.mdx#1-query-an-existing-index)** -  
+      Retrieves results using the static index explicitly specified in the query.
+
+* For queries on Map-Reduce indexes and dynamic `group by` queries,  
+  `filter` evaluates **aggregation results** rather than individual documents.  
+  Learn more in [Filter with a static Map-Reduce index](#filter-with-a-map-reduce-index-query) and [Filter with a dynamic group-by query](#filter-with-a-map-reduce-index-query-dynamic-group-by-query).
+
+* In each case, `filter` applies an **additional condition** to the results retrieved by the query,  
+  without using or creating an index for that condition.
+    
+---
+    
+<ContentFrame>
+    
+### Filter with a full-collection query
+    
+* In a full-collection query, `filter` examines documents directly from the collection.  
+  No index is used and no auto-index is created.
+
+* The following query returns all companies located in the USA.  
+  Each matching result is a full `Company` document.  
+  No page size or `filter_limit` is set, so the filter examines the entire collection:    
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+List<Company> companies = session
+    .query(Company.class)
+     // Scan all documents in the collection and keep only companies located in the USA.
+     // No auto-index is created.
+    .filter(f -> f.equals("Address.Country", "USA"))
+    .toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Company> companies = session.advanced()
+    .rawQuery(Company.class, "from Companies filter Address.Country == $country")
+    .addParameter("country", "USA")
+    .toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Companies
+filter Address.Country == "USA"
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="warning" title="">
+    
+Without a page size or `filter_limit`, filtering a large collection can scan every document in it,  
+which burdens the server and prolongs the query time.
+
+* Set a page size to limit the number of matching results returned.  
+  Learn more in [Filter and paging](#filter-and-paging).
+
+* Set `filter_limit` to restrict the number of scanned documents.  
+  Learn more in [Limit the number of scanned results](#limit-the-number-of-scanned-results).
+
+</Admonition>    
+    
+</ContentFrame>
+<ContentFrame>
+    
+### Filter with a dynamic query
+
+* A collection query targets a collection without explicitly specifying an index.  
+  RavenDB processes a collection query as a **dynamic query** when it includes a `where` condition on document fields other than just the document ID,
+  an `order by` clause that sorts by a document field, or both.  
+  It reuses a suitable auto-index or creates one when needed.  
+  Learn more in [Query a collection - with filtering](../../../querying/overview.mdx#2-query-a-collection---with-filtering).
+    
+  Dynamic `group by` queries use an auto Map-Reduce index.  
+  See [Filter with a dynamic group-by query](#filter-with-a-map-reduce-index-query-dynamic-group-by-query).
+
+* Narrow the results with `where` first: only results matching that `where` condition are examined by `filter`.  
+  The fields referenced in `filter` are **not** added to the auto-index.
+
+* The following query returns full `Company` documents that match both conditions:
+    * `where`: `Contact.Title` equals _"Sales Representative"_ (case-insensitive).
+    * `filter`: `Address.Country` equals _"Germany"_ (case-sensitive).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+List<Company> companies = session
+    .query(Company.class)
+     // 'whereEquals' is evaluated against an auto-index that indexes 'Contact.Title'
+    .whereEquals("Contact.Title", "Sales Representative")
+     // 'filter' scans only the results that matched the 'whereEquals' condition.
+     // 'Address.Country' is NOT added to the auto-index.
+    .filter(f -> f.equals("Address.Country", "Germany"))
+    .toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Company> companies = session.advanced()
+    .rawQuery(Company.class,
+        "from Companies\n" +
+        "where Contact.Title == $title\n" +
+        "filter Address.Country == $country")
+    .addParameter("title", "Sales Representative")
+    .addParameter("country", "Germany")
+    .toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Companies
+where Contact.Title == "Sales Representative"
+filter Address.Country == "Germany"
+```
+</TabItem>
+</Tabs>
+
+**Auto-index used:**  
+The `where` condition uses an auto-index on `Contact.Title`, such as `Auto/Companies/ByContact.Title`.  
+The `Address.Country` field used by `filter` does not need to be indexed.
+
+</ContentFrame>
+<ContentFrame>    
+    
+### Filter with a static index query
+   
+* For a static Map index, `where` evaluates its condition against the index-fields,  
+  while `filter` evaluates its condition against the original documents.    
+  The filter condition can therefore reference document fields that aren't included in the index.    
+    
+* `filter` cannot see fields that exist only in the index, even if they are stored.  
+  For example, if an index computes `StockValue = UnitsInStock * PricePerUnit` and the documents have no `StockValue` field,
+  `filter StockValue > 1000` returns no matches without reporting an error.
+
+* For example, create and deploy the following index, which indexes only the product's `Category` field:
+
+    ```java
+    public class Products_ByCategory extends AbstractIndexCreationTask
+    {
+        public Products_ByCategory()
+        {
+            // The index field: Category
+            map = "from product in docs.Products " +
+                  "select new { Category = product.Category }";
+        }
+    }
+    ```
+    <br/>
+
+* Query the index for beverages (_categories/1-A_), then `filter` the retrieved documents to those whose `PricePerUnit` is greater than 20.  
+  `PricePerUnit` is not indexed by this index, so a `where` condition on it would fail.  
+    
+  Each matching result is a full `Product` document.  
+  The query uses the specified static index. No auto-index is created:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+List<Product> products = session
+    .query(Product.class, Products_ByCategory.class)
+     // 'whereEquals' is evaluated against the index-field 'Category'
+    .whereEquals("Category", "categories/1-A")
+     // 'filter' is evaluated against each retrieved Product document
+    .filter(f -> f.greaterThan("PricePerUnit", 20))
+    .toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Product> products = session.advanced()
+    .rawQuery(Product.class,
+        "from index 'Products/ByCategory'\n" +
+        "where Category == $category\n" +
+        "filter PricePerUnit > $price")
+    .addParameter("category", "categories/1-A")
+    .addParameter("price", 20)
+    .toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Products/ByCategory"
+where Category == "categories/1-A"
+filter PricePerUnit > 20
+```
+</TabItem>
+</Tabs>
+    
+</ContentFrame>    
+<ContentFrame>
+
+### Filter with a Map-Reduce index query - static Map-Reduce index {/* #filter-with-a-map-reduce-index-query */}
+
+* When querying a Map-Reduce index, the `filter` condition is evaluated against the **aggregation results**,  
+  so it references the reduce result fields rather than the original documents.  
+  The same applies to dynamic `group by` queries.
+
+* Both this example and the [dynamic group-by query](#filter-with-a-map-reduce-index-query-dynamic-group-by-query) example below use the following Java result class.  
+  `@JsonProperty` maps the PascalCase field names of the sample data to the class fields:
+
+    ```java
+    public class OrdersByCompanyResult
+    {
+        @JsonProperty("Company")
+        private String company;
+
+        @JsonProperty("Count")
+        private int count;
+
+        public String getCompany() { return company; }
+        public void setCompany(String company) { this.company = company; }
+
+        public int getCount() { return count; }
+        public void setCount(int count) { this.count = count; }
+    }
+    ```
+    <br/>
+
+Create and deploy the following index, which counts orders per company.  
+It is a simplified version of _Orders/ByCompany_ from the sample data, containing only `Company` and `Count`:
+
+```java
+public class Orders_ByCompany extends AbstractIndexCreationTask
+{
+    public Orders_ByCompany()
+    {
+        map = "from order in docs.Orders " +
+              "select new { Company = order.Company, Count = 1 }";
+
+        reduce = "from result in results " +
+                 "group result by result.Company into g " +
+                 "select new { Company = g.Key, Count = g.Sum(x => x.Count) }";
+    }
+}
+```
+<br/>
+
+The following query returns aggregation results for companies that placed more than 20 orders.  
+The query uses `filter` to apply the `Count > 20` condition to the aggregation results.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+List<OrdersByCompanyResult> companies = session
+    .query(OrdersByCompanyResult.class, Query.index("Orders/ByCompany"))
+     // 'filter' is evaluated against each aggregation result.
+    .filter(f -> f.greaterThan("Count", 20))
+    .toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<OrdersByCompanyResult> companies = session.advanced()
+    .rawQuery(OrdersByCompanyResult.class,
+        "from index 'Orders/ByCompany'\n" +
+        "// 'filter' is evaluated against each aggregation result.\n" +
+        "filter Count > $minimum")
+    .addParameter("minimum", 20)
+    .toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Orders/ByCompany"
+// 'filter' is evaluated against each aggregation result.
+filter Count > 20
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Filter with a Map-Reduce index query - dynamic group-by query {/* #filter-with-a-map-reduce-index-query-dynamic-group-by-query */}
+
+The query groups orders by `Company` and returns aggregation results for companies with more than 20 orders.  
+RavenDB reuses a suitable auto Map-Reduce index or creates one when needed.  
+    
+The query uses the `OrdersByCompanyResult` class defined in the [static Map-Reduce index example](#filter-with-a-map-reduce-index-query).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+List<OrdersByCompanyResult> companies = session
+    .query(Order.class)
+     // Group orders by company using an auto Map-Reduce index.
+    .groupBy("Company")
+     // 'filter' is evaluated against each aggregation result.
+    .filter(f -> f.greaterThan("Count", 20))
+    .selectKey("Company")
+    .selectCount("Count")
+    .ofType(OrdersByCompanyResult.class)
+    .toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<OrdersByCompanyResult> companies = session.advanced()
+    .rawQuery(OrdersByCompanyResult.class,
+        "from Orders\n" +
+        "group by Company\n" +
+        "// 'filter' is evaluated against each aggregation result.\n" +
+        "filter Count > $minimum\n" +
+        "select Company, count() as Count")
+    .addParameter("minimum", 20)
+    .toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Orders
+group by Company
+// 'filter' is evaluated against each aggregation result.
+filter Count > 20
+select Company, count() as Count
+```
+</TabItem>
+</Tabs>
+
+**Auto-index used:**  
+An auto Map-Reduce index that groups orders by `Company` and counts them,  
+such as `Auto/Orders/ByCountReducedByCompany`.
+
+<Admonition type="note" title="">
+    
+The following applies to dynamic group-by query.    
+    
+* **RQL: Use the Count field**:    
+
+  In RQL, `count()` in `select` tells RavenDB to include a `Count` field in the auto Map-Reduce index.  
+  The `filter` clause reads this field before `select` projects the results.
+
+  For example, with `select Company, count() as NumOrders`:
+
+    | Expression              | Behavior                                                                                                    |
+    |-------------------------|-------------------------------------------------------------------------------------------------------------|
+    | `filter Count > 20`     | Checks the aggregation count.                                                                               |
+    | `filter NumOrders > 20` | Returns no matches without reporting an error<br/>because the projection alias is unavailable during filtering. |
+    | `filter count() > 20`   | Throws an error because the RQL `count()` function<br/>is not supported inside `filter`.                        |
+
+</Admonition>
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Limit the number of scanned results">
+
+**How the scan limit works**:
+
+* Set the `limit` argument of `filter`, or `filter_limit` in RQL,  
+  to specify the **maximum number of candidate results the filter examines**.  
+  By default, no `filter_limit` is set. If set, its value must be greater than 0.
+
+* The limit applies to all candidates examined by the filter, whether they pass or fail the condition.  
+  Candidates beyond the limit aren't examined or returned, even if they would match.
+
+* When the query includes `where`, `filter_limit` applies to the candidates that match `where`.
+
+---
+    
+**Scan limit vs page size**:
+
+The **page size** caps the number of matching results returned.  
+Filtering can stop before reaching `filter_limit` if the page is full or no more candidates remain.  
+Learn more in [Filter and paging](#filter-and-paging).
+
+For example, assume no explicit page size is set, the filter condition is `Country == "USA"`,  
+and `filter_limit` is 2. The candidates are examined in the order shown below:
+
+| Candidate result | Country | Examined by filter | Returned |
+|------------------|---------|--------------------|----------|
+| Employee 1       | USA     | Yes                | Yes      |
+| Employee 2       | Poland  | Yes                | No       |
+| Employee 3       | USA     | No: limit reached  | No       |
+
+The filter examines two employees, but only **Employee 1** is returned.
+
+* A query can return fewer results, or even no results, while matching candidates exist beyond `filter_limit`.
+* Which candidates are examined depends on the order in which the query retrieves them.  
+  Use [sorting](#filter-and-sorting) to control this order.
+
+---
+    
+**Example: examine up to 100 orders**:
+
+On a **non-sharded database**, the following query examines up to 100 orders and returns those shipped to the UK.      
+The query also requests [query statistics](../../../client-api/session/querying/how-to-get-query-statistics.mdx):
+  * `stats.value.getScannedResults()` reports the number of examined candidates
+  * `orders.size()` reports the number of returned matches.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+Reference<QueryStatistics> stats = new Reference<>();
+
+List<Order> orders = session
+    .query(Order.class)
+     // Get query statistics to see how many results were scanned
+    .statistics(stats)
+     // Examine up to 100 candidate results
+    .filter(f -> f.equals("ShipTo.Country", "UK"), 100)
+    .toList();
+
+// orders.size(): the number of examined orders that matched the filter.
+// stats.value.getScannedResults(): the number examined, at most 100.
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+Reference<QueryStatistics> stats = new Reference<>();
+
+List<Order> orders = session.advanced()
+    .rawQuery(Order.class,
+        "from Orders\n" +
+        "filter ShipTo.Country == $country\n" +
+        "filter_limit $limit")
+    .addParameter("country", "UK")
+    .addParameter("limit", 100)
+     // Get query statistics to see how many results were scanned
+    .statistics(stats)
+    .toList();
+
+// orders.size(): the number of examined orders that matched the filter.
+// stats.value.getScannedResults(): the number examined, at most 100.
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Orders
+filter ShipTo.Country == "UK"
+filter_limit 100
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+    
+#### Sharded document queries
+
+For a non-Map-Reduce query on a sharded database, each shard applies `filter_limit` locally.  
+It is not a database-wide cap on the total work done by all shards.  
+The orchestrator also caps the number of returned results at `filter_limit`.  
+Learn more in [Filter and sharding](#filter-and-sharding).
+
+</Admonition>    
+
+</Panel>
+
+<Panel heading="Filter and sorting">
+
+**Execution order**:
+
+* Sorting is applied **before filtering**.  
+  Use `orderBy` / `orderByDescending` in the Java query API, or `order by` in RQL, to determine the order in which the filter examines candidate results.
+  Results that pass the filter retain this order.
+
+* In the Java query API, placing `orderBy` before or after `filter` does not change the execution order.  
+  The client generates RQL with `order by` before `filter`.
+
+* With `filter_limit`, sorting determines **which candidates are examined before the limit is reached**.
+
+---     
+    
+**Example: examine the 50 highest-freight orders**:
+
+On a **non-sharded database**, the following query examines up to 50 orders, starting with those with the highest freight cost.
+It returns the UK orders found among those candidates, in descending `Freight` order.  
+Orders beyond the first 50 candidates aren't examined or returned.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+List<Order> orders = session
+    .query(Order.class)
+     // Sort the retrieved results first (this uses an auto-index on 'Freight')
+     // 'OrderingType.DOUBLE' sorts 'Freight' as a number rather than as a string
+    .orderByDescending("Freight", OrderingType.DOUBLE)
+     // Examine up to 50 candidates in descending freight order
+    .filter(f -> f.equals("ShipTo.Country", "UK"), 50)
+    .toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Order> orders = session.advanced()
+    .rawQuery(Order.class,
+        "from Orders\n" +
+        "order by Freight as double desc\n" +
+        "filter ShipTo.Country == $country\n" +
+        "filter_limit $limit")
+    .addParameter("country", "UK")
+    .addParameter("limit", 50)
+    .toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Orders
+order by Freight as double desc
+filter ShipTo.Country == "UK"
+filter_limit 50
+```
+</TabItem>
+</Tabs>
+
+**Expected results**:  
+* With the unmodified sample data, 2 of the 50 examined orders match: `orders/112-A` and `orders/809-A`.
+* **Auto-index used:**   
+  An auto-index covering `Freight`, such as `Auto/Orders/ByFreight`.  
+  The `ShipTo.Country` field used by `filter` does not need to be indexed.
+
+<Admonition type="note" title="">
+    
+#### Choosing candidates consistently    
+
+* **Without explicit sorting**:  
+  Candidates are examined in the order the collection or index returns them.  
+  This order can change as documents or indexes change, so don't rely on it to select a particular subset.
+
+* **Equal sort values**:  
+  If the sort field contains repeated values, add a unique secondary sort field when you need a deterministic choice among those candidates.
+  See [Chain ordering](../../../querying/sorting-query-results/sort-query-results.mdx#chain-ordering).
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Filter and paging">
+
+<ContentFrame>
+
+### Page through matching results
+
+For document queries on a **non-sharded database**:
+
+* Use `take` to set the maximum number of matching results per page.
+* Use `skip` to advance past the candidates examined by previous requests.  
+  The offset must include both the results returned and the candidates rejected by the filter.
+
+In RQL, use `limit <offset>, <pageSize>` to set the offset and page size.
+
+The following example returns full `Order` documents shipped to the USA, up to 10 per page.  
+It assumes the data and candidate order remain unchanged between requests.  
+**No `filter_limit` is set**, so each request can examine all remaining candidates if needed.  
+The loop stops when a page is empty:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+final int pageSize = 10;
+int offset = 0;
+List<Order> pagedResults;
+Reference<QueryStatistics> stats = new Reference<>();
+
+do
+{
+    pagedResults = session
+        .query(Order.class)
+        .statistics(stats)
+        .filter(f -> f.equals("ShipTo.Country", "USA"))
+         // Skip the candidates examined by previous page requests
+        .skip(offset)
+         // Return at most 'pageSize' results that passed the filter
+        .take(pageSize)
+        .toList();
+
+    // Process the current page here...
+
+    // Advance the offset by the results returned AND the results the filter rejected
+    offset += pagedResults.size() + (int) stats.value.getSkippedResults();
+}
+while (pagedResults.size() > 0);
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+final int pageSize = 10;
+int offset = 0;
+List<Order> pagedResults;
+Reference<QueryStatistics> stats = new Reference<>();
+
+do
+{
+    pagedResults = session.advanced()
+        .rawQuery(Order.class, "from Orders filter ShipTo.Country == $country")
+        .addParameter("country", "USA")
+        .statistics(stats)
+         // Skip the candidates examined by previous page requests
+        .skip(offset)
+         // Return at most 'pageSize' results that passed the filter
+        .take(pageSize)
+        .toList();
+
+    // Process the current page here...
+
+    // Advance the offset by the results returned AND the results the filter rejected
+    offset += pagedResults.size() + (int) stats.value.getSkippedResults();
+}
+while (pagedResults.size() > 0);
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+// The first page: skip 0 candidates, return up to 10 results that pass the filter
+from Orders
+filter ShipTo.Country == "USA"
+limit 0, 10
+
+// For the next page, set the offset to: 
+// the current offset + the number of results returned + SkippedResults
+```
+</TabItem>
+</Tabs>
+
+The examples capture [query statistics](../../../client-api/session/querying/how-to-get-query-statistics.mdx) with `.statistics(stats)`.  
+For these queries, `stats.value.getSkippedResults()` counts candidates rejected by the filter during the **current request**.  
+It does not include candidates bypassed by `skip`.
+
+After each request, advance the offset by both the returned results and the rejected candidates:
+
+```java
+offset += pagedResults.size() + (int) stats.value.getSkippedResults();
+```
+<br/>
+    
+This follows the approach described in [Paging through tampered results](../../../indexes/querying/paging.mdx#paging-through-tampered-results).
+
+For example, with a page size of 2, suppose the orders are examined in the following order.  
+The filter keeps orders shipped to the USA:
+
+| Candidate | Country | First-page outcome        |
+|-----------|---------|---------------------------|
+| Order 1   | USA     | Returned                  |
+| Order 2   | Poland  | Rejected by the filter    |
+| Order 3   | USA     | Returned; the page is full |
+| Order 4   | USA     | Not examined on this page |
+
+Three candidates were examined: **2 returned and 1 rejected**.  
+The next offset is therefore **3**: `0 + 2 + 1`.  
+Using `skip(2)` would examine Order 3 again, repeating a result from the previous page.
+
+</ContentFrame>
+<ContentFrame>
+
+### Page with a scan limit
+
+For the non-sharded document query above, set `filter(..., limit)` or RQL `filter_limit`  
+to cap the number of candidates each request examines **after its offset**, including rejected candidates.  
+Filtering can stop earlier if the page is full or no candidates remain.  
+See [Limit the number of scanned results](#limit-the-number-of-scanned-results).
+
+The following example returns full `Order` documents shipped to the USA, up to 10 per page,  
+while examining at most 100 candidates per request. It assumes the data and candidate order remain unchanged between requests.
+The loop continues when the page is full **or** the scan limit was reached, even if the page is empty:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+final int pageSize = 10;
+final int scanLimit = 100;
+int offset = 0;
+List<Order> pagedResults;
+Reference<QueryStatistics> stats = new Reference<>();
+
+do
+{
+    pagedResults = session
+        .query(Order.class)
+        .statistics(stats)
+        .filter(f -> f.equals("ShipTo.Country", "USA"), scanLimit)
+         // Skip the candidates examined by previous page requests
+        .skip(offset)
+         // Return at most 'pageSize' results that passed the filter
+        .take(pageSize)
+        .toList();
+
+    // Process the current page here...
+
+    // Advance the offset by the results returned AND the results the filter rejected
+    offset += pagedResults.size() + (int) stats.value.getSkippedResults();
+}
+// Continue if the page is full or the scan limit was reached, even after an empty page.
+while (pagedResults.size() == pageSize ||
+       stats.value.getScannedResults() == scanLimit);
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+final int pageSize = 10;
+final int scanLimit = 100;
+int offset = 0;
+List<Order> pagedResults;
+Reference<QueryStatistics> stats = new Reference<>();
+
+do
+{
+    pagedResults = session.advanced()
+        .rawQuery(Order.class,
+            "from Orders\n" +
+            "filter ShipTo.Country == $country\n" +
+            "filter_limit $scanLimit")
+        .addParameter("country", "USA")
+        .addParameter("scanLimit", scanLimit)
+        .statistics(stats)
+         // Skip the candidates examined by previous page requests
+        .skip(offset)
+         // Return at most 'pageSize' results that passed the filter
+        .take(pageSize)
+        .toList();
+
+    // Process the current page here...
+
+    // Advance the offset by the results returned AND the results the filter rejected
+    offset += pagedResults.size() + (int) stats.value.getSkippedResults();
+}
+// Continue if the page is full or the scan limit was reached, even after an empty page.
+while (pagedResults.size() == pageSize ||
+       stats.value.getScannedResults() == scanLimit);
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+// First request: skip 0 candidates, return up to 10 matches,
+// and examine at most 100 candidates.
+from Orders
+filter ShipTo.Country == "USA"
+limit 0, 10
+filter_limit 100
+
+// Next offset: current offset + results returned + SkippedResults.
+// Request another page if 10 results were returned or ScannedResults is 100.
+```
+</TabItem>
+</Tabs>
+
+* **Advance the offset** using the same calculation as before: add the returned results and `stats.value.getSkippedResults()`.
+* **Continue paging** if `pagedResults.size() == pageSize` or `stats.value.getScannedResults() == scanLimit`.  
+  More candidates may remain in either case, so another request is needed to find out.
+* **Stop paging** when the page is smaller than `pageSize` and fewer than `scanLimit` candidates were examined.  
+  The remaining candidates have been exhausted.
+
+For example, if all 100 examined candidates are rejected, the page is empty and both `scannedResults` and `skippedResults` are 100.
+The next offset is the current offset + 100, and the loop requests another page.
+
+</ContentFrame>
+<ContentFrame>
+
+### Paging considerations
+
+<Admonition type="note" title="">
+    
+**totalResults and page counts**:    
+
+  * Do not use `totalResults` to calculate the page count.  
+   With `filter`, it can be lower or higher than the total number of matching results.
+    
+  * A full-collection query may report only the matches found before filtering stops,  
+    while an index query may report the number of index matches before `filter` is applied.
+
+---
+    
+**Sharded databases**:  
+    
+  Paging and query statistics behave differently.  
+  See [Filter and sharding](#filter-and-sharding) and [Sharding: Paging query results](../../../sharding/querying.mdx#paging-query-results).
+    
+---
+    
+**Distinct projections and multiple index entries per document**: See [Paging](../../../indexes/querying/paging.mdx).
+    
+</Admonition>
+    
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Filter and projections">
+
+Use a [projection](../../../client-api/session/querying/how-to-project-query-results.mdx) to choose which fields to return from results that pass the filter.  
+Filtering happens **before projection**, so the filter can reference fields that aren't returned.
+
+In Map-Reduce queries, the filter condition is evaluated against the aggregation results before projection.  
+See [Filter with a static Map-Reduce index](#filter-with-a-map-reduce-index-query) and [Filter with a dynamic group-by query](#filter-with-a-map-reduce-index-query-dynamic-group-by-query).
+
+The following query filters companies located in the USA and returns only `Name` and `Phone` for each match.  
+`Address.Country` is used by the filter but isn't returned.  
+This full-collection query does not create an auto-index.
+
+The projected results are returned as instances of the following class.  
+`@JsonProperty` maps the projected PascalCase field names (`Name`, `Phone`) to the class fields:
+
+```java
+public class CompanyDetails
+{
+    @JsonProperty("Name")
+    private String name;
+
+    @JsonProperty("Phone")
+    private String phone;
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
+}
+```
+<br/>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+List<CompanyDetails> companies = session
+    .query(Company.class)
+     // Filter by 'Address.Country'
+    .filter(f -> f.equals("Address.Country", "USA"))
+     // Project the fields defined in 'CompanyDetails' ('Name' and 'Phone')
+    .selectFields(CompanyDetails.class)
+    .toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<CompanyDetails> companies = session.advanced()
+    .rawQuery(CompanyDetails.class,
+        "from Companies\n" +
+        "filter Address.Country == $country\n" +
+        "select Name, Phone")
+    .addParameter("country", "USA")
+    .toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Companies
+filter Address.Country == "USA"
+select Name, Phone
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+
+#### Session tracking
+
+Projected results **are not tracked by the session**.  
+This also applies to full document objects returned inside a projection.  
+    
+Modifying projected objects and calling `saveChanges()` will not update the original documents.
+Learn more in [Projections overview](../../../client-api/session/querying/how-to-project-query-results.mdx#projections-overview).
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+#### Filter by the original document field names
+
+Filtering happens before projection, so names introduced by the projection are unavailable to the filter.  
+For example, this query filters by `Address.Country` and returns that field under the name `CountryName`:
+
+```sql
+from Companies
+filter Address.Country == "USA"
+select Address.Country as CountryName
+```
+<br/>
+    
+`CountryName` names a field in the projected output.  
+Using `filter CountryName == "USA"` would check for a field named `CountryName` in the original document.  
+If the document has no `CountryName` field, the comparison returns no matches without reporting an error.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Filter by a related document">
+
+Use the RQL [`load`](../../../querying/rql/what-is-rql.mdx#load) clause (a `LoadToken` in `QueryData` in the Java query API) with `filter`
+to return documents based on fields in a related document.
+
+For each candidate, the server loads the related document before evaluating the filter condition.  
+
+Loading related documents adds work for each examined candidate.  
+Set `filter_limit` to cap the number of candidates examined.  
+See [Limit the number of scanned results](#limit-the-number-of-scanned-results).    
+    
+In the following example, each product stores its supplier's document ID in `Supplier`.  
+The query loads each product's supplier and returns products whose supplier is located in Japan.  
+The loaded supplier is used by the filter and isn't returned.  
+This full-collection query does not create an auto-index.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+import net.ravendb.client.documents.queries.QueryData;
+import net.ravendb.client.documents.session.tokens.LoadToken;
+
+// Configure the related supplier load.
+// Empty field lists preserve the full product document as the result.
+QueryData queryData = new QueryData(
+    new String[0],   // fields
+    new String[0],   // projections
+    "p",             // fromAlias
+    null,            // declareTokens
+    Collections.singletonList(LoadToken.create("p.Supplier", "s")), // loadTokens
+    false);          // isCustomFunction
+
+List<Product> products = session
+    .query(Product.class)
+    .selectFields(Product.class, queryData)
+     // Filter on the loaded supplier's country.
+     // The "s." prefix must match the load alias.
+    .filter(f -> f.equals("s.Address.Country", "Japan"))
+    .toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Product> products = session.advanced()
+    .rawQuery(Product.class,
+        "from Products as p\n" +
+        "load p.Supplier as s\n" +
+        "filter s.Address.Country == $country")
+    .addParameter("country", "Japan")
+    .toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from Products as p
+load p.Supplier as s
+filter s.Address.Country == "Japan"
+```
+</TabItem>
+</Tabs>
+
+**Expected results**:  
+On a **non-sharded database** with the unmodified sample data, 6 products match.
+
+<Admonition type="note" title="">
+
+#### Sharded databases
+
+On a **sharded database**, `load` can retrieve a related document only if it resides on the same shard as the candidate.  
+A related document on another shard is loaded as `null`.
+
+For this example, if the supplier is missing or resides on another shard, `s.Address.Country == "Japan"` does not match,
+so the product is skipped without an error.
+
+Use [document anchoring](../../../sharding/administration/anchoring-documents.mdx) to keep related documents in the same bucket and shard.  
+See [Sharding: Unsupported querying features](../../../sharding/querying.mdx#unsupported-querying-features).
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Filter with a JavaScript function">
+
+Use RQL's [declare](../../../querying/rql/what-is-rql.mdx#declare) keyword to define a JavaScript function and call it from `filter`.
+
+The server calls the function for each candidate examined by the filter.  
+The function can return `true` to keep the candidate, or return a value for the filter condition to compare.
+
+Run these queries with `rawQuery`, or execute the RQL directly in Studio.   
+
+<ContentFrame> 
+
+### Pass only the document
+
+The following function receives only the product document and returns `true` when the units in stock plus the units on order are below `ReorderLevel`.  
+The query returns full `Product` documents that meet this condition; no query parameter is needed.  
+A function is needed here because arithmetic can't be written directly in a `filter` condition.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Product> products = session.advanced()
+    .rawQuery(Product.class,
+        "declare function needsReorder(product) {\n" +
+        "    // Add two fields and compare the result with a third\n" +
+        "    return product.UnitsInStock + product.UnitsOnOrder < product.ReorderLevel;\n" +
+        "}\n" +
+        "\n" +
+        "from Products as p\n" +
+        "filter needsReorder(p)")
+    .toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+declare function needsReorder(product) {
+    // Add two fields and compare the result with a third
+    return product.UnitsInStock + product.UnitsOnOrder < product.ReorderLevel;
+}
+
+from Products as p
+filter needsReorder(p)
+```
+</TabItem>
+</Tabs>
+
+**Expected results**: With the unmodified sample data, 8 products match.
+
+<Admonition type="note" title="">
+
+#### Return a boolean value
+
+When a function call is used directly as the `filter` condition, as in `filter needsReorder(p)` above,  
+the function must return the boolean value `true` for the candidate to be included.
+    
+Truthy values such as `1` or `"yes"` do not include the candidate.
+
+</Admonition>
+
+</ContentFrame>
+<ContentFrame>
+
+### Compare a calculated value
+
+A function can return a value for the filter condition to compare.  
+This allows calculations that cannot be written directly in an RQL `filter` expression, such as multiplication.
+
+The following query returns products whose stock value (`UnitsInStock * PricePerUnit`) is greater than 1000:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Product> products = session.advanced()
+    .rawQuery(Product.class,
+        "declare function stockValue(product) {\n" +
+        "    return product.UnitsInStock * product.PricePerUnit;\n" +
+        "}\n" +
+        "\n" +
+        "from Products as p\n" +
+        "filter stockValue(p) > 1000")
+    .toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+declare function stockValue(product) {
+    return product.UnitsInStock * product.PricePerUnit;
+}
+
+from Products as p
+filter stockValue(p) > 1000
+```
+</TabItem>
+</Tabs>
+
+**Expected results**: With the unmodified sample data, 5 products match.
+
+</ContentFrame>
+<ContentFrame>
+
+### Pass a query parameter as an argument
+
+* The following query returns employees whose `Title` starts with `"Sales"`, such as _"Sales Representative"_ or _"Sales Manager"_.  
+  The comparison uses JavaScript's case-sensitive `startsWith` method.  
+  RQL's `startsWith()` helper is case-insensitive in `filter`. See [Supported operators and limitations](#supported-operators-and-limitations).
+
+* In the `rawQuery` example, `.addParameter("prefix", "Sales")` sets the RQL query parameter `$prefix` to `"Sales"`.  
+  The call `titleStartsWith(e, $prefix)` passes that value to the JavaScript function's `prefix` parameter.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Employee> employees = session.advanced()
+    .rawQuery(Employee.class,
+        "declare function titleStartsWith(employee, prefix) {\n" +
+        "    // String.prototype.startsWith is case-sensitive\n" +
+        "    return employee.Title.startsWith(prefix);\n" +
+        "}\n" +
+        "\n" +
+        "from Employees as e\n" +
+        "filter titleStartsWith(e, $prefix)")
+    .addParameter("prefix", "Sales")
+    .toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+declare function titleStartsWith(employee, prefix) {
+    // String.prototype.startsWith is case-sensitive
+    return employee.Title.startsWith(prefix);
+}
+
+from Employees as e
+filter titleStartsWith(e, $prefix)
+```
+
+**Query parameters:**
+
+```json
+{ "prefix": "Sales" }
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Access a query parameter inside the function
+
+* The following query also returns employees whose `Title` starts with `"Sales"`, using a case-sensitive comparison.  
+  The function reads `$prefix` directly inside its body, so only the employee document is passed as an argument.  
+    
+* In the `rawQuery` example, `.addParameter("prefix", "Sales")` is still required to set the RQL query parameter `$prefix` to `"Sales"`.  
+  In this example, omitting that parameter can return no matches without reporting an error.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Employee> employees = session.advanced()
+    .rawQuery(Employee.class,
+        "declare function titleStartsWithPrefix(employee) {\n" +
+        "    // '$prefix' is the query parameter, accessed directly\n" +
+        "    return employee.Title.startsWith($prefix);\n" +
+        "}\n" +
+        "\n" +
+        "from Employees as e\n" +
+        "filter titleStartsWithPrefix(e)")
+    .addParameter("prefix", "Sales")
+    .toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+declare function titleStartsWithPrefix(employee) {
+    // '$prefix' is the query parameter, accessed directly
+    return employee.Title.startsWith($prefix);
+}
+
+from Employees as e
+filter titleStartsWithPrefix(e)
+```
+
+**Query parameters:**
+
+```json
+{ "prefix": "Sales" }
+```
+</TabItem>
+</Tabs>
+ 
+</ContentFrame>
+
+<Admonition type="note" title="">
+
+#### Declared function behavior
+
+* A declared function can also be called from `select`.
+* Declared functions cannot be called from `where`.
+* An uncaught JavaScript exception in a declared function fails the whole query.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Filter and sharding">
+
+<ContentFrame>
+
+### Document queries
+
+#### Filtering and scan limits
+    
+* Each shard applies `filter` to its own candidates.  
+  When `filter_limit` is set and the paging offset is 0, it caps how many candidates **each shard** examines.  
+  The total number examined across all shards can therefore exceed that limit.
+
+* The **orchestrator** (the node coordinating the query) combines the shard results.  
+  When `filter_limit` is set, it returns at most the smaller of that limit and the page size.
+
+* **Example**:  
+  Assume the first 10 candidate orders on each of three shards match `Freight >= 0`.  
+  With `from Orders filter Freight >= 0 filter_limit 10`, each shard examines 10 orders.  
+  The combined `scannedResults` is 30, while the orchestrator returns only 10 results.
+
+---
+    
+#### Query statistics
+
+* `scannedResults` is the sum of the candidates examined by the shards.
+* `skippedResults` is reported as 0 and does not include candidates rejected by the filter on the shards.
+
+---
+    
+#### Paging
+
+For a query that returns full documents and uses `filter` and paging, with or without `where`,  
+but without `order by`, `load`, or `filter_limit`, the offset skips matching results in the merged result set.  
+Advance it by the number of results returned: `nextOffset = currentOffset + returnedResults.size()`.
+
+---
+    
+#### Related documents
+
+`load` finds a related document only if it resides on the same shard as the candidate.  
+See [Filter by a related document](#filter-by-a-related-document).
+
+</ContentFrame>
+<ContentFrame>
+
+### Map-Reduce queries
+
+For queries against static Map-Reduce indexes and dynamic `group by` queries,  
+the shards return partial aggregation results **without applying `filter`**.
+
+The orchestrator combines and re-reduces those results, then applies `filter` to the combined aggregation results.  
+`filter_limit` caps how many combined aggregation results it examines.
+
+* For these Map-Reduce queries -  
+  `scannedResults` counts the combined aggregation results examined by `filter` on the orchestrator.  
+  `skippedResults` counts those rejected by the filter.
+
+* Use `filter` for conditions on **computed aggregation fields**, such as `Count`.  
+  A `where` condition is applied at the shards and can discard partial values before they are combined.
+
+* Use `where` on a **reduce-key (grouping) field**, such as `Company`, to narrow the shard results first.
+    
+* **Example**:  
+  In the [Map-Reduce example](#filter-with-a-map-reduce-index-query), a company with 15 orders on each of two shards has a combined `Count` of 30.  
+  `filter Count > 20` includes that combined result.  
+  `where Count > 20` discards both partial results before they can be combined.
+
+</ContentFrame>
+
+Learn more in [Sharding: Filtering query results](../../../sharding/querying.mdx#filtering-query-results).
+
+</Panel>
+
+<Panel heading="Supported operators and limitations">
+
+<ContentFrame>
+
+### Supported RQL expressions
+
+The following expressions can be used in an RQL `filter` clause:
+
+| Expression                 | Supported syntax                                                                           |
+|----------------------------|------------------------------------------------------------------------------------------- |
+| Comparisons                | `=`, `==`, `!=`, `<>`, `<`, `<=`, `>`, `>=`                                                |
+| Field-to-field comparisons | Comparing two document fields, such as `UnitsInStock < ReorderLevel`                       |
+| Logical expressions        | `and`, `or`, and negation with `and not` or `or not`; parentheses for grouping             |
+| Membership                 | `in`                                                                                       |
+| Built-in methods           | `startsWith()`, `endsWith()`, `regex()`, `exists()`                                        |
+| Document ID                | `id()` for document queries                                                                |
+| Related document fields    | Fields from [documents loaded with `load`](#filter-by-a-related-document)                  |
+| Custom logic               | Calls to [JavaScript functions defined with `declare`](#filter-with-a-javascript-function) |
+
+---
+    
+#### Quote string values
+
+Write string literals in quotes, for example `filter Address.Country == "USA"`.  
+An unquoted identifier such as `USA` is interpreted as a field name.  
+For example, `filter Address.Country == USA` compares `Address.Country` with a field named `USA`,  
+which can return no matches without reporting an error.
+
+Missing or misspelled field names can also produce unexpected results without reporting an error.
+
+---
+
+#### Negating the entire condition
+
+Use `true and not (...)`.  
+Starting the condition directly with `not` can return no results without reporting an error:
+```sql
+from Companies
+filter true and not (Address.Country == "USA")
+```
+<br/>
+    
+The Java `filter` API handles this automatically. See [API behavior](#api-behavior).
+
+---
+    
+#### String comparisons
+
+| Expression                                                                              | Case sensitivity                                                   |
+|-----------------------------------------------------------------------------------------|--------------------------------------------------------------------|
+| RQL `startsWith()` and `endsWith()` helpers                                             | Case-insensitive                                                   |
+| RQL `regex()` helper                                                                    | Case-insensitive by default; inline regex options can change this. |
+| String equality and `in` comparisons in `filter`                                        | Case-sensitive                                                     |
+| JavaScript's native `someString.startsWith(...)` and `someString.endsWith(...)` methods | Case-sensitive                                                     |
+
+For strict equality and string ordering rules, see [How exploration queries work](#how-exploration-queries-work).    
+
+</ContentFrame>
+<ContentFrame>
+
+### Unsupported RQL expressions
+
+These restrictions also apply when using `rawQuery`:
+
+* **Index-based methods**:  
+  `search()`, `boost()`, `lucene()`, `exact()`, `moreLikeThis()`, spatial methods, and vector search   
+  cannot be used inside a filter condition.
+
+* **Arithmetic**:  
+  Expressions such as `UnitsInStock * PricePerUnit` cannot be used directly in an RQL `filter` condition.  
+  Compute the value in a [declared function](#filter-with-a-javascript-function) and compare its result.
+
+* **`between`**:  
+  This operator is not supported in a filter condition and can return no results without reporting an error.  
+  Use two comparisons instead:
+  ```sql
+  from Products
+  filter PricePerUnit >= 10 and PricePerUnit <= 20
+  ```
+
+* **`now()` and `today()`**:  
+  These functions cannot be used inside a filter condition.  
+  Compare against an explicit date-time value instead.
+  Learn more in [Filter by date and time: Restrictions](../../../querying/filtering-query-results/filter-by-date-and-time.mdx#restrictions).
+
+</ContentFrame>
+<ContentFrame>
+
+### Java filter API
+
+* The Java `filter` API supports comparisons and logical expressions.  
+  It uses the `IFilterFactory` methods listed in [Syntax](#syntax).
+
+* Use `rawQuery` for supported RQL features that the `filter` API does not expose.
+
+* `IFilterFactory<T>` comparison methods compare a field with a value.  
+  For example, `f.lessThan("UnitsInStock", "ReorderLevel")` compares `UnitsInStock` with the literal string `"ReorderLevel"`.  
+  To compare two document fields, use `rawQuery` with a condition such as `filter UnitsInStock < ReorderLevel`.
+
+<Admonition type="note" title="">
+
+#### API behavior
+
+* Calling `search()` on the query adds a `where search(...)` condition; it does not add a filter condition.
+
+* Calling `filter` more than once combines the conditions with `and`.
+
+* Starting the condition with `not()` is handled by the client,  
+  so the RQL pitfall described in [Negating the entire condition](#negating-the-entire-condition) does not apply.  
+  The generated RQL depends on what follows `not()`:
+
+  | Java                                            | Generated RQL                                            |
+  |-------------------------------------------------|----------------------------------------------------------|
+  | `f.not().equals("Address.Country", "USA")`      | `filter Address.Country != $p0`                          |
+  | `f.not().greaterThan("PricePerUnit", 10)`       | `filter exists(PricePerUnit) and not PricePerUnit > $p0` |
+  | `f.not().openSubclause() ... .closeSubclause()` | `filter true and not (...)`                              |
+
+  The `exists(...)` form excludes documents that don't have the field.
+
+</Admonition>
+
+</ContentFrame>
+<ContentFrame>
+
+### Query and operation restrictions
+
+The following queries and operations cannot include a `filter` clause:
+
+* **Faceted search**:  
+  A [faceted search](../../../indexes/querying/faceted-search.mdx) query with `filter` throws an `InvalidQueryException`.
+
+* **Vector search**:  
+  A query that uses `vector.search()` in `where` cannot also include `filter`.
+
+* **Patch by query and delete by query**:  
+  Use `where` to select documents for [patch by query](../../../documents/patching-documents/patch-multiple-documents/client-api.mdx)
+  and [delete by query](../../../client-api/operations/common/delete-by-query.mdx) operations.
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Syntax">
+
+* `filter` adds a condition to the query.  
+  The query executes when results are requested, for example with `toList()`.
+
+* For the RQL clause order, see the outline in [How exploration queries work](#how-exploration-queries-work).
+
+<ContentFrame>
+
+### Query and DocumentQuery
+
+```java
+IDocumentQuery<T> filter(Consumer<IFilterFactory<T>> builder);
+
+IDocumentQuery<T> filter(Consumer<IFilterFactory<T>> builder, int limit);
+
+// After groupBy (dynamic group-by query)
+IGroupByDocumentQuery<T> filter(Consumer<IFilterFactory<T>> builder);
+
+IGroupByDocumentQuery<T> filter(Consumer<IFilterFactory<T>> builder, int limit);
+```
+<br/>
+                
+The `builder` consumer runs on the client and uses `IFilterFactory<T>` (in `net.ravendb.client.documents.queries`) to construct the filter condition.
+The server evaluates the generated condition for each examined candidate.
+
+</ContentFrame>
+<ContentFrame>
+
+### Filter parameters
+
+| Parameter     | Type                          | Description                                                                                                                       |
+| ------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| **builder**   | `Consumer<IFilterFactory<T>>` | Constructs the filter condition for a document query or a group-by query.                                                         |
+| **limit**     | `int`                         | Maximum number of candidate results examined, including rejected candidates. Must be greater than 0.<br/>Default: `Integer.MAX_VALUE`. |
+
+<Admonition type="note" title="">
+
+#### Scan limit
+
+`limit` corresponds to RQL's `filter_limit`.  
+**It does not set the maximum number of matching results returned.**
+
+The default value, `Integer.MAX_VALUE`, sends no `filter_limit`.  
+Scanning can still stop when the page is full or candidates are exhausted.
+
+Learn more in [Limit the number of scanned results](#limit-the-number-of-scanned-results) and [Filter and paging](#filter-and-paging).  
+For sharded queries, see [Filter and sharding](#filter-and-sharding).
+
+</Admonition>
+
+</ContentFrame>
+<ContentFrame>
+
+### Filter builder methods
+
+The `IFilterFactory<T>` interface provides the following comparison, logical, and grouping methods:
+
+```java
+public interface IFilterFactory<T>
+{
+    // Equality
+    IFilterFactory<T> equals(String fieldName, Object value);
+    IFilterFactory<T> notEquals(String fieldName, Object value);
+
+    // Comparison
+    IFilterFactory<T> greaterThan(String fieldName, Object value);
+    IFilterFactory<T> greaterThanOrEqual(String fieldName, Object value);
+    IFilterFactory<T> lessThan(String fieldName, Object value);
+    IFilterFactory<T> lessThanOrEqual(String fieldName, Object value);
+
+    // Logical operators and grouping
+    IFilterFactory<T> andAlso();
+    IFilterFactory<T> orElse();
+    IFilterFactory<T> not();
+    IFilterFactory<T> openSubclause();
+    IFilterFactory<T> closeSubclause();
+
+    // Overloads that accept 'MethodCall' and 'WhereParams' are omitted for brevity
+}
+```
+                                                                        
+---
+                                                                        
+#### Builder method parameters
+
+| Parameter     | Type     | Description                                                                                                         |
+| ------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
+| **fieldName** | `String` | Document field or reduce result field to compare. Use a dotted path for nested fields, such as `"Address.Country"`. |
+| **value**     | `Object` | Value to compare against.                                                                                           |
+
+</ContentFrame>
+
+</Panel>

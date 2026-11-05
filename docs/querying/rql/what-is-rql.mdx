@@ -42,6 +42,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
      * [`declare`](../../querying/rql/what-is-rql.mdx#declare)  
      * [`from`](../../querying/rql/what-is-rql.mdx#from)
      * [`where`](../../querying/rql/what-is-rql.mdx#where)
+     * [`filter`](../../querying/rql/what-is-rql.mdx#filter)
      * [`group by`](../../querying/rql/what-is-rql.mdx#group-by)
      * [`include`](../../querying/rql/what-is-rql.mdx#include)
      * [`order by`](../../querying/rql/what-is-rql.mdx#order-by)
@@ -70,25 +71,34 @@ The query pipeline in RavenDB includes the following main stages:
 2. **Filter the data** ([`where`](../../querying/rql/what-is-rql.mdx#where))  
    * The index is scanned for records that match the query predicate. 
 
-3. **Include related documents**  ([`include`](../../querying/rql/what-is-rql.mdx#include))
-    * [Related documents](../../client-api/how-to/handle-document-relationships.mdx#includes) that are included in the query will be retrieved and returned to the client  
-      along with the resulting matching documents, reducing the need to do another network round trip  
-      to the database when accessing the included documents.
-
-4. **Sort results** ([`order by`](../../querying/rql/what-is-rql.mdx#order-by)) 
+3. **Sort results** ([`order by`](../../querying/rql/what-is-rql.mdx#order-by)) 
    * Query results can be sorted.  
      For example, you can order by a field value, by the resulting documents' score, by random ordering, etc.
+
+4. **Filter the retrieved results** ([`filter`](../../querying/rql/what-is-rql.mdx#filter))
+   * Optionally, an [exploration query](../../querying/filtering-query-results/exploration-queries.mdx) applies an additional condition to the results retrieved by the previous stages.  
+     The server examines these results one by one and keeps those that match the `filter` condition.  
+     No index is used or created for this condition.
+   * The condition can reference related documents loaded with [`load`](../../querying/rql/what-is-rql.mdx#load).
+   * On a non-sharded database, filtering stops when the requested page is full, when no candidates remain,  
+     or when the number of examined candidates reaches [`filter_limit`](../../querying/filtering-query-results/exploration-queries.mdx#limit-the-number-of-scanned-results).
+   * For sharded document queries with a paging offset of 0, `filter_limit` applies to each shard separately,  
+     so the total number examined can exceed that limit.
+     See [Filter and sharding](../../querying/filtering-query-results/exploration-queries.mdx#filter-and-sharding).
 
 5. **Limit results** ([`limit`](../../querying/rql/what-is-rql.mdx#limit))
    * You can specify the number of results you want to get back from the query  
      and the number of results you want to skip.
+   * For document queries on a non-sharded database that use `filter`, the offset skips candidate results **before** filtering;
+     the page size limits the number of matching results returned.
+   * Learn how paging interacts with `filter` in [Filter and paging](../../querying/filtering-query-results/exploration-queries.mdx#filter-and-paging).
 
 6. **Project results** ([`select`](../../querying/rql/what-is-rql.mdx#select)) 
    * [Projections](../../indexes/querying/projections.mdx) are specified when you need to retrieve only specific document fields, instead of the whole full document.
      This reduces the amount of data sent over the network and is useful when only partial data is needed.
      When projections are Not defined on the query - then the full document content is retrieved from the document storage.
 
-   * Projections are applied as the last stage after the query has been processed, filtered, sorted, and paged.  
+   * Projections are applied after results have been filtered, sorted, and paged, before related documents are included.  
      This means that the projection doesn't apply to all the documents in the database,  
      only to the results that are actually returned.
 
@@ -98,7 +108,12 @@ The query pipeline in RavenDB includes the following main stages:
      If a field is stored in the index - the server will fetch it from the index.  
      If a field is Not stored in the index - the server will fetch it from the document storage.  
 
-6. **Return results** to the client.
+7. **Include related documents** ([`include`](../../querying/rql/what-is-rql.mdx#include))
+   * [Related documents](../../client-api/how-to/handle-document-relationships.mdx#includes) referenced by the returned query results are retrieved and sent to the client  
+     along with those results, reducing the need to do another network round trip to the database when accessing the included documents.
+   * When a projection is used, include paths are evaluated against the projected fields.
+
+8. **Return results** to the client.
 
 </Panel>
 
@@ -148,10 +163,13 @@ The following keywords and methods are available in RQL:
     - sum()
     - count()
     - [facet()](../../indexes/querying/faceted-search.mdx)
-    - [timeseries()](../../document-extensions/timeseries/querying/overview-and-syntax.mdx#syntax)
+    - [timeseries()](../../document-extensions/timeseries/querying/overview-and-syntax.mdx#rql-syntax)
     - [counter()](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries)
 - [LOAD](../../querying/rql/what-is-rql.mdx#load)
+- [FILTER](../../querying/rql/what-is-rql.mdx#filter)
+    - [FILTER_LIMIT](../../querying/filtering-query-results/exploration-queries.mdx#limit-the-number-of-scanned-results)
 - [LIMIT](../../querying/rql/what-is-rql.mdx#limit)
+    - [OFFSET](../../querying/rql/what-is-rql.mdx#limit)
 - [UPDATE](../../querying/rql/what-is-rql.mdx#update)
 - [INCLUDE](../../querying/rql/what-is-rql.mdx#include)
 
@@ -185,10 +203,11 @@ And the following values:
     
 ## `declare`
 
-You can use the `declare` keyword to create a JavaScript function that can then be called from a `select` clause when using a projection. 
+You can use the `declare` keyword to create a JavaScript function that can then be called from a `select` clause when using a projection,
+or from a [`filter`](../../querying/rql/what-is-rql.mdx#filter) clause. Declared functions cannot be called from `where`.  
 JavaScript functions add flexibility to your queries as they can be used to manipulate and format retrieved results.  
 
-```javascript
+```sql
 // Declare a JavaScript function 
 declare function output(employee) {
     // Format the value that will be returned in the projected field 'FullName'
@@ -201,8 +220,25 @@ from Employees as employee select output(employee)
 ```
 <br/>
 
-Values are returned from a declared Javascript function as a set of values rather than in a nested array to ease the projection of retrieved values.
-See an example for this usage [here](../../document-extensions/timeseries/querying/overview-and-syntax.mdx#combine-time-series-and-javascript-functions).  
+Values are returned from a declared JavaScript function as a set of values rather than in a nested array to ease the projection of retrieved values.
+See an example for this usage [here](../../document-extensions/timeseries/querying/overview-and-syntax.mdx#combine-time-series-and-custom-functions).  
+
+A declared function can encapsulate filtering logic for use in `filter`,  
+such as the following comparison between two fields of the same document:
+
+```sql
+// Declare a JavaScript function that compares two fields of the same document
+declare function needsReorder(product) {
+    return product.UnitsInStock < product.ReorderLevel;
+}
+
+// Call it from 'filter' - it must return 'true' for a product to be included
+from Products as p
+filter needsReorder(p)
+```
+<br/>
+
+Learn more in [Filter with a JavaScript function](../../querying/filtering-query-results/exploration-queries.mdx#filter-with-a-javascript-function).
 
 ---
 
@@ -291,7 +327,7 @@ whose _field value_ **=** _a given input_.
 
 ```sql
 from "Companies"
-where Name == "The Big Cheese" // Can use either '=' or'==' 
+where Name == "The Big Cheese" // Can use either '=' or '==' 
 ```
 <br/>
 
@@ -438,7 +474,7 @@ where ShippedAt < today()
 ```sql
 // Find orders that are required at or after the current date and time
 from "Orders"
-where RequiredAt >= now()
+where RequireAt >= now()
 ```    
     
 </ContentFrame>
@@ -475,6 +511,45 @@ See [Group conditions to control precedence](../../querying/filtering-query-resu
 
 ---
 
+## `filter`
+
+Use `filter` to apply an additional condition to the results retrieved by the query, without using or creating an index for that condition.
+The server examines the retrieved results one by one, so `filter` is intended for ad-hoc exploration rather than for recurring queries.
+Learn more in [Exploration queries](../../querying/filtering-query-results/exploration-queries.mdx).
+
+For document queries, `filter` evaluates document fields.  
+For Map-Reduce index queries and dynamic `group by` queries, it evaluates aggregation results.
+
+For example, on a non-sharded database:
+
+```sql
+from Orders
+where Freight > 100             // Evaluated using an index
+filter ShipTo.Country == "UK"   // Evaluated on each retrieved document, without an index
+filter_limit 50                 // Optional: examine at most 50 candidates
+```
+<br/>
+
+* `filter` comes after `group by`, `where`, `order by`, and `load`, and before `select`, `include`, and `limit`.  
+  You can place `filter_limit` at the end, as shown above, or before `limit`.
+
+* In sharded document queries with a paging offset of 0, `filter_limit` caps the number of candidates examined **per shard**,
+  so the total number examined across all shards can exceed that limit.
+  See [Filter and sharding](../../querying/filtering-query-results/exploration-queries.mdx#filter-and-sharding).
+
+* A `filter` condition can use comparisons, `and`, `or`, negation with `and not` or `or not`, `in`,  
+  the `startsWith()`, `endsWith()`, `regex()`, `exists()`, and `id()` methods,  
+  fields of documents loaded with [`load`](../../querying/rql/what-is-rql.mdx#load), and calls to functions defined with [`declare`](../../querying/rql/what-is-rql.mdx#declare).  
+
+  Only some `where` operators and methods are supported in `filter`.  
+  Index-based methods such as `search()`, as well as `now()` and `today()`, cannot be used in `filter`.  
+  The `between` operator is also unsupported and can return no results without an error; use `>=` and `<=` instead.  
+  See [Supported operators and limitations](../../querying/filtering-query-results/exploration-queries.mdx#supported-operators-and-limitations).
+
+* String equality in `filter` is case-sensitive, unlike the default behavior of `where`.
+
+---
+
 ## `group by`
 
 The keyword `group by` is used to create an aggregation query.  
@@ -487,10 +562,10 @@ Learn more in [dynamic group by queries](../../client-api/session/querying/how-t
 The keyword `include` has been introduced to support:
 
 - [including related documents](../../client-api/how-to/handle-document-relationships.mdx#includes) in the query response
-- [including counters](../../document-extensions/counters/counters-and-other-features.mdx#including-counters),
+- [including counters](../../document-extensions/counters/including-counters.mdx#include-counters-when-querying),
   [time series](../../document-extensions/timeseries/client-api/session/include/with-raw-queries.mdx),
-  or [revisions](../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-making-a-raw-query) in the query response
-- [including compare-exchange items](../../compare-exchange/include-cmpxchg-items#include-cmpxchg-items-when-querying) in the query response
+  or [revisions](../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-querying-raw-query) in the query response
+- [including compare-exchange items](../../compare-exchange/include-cmpxchg-items.mdx#include-compare-exchange-items-when-querying) in the query response
 - [highlighting](../../client-api/session/querying/text-search/highlight-query-results.mdx) results
 - [get query timings](../../client-api/session/querying/debugging/query-timings.mdx)
 - [get explanations](../../client-api/session/querying/debugging/include-explanations.mdx)
@@ -541,35 +616,35 @@ They place those documents before or after matching documents with non-null valu
   * `nulls first` places those documents **before** matching documents with non-null values.
   * `nulls last` places those documents **after** matching documents with non-null values.   
     
-```csharp
+```sql
 // Place documents whose ReportsTo field is null (or missing) at the top of the results
 from "Employees"
 order by ReportsTo nulls first
 ```
 <br/>
 
-```csharp
+```sql
 // Cast + direction + null placement on a single key
 from "Products"
 order by UnitsInStock as long desc nulls last
 ```
 <br/>
 
-```csharp
+```sql
 // Works with method expressions
 from "Employees"
 order by id() as string nulls last
 ```
 <br/>
 
-```csharp
+```sql
 // Works with spatial sorting
 from "Employees"
 order by spatial.distance(Address.Location, spatial.point(0, 0)) nulls first
 ```
 <br/>
 
-```csharp
+```sql
 // Per-clause control on a multi-key sort.
 // Each clause sets its own null placement.
 from "Products"
@@ -600,8 +675,9 @@ Learn more in this [projection](../../indexes/querying/projections.mdx) article.
 
 ## `load`
 
-Use `load` when you need to use data from a related document in projection.  
-See an example in this [projection](../../indexes/querying/projections.mdx#example-viii---projection-using-a-loaded-document) article.
+Use `load` when you need to use data from a related document in a projection or in a [`filter`](../../querying/rql/what-is-rql.mdx#filter) condition.  
+See an example in this [projection](../../indexes/querying/projections.mdx#example-viii---projection-using-a-loaded-document) article,
+and in [Filter by a related document](../../querying/filtering-query-results/exploration-queries.mdx#filter-by-a-related-document).
 
 ---
 
@@ -610,6 +686,10 @@ See an example in this [projection](../../indexes/querying/projections.mdx#examp
 Use `limit` to limit the number of results returned by the query.  
 Specify the number of items to **skip** from the beginning of the result set and the number of items to **take** (return).  
 This is useful when [paging](../../indexes/querying/paging.mdx) results.
+
+For document queries on a non-sharded database that use `filter`, the offset skips candidate results **before** filtering,
+while the page size limits the number of matching results returned.
+See [Filter and paging](../../querying/filtering-query-results/exploration-queries.mdx#filter-and-paging).
 
 ```sql
 // Available syntax options:
