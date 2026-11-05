@@ -26,6 +26,8 @@ import Panel from '@site/src/components/Panel';
         * [Ordering type](../../../querying/sorting-query-results/sort-query-results.mdx#ordering-type) 
     * [Order by searchable fields](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-searchable-fields)
     * [Order by score](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-score)
+        * [Order by score - best matches first](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-score---best-matches-first)
+        * [Order by score - weakest matches first](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-score---weakest-matches-first)
         * [Get resulting score](../../../querying/sorting-query-results/sort-query-results.mdx#get-resulting-score)  
     * [Order by random](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-random)   
     * [Order by spatial](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-spatial)     
@@ -375,63 +377,121 @@ order by NameForSorting
 
 <Panel heading="Order by score">
 
-* When querying with some filtering conditions, a basic score is calculated for each item in the results  
-  by the underlying indexing engine. (Read more about Lucene scoring [here](https://lucene.apache.org/core/3_3_0/scoring.html)).
+* When querying with some filtering conditions, such as full-text search,  
+  a score is calculated for each result by the underlying search engine.
 
-* The higher the score value the better the match.  
+* The higher the score, the better the match.
 
-* Use `orderByScore` to order the query results by this score.
+* Unlike ordering by a regular field, `order by score()` lists the highest scores (best matches) first.  
+  Adding `desc` reverses this and lists the lowest scores (weakest matches) first.
+
+	| PHP client | RQL | Result order |
+	|------------|-----|--------------|
+	| `orderByScore()` | `order by score()` | Highest scores (best matches) first |
+	| `orderByScoreDescending()` | `order by score() desc` | Lowest scores (weakest matches) first |
+
+* This direction is the same in Lucene and Corax and applies to any query that produces scores,  
+  including full-text search and boosting.  
+  It also applies to `lucene()` queries (Lucene only) and vector search (Corax only).
+
+---
+
+Both examples below search employee notes for "English" or "Italian", with a higher boost for "Italian".  
+Only the score ordering changes between the examples.
+
+<ContentFrame>
+
+#### Order by score - best matches first
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
 <CodeBlock language="php">
-{`/** @var array<Product> $products */
-$products = $session
-    ->query(Product::class)
-    // Apply filtering
-    ->whereLessThan("UnitsInStock", 5)
-    ->orElse()
-    ->whereEquals("Discontinued", true)
-    // Call 'orderByScore'
+{`/** @var array<Employee> $employees */
+$employees = $session
+    ->query(Employee::class)
+    ->search("Notes", "English")
+    ->search("Notes", "Italian")
+    ->boost(10)
+    // Highest scores (best matches) first
     ->orderByScore()
     ->toList();
-
-// Results will be sorted by the score value
-// with best matching documents (higher score values) listed first.
 `}
 </CodeBlock>
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
 <CodeBlock language="php">
-{`/** @var array<Product> $products */
-$products = $session->advanced()
-    ->documentQuery(Product::class)
-    // Apply filtering
-    ->whereLessThan("UnitsInStock", 5)
-    ->orElse()
-    ->whereEquals("Discontinued", true)
-    // Call 'orderByScore'
+{`/** @var array<Employee> $employees */
+$employees = $session->advanced()
+    ->documentQuery(Employee::class)
+    ->search("Notes", "English")
+    ->search("Notes", "Italian")
+    ->boost(10)
+    // Highest scores (best matches) first
     ->orderByScore()
     ->toList();
-
-// Results will be sorted by the score value
-// with best matching documents (higher score values) listed first.
 `}
 </CodeBlock>
 </TabItem>
 <TabItem value="RQL" label="RQL">
 <CodeBlock language="sql">
-{`from "Products"
-where UnitsInStock < 5 or Discontinued == true
+{`from "Employees"
+where search(Notes, "English") or boost(search(Notes, "Italian"), 10)
 order by score()
 `}
 </CodeBlock>
 </TabItem>
 </Tabs>
 
+</ContentFrame>
+
+<ContentFrame>
+
+#### Order by score - weakest matches first
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`/** @var array<Employee> $employees */
+$employees = $session
+    ->query(Employee::class)
+    ->search("Notes", "English")
+    ->search("Notes", "Italian")
+    ->boost(10)
+    // Lowest scores (weakest matches) first
+    ->orderByScoreDescending()
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="php">
+{`/** @var array<Employee> $employees */
+$employees = $session->advanced()
+    ->documentQuery(Employee::class)
+    ->search("Notes", "English")
+    ->search("Notes", "Italian")
+    ->boost(10)
+    // Lowest scores (weakest matches) first
+    ->orderByScoreDescending()
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "English") or boost(search(Notes, "Italian"), 10)
+order by score() desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
 <Admonition type="note" title="">
     
-#### Scoring with Corax    
+#### Scoring with Corax:    
 
 * Not every condition uses relevance-based scoring.       
   In **RavenDB 7.2.6 and later**, when using the Corax search engine, an `exists()` condition   
@@ -762,6 +822,15 @@ order by QuantityPerUnit as alphanumeric
 
 * It is possible to chain multiple orderings in the query.  
   Any combination of secondary sorting is possible as the fields are indexed independently of one another.
+
+* The first ordering clause defines the primary sort.  
+  Each following clause orders documents that have the same values in all preceding ordering clauses.
+
+* To add secondary sorting, append additional `orderBy`, `orderByDescending`, `orderByScore`, or `orderByScoreDescending` calls.
+
+* Score ordering follows the same [direction rules](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-score):  
+  `orderByScore()` lists the **highest** scores first.  
+  `orderByScoreDescending()` lists the **lowest** scores first.
     
 * **When using the Lucene search engine** -  
   there is no limit on the number of sorting actions that can be chained in a query.  
@@ -770,23 +839,30 @@ order by QuantityPerUnit as alphanumeric
   a maximum of `16` _order by_ clauses is allowed per query. If this limit is exceeded, an exception will be thrown.  
   To resolve this, simplify your query or switch to the Lucene engine. See [Selecting the search engine](../../../indexes/search-engine/corax.mdx#selecting-the-search-engine).  
   
+---
+
+The example below searches the `QuantityPerUnit` field for "bottles" or "boxes", with a higher boost for "boxes".  
+
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
 <CodeBlock language="php">
 {`/** @var array<Product> $products */
 $products = $session
     ->query(Product::class)
-    ->whereGreaterThan("UnitsInStock", 10)
+    ->search("QuantityPerUnit", "bottles")
+    ->search("QuantityPerUnit", "boxes")
+    ->boost(10)
     // Apply the primary sort by 'UnitsInStock'
-    ->orderByDescending("UnitsInStock")
-    // Apply a secondary sort by the score (for products with the same # of units in stock)
+    ->orderByDescending("UnitsInStock", OrderingType::long())
+    // Apply a secondary sort by the score, highest scores first
+    // (for products with the same # of units in stock)
     ->orderByScore()
     // Apply another sort by 'Name' (for products with same # of units in stock and same score)
     ->orderBy("Name")
     ->toList();
 
 // Results will be sorted by the 'UnitsInStock' value (descending),
-// then by score,
+// then by score (highest scores first),
 // and then by 'Name' (ascending).
 `}
 </CodeBlock>
@@ -796,17 +872,19 @@ $products = $session
 {`/** @var array<Product> $products */
 $products = $session->advanced()
     ->documentQuery(Product::class)
-    ->whereGreaterThan("UnitsInStock", 10)
+    ->search("QuantityPerUnit", "bottles")
+    ->search("QuantityPerUnit", "boxes")
+    ->boost(10)
     // Apply the primary sort by 'UnitsInStock'
-    ->orderByDescending("UnitsInStock")
-    // Apply a secondary sort by the score
+    ->orderByDescending("UnitsInStock", OrderingType::long())
+    // Apply a secondary sort by the score, highest scores first
     ->orderByScore()
     // Apply another sort by 'Name'
     ->orderBy("Name")
     ->toList();
 
 // Results will be sorted by the 'UnitsInStock' value (descending),
-// then by score,
+// then by score (highest scores first),
 // and then by 'Name' (ascending).
 `}
 </CodeBlock>
@@ -814,12 +892,23 @@ $products = $session->advanced()
 <TabItem value="RQL" label="RQL">
 <CodeBlock language="sql">
 {`from "Products"
-where UnitsInStock > 10
+where search(QuantityPerUnit, "bottles") or boost(search(QuantityPerUnit, "boxes"), 10)
 order by UnitsInStock as long desc, score(), Name
 `}
 </CodeBlock>
 </TabItem>
 </Tabs>
+
+In the query above:
+
+* **Primary ordering:**  `UnitsInStock as long desc`  
+  Products are first sorted by `UnitsInStock` in descending order.
+
+* **Secondary ordering:** `score()`  
+  It lists the highest scores first among products that have the same `UnitsInStock` value.
+
+* **Third ordering:** `Name`  
+  It applies to products that have the same `UnitsInStock` value and the same score.
 
 </Panel>
 
