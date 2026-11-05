@@ -74,7 +74,7 @@ versions.json                # Active version list
   - asserts every legacy-version page carries `<meta name="robots" content="noindex,...">`. The injection itself is delegated to Docusaurus' native per-version `noIndex` config (see `docusaurus.config.ts`); the plugin only audits.
   - Both checks fail the build under `DOCUSAURUS_STRICT_SEO=true`. Registered **after** all `content-docs` instances so HTML is already emitted when it runs.
 - `agent-hint-plugin`: puts a hidden pointer to the hosted agent skill at the top of every page's `<body>`. See "Hosted Agent Skill" below.
-- `whats-new-feed`: the `createFeedItems` of the `cloud-whats-new` blog instance. It adds to every item of `/cloud/whats-new/feed.json` the entry's excerpt (above the truncate marker) as `_ravendb.excerpt`, a list of `heading`, `paragraph` and `image` blocks with plain text and built image URLs, so the Cloud Portal can show what the list page shows. See "Cloud What's New" below.
+- `whats-new-feed`: the `createFeedItems` of the `cloud-whats-new` blog instance. It adds to every item of `/cloud/whats-new/feed.json` the entry's excerpt (above the truncate marker) as `_ravendb.excerpt`, a list of `feature` (name + text), `paragraph` and `image` blocks with plain text and built image URLs, so the Cloud Portal can show what the list page shows. See "Cloud What's New" below.
 
 Noindex for legacy versions is set declaratively in `docusaurus.config.ts` (`versions[v].noIndex: true`); template pages are marked `unlisted: true` in frontmatter. No custom plugin writes the meta tag — the versioned-seo-plugin only verifies it landed.
 
@@ -207,9 +207,9 @@ Each folder contains `_category_.json`:
 - One entry per day: a second entry with the same date does not show as new to someone who saw the first.
 - When copying the previous entry, change the folder name, `title` and `slug`, and replace its images. `slug` is the folder name without the date; without it the URL carries the date. A repeated `slug` puts two entries on one URL.
 - `title` is `<deployment> - <the headline change>`, e.g. `October II 2026 - ...`. `description` is one sentence for search results and the feed's `summary`; the portal shows the excerpt instead.
-- Excerpt: one block per feature released in the deployment - the feature name as a bold line on its own (`**Email alerts for your products**`), one line on what the customer can now do, and an image only where it helps. The feed carries these as `heading`, `paragraph` and `image` blocks. Keep feature names bold lines, not headings, so the entry's table of contents lists only the `##` sections, and keep lists out of the excerpt: the portal shows them as plain text.
+- Excerpt: an optional lead image, then a bullet list with one item per feature released in the deployment - `- **<feature name>:** <one line on what the customer can now do>`. The feed carries each bullet as a `feature` block (its `name` and `text`), and the list page and the Cloud Portal both render the bullets. Put the colon inside the bold so the name reads as a label; the feed drops it from `name`. Keep the feature name in bold (not a `##`/`###` heading), so the entry's table of contents lists only the `##` sections below the marker.
 - Below the truncate marker: a `##` section per feature, named like its bold line, with the details and a link to the Cloud page.
-- Images go in the entry's folder and are referenced as `./<file>.png`, so two deployments in one month never mix them. They are copied from `cloud/assets` or `cloud/portal/assets` or shot for the entry, never referenced from there: an entry records one deployment and must not change when the docs re-shoot a figure.
+- Images go in the entry's folder and are referenced as `./<file>.webp`, so two deployments in one month never mix them. Use `.webp`, keep each file lean (re-encode at quality ~80), and name the lead image `cover-<month><year>.webp` (e.g. `cover-oct2026.webp`) so two deployments never collide on one `cover` file. They are copied from `cloud/assets` or `cloud/portal/assets` or shot for the entry, never referenced from there: an entry records one deployment and must not change when the docs re-shoot a figure.
 - Link to the Cloud pages by URL (`/cloud/...`), not by file path: links to files of the `cloud` docs instance are not resolved from a blog post. Take anchors from the built HTML, not from guessed slugs.
 
 ### Cloud What's New Entry Example
@@ -221,15 +221,10 @@ description: "Sign in with your own identity provider, change storage without lo
 slug: october-2026
 ---
 
-**Sign in with your own identity provider**
+![Sign in with Google, GitHub, Microsoft or your own identity provider](./cover-oct2026.webp)
 
-Let your team sign in with the work accounts they already use, and let your identity provider manage who gets in.
-
-![Connecting an identity provider](./portal-sso-connect-wizard-identity-provider.png)
-
-**A simpler profile**
-
-Your profile is now three pages, with two-factor authentication behind a single switch.
+- **Sign in with your own identity provider:** Let your team sign in with the work accounts they already use, and let your identity provider manage who gets in.
+- **A simpler profile:** Your profile is now three pages, with two-factor authentication behind a single switch.
 
 {/* truncate */}
 

@@ -83,10 +83,14 @@ test("on guides and samples, Start leads to their own landing page", () => {
     assert.equal(linkTo(getSidebarNav("/samples/some-sample", VERSION), "Start"), "/samples");
 });
 
-test("the bottom bar adds What's new to Community only in the RavenDB docs", () => {
+test("the bottom bar adds What's new to Community in the RavenDB and Cloud docs", () => {
     const footer = (path: string) => getSidebarNav(path, VERSION).footer.map((item) => [item.label, item.to]);
     assert.deepEqual(footer("/7.2/indexes/map-indexes"), [
         ["What's new", "/7.2/whats-new"],
+        ["Community", "https://ravendb.net/community"],
+    ]);
+    assert.deepEqual(footer("/cloud/cloud-overview"), [
+        ["What's new", "/cloud/whats-new"],
         ["Community", "https://ravendb.net/community"],
     ]);
     assert.deepEqual(footer("/quill/logging"), [["Community", "https://ravendb.net/community"]]);

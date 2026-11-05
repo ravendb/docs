@@ -4,14 +4,17 @@ import path from "path";
 export type ExcerptBlock =
     | { type: "heading"; text: string }
     | { type: "paragraph"; text: string }
+    | { type: "feature"; name: string; text: string }
     | { type: "image"; url: string };
 
 const truncateMarker = /<!--\s*truncate\s*-->|\{\/\*\s*truncate\s*\*\/\}/;
 const markdownImage = /!\[[^\]]*\]\(\s*<?([^)\s>]+)[^)]*\)/g;
 const boldOnly = /^(\*\*|__)([^*_]+?)\1$/;
+const boldPrefix = /^(\*\*|__)(.+?)\1\s*:?\s*/;
+const listItem = /^\s*[-*]\s+/;
 const htmlImageSources = /<img[^>]+src="([^"]+)"/g;
 
-// The Cloud Portal shows what the list page shows, so an item carries its excerpt as feature headings, paragraphs and images, in order.
+// The Cloud Portal shows what the list page shows, so an item carries its excerpt as feature bullets, paragraphs and images, in order.
 export const createWhatsNewFeedItems: CreateFeedItemsFn = async ({ defaultCreateFeedItems, ...params }) => {
     const items = await defaultCreateFeedItems(params);
 
@@ -27,14 +30,50 @@ export function toExcerptBlocks(source: string, contentHtml: string | undefined)
     const [excerpt] = source.split(truncateMarker);
     const builtSources = [...(contentHtml ?? "").matchAll(htmlImageSources)].map((match) => match[1]);
 
-    return excerpt.split(/\n\s*\n/).flatMap((paragraph): ExcerptBlock[] => {
-        const images = [...paragraph.matchAll(markdownImage)]
+    return excerpt.split(/\n\s*\n/).flatMap((chunk): ExcerptBlock[] => {
+        if (isList(chunk)) {
+            return toFeatureBlocks(chunk);
+        }
+
+        const images = [...chunk.matchAll(markdownImage)]
             .map((match) => toBuiltSource(match[1], builtSources))
             .filter((url): url is string => url !== undefined)
             .map((url): ExcerptBlock => ({ type: "image", url }));
-        const markdown = paragraph.replace(markdownImage, " ").trim();
+        const markdown = chunk.replace(markdownImage, " ").trim();
 
         return [...toTextBlocks(markdown), ...images];
+    });
+}
+
+function isList(chunk: string): boolean {
+    const firstLine = chunk.split("\n").find((line) => line.trim().length > 0);
+    return firstLine !== undefined && listItem.test(firstLine);
+}
+
+function toFeatureBlocks(chunk: string): ExcerptBlock[] {
+    const items: string[] = [];
+    for (const line of chunk.split("\n")) {
+        const trimmed = line.trim();
+        if (!trimmed) {
+            continue;
+        }
+        if (listItem.test(trimmed)) {
+            items.push(trimmed.replace(listItem, ""));
+        } else if (items.length > 0) {
+            items[items.length - 1] += ` ${trimmed}`;
+        }
+    }
+
+    return items.map((item): ExcerptBlock => {
+        const bold = item.match(boldPrefix);
+        if (bold) {
+            return {
+                type: "feature",
+                name: toPlainText(bold[2].replace(/:\s*$/, "")),
+                text: toPlainText(item.slice(bold[0].length)),
+            };
+        }
+        return { type: "feature", name: "", text: toPlainText(item) };
     });
 }
 

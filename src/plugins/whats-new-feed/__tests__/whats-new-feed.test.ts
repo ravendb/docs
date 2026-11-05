@@ -31,6 +31,41 @@ describe("toExcerptBlocks", () => {
         ]);
     });
 
+    it("turns a lead image and a bullet list into image and feature blocks", () => {
+        const source =
+            "![SSO](./portal-sso-wizard.png)\n\n" +
+            "- **Sign in with your own identity provider:** Let your team sign in with the work accounts they already use.\n" +
+            "- **Change storage:** Keep your IOPS and performance tier.\n\n" +
+            "{/* truncate */}";
+
+        assert.deepEqual(toExcerptBlocks(source, CONTENT_HTML), [
+            { type: "image", url: SSO_IMAGE },
+            {
+                type: "feature",
+                name: "Sign in with your own identity provider",
+                text: "Let your team sign in with the work accounts they already use.",
+            },
+            { type: "feature", name: "Change storage", text: "Keep your IOPS and performance tier." },
+        ]);
+    });
+
+    it("reads the feature name whether the colon is inside or outside the bold", () => {
+        const source = "- **Inside:** text one\n- **Outside**: text two\n\n{/* truncate */}";
+
+        assert.deepEqual(toExcerptBlocks(source, CONTENT_HTML), [
+            { type: "feature", name: "Inside", text: "text one" },
+            { type: "feature", name: "Outside", text: "text two" },
+        ]);
+    });
+
+    it("keeps a bullet without a bold name as a feature with empty name", () => {
+        const source = "- A plain update with no feature name.\n\n{/* truncate */}";
+
+        assert.deepEqual(toExcerptBlocks(source, CONTENT_HTML), [
+            { type: "feature", name: "", text: "A plain update with no feature name." },
+        ]);
+    });
+
     it("keeps a feature without an image", () => {
         const source = "**Sign in with Microsoft**\n\nNext to Google and GitHub.\n\n{/* truncate */}";
 
