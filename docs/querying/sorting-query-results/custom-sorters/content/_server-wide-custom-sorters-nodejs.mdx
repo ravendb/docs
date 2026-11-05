@@ -17,11 +17,11 @@ import Panel from '@site/src/components/Panel';
   To learn how to write a custom sorter, see: [How to write a custom sorter](../../../../querying/sorting-query-results/custom-sorters/overview.mdx#how-to-write-a-custom-sorter). 
     
 * In this article:
-  * [Add server-wide custom sorter - via the Client API](../../../../querying/sorting-query-results/custom-sorters/server-wide-custom-sorters.mdx#add-server-wide-custom-sorter-via-the-client-api)
-  * [Add server-wide custom sorter - via Studio](../../../../querying/sorting-query-results/custom-sorters/server-wide-custom-sorters.mdx#add-server-wide-custom-sorter-via-studio)
-  * [Delete server-wide custom sorter](../../../../querying/sorting-query-results/custom-sorters/server-wide-custom-sorters.mdx#delete-server-wide-custom-sorter)
-  * [Test custom sorter](../../../../querying/sorting-query-results/custom-sorters/server-wide-custom-sorters.mdx#test-custom-sorter)
-  * [Syntax](../../../../querying/sorting-query-results/custom-sorters/server-wide-custom-sorters.mdx#syntax)
+  * [Add server-wide custom sorter - via the Client API](#add-server-wide-custom-sorter-via-the-client-api)
+  * [Add server-wide custom sorter - via Studio](#add-server-wide-custom-sorter-via-studio)
+  * [Delete server-wide custom sorter](#delete-server-wide-custom-sorter)
+  * [Test custom sorter](#test-custom-sorter)
+  * [Syntax](#syntax)
 
 </Admonition>
 
@@ -70,6 +70,17 @@ const products = await session
 // according to the logic from 'MyServerWideCustomSorter' class
 ```
 </TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const products = await session.advanced
+     // Order by field 'UnitsInStock' with custom(), pass the name of your custom sorter class
+    .rawQuery("from 'Products' where UnitsInStock > 10 order by custom(UnitsInStock, 'MyServerWideCustomSorter')")
+    .all();
+
+// Results will be sorted by the 'UnitsInStock' value
+// according to the logic from 'MyServerWideCustomSorter' class
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
@@ -92,7 +103,7 @@ order by custom(UnitsInStock, "MyServerWideCustomSorter")
 
 1. Go to **Manage Server &gt; Server-Wide Sorters**.
 2. Click to add a new server-wide custom sorter.
-   See [Add a server-wide custom sorter](../../../../querying/sorting-query-results/custom-sorters/server-wide-custom-sorters.mdx#add-a-server-wide-custom-sorter) below.
+   See [Add a server-wide custom sorter](#add-a-server-wide-custom-sorter) below.
 3. The **server-wide** custom sorters are listed here.
 4. Click to edit this server-wide custom sorter.
 5. Click to delete this server-wide custom sorter.
@@ -115,11 +126,10 @@ order by custom(UnitsInStock, "MyServerWideCustomSorter")
 
 <Panel heading="Delete server-wide custom sorter">
     
-In addition to deleting a server-wide custom sorter via [The server-wide custom sorters view](../../../../querying/sorting-query-results/custom-sorters/server-wide-custom-sorters.mdx#the-server-wide-custom-sorters-view) in Studio,  
+In addition to deleting a server-wide custom sorter via [The server-wide custom sorters view](#the-server-wide-custom-sorters-view) in Studio,  
 you can use `DeleteServerWideSorterOperation` to delete a server-wide custom sorter.  
 Once removed, the sorter will no longer be available for ordering query results in any database in the cluster. 
-    
-<TabItem>
+
 ```csharp
 // Define the delete sorter operation, pass the name of the sorter to delete
 const deleteSorterOp = new DeleteServerWideSorterOperation("MyServerWideCustomSorter");;
@@ -127,7 +137,6 @@ const deleteSorterOp = new DeleteServerWideSorterOperation("MyServerWideCustomSo
 // Execute the operation by passing it to maintenance.server.send
 await store.maintenance.server.send(deleteSorterOp);
 ```
-</TabItem>
     
 </Panel>
 
@@ -141,19 +150,18 @@ See [Test custom sorter](../../../../querying/sorting-query-results/custom-sorte
 <Panel heading="Syntax">
     
 ### `PutServerWideSortersOperation`
+    
 Deploys one or more custom sorters to the server-wide scope.
 
-<TabItem>
 ```js
 const putSortersOp = new PutServerWideSortersOperation(sortersToAdd);        
 ```
-</TabItem>
+<br/>
 
 | Parameter        | Type           | Description                                                         |
 |------------------|----------------|---------------------------------------------------------------------|
 | **sortersToAdd** | `...object[]`  | One or more sorter definitions to deploy. At least one is required. |
 
-<TabItem>    
 ```js
 // The sorter definition object 
 {
@@ -164,19 +172,18 @@ const putSortersOp = new PutServerWideSortersOperation(sortersToAdd);
   // Must be compilable.     
   code: string;
 }
-```
-</TabItem>      
+```  
 
 ---
     
 ### `DeleteServerWideSorterOperation`
+    
 Removes a custom sorter from the server-wide scope.
 
-<TabItem>
 ```js
 const deleteSorterOp = new DeleteServerWideSorterOperation(sorterName);    
 ```
-</TabItem>
+<br/>
 
 | Parameter      | Type     | Description                       |
 |----------------|----------|-----------------------------------|

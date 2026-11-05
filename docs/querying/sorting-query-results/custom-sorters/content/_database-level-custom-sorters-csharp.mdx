@@ -20,11 +20,11 @@ import Panel from '@site/src/components/Panel';
   To learn how to write a custom sorter, see: [How to write a custom sorter](../../../../querying/sorting-query-results/custom-sorters/overview.mdx#how-to-write-a-custom-sorter).      
     
 * In this article:
-  * [Add database-level custom sorter - via the Client API](../../../../querying/sorting-query-results/custom-sorters/database-level-custom-sorters.mdx#add-database-level-custom-sorter-via-the-client-api)
-  * [Add database-level custom sorter - via Studio](../../../../querying/sorting-query-results/custom-sorters/database-level-custom-sorters.mdx#add-database-level-custom-sorter-via-studio)
-  * [Delete database-level custom sorter](../../../../querying/sorting-query-results/custom-sorters/database-level-custom-sorters.mdx#delete-database-level-custom-sorter)
-  * [Test custom sorter](../../../../querying/sorting-query-results/custom-sorters/database-level-custom-sorters.mdx#test-custom-sorter)
-  * [Syntax](../../../../querying/sorting-query-results/custom-sorters/database-level-custom-sorters.mdx#syntax)
+  * [Add database-level custom sorter - via the Client API](#add-database-level-custom-sorter-via-the-client-api)
+  * [Add database-level custom sorter - via Studio](#add-database-level-custom-sorter-via-studio)
+  * [Delete database-level custom sorter](#delete-database-level-custom-sorter)
+  * [Test custom sorter](#test-custom-sorter)
+  * [Syntax](#syntax)
 
 </Admonition>
 
@@ -137,6 +137,28 @@ List<Product> products = await asyncSession.Advanced
 // according to the logic from 'MyCustomSorter' class
 ```
 </TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```csharp
+List<Product> products = session.Advanced
+     // Order by field 'UnitsInStock' with custom(), pass the name of your custom sorter class
+    .RawQuery<Product>("from 'Products' where UnitsInStock > 10 order by custom(UnitsInStock, 'MyCustomSorter')")
+    .ToList();
+
+// Results will be sorted by the 'UnitsInStock' value
+// according to the logic from 'MyCustomSorter' class
+```
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+```csharp
+List<Product> products = await asyncSession.Advanced
+     // Order by field 'UnitsInStock' with custom(), pass the name of your custom sorter class
+    .AsyncRawQuery<Product>("from 'Products' where UnitsInStock > 10 order by custom(UnitsInStock, 'MyCustomSorter')")
+    .ToListAsync();
+
+// Results will be sorted by the 'UnitsInStock' value
+// according to the logic from 'MyCustomSorter' class
+```
+</TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
@@ -156,16 +178,16 @@ order by custom(UnitsInStock, "MyCustomSorter")
 ### The custom sorters view
     
 The custom sorters view lists all custom sorters that were uploaded from Studio and from the
-[Client API](../../../../querying/sorting-query-results/custom-sorters/database-level-custom-sorters.mdx#add-database-level-custom-sorter-via-the-client-api).
+[Client API](#add-database-level-custom-sorter-via-the-client-api).
 
 ![Database-level custom sorter view](../assets/custom-sorter-db-level-1.png)
 
 1. Go to **Settings &gt; Custom Sorters**.
 2. Click to add a new database-level custom sorter.
-   See [Add a custom sorter](../../../../querying/sorting-query-results/custom-sorters/database-level-custom-sorters.mdx#add-a-custom-sorter) below.
+   See [Add a custom sorter](#add-a-custom-sorter) below.
 3. The custom sorters deployed for this **database** are listed here.
 4. Click to test this custom sorter.
-   Learn more in [Test custom sorter](../../../../querying/sorting-query-results/custom-sorters/database-level-custom-sorters.mdx#test-custom-sorter) below.
+   Learn more in [Test custom sorter](#test-custom-sorter) below.
 5. Click to edit this custom sorter.
 6. Click to delete this custom sorter.
 7. The **server-wide** custom sorters are listed here.
@@ -190,8 +212,8 @@ The custom sorters view lists all custom sorters that were uploaded from Studio 
 
 <Panel heading="Delete database-level custom sorter">
     
-In addition to deleting a custom sorter via [The custom sorters view](../../../../querying/sorting-query-results/custom-sorters/database-level-custom-sorters.mdx#the-custom-sorters-view) in Studio,  
-you can ues `DeleteSorterOperation` to delete a database-level custom sorter.  
+In addition to deleting a custom sorter via [The custom sorters view](#the-custom-sorters-view) in Studio,  
+you can use `DeleteSorterOperation` to delete a database-level custom sorter.  
 Once removed, the sorter will no longer be available for ordering query results in the associated database.    
     
 <Tabs groupId='languageSyntax'>
@@ -220,7 +242,7 @@ await store.Maintenance.SendAsync(deleteSorterOp);
 <Panel heading="Test custom sorter">
 
 You can test a custom sorter from Studio before using it in a query, to verify that it works as expected.  
-Click the test button from the [Custom sorters view](../../../../querying/sorting-query-results/custom-sorters/database-level-custom-sorters.mdx#the-custom-sorters-view) to open the test panel:
+Click the test button from the [Custom sorters view](#the-custom-sorters-view) to open the test panel:
 
 ![Test custom sorter](../assets/custom-sorter-db-level-3.png)
 
@@ -238,7 +260,7 @@ Click the test button from the [Custom sorters view](../../../../querying/sortin
    Displays diagnostic messages collected while the custom sorter is executed.
    Studio runs the test query with diagnostics enabled, so you can verify that the sorter was invoked and inspect its execution flow.  
    Studio records comparator execution details during the test, such as calls to `Compare`, `SetBottom`, and `Copy`.  
-   You can also add your own messages to this list - see [Adding your own diagnostic messages](../../../../querying/sorting-query-results/custom-sorters/database-level-custom-sorters.mdx#adding-your-own-diagnostic-messages).
+   You can also add your own messages to this list - see [Adding your own diagnostic messages](#adding-your-own-diagnostic-messages).
 
 5. Click to close the test panel.
 
@@ -253,7 +275,6 @@ In normal queries, outside the Studio test panel, this parameter is `null`.
 
 To add your own messages, store the list in the sorter and append to it from your comparator methods:
 
-<TabItem>
 ```csharp
 private readonly List<string> _diagnostics;
 private readonly AlphaNumericFieldComparator _inner;
@@ -263,13 +284,18 @@ public MySorterWithDiagnostics(string fieldName, int numHits, int sortPos, bool 
     _diagnostics = diagnostics;
     _inner = new AlphaNumericFieldComparator(fieldName, numHits);
 }
+
+// Forward Dispose so the wrapped comparator returns its pooled slot array.
+public override void Dispose()
+{
+    _inner.Dispose();
+}
 ```
-</TabItem>
+<br/>
 
 You can then append messages while the sorter runs, for example, inside `Compare`.
 Use the null-conditional operator (`?.`) when appending so your sorter behaves correctly in normal queries, where `diagnostics` is `null`.    
 
-<TabItem>
 ```csharp
 public override int Compare(int slot1, int slot2)
 {
@@ -278,7 +304,6 @@ public override int Compare(int slot1, int slot2)
     return _inner.Compare(slot1, slot2);
 }
 ```
-</TabItem>
 
 ![Test custom sorter - Diagnostics](../assets/custom-sorter-db-level-4.png)    
     
@@ -291,19 +316,18 @@ public override int Compare(int slot1, int slot2)
 <Panel heading="Syntax">
     
 ### `PutSortersOperation`
+    
 Deploys one or more custom sorters to the database scope.
 
-<TabItem>
 ```csharp
 public PutSortersOperation(params SorterDefinition[] sortersToAdd)
 ```
-</TabItem>
+<br/>
 
 | Parameter        | Type                  | Description                                                         |
 |------------------|-----------------------|---------------------------------------------------------------------|
 | **sortersToAdd** | `SorterDefinition[]`  | One or more sorter definitions to deploy. At least one is required. |
 
-<TabItem>    
 ```csharp
 public sealed class SorterDefinition
 {
@@ -315,18 +339,17 @@ public sealed class SorterDefinition
     public string Code { get; set; }
 }
 ```
-</TabItem>    
 
 ---
     
 ### `DeleteSorterOperation`
+    
 Removes a custom sorter from the database scope.
 
-<TabItem>
 ```csharp
 public DeleteSorterOperation(string sorterName)
 ```
-</TabItem>
+<br/>
 
 | Parameter      | Type     | Description                       |
 |----------------|----------|-----------------------------------|
