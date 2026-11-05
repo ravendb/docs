@@ -29,6 +29,8 @@ import Panel from '@site/src/components/Panel';
         * [Control position of null values](../../../querying/sorting-query-results/sort-query-results.mdx#control-position-of-null-values) 
     * [Order by searchable fields](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-searchable-fields)
     * [Order by score](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-score)
+        * [Order by score - best matches first](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-score---best-matches-first)
+        * [Order by score - weakest matches first](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-score---weakest-matches-first)
         * [Get resulting score](../../../querying/sorting-query-results/sort-query-results.mdx#get-resulting-score)  
     * [Order by random](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-random)   
     * [Order by spatial](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-spatial)     
@@ -420,42 +422,87 @@ order by NameForSorting
 
 <Panel heading="Order by score">
 
-* When querying with some filtering conditions, a basic score is calculated for each item in the results  
-  by the underlying indexing engine.
+* When querying with some filtering conditions, such as full-text search,  
+  a score is calculated for each result by the underlying search engine.
 
-* The higher the score value the better the match.  
+* The higher the score, the better the match.
 
-* Use `orderByScore` or `orderByScoreDescending` to order by this score.
+* Unlike ordering by a regular field, `order by score()` lists the highest scores (best matches) first.  
+  Adding `desc` reverses this and lists the lowest scores (weakest matches) first.
+
+	| Java client | RQL | Result order |
+	|-------------|-----|--------------|
+	| `orderByScore()` | `order by score()` | Highest scores (best matches) first |
+	| `orderByScoreDescending()` | `order by score() desc` | Lowest scores (weakest matches) first |
+
+* This direction is the same in Lucene and Corax and applies to any query that produces scores,  
+  including full-text search and boosting.  
+  It also applies to `lucene()` queries (Lucene only) and vector search (Corax only).
+
+---
+
+Both examples below search employee notes for "English" or "Italian", with a higher boost for "Italian".  
+Only the score ordering changes between the examples.
+
+<ContentFrame>
+
+#### Order by score - best matches first
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
 ```java
-List<Product> products = session
-    .query(Product.class)
-     // Apply filtering
-    .whereLessThan("UnitsInStock", 5)
-    .orElse()
-    .whereEquals("Discontinued", true)
-     // Call 'orderByScore'
+List<Employee> employees = session
+    .query(Employee.class)
+    .search("Notes", "English")
+    .search("Notes", "Italian")
+    .boost(10)
+     // Highest scores (best matches) first
     .orderByScore()
     .toList();
-
-// Results will be sorted by the score value
-// with best matching documents (higher score values) listed first.
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
-from "Products"
-where UnitsInStock < 5 or Discontinued == true
+from "Employees"
+where search(Notes, "English") or boost(search(Notes, "Italian"), 10)
 order by score()
 ```
 </TabItem>
 </Tabs>
 
+</ContentFrame>
+
+<ContentFrame>
+
+#### Order by score - weakest matches first
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+List<Employee> employees = session
+    .query(Employee.class)
+    .search("Notes", "English")
+    .search("Notes", "Italian")
+    .boost(10)
+     // Lowest scores (weakest matches) first
+    .orderByScoreDescending()
+    .toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Employees"
+where search(Notes, "English") or boost(search(Notes, "Italian"), 10)
+order by score() desc
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
 <Admonition type="note" title="">
     
-#### Scoring with Corax    
+#### Scoring with Corax:    
 
 * Not every condition uses relevance-based scoring.       
   In **RavenDB 7.2.6 and later**, when using the Corax search engine, an `exists()` condition   
@@ -748,9 +795,13 @@ order by QuantityPerUnit as alphaNumeric
   Any combination of secondary sorting is possible, as the fields are indexed independently of one another.
 
 * The first ordering clause defines the primary sort.  
-  Each following clause is used to order documents that have the same value in the previous clause.
+  Each following clause orders documents that have the same values in all preceding ordering clauses.
 
-* This is achieved by calling the `orderBy` (`orderByDescending`) and `orderByScore` (`orderByScoreDescending`) methods multiple times.
+* To add secondary sorting, append additional `orderBy`, `orderByDescending`, `orderByScore`, or `orderByScoreDescending` calls.
+
+* Score ordering follows the same [direction rules](../../../querying/sorting-query-results/sort-query-results.mdx#order-by-score):  
+  `orderByScore()` lists the **highest** scores first.  
+  `orderByScoreDescending()` lists the **lowest** scores first.
 
 * When ordering by a field, each ordering clause can also define its own [null placement](../../../querying/sorting-query-results/sort-query-results.mdx#control-position-of-null-values) (Corax only).   
   If no null placement is specified for an ordering clause, RavenDB uses the behavior configured by [Indexing.Querying.Corax.NullsSortMode](../../../server/configuration/indexing-configuration.mdx#indexingqueryingcoraxnullssortmode) for that clause.    
@@ -762,16 +813,22 @@ order by QuantityPerUnit as alphaNumeric
   a maximum of `16` _order by_ clauses is allowed per query. If this limit is exceeded, an exception will be thrown.  
   To resolve this, simplify your query or switch to the Lucene engine. See [Selecting the search engine](../../../indexes/search-engine/corax.mdx#selecting-the-search-engine).  
 
+---
+
+The example below searches the `QuantityPerUnit` field for "bottles" or "boxes", with a higher boost for "boxes".  
+
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
 ```java
 List<Product> products = session
     .query(Product.class)
-    .whereEquals("Discontinued", false)
+    .search("QuantityPerUnit", "bottles")
+    .search("QuantityPerUnit", "boxes")
+    .boost(10)
      // Apply the primary sort by 'UnitsInStock' in descending order,
      // placing products with a null UnitsInStock value at the end of the results
     .orderByDescending("UnitsInStock", NullsOrdering.LAST, OrderingType.LONG)
-     // Apply a secondary sort by the score
+     // Apply a secondary sort by the score, highest scores first
      // for products with the same UnitsInStock value
     .orderByScore()
      // Apply another sort by 'Name' in ascending order,
@@ -781,7 +838,10 @@ List<Product> products = session
 
 // Results will be sorted by the 'UnitsInStock' value in descending order,
 // with null UnitsInStock values listed last.
-// Products that have the same UnitsInStock value will then be sorted by score.
+
+// Products that have the same UnitsInStock value will then be sorted by score,
+// highest scores first.
+
 // Products that have the same UnitsInStock value and same score
 // will then be sorted by 'Name', with null Name values listed first.
 ```
@@ -789,7 +849,7 @@ List<Product> products = session
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
-where Discontinued == false
+where search(QuantityPerUnit, "bottles") or boost(search(QuantityPerUnit, "boxes"), 10)
 order by UnitsInStock as long desc nulls last, score(), Name nulls first
 ```
 </TabItem>
@@ -797,16 +857,20 @@ order by UnitsInStock as long desc nulls last, score(), Name nulls first
 
 In the query above:
 
-* `UnitsInStock as long desc nulls last` is the primary ordering clause.  
+* **Primary ordering:**  `UnitsInStock as long desc nulls last`  
   Products are first sorted by `UnitsInStock` in descending order.  
   Products whose `UnitsInStock` field is `null` are placed after products with a non-null `UnitsInStock` value.
 
-* `score()` is the secondary ordering clause.  
-  It applies to products that have the same `UnitsInStock` value.
+* **Secondary ordering:** `score()`  
+  It lists the highest scores first among products that have the same `UnitsInStock` value.
 
-* `Name nulls first` is the next ordering clause.  
+* **Third ordering:** `Name nulls first`  
   It applies to products that have the same `UnitsInStock` value and the same score.  
   Within that group, products whose `Name` field is `null` are placed before products with a non-null `Name` value.
+
+* **Null placement (Corax only):**  
+  To run this example on a Lucene index, remove `NullsOrdering.LAST` and `NullsOrdering.FIRST`  
+  (`nulls last` and `nulls first` in RQL).
 
 </Panel>
 
