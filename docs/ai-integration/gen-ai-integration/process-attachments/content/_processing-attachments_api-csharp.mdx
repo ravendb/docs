@@ -73,7 +73,12 @@ To send documents to the LLM along with their attachments using the API, define 
 ## Example
 
 ```csharp
-using (var store = new DocumentStore())
+using (var store = new DocumentStore
+{
+    // Replace the server URL and database name with your own values.
+    Urls = new[] { "https://your-ravendb-server" },
+    Database = "YourDatabase"
+}.Initialize())
 {
     // Define the connection string to OpenAI
     var connectionString = new AiConnectionString

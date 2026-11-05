@@ -6,7 +6,7 @@ How to define an AI agent in RavenDB and run conversations with it — concepts 
 
 | Piece | What it is |
 |---|---|
-| AI connection string | Named config pointing at one model provider (`type: "Ai"`, `modelType: "Chat"`). Exactly one of: `openAiSettings`, `azureOpenAiSettings`, `ollamaSettings`, `googleSettings`, `mistralAiSettings`, `huggingFaceSettings`, `vertexSettings`, `embeddedSettings`. |
+| AI connection string | Named config pointing at one model provider (`type: "Ai"`, `modelType: "Chat"`). Exactly one of: `openAiSettings`, `azureOpenAiSettings`, `ollamaSettings`, `googleSettings`, `mistralAiSettings`, `huggingFaceSettings`, `vertexSettings`, `embeddedSettings`, `anthropicSettings` (Chat only). |
 | Agent configuration | Server-stored: `name`, `connectionStringName`, `systemPrompt`, output shape (`sampleObject` or `outputSchema`), `parameters`, `queries`, `actions`, optional `subAgents`, `chatTrimming`, `maxModelIterationsPerCall`. Creating returns an `identifier` — use it for all later calls. |
 | Parameters | Values the caller must supply when opening a conversation; referenced by the agent's queries (`$param`). `sendToModel: false` hides a value from the LLM while queries can still use it. |
 | Queries | RQL the *server* runs when the model asks (database-side tools): `{ name, description, query, parametersSampleObject | parametersSchema }`. |

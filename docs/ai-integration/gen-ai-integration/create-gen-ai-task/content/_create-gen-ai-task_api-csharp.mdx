@@ -52,7 +52,12 @@ import Panel from "@site/src/components/Panel";
 <TabItem value="set-open-ai" label="set-open-ai">
 
 ```csharp
-using (var store = new DocumentStore())
+using (var store = new DocumentStore
+{
+    // Replace the server URL and database name with your own values.
+    Urls = new[] { "https://your-ravendb-server" },
+    Database = "YourDatabase"
+}.Initialize())
 {
     // Define the connection string to OpenAI
     var connectionString = new AiConnectionString
@@ -80,7 +85,12 @@ using (var store = new DocumentStore())
 <TabItem value="set-ollama" label="set-ollama">
 
 ```csharp
-using (var store = new DocumentStore())
+using (var store = new DocumentStore
+{
+    // Replace the server URL and database name with your own values.
+    Urls = new[] { "https://your-ravendb-server" },
+    Database = "YourDatabase"
+}.Initialize())
 {
     // Define the connection string to Ollama
     var connectionString = new AiConnectionString

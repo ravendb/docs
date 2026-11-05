@@ -64,7 +64,12 @@ import Panel from '@site/src/components/Panel';
 
 <TabItem value="create_connection_string_mistral_ai" label="create_connection_string_mistral_ai">
 ```csharp
-using (var store = new DocumentStore())
+using (var store = new DocumentStore
+{
+    // Replace the server URL and database name with your own values.
+    Urls = new[] { "https://your-ravendb-server" },
+    Database = "YourDatabase"
+}.Initialize())
 {
     // Define the connection string to Mistral AI
     var connectionString = new AiConnectionString

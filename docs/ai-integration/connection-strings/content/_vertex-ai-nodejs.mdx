@@ -94,6 +94,13 @@ import Panel from '@site/src/components/Panel';
 
 <TabItem value="create_connection_string_vertex_ai" label="create_connection_string_vertex_ai">
 ```js
+// Replace the server URL and database name with your own values.
+const store = new DocumentStore(
+    "https://your-ravendb-server",
+    "YourDatabase"
+);
+store.initialize();
+
 // Define the connection string to Vertex AI    
 const connectionString = new AiConnectionString();
 

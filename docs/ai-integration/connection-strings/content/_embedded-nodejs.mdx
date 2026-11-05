@@ -54,6 +54,13 @@ import Panel from '@site/src/components/Panel';
 
 <TabItem value="create_connection_string_embedded" label="create_connection_string_embedded">
 ```js
+// Replace the server URL and database name with your own values.
+const store = new DocumentStore(
+    "https://your-ravendb-server",
+    "YourDatabase"
+);
+store.initialize();
+
 // Define the connection string to the embedded model
 const connectionString = new AiConnectionString();
 

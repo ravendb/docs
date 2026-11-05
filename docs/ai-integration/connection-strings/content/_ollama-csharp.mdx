@@ -105,7 +105,12 @@ import Panel from '@site/src/components/Panel';
 <Tabs groupId='languageSyntax'>
 <TabItem value="Connection_string_for_text_embedding_model" label="Connection_string_for_text_embedding_model">
 ```csharp
-using (var store = new DocumentStore())
+using (var store = new DocumentStore
+{
+    // Replace the server URL and database name with your own values.
+    Urls = new[] { "https://your-ravendb-server" },
+    Database = "YourDatabase"
+}.Initialize())
 {
     // Define the connection string to Ollama
     var connectionString = new AiConnectionString
@@ -140,7 +145,12 @@ using (var store = new DocumentStore())
 </TabItem>
 <TabItem value="Connection_string_for_chat_model" label="Connection_string_for_chat_model">
 ```csharp
-using (var store = new DocumentStore())
+using (var store = new DocumentStore
+{
+    // Replace the server URL and database name with your own values.
+    Urls = new[] { "https://your-ravendb-server" },
+    Database = "YourDatabase"
+}.Initialize())
 {
     // Define the connection string to Ollama
     var connectionString = new AiConnectionString

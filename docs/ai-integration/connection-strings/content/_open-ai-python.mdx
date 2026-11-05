@@ -127,7 +127,7 @@ import Panel from '@site/src/components/Panel';
 4. **Prompt Cache Key** (optional)
     
    * Controls whether RavenDB includes the `prompt_cache_key` field in chat completion 
-     requests sent to the AI provider when using [AI Agents](../../../ai-integration/ai-agents/overview.mdx).
+     requests sent to the AI provider by [AI agents](../../../ai-integration/ai-agents/overview.mdx) and [GenAI tasks](../../../ai-integration/gen-ai-integration/overview.mdx).
     
    * When enabled (set to _True_), RavenDB sends the [Conversation's document ID](../../../ai-integration/ai-agents/overview.mdx#what-is-a-conversation) 
      in the `prompt_cache_key` field with each request.
@@ -143,7 +143,8 @@ import Panel from '@site/src/components/Panel';
      The cache key is only a provider-side optimization hint. RavenDB does not control the provider's caching behavior.
     
    * **Options:**
-     * `Default` - `True` (Enabled for OpenAI and OpenAI-compatible providers).  
+     * `Default` - Send the cache key for AI agents, and for GenAI tasks only when they send tools to the model (e.g., query tools).
+        A GenAI task without tools sends each document once, so the key would not help there.  
      * `True` - Always send the cache key.  
      * `False` - Never send the cache key.  
         Set to _False_ if your provider does not support the field and returns errors instead of ignoring it.  

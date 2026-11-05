@@ -67,6 +67,13 @@ Or use a remote _OpenAI_ service for its broader resources and capabilities.
 <Tabs groupId='languageSyntax'>
 <TabItem value="connection_string_to_ollama" label="connection_string_to_ollama">
 ```js
+// Replace the server URL and database name with your own values.
+const documentStore = new DocumentStore(
+    "https://your-ravendb-server",
+    "YourDatabase"
+);
+documentStore.initialize();
+
 // Define the connection string to Ollama
 const connectionString = new AiConnectionString();
 
@@ -89,6 +96,13 @@ const putConnectionStringResult = await documentStore.maintenance.send(putConnec
 </TabItem>
 <TabItem value="connection_string_to_open_ai" label="connection-string_to_open_ai">
 ```js
+// Replace the server URL and database name with your own values.
+const documentStore = new DocumentStore(
+    "https://your-ravendb-server",
+    "YourDatabase"
+);
+documentStore.initialize();
+
 // Define the connection string to OpenAI
 const connectionString = new AiConnectionString();
 
@@ -112,6 +126,13 @@ const putConnectionStringResult = await documentStore.maintenance.send(putConnec
 </TabItem>
 <TabItem value="connection_string_to_azure_open_ai" label="connection-string_to_azure_open_ai">
 ```js
+// Replace the server URL and database name with your own values.
+const documentStore = new DocumentStore(
+    "https://your-ravendb-server",
+    "YourDatabase"
+);
+documentStore.initialize();
+
 // Define the connection string to Azure OpenAI    
 const connectionString = new AiConnectionString();
 
@@ -904,6 +925,13 @@ The agent assists the user in rewarding top-performing employees by following th
   The same information is also returned in the agent’s final response.
 
 ```js
+// Replace the server URL and database name with your own values.
+const documentStore = new DocumentStore(
+    "https://your-ravendb-server",
+    "YourDatabase"
+);
+documentStore.initialize();
+
 // Define a connection string to OpenAI
 // ====================================
 

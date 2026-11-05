@@ -66,6 +66,13 @@ import Panel from '@site/src/components/Panel';
 
 <TabItem value="create_connection_string_hugging_face" label="create_connection_string_hugging_face">
 ```js
+// Replace the server URL and database name with your own values.
+const store = new DocumentStore(
+    "https://your-ravendb-server",
+    "YourDatabase"
+);
+store.initialize();
+
 // Define the connection string to Hugging Face    
 const connectionString = new AiConnectionString();
 

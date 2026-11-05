@@ -29,6 +29,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 * RavenDB supports connecting to the following external providers:  
   [OpenAI & OpenAI compatible providers](../../ai-integration/connection-strings/open-ai.mdx),
   [Azure OpenAI](../../ai-integration/connection-strings/azure-open-ai.mdx),  
+  [Anthropic](../../ai-integration/connection-strings/anthropic.mdx) (_chat models only_),
   [Google AI](../../ai-integration/connection-strings/google-ai.mdx),
   [Vertex AI](../../ai-integration/connection-strings/vertex-ai.mdx),
   [Ollama](../../ai-integration/connection-strings/ollama.mdx),
@@ -117,11 +118,12 @@ import ContentFrame from "@site/src/components/ContentFrame";
    This opens a dialog where you can configure the connection details for the selected provider.  
    
        The list of available providers is filtered based on the selected model type.  
-       (Some providers are currently supported in RavenDB only for text embedding models).  
+       (Some providers are currently supported in RavenDB only for text embedding models, and Anthropic only for chat models).  
        
        Configuration details for each provider are explained in the following articles:  
+       * [Anthropic](../../ai-integration/connection-strings/anthropic.mdx) (_chat only_)
        * [Azure Open AI](../../ai-integration/connection-strings/azure-open-ai.mdx)
-       * [Google AI](../../ai-integration/connection-strings/google-ai.mdx) (_embeddings only_)
+       * [Google AI](../../ai-integration/connection-strings/google-ai.mdx)
        * [Hugging Face](../../ai-integration/connection-strings/hugging-face.mdx) (_embeddings only_)
        * [Ollama](../../ai-integration/connection-strings/ollama.mdx)
        * [OpenAI](../../ai-integration/connection-strings/open-ai.mdx)
