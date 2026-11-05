@@ -451,9 +451,9 @@ order by NameForSorting
 * Unlike ordering by a regular field, `order by score()` lists the highest scores (best matches) first.  
   Adding `desc` reverses this and lists the lowest scores (weakest matches) first.
 
-	| Python client | RQL | Result order |
-	|---------------|-----|--------------|
-	| `order_by_score()` | `order by score()` | Highest scores (best matches) first |
+	| Python client                 | RQL                     | Result order                          |
+	|-------------------------------|-------------------------|---------------------------------------|
+	| `order_by_score()`            | `order by score()`      | Highest scores (best matches) first   |
 	| `order_by_score_descending()` | `order by score() desc` | Lowest scores (weakest matches) first |
 
 * This direction is the same in Lucene and Corax and applies to any query that produces scores,  
