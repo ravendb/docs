@@ -1,9 +1,9 @@
 ---
 title: "Document Refresh: Client API"
 sidebar_label: "Client API"
-description: "Trigger automatic document modification at a scheduled time using RavenDB's document refresh extension for cache invalidation and workflows."
+description: "Enable and configure document refresh for a database using the client API, and schedule document refreshes by setting the @refresh metadata property."
 sidebar_position: 0
-supported_languages: ["csharp"]
+supported_languages: ["csharp", "java", "python", "php", "nodejs"]
 see_also:
      - title: "How to Get and Modify Metadata"
        link: "client-api/session/how-to/get-and-modify-entity-metadata"
@@ -13,18 +13,42 @@ see_also:
        link: "server/clustering/replication/change-vector"
        source: "docs"
        path: "Server > Clustering > Replication"
+     - title: "Document Refresh: Studio View"
+       link: "documents/document-refresh/document-refresh-view"
+       source: "docs"
+       path: "Documents > Document Refresh"
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 import RefreshCsharp from './content/_client-api-csharp.mdx';
+import RefreshJava from './content/_client-api-java.mdx';
+import RefreshPython from './content/_client-api-python.mdx';
+import RefreshPhp from './content/_client-api-php.mdx';
+import RefreshNodejs from './content/_client-api-nodejs.mdx';
 
 
 <LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <RefreshCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <RefreshJava />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <RefreshPython />
+</LanguageContent>
+
+<LanguageContent language="php">
+   <RefreshPhp />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <RefreshNodejs />
 </LanguageContent>
 
 

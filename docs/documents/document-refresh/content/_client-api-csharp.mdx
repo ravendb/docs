@@ -2,137 +2,314 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
 <Admonition type="note" title="">
 
-* The Refresh feature increments a document's [change vector](../../../server/clustering/replication/change-vector.mdx), 
-  triggering its re-indexation as well as other features that react to document updates.  
+* The **document refresh** feature updates a document at a time you schedule.  
+  This update triggers features that react to document changes, like indexing, ETL tasks, and data subscriptions.
 
-* Refresh is scheduled using the `@refresh` flag in a document's [metadata](../../../client-api/session/how-to/get-and-modify-entity-metadata.mdx).  
+* To enable *document refresh* for a database, send the server a `RefreshConfiguration` object using the
+  [ConfigureRefreshOperation](../../../documents/document-refresh/client-api.mdx#configurerefreshoperation) operation.  
+  The `RefreshConfiguration` object also sets the frequency at which the *document refresh* feature checks the database
+  for documents to refresh.
 
-* In this page:  
-  * [Overview](../../../documents/document-refresh/client-api.mdx#overview)  
-  * [Examples](../../../documents/document-refresh/client-api.mdx#examples)
-  * [Syntax](../../../documents/document-refresh/client-api.mdx#syntax)
-  * [Configure from Studio](../../../documents/document-refresh/client-api.mdx#configure-from-studio)
+* To schedule a document's refresh, set the `@refresh` [metadata](../../../client-api/session/how-to/get-and-modify-entity-metadata.mdx)
+  property of the document to the intended refresh time.
 
+* To enable and configure *document refresh* using Studio, see
+  [Document Refresh: Studio View](../../../documents/document-refresh/document-refresh-view.mdx).
+
+* In this article:
+   * [Refreshing documents](../../../documents/document-refresh/client-api.mdx#refreshing-documents)
+      * [The refresh process](../../../documents/document-refresh/client-api.mdx#the-refresh-process)
+   * [Enabling document refresh](../../../documents/document-refresh/client-api.mdx#enabling-document-refresh)
+   * [Scheduling a document refresh](../../../documents/document-refresh/client-api.mdx#scheduling-a-document-refresh)
+   * [Syntax](../../../documents/document-refresh/client-api.mdx#syntax)
+      * [ConfigureRefreshOperation](../../../documents/document-refresh/client-api.mdx#configurerefreshoperation)
+      * [Classes](../../../documents/document-refresh/client-api.mdx#classes)
 
 </Admonition>
-## Overview
 
-* To set a document refresh time, add the document's `@metadata` a 
-  `@refresh` property with the designated refresh time as a value.  
-  Set the time in **UTC** format, not local time, e.g. -  
-  **"@refresh": "2025-04-22T08:00:00.0000000Z"**  
-  <Admonition type="warning" title="">
-  Metadata properties starting with `@` are for internal RavenDB usage only.  
-  Do _not_ use the metadata `@refresh` property for any other purpose than 
-  scheduling a document's refresh time for the built-in refresh feature.  
+<Panel heading="Refreshing documents">
+
+Using **document refresh**, you can schedule RavenDB to update a document at a set time.  
+This way, features that react to document changes (e.g., indexes and ETL tasks) process the document once the set time has
+passed, with no further action required from your application.
+
+---
+
+### The refresh process
+
+1. **Enabling document refresh for a database:**  
+   *Document refresh* is **disabled** by default. 
+   See [Enabling document refresh](../../../documents/document-refresh/client-api.mdx#enabling-document-refresh) below.
+
+2. **Scheduling a document's refresh:**  
+   Add a `@refresh` property to the
+   [metadata](../../../client-api/session/how-to/get-and-modify-entity-metadata.mdx) of the document you want to
+   refresh, and set the property's value to the intended refresh time.  
+   e.g., `"@refresh": "2026-12-01T08:00:00.0000000Z"`  
+   See [Scheduling a document refresh](../../../documents/document-refresh/client-api.mdx#scheduling-a-document-refresh) below.
+
+3. **Refreshing the scheduled document:**  
+   The *document refresh* feature periodically checks the database for documents to refresh (every 60 seconds by default).  
+   At the first check after the time set by the `@refresh` metadata property, the property is removed from the document's
+   metadata, and the modified document is stored.  
+   As a result, the document's [change vector](../../../server/clustering/replication/change-vector.mdx) is incremented,
+   indicating that the document was updated.
+
+4. **Processing the refreshed document:**  
+   Features that react to document changes are triggered by this update and process the refreshed document.  
+   For example:
+
+   * The document is re-indexed by the indexes defined for the document's collection.
+   * The document is replicated to the other nodes of the
+     [database group](../../../server/clustering/distribution/distributed-database.mdx),
+     and to the destinations of [external replication](../../../server/ongoing-tasks/external-replication.mdx) tasks.
+   * An [ETL task](../../../server/ongoing-tasks/etl/basics.mdx) whose transformation script handles the document's collection
+     runs the script over the document.
+   * A [data subscription](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx) whose query matches the
+     updated document sends the document to the subscription's worker (or to one of its workers, for a
+     [concurrent subscription](../../../client-api/data-subscriptions/concurrent-subscriptions.mdx)).
+   * If [revisions](../../../document-extensions/revisions/overview.mdx) are enabled for the document's collection, a new revision
+     of the document is created.
+
+5. **Rescheduling the document's refresh:**  
+   Since the `@refresh` property is removed, the document is refreshed only once.  
+   To refresh the document again, set the document's `@refresh` metadata property to a new time.
+
+</Panel>
+
+<Panel heading="Enabling document refresh">
+
+To enable *document refresh* for a database, send the server a `RefreshConfiguration` object with its `Disabled` property
+set to `false`, using the
+[ConfigureRefreshOperation](../../../documents/document-refresh/client-api.mdx#configurerefreshoperation) operation.
+
+e.g., the following code enables *document refresh*, sets the interval between checks to five minutes, and limits the feature to
+processing up to 1,000 documents at a time.
+
+```csharp
+// Define the refresh configuration
+var refreshConfiguration = new RefreshConfiguration
+{
+    // Enable document refresh for the database
+    Disabled = false,
+
+    // Check the database for documents to refresh every 5 minutes
+    RefreshFrequencyInSec = 300,
+
+    // Process up to 1,000 documents at a time
+    MaxItemsToProcess = 1000
+};
+
+// Send the configuration to the server
+store.Maintenance.Send(new ConfigureRefreshOperation(refreshConfiguration));
+```
+<br />
+
+<Admonition type="note" title="">
+On a secure server, enabling or configuring the *document refresh* feature requires, like other changes to a database's
+configuration, a client certificate with `Admin` access to the database (or with an `Operator` or `Cluster Admin`
+[security clearance](../../../server/security/authorization/security-clearance-and-permissions.mdx)).  
+Setting a document's `@refresh` metadata property, on the other hand, is a change to the document, which `Read/Write` access
+permits.  
+See [Setting up Authentication and Authorization](../../../client-api/setting-up-authentication-and-authorization.mdx)
+</Admonition>
+
+The `RefreshConfiguration` object holds the following settings
+(see [RefreshConfiguration](../../../documents/document-refresh/client-api.mdx#refreshconfiguration)):
+
+* **`Disabled`**  
+  Set this property to `false` to enable *document refresh*, or to `true` to disable the feature.  
+  The default value for this property is `false`, so sending a new `RefreshConfiguration` object enables *document refresh*
+  unless you explicitly set `Disabled` to `true`.
+
+* **`RefreshFrequencyInSec`**  
+  Sets the interval, in seconds, between the *document refresh* feature's checks for documents to refresh.  
+  The default value for this property is 60 seconds.
+
+  <Admonition type="note" title="">
+  The `RefreshFrequencyInSec` value must be greater than 0: sending a value of 0 or less fails with a `RavenException`,
+  whose inner exception is an `InvalidOperationException`.  
+  e.g., the following code sends a `RefreshFrequencyInSec` value of 0 and catches the resulting exception.
+
+  ```csharp
+  try
+  {
+      store.Maintenance.Send(new ConfigureRefreshOperation(new RefreshConfiguration
+      {
+          Disabled = false,
+          RefreshFrequencyInSec = 0
+      }));
+  }
+  catch (RavenException e) when (e.InnerException is InvalidOperationException)
+  {
+      // The inner exception's message includes:
+      // "Refresh frequency for database '<database name>' must be greater than 0."
+  }
+  ```
   </Admonition>
 
-* This will cause the document to refresh **only once**.  
-  When the refresh operation takes place, it will also remove the `@refresh` property from the document.  
-     <Admonition type="info" title="The exact refresh time is determined by:" id="the-exact-refresh-time-is-determined-by" href="#the-exact-refresh-time-is-determined-by">
+* **`MaxItemsToProcess`**  
+  Sets the maximum number of documents the *document refresh* feature processes in a single run (each time the feature checks the
+  database for documents whose refresh time has passed).  
+  Remaining documents are processed in the following runs.  
+  By default, a single run can process any number of documents.
 
-     1. The refresh time value set for the `@refresh` property.  
-     2. The way you set the [Refresh Configuration](../../../documents/document-refresh/client-api.mdx#syntax), 
-        including -  
-         - The interval by which the server refreshes documents (set by default to 60 seconds).  
-         - The way you set **maximal items to process**, potentially limiting the number 
-           of documents that RavenDB is allowed to delete each time the refresh feature is invoked.  
+<Admonition type="note" title="">
+On a [Community license](https://ravendb.net/buy), the *document refresh* feature cannot check for documents to refresh more
+often than every 36 hours (129600 seconds).  
+Enabling *document refresh* with a lower `RefreshFrequencyInSec` value, or without setting `RefreshFrequencyInSec` (so that the
+60-second default applies), fails with a `LicenseLimitException`.  
+e.g., the code above, which sets `RefreshFrequencyInSec` to 300, fails on a Community license.
+</Admonition>
 
-     </Admonition>
+</Panel>
 
-* Refreshing a document causes its [change vector](../../../server/clustering/replication/change-vector.mdx) 
-  to increment the same way it would after any other kind of update to the document.  
-  This triggers any features that react to document updating, including but not limited to:  
-   - Re-indexing of the document by indexes that cover it  
-   - [Replication](../../../server/ongoing-tasks/external-replication.mdx), 
-     [Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx), 
-     and [ETL](../../../server/ongoing-tasks/etl/basics.mdx) triggering  
-   - Creation of a [document revision](../../../document-extensions/revisions/overview.mdx)  
+<Panel heading="Scheduling a document refresh">
 
+To schedule a document's refresh, set the `@refresh` metadata property of the document to the intended refresh time, and save
+the document.
 
+<Admonition type="warning" title="">
+The `@refresh` metadata property is reserved for the *document refresh* feature.  
+Do not use it for any other purpose: RavenDB reads any value set for this property as a refresh time.  
+A valid date and time schedules the document's refresh, and any other value makes saving the document fail.
+</Admonition>
 
-## Examples
+e.g., the following code schedules a refresh of the `users/1-A` document for one hour from now.
 
-#### Example I  
+```csharp
+using (var session = store.OpenSession())
+{
+    // Load the document
+    var user = session.Load<User>("users/1-A");
 
-How to set refresh configuration for a database:  
+    // Set the document's refresh time to one hour from now, in UTC
+    session.Advanced.GetMetadataFor(user)["@refresh"] = DateTime.UtcNow.AddHours(1);
 
-<TabItem value="refresh_0" label="refresh_0">
-<CodeBlock language="csharp">
-{`var refreshConfig = new RefreshConfiguration \{
-    Disabled = false, 
-    RefreshFrequencyInSec = 300,
-    MaxItemsToProcess = 1000 
-\};
-
-var result = documentStore.Maintenance.Send(new ConfigureRefreshOperation(refreshConfig));
-`}
-</CodeBlock>
-</TabItem>  
-
-This activates document refreshing and sets the interval at 5 minutes.  
-
-
-#### Example II  
-
-How to set a document to refresh 1 hour from now:  
-
-<TabItem value="refresh_1" label="refresh_1">
-<CodeBlock language="csharp">
-{`using (var session = documentStore.OpenSession())
-\{
-    var document = session.Load<object>("users/1-A");
-
-    session.Advanced.GetMetadataFor(document)["@refresh"] = DateTime.UtcNow.AddHours(1);
-
+    // Save the document
     session.SaveChanges();
-\}
-`}
-</CodeBlock>
-</TabItem>  
+}
+```
+<br />
 
+* **Setting the refresh time in UTC:**  
+  Set the `@refresh` property to a UTC `DateTime` value (e.g., `DateTime.UtcNow.AddHours(1)`).  
+  The client sends a UTC value with a `Z` suffix, which marks the time as UTC, so the server reads the intended time
+  correctly.  
+  e.g., `"@refresh": "2026-12-01T08:00:00.0000000Z"`
 
+  <Admonition type="note" title="">
+  Do not set the property to a local `DateTime` value (e.g., `DateTime.Now.AddHours(1)`).  
+  The client sends a local value without time zone information, and the server reads such a value as the server machine's
+  local time.  
+  If the client machine and the server machine are in different time zones, the document will be refreshed at a different
+  time than intended.
+  </Admonition>
 
-## Syntax
+* **Setting an invalid refresh time:**  
+  If the value of the `@refresh` property is not a valid date and time, `SaveChanges` throws a `RavenException`, and none
+  of the session's changes are saved.
 
-To activate and/or configure document refreshing, send the server a 
-`RefreshConfiguration` object using the `ConfigureRefreshOperation` operation.  
-#### `RefreshConfiguration`
+* **Scheduling while *document refresh* is disabled:**  
+  Setting the `@refresh` property while *document refresh* is disabled for the database still schedules the document's refresh.  
+  Once the feature is enabled, documents whose refresh time has already passed are refreshed, starting at the feature's first
+  check.
 
-<TabItem value="refresh_config" label="refresh_config">
-<CodeBlock language="csharp">
-{`public class RefreshConfiguration
-\{
-    // Set 'Disabled' to false to enable the refresh feature
-    public bool Disabled \{ get; set; \}
+* **Changing or canceling a scheduled refresh:**  
+  To change a document's refresh time, set its `@refresh` property to a new time and save the document.  
+  To cancel the refresh, remove the `@refresh` property from the document's metadata and save the document.  
+  e.g., `session.Advanced.GetMetadataFor(user).Remove("@refresh");`
 
-    // How frequently to process documents with a @refresh flag
-    public long? RefreshFrequencyInSec \{ get; set; \}
+</Panel>
 
-    // How many items to refresh (each time the refresh task is invoked)
-    public long? MaxItemsToProcess \{ get; set; \}
-\}
-`}
-</CodeBlock>
-</TabItem>
+<Panel heading="Syntax">
+
+<ContentFrame>
+
+### ConfigureRefreshOperation
+
+Sends a `RefreshConfiguration` object to the server, to enable or disable *document refresh* for a database and configure the
+feature.
+
+```csharp
+public ConfigureRefreshOperation(RefreshConfiguration configuration)
+```
+<br />
+Usage:
+
+```csharp
+// Sync
+ConfigureRefreshOperationResult result =
+    store.Maintenance.Send(new ConfigureRefreshOperation(refreshConfiguration));
+
+// Async
+ConfigureRefreshOperationResult asyncResult =
+    await store.Maintenance.SendAsync(new ConfigureRefreshOperation(refreshConfiguration));
+```
+<br />
 
 | Parameter | Type | Description |
-| - | - | - |
-| **Disabled** | `bool` | If `true`, refreshing documents is disabled for the entire database.&lt;BR&gt;Default: `true` |
-| **RefreshFrequencyInSec** | `long?` | Determines how often (in seconds) the server processes documents that need to be refreshed.&lt;BR&gt;Default: `60` |
-| **MaxItemsToProcess** | `long?` | Determines the maximal number of documents the feature is allowed to refresh in one run. |
+|-----------|------|-------------|
+| **configuration** | `RefreshConfiguration` | The *document refresh* configuration to apply to the database. See [RefreshConfiguration](../../../documents/document-refresh/client-api.mdx#refreshconfiguration). |
 
+| Return value | |
+|-----------|-------------|
+| `ConfigureRefreshOperationResult` | Contains `RaftCommandIndex`. See [ConfigureRefreshOperationResult](../../../documents/document-refresh/client-api.mdx#configurerefreshoperationresult). |
 
+</ContentFrame>
 
-## Configure from Studio
+<ContentFrame>
 
-Alternatively, document refreshing can also be configured via Studio, under **Settings &gt; Document Refresh**.
+### Classes
 
-![NoSQL DB Server - Document Refresh](../assets/StudioRefresh.png)
+<Tabs groupId='refresh-classes'>
+<TabItem value="RefreshConfiguration" label="RefreshConfiguration">
+<a id="refreshconfiguration"/>
 
+**Defines the *document refresh* configuration of a database.**
 
+```csharp
+class RefreshConfiguration
+{
+    bool Disabled
+    long? RefreshFrequencyInSec
+    long? MaxItemsToProcess
+}
+```
+<br />
 
+| Property | Type | Description |
+|----------|------|-------------|
+| **Disabled** | `bool` | Set to `false` to enable *document refresh* for the database, or to `true` to disable the feature.<br />The default value is `false`. |
+| **RefreshFrequencyInSec** | `long?` | The interval, in seconds, between the feature's checks for documents to refresh.<br />The value must be greater than 0.<br />If `null`, the default value of 60 seconds applies.<br />On a Community license, the value must be at least 129600 (36 hours). See [Enabling document refresh](../../../documents/document-refresh/client-api.mdx#enabling-document-refresh). |
+| **MaxItemsToProcess** | `long?` | The maximum number of documents the feature processes in a single run.<br />If `null`, a single run can process any number of documents. |
 
+</TabItem>
+<TabItem value="ConfigureRefreshOperationResult" label="ConfigureRefreshOperationResult">
+<a id="configurerefreshoperationresult"/>
+
+**The result of sending a `ConfigureRefreshOperation` operation to the server.**
+
+```csharp
+class ConfigureRefreshOperationResult
+{
+    long? RaftCommandIndex
+}
+```
+<br />
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **RaftCommandIndex** | `long?` | The Raft index of the command that applied the configuration. |
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+</Panel>
