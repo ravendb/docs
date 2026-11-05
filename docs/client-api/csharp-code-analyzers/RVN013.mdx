@@ -96,6 +96,11 @@ The diagnostic highlights the method name, such as `ToList` or `Lazily`.
   when the RQL argument is a compile-time string constant that does not contain the word `limit`.  
   This includes constant interpolated strings, such as `$"from Orders"` or `$"from {Collection}"` when `Collection` is a `const string`.
 
+- **Queries created elsewhere**:  
+  RVN013 also checks RavenDB queries passed into the current method, stored in fields or properties, or returned by helper methods.  
+  However, it cannot detect a `Take()` call or RQL `limit` clause applied where those queries were built,  
+  so it may report queries that are already bounded. See [Limitations](#limitations).
+
 ---
                 
 **Where RVN013 looks for `Take()`**:
@@ -117,9 +122,11 @@ RVN013 treats any `Take()` call in one of these places as an explicit bound, inc
 
 - `First`, `FirstOrDefault`, `Single`, `SingleOrDefault`, `Any`, `Count`, `LongCount`, and their async forms.  
   They return a single result or value.
-- Raw queries whose RQL text contains the word `limit` (case-insensitive),  
-  or whose RQL argument is not a compile-time string constant, such as a nonconstant variable, a parameter,  
-  a method result, or an interpolated string with a nonconstant hole.
+
+- Raw queries that RVN013 can trace back, through the method chain or a local-variable initializer, to a `RawQuery` or `AsyncRawQuery` call
+  whose RQL argument contains the word `limit` (case-insensitive) or is not a compile-time string constant.
+  Nonconstant arguments include a non-`const` variable, a parameter, a method result, and an interpolated string with a nonconstant hole.
+
 - LINQ over results already loaded into memory,  
   such as the second `ToList()` in `session.Query<Order>().Take(10).ToList().Where(…).ToList()`.
 
@@ -209,20 +216,43 @@ var orders = session.Query<Order>()
     
 - A `Take()` applied outside the method is not detected.  
   A query typed as `IRavenQueryable<T>`, `IDocumentQuery<T>`, or another RavenDB query type is reported when it is received as a parameter,
-  read from a field or property, or returned by a method, even if it was bounded where it was created.
+  read from a field or property, or returned by a method, even if it was bounded where it was created. For example:
+
+  ```csharp
+  IDocumentQuery<Order> GetRecentOrders(IDocumentSession session) =>
+      session.Advanced.DocumentQuery<Order>()
+          .OrderByDescending(x => x.OrderedAt)
+          .Take(50);
+
+  // RVN013 is reported on ToList, although GetRecentOrders applies Take()
+  var orders = GetRecentOrders(session).ToList();
+  ```
+
+  A raw query received this way is reported regardless of its RQL text, even when the RQL contains `limit` or is not a compile-time string constant.
     
-  A query typed as `IQueryable<T>` is followed only through local-variable initializers;  
-  as a parameter, field, or property, it is not checked.
+  A value typed only as `IQueryable<T>` is checked when RVN013 can trace its receiver chain or a local-variable initializer back to a RavenDB query.
+  An `IQueryable<T>` parameter, field, or property is not checked, and neither is the result of a method called outside the query chain, such as `GetOrders()` in `GetOrders().ToList()`.
     
 - Conditions are not evaluated.  
   An earlier assignment containing `Take()` inside an `if` block suppresses RVN013 even if the block does not run,  
   while a `Take()` inside a conditional expression, such as `flag ? query.Take(10) : query`, is not detected.
     
-- In raw queries, `limit` is matched anywhere in the RQL text,  
-  so a query that uses `limit` only as a field name or inside a string value is not reported.  
-        
-  Nonconstant interpolated RQL is not checked, even when only a filter value is interpolated.  
+- RVN013 does not evaluate query conditions or grouping.  
+  A query whose result size is limited by its condition, such as `Where(x => x.Id == id)` or `Where(x => x.Id.In(ids))`, or a `GroupBy` over a fixed set of values, is still reported.  
+
+  For simple document retrieval by ID, consider `Load()` or `LoadAsync()`.  
+  Otherwise, make the query's known upper bound explicit with `Take()`; for example, `Take(ids.Length)` for a query restricted to those IDs.
+  Alternatively, suppress RVN013 for that call.
+    
+- When RVN013 can trace a raw query back to its `RawQuery` or `AsyncRawQuery` call, `limit` is matched anywhere in the RQL text,
+  so a query that uses `limit` only as a field name or inside a string value is not reported.
+
+  For these queries, nonconstant interpolated RQL is not checked, even when only a filter value is interpolated.
   For example, `$"from Orders where Company = '{company}'"` is not reported when `company` is a nonconstant variable.
+
+  RVN013 does not inspect RQL in assignments made after a local variable's declaration.  
+  When it cannot locate the `RawQuery` or `AsyncRawQuery` call, it reports the checked call unless it finds a `Take()`
+  in one of the places listed under [When is RVN013 reported?](#when-is-rvn013-reported).
 
 </Panel>
 
