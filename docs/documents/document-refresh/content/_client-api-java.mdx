@@ -189,7 +189,7 @@ try (IDocumentSession session = store.openSession()) {
   e.g., `"@refresh": "2026-12-01T08:00:00.000Z"`
 
   <Admonition type="note" title="">
-  Do not set the property to a date string without time zone information (e.g., `"2026-12-01T08:00:00"`).  
+  Do not set the property to a date string without a time zone designator (e.g., `"2026-12-01T08:00:00"`).  
   The server reads such a value as the server machine's local time.  
   If the client machine and the server machine are in different time zones, the document will be refreshed at a different
   time than intended.

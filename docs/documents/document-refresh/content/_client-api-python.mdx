@@ -185,7 +185,7 @@ with store.open_session() as session:
 
   <Admonition type="note" title="">
   Do not set the property to a `datetime` object, even a timezone-aware one (e.g., `datetime.now(timezone.utc) + timedelta(hours=1)`).  
-  The client sends a `datetime` value without time zone information, and the server reads such a value as the server machine's
+  The client sends a `datetime` value without a time zone designator, and the server reads such a value as the server machine's
   local time.  
   If the client machine and the server machine are in different time zones, the document will be refreshed at a different
   time than intended.
