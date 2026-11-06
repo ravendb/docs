@@ -7,7 +7,19 @@ import { fileURLToPath } from "node:url";
 import { buildAgentHint, buildStaticUrl, escapeHtml, readSkillDescription } from "../lib/hint.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const SKILL_FILE = path.join(__dirname, "..", "..", "..", "..", "static", "skills", "ravendb", "SKILL.md");
+const SKILL_FILE = path.join(
+    __dirname,
+    "..",
+    "..",
+    "..",
+    "..",
+    "node_modules",
+    "@ravendb",
+    "skills",
+    "skills",
+    "ravendb",
+    "SKILL.md"
+);
 const SKILL_URL = "https://docs.ravendb.net/skills/ravendb/SKILL.md";
 
 test("readSkillDescription reads the hosted skill's description", () => {
