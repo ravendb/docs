@@ -4,6 +4,16 @@ Disallow: /templates/
 {{DISALLOW_LEGACY_VERSIONS}}
 Allow: /
 
+# Search engines index the pages, not the Markdown copies of them served to coding agents.
+# The longest matching rule wins, so the agent skill under /skills/ stays crawlable.
+User-agent: Googlebot
+User-agent: Bingbot
+Disallow: /templates/
+{{DISALLOW_LEGACY_VERSIONS}}
+Disallow: /*.md$
+Allow: /skills/
+Allow: /
+
 # AI Search Crawlers
 User-agent: GPTBot
 Disallow: /templates/

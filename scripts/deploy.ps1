@@ -256,9 +256,23 @@ if ($DryRun) {
     Write-Host "  [2/4] Sync: static files with --delete (HTML, images, icons, sitemap, robots.txt, etc.)" -ForegroundColor Gray
     aws s3 sync $BuildDir "s3://$S3BucketName/" --only-show-errors `
         --exclude "assets/*" `
+        --exclude "*.md" `
         --cache-control "public, max-age=3600, must-revalidate" `
         --delete
     if ($LASTEXITCODE) { throw 'aws s3 sync (static files) failed' }
+
+    # Markdown copies of pages and the agent skill. The CLI guesses text/markdown without a
+    # charset, so set it here. This runs before phase 3 publishes the edge function that serves
+    # the copies, so it never points at a file that is not there yet.
+    Write-Host "  [2/4] Sync: Markdown (*.md) with --delete" -ForegroundColor Gray
+    aws s3 sync $BuildDir "s3://$S3BucketName/" --only-show-errors `
+        --exclude "*" `
+        --include "*.md" `
+        --exclude "assets/*" `
+        --content-type "text/markdown; charset=utf-8" `
+        --cache-control "public, max-age=3600, must-revalidate" `
+        --delete
+    if ($LASTEXITCODE) { throw 'aws s3 sync (Markdown) failed' }
 
     # Phase 3: push the CloudFront configuration that lives in this repo, then
     # invalidate so every edge location fetches the new index.html, which
