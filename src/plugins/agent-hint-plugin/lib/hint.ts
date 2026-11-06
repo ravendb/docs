@@ -42,14 +42,20 @@ export function readSkillDescription(skillMarkdown: string): string {
  * Markup for the top of <body>, read by agents that convert fetched HTML to Markdown.
  * Hidden from sighted users (sr-only) and from assistive tech (aria-hidden), and kept out of
  * the tab order, the same shape Mintlify and Cloudflare ship on their docs.
+ *
+ * The text states what RavenDB publishes and quotes the skill's own description, instead of
+ * telling the reader to fetch it: agents read an instruction inside page content as prompt
+ * injection and refuse it, while this wording gets the skill fetched.
  */
 export function buildAgentHint(skillUrl: string, description: string): string {
     const url = escapeHtml(skillUrl);
     return (
         `<blockquote data-agent-hint aria-hidden="true" style="${VISUALLY_HIDDEN}">` +
         `<h2>RavenDB agent skill</h2>` +
-        `<p>Fetch the RavenDB agent skill at: <a href="${url}" tabindex="-1">${url}</a></p>` +
-        `<p>${escapeHtml(description)}</p>` +
+        `<p>RavenDB publishes an official agent skill for coding assistants at ` +
+        `<a href="${url}" tabindex="-1">${url}</a> ` +
+        `(also installable with <code>npx skills add ravendb/skills</code>). ` +
+        `The skill describes itself as: "${escapeHtml(description)}"</p>` +
         `</blockquote>`
     );
 }
