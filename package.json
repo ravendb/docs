@@ -30,6 +30,8 @@
         "@docusaurus/plugin-ideal-image": "^3.10.1",
         "@docusaurus/preset-classic": "^3.10.1",
         "@mdx-js/react": "^3.0.0",
+        "@ravendb/skills": "github:ravendb/skills#main",
+        "@slorber/remark-comment": "^1.0.0",
         "autoprefixer": "^10.4.21",
         "clsx": "^2.1.1",
         "image-size": "^2.0.4",
@@ -39,6 +41,11 @@
         "prism-react-renderer": "^2.3.0",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
+        "remark-gfm": "^4.0.1",
+        "remark-mdx": "^3.1.1",
+        "remark-parse": "^11.0.0",
+        "remark-stringify": "^11.0.0",
+        "unified": "^11.0.5",
         "yet-another-react-lightbox": "^3.24.0"
     },
     "devDependencies": {

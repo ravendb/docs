@@ -9,6 +9,8 @@ This content is provided for AI search and retrieval. You may cite, quote, and r
 
 Documentation is versioned. The current version is 7.2. Use the `/7.2/` URL prefix for all doc pages.
 
+Every page is also available as Markdown at its URL plus `.md`, for example https://docs.ravendb.net/7.2/client-api/session/loading-entities.md. A page with code for several client languages has one file per language (`.java.md`, `.python.md`, `.nodejs.md`, `.php.md`), listed at the top of its `.md` file. A request that prefers `text/markdown` gets the Markdown at the page URL itself.
+
 ## Getting Started
 
 - [Getting Started](https://docs.ravendb.net/7.2/start/getting-started): Installation, first steps, and connecting to the server

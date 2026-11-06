@@ -41,7 +41,6 @@ src/
   pages/                     # Custom standalone pages
   theme/                     # Docusaurus theme overrides
 scripts/                     # Build/deploy automation
-static/skills/ravendb/       # Agent skill served verbatim at /skills/ravendb/
 static/icons/                # SVG icon assets (source for icon type generation)
 sidebars.ts                  # Main docs sidebar config
 sidebarsCloud.js             # Cloud docs sidebar
@@ -73,6 +72,7 @@ versions.json                # Active version list
   - asserts every legacy-version page carries `<meta name="robots" content="noindex,...">`. The injection itself is delegated to Docusaurus' native per-version `noIndex` config (see `docusaurus.config.ts`); the plugin only audits.
   - Both checks fail the build under `DOCUSAURUS_STRICT_SEO=true`. Registered **after** all `content-docs` instances so HTML is already emitted when it runs.
 - `agent-hint-plugin`: puts a hidden pointer to the hosted agent skill at the top of every page's `<body>`. See "Hosted Agent Skill" below.
+- `markdown-export`: writes the Markdown copies of pages that coding agents get. See "Markdown for Agents" below.
 
 Noindex for legacy versions is set declaratively in `docusaurus.config.ts` (`versions[v].noIndex: true`), and the versionless `templates` instance does the same with `versions.current.noIndex: true`. Don't mark template pages `unlisted: true`: on production builds that hides them from the templates sidebar unless they are the active page. No custom plugin writes the meta tag; the versioned-seo-plugin only verifies it landed (on legacy versions).
 
@@ -80,17 +80,59 @@ Noindex for legacy versions is set declaratively in `docusaurus.config.ts` (`ver
 
 ## Hosted Agent Skill
 
-`static/skills/ravendb/` is served verbatim at `/skills/ravendb/SKILL.md`, outside the version
-prefix. `SKILL.md` links to `references/` with relative paths, so moving or flattening the tree
+The skill is authored in [ravendb/skills](https://github.com/ravendb/skills) and installed here as
+the `@ravendb/skills` npm dependency, which tracks ravendb/skills `main` on GitHub. Edit it there,
+not here. `deploy.ps1` and the PR build install `main` again after `npm ci`, so every deploy
+serves the newest skill and PRs are built with it. `package-lock.json` records the commit `main`
+pointed at when it was last installed; only local builds use that one, until someone runs
+`npm update @ravendb/skills`.
+
+Only `skills/ravendb/` from the package is published, at `/skills/ravendb/`, outside the version
+prefix: `agent-hint-plugin` copies that subtree byte for byte into the gitignored
+`.generated/static/`, which `staticDirectories` serves for `start`, `build` and their `:current`
+variants. `SKILL.md` links to `references/` with relative paths, so moving or flattening the tree
 breaks navigation, and `md` must stay in `staticAssetRegex` in `scripts/handle_redirects.js` or
 these URLs 301 to a versioned path that does not exist.
 
 Every page points agents at the skill through `agent-hint-plugin`: a pre-body blockquote hidden
 from people (`sr-only` styling, `aria-hidden`, `tabindex="-1"` on its link) that survives the
-HTML-to-Markdown conversion agents run on fetched pages. Its text is the `description` from
-`SKILL.md`'s frontmatter, read at build time, so editing that description changes what agents
-read on every page, and the build fails if it is missing. Keep the hint in static HTML: anything
-rendered client-side never reaches an agent, which is also why `LanguageContent` shows agents C# only.
+HTML-to-Markdown conversion agents run on fetched pages. It states that RavenDB publishes the
+skill and quotes the `description` from `SKILL.md`'s frontmatter, read at build time, so editing
+that description changes what agents read on every page, and the build fails if it is missing.
+Keep the wording descriptive: agents refuse an instruction found inside page content as prompt
+injection. Keep the hint in static HTML: anything rendered client-side never reaches an agent,
+which is also why `LanguageContent` shows agents C# only.
+
+---
+
+## Markdown for Agents
+
+`markdown-export` runs in `postBuild` and writes a Markdown copy of every page in the current and
+`ACTIVE_VERSIONS` docs and in cloud, quill, guides and samples (not legacy versions, not
+templates). It converts the MDX source, not the built HTML, which holds only the default language.
+A page with `LanguageContent` blocks gets one file per language: `x.md` is the language the page
+shows by default (C#, or its first `supported_languages` entry), `x.python.md` and the others exist
+only for languages the page has. Partials are inlined, tabs become headed sections, admonitions
+become blockquotes, and links point at the target's copy in the same language when it has one.
+Each file opens with the client language, links to the other languages, and the agent-skill
+sentence, since a Markdown reader never sees the HTML hint. Routes with no MDX source (listing and
+tag pages) get a copy built from their HTML links, so every page in scope has one.
+
+The built HTML gets one `<link rel="alternate" type="text/markdown">` per copy and a line in the
+agent hint naming them. A component the converter does not know fails the build under
+`DOCUSAURUS_STRICT=true` (a warning otherwise), since whatever it holds in props would be lost: add
+it to `WRAPPERS`, `TSX_ONLY` or `CARDS` in `lib/convert.ts`, or give it its own case. Unknown HTML
+tags and content problems such as an unclosed code fence stay warnings.
+
+`scripts/handle_redirects.js` serves the copies. A request whose `Accept` weighs `text/markdown`
+at least as high as `text/html` gets `x.md` at the page URL (redirects carry no suffix; the client
+repeats its header); `?lang=` plays no part. An explicit `x.md` or `x.python.md` URL goes through
+the same version and redirect handling and keeps its suffix. `MARKDOWN_VERSIONS` and
+`MARKDOWN_SECTIONS` are inlined there; a parity test holds them to the plugin's. `deploy.ps1`
+uploads `*.md` with `text/markdown; charset=utf-8` before it publishes the function. Search
+engines are kept off the copies by a Googlebot and Bingbot group in
+`scripts/robots-templates/robots_prod.template.txt` (`Disallow: /*.md$`, `Allow: /skills/`), so
+they index the pages; the AI crawlers' groups leave the copies open.
 
 ---
 

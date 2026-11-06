@@ -30,6 +30,14 @@ const staticAssetRegex =
 
 const versionRegex = /^\/(\d+\.\d+)(\/.*)?/;
 
+// Where the build writes Markdown copies of pages (src/plugins/markdown-export). Legacy versions
+// and templates have none. A parity test there holds these lists to the plugin's.
+const MARKDOWN_VERSIONS = ["7.2", "7.1", "6.2"];
+const MARKDOWN_SECTIONS = ["cloud", "quill", "guides", "samples"];
+
+// A page's Markdown copy: <page>.md, or <page>.<language>.md for another client language.
+const markdownPageRegex = /^(.+?)((?:\.(?:csharp|java|python|php|nodejs))?\.md)$/;
+
 function redirect(targetUrl) {
     return {
         statusCode: 301,
@@ -40,11 +48,54 @@ function redirect(targetUrl) {
     };
 }
 
+// The weight (0 to 1) an Accept header gives a media type, or -1 when it does not name it.
+function acceptWeight(accept, mediaType) {
+    const ranges = accept.toLowerCase().split(",");
+    for (let i = 0; i < ranges.length; i++) {
+        const params = ranges[i].split(";");
+        if (params[0].trim() !== mediaType) continue;
+        for (let j = 1; j < params.length; j++) {
+            const param = params[j].trim();
+            if (param.startsWith("q=")) return parseFloat(param.slice(2)) || 0;
+        }
+        return 1;
+    }
+    return -1;
+}
+
+// Markdown when the client asks for it at least as strongly as for HTML. Claude Code sends
+// "text/markdown, text/html, */*" (a tie), Cursor "text/markdown, text/plain;q=0.9, */*;q=0.8"
+// (no HTML at all). Browsers never name text/markdown.
+function prefersMarkdown(accept) {
+    const markdown = acceptWeight(accept || "", "text/markdown");
+    return markdown > 0 && markdown >= acceptWeight(accept || "", "text/html");
+}
+
 async function handler(event) {
     const request = event.request;
-    const uri = request.uri;
+    let uri = request.uri;
 
-    if (staticAssetRegex.test(uri)) {
+    // An explicit <page>.md URL goes through the same version and redirect handling as the page,
+    // and keeps its suffix. A page request that prefers text/markdown is answered with the copy
+    // at the same URL; its redirects carry no suffix, since the client repeats its Accept header.
+    // The hosted skill under /skills/ is a plain static file.
+    let markdownSuffix = "";
+    let explicitMarkdown = false;
+    const markdownMatch = uri.startsWith("/skills/") ? null : uri.match(markdownPageRegex);
+    if (markdownMatch) {
+        uri = markdownMatch[1];
+        markdownSuffix = markdownMatch[2];
+        explicitMarkdown = true;
+    } else if (staticAssetRegex.test(uri)) {
+        return request;
+    } else if (request.headers.accept && prefersMarkdown(request.headers.accept.value)) {
+        markdownSuffix = ".md";
+    }
+    const redirectSuffix = explicitMarkdown ? markdownSuffix : "";
+
+    // An explicit .md URL outside the Markdown scope reaches S3 as is and gets its 404.
+    function serve(path, hasMarkdown) {
+        request.uri = explicitMarkdown || (markdownSuffix && hasMarkdown) ? path + markdownSuffix : path + "/index.html";
         return request;
     }
 
@@ -53,10 +104,9 @@ async function handler(event) {
 
     if (normalizedUri.startsWith("/templates")) {
         if (hasTrailingSlash) {
-            return redirect(normalizedUri);
+            return redirect(normalizedUri + redirectSuffix);
         }
-        request.uri = uri + "/index.html";
-        return request;
+        return serve(normalizedUri, false);
     }
 
     if (
@@ -69,16 +119,15 @@ async function handler(event) {
             const redirectData = await kvsHandle.get(normalizedUri);
             const redirectJsonValue = JSON.parse(redirectData);
             if (redirectJsonValue.targetUrl) {
-                return redirect(redirectJsonValue.targetUrl);
+                return redirect(redirectJsonValue.targetUrl + redirectSuffix);
             }
         } catch (_) {
             // No redirect rule found
         }
         if (hasTrailingSlash) {
-            return redirect(normalizedUri);
+            return redirect(normalizedUri + redirectSuffix);
         }
-        request.uri = uri + "/index.html";
-        return request;
+        return serve(normalizedUri, MARKDOWN_SECTIONS.indexOf(normalizedUri.split("/")[1]) >= 0);
     }
 
     const versionMatch = normalizedUri.match(versionRegex);
@@ -115,9 +164,8 @@ async function handler(event) {
     }
 
     if (redirectRequired) {
-        return redirect(targetUri);
+        return redirect(targetUri + redirectSuffix);
     }
 
-    request.uri = normalizedUri + "/index.html";
-    return request;
+    return serve(normalizedUri, MARKDOWN_VERSIONS.indexOf(version) >= 0);
 }
