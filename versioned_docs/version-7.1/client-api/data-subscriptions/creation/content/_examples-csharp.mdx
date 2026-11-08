@@ -456,23 +456,10 @@ subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
 </CodeBlock>
 </TabItem>
 
-Using the subscription ID allows you to modify the subscription name:
-
-<TabItem value="update_subscription_example_2" label="update_subscription_example_2">
-<CodeBlock language="csharp">
-{`// Get the subscription's ID
-mySubscription = store.Subscriptions.GetSubscriptionState("my subscription");
-subscriptionId = mySubscription.SubscriptionId;
-
-// Update the subscription name
-subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
-\{
-    Id = subscriptionId,
-    Name = "New name" 
-\});
-`}
-</CodeBlock>
-</TabItem>
+<Admonition type="note" title="">
+You cannot rename a subscription by providing its `Id` and a new `Name`.  
+Doing this keeps the existing subscription under its current name and adds a second subscription with the new name and the same ID.
+</Admonition>
 
 
 

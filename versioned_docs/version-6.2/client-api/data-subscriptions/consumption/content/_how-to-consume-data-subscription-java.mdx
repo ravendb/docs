@@ -52,7 +52,7 @@ When an unexpected error arises, the worker will attempt to **reconnect to the s
 However, there are several conditions under which the worker will stop its operation but will Not attempt to reconnect:
 
 * The subscription no longer exists or has been deleted.
-* Another worker has taken control of the subscription (see [connection strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#available-worker-strategies)).
+* Another worker has taken control of the subscription (see [connection strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies)).
 * The worker is unable to connect to any of the servers.
 * The worker could not receive the node responsible for the task  
   (this can happen when there is no leader in the cluster).

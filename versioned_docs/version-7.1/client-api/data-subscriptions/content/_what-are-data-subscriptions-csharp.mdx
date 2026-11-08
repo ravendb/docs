@@ -129,27 +129,50 @@ workers of the same subscription can connect to it one by one, or **concurrently
 
 ## Data subscriptions usage example
 
-Data subscriptions are accessible by a document store.  
-Here's an example of creating and using a data subscription:
+The following example creates a subscription for orders shipped to the UK, using the
+[CreateAsync](../../../client-api/data-subscriptions/creation/api-overview.mdx#create-subscription) method.  
+The subscription is kept on the server until you explicitly delete it.
 
-<TabItem value="subscriptions_example" label="subscriptions_example">
+<TabItem value="create_subscription" label="create_subscription">
 <CodeBlock language="csharp">
-{`public async Task Worker(IDocumentStore store, CancellationToken cancellationToken)
+{`public async Task CreateSubscription(IDocumentStore store)
 \{
-    // Create the ongoing subscription task on the server
-    string subscriptionName = await store.Subscriptions
-        .CreateAsync<Order>(x => x.Company == "companies/11");
-    
-    // Create a worker on the client that will consume the subscription
-    SubscriptionWorker<Order> worker = store.Subscriptions
-        .GetSubscriptionWorker<Order>(subscriptionName);
-    
-    // Run the worker task and process data received from the subscription
-    Task workerTask = worker.Run(x => x.Items.ForEach(item =>
-        Console.WriteLine($"Order #\{item.Result.Id\} will be shipped via: \{item.Result.ShipVia\}")),
-        cancellationToken);
+    // Create the subscription and give it a name
+    await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions<Order>
+    \{
+        Name = "OrdersShippedToUK",
 
-    await workerTask;
+        // The subscription will send every Order shipped to the UK
+        Filter = order => order.ShipTo.Country == "UK"
+    \});
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+To process the orders, pass the subscription's name to
+[GetSubscriptionWorker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#create-the-subscription-worker)
+to create a worker, and run the worker using the worker's
+[Run](../../../client-api/data-subscriptions/consumption/api-overview.mdx#run-the-subscription-worker) method.  
+You can run the worker any number of times (e.g., each time your application starts).  
+Each time the worker runs, processing continues where it left off.
+
+<TabItem value="process_orders" label="process_orders">
+<CodeBlock language="csharp">
+{`public async Task ProcessOrders(IDocumentStore store, CancellationToken cancellationToken)
+\{
+    // Create a worker on the client, passing it the name of the subscription to connect to
+    SubscriptionWorker<Order> worker =
+        store.Subscriptions.GetSubscriptionWorker<Order>("OrdersShippedToUK");
+
+    // Run the worker and process each batch of documents the subscription sends
+    await worker.Run(batch =>
+    \{
+        foreach (var item in batch.Items)
+        \{
+            Console.WriteLine($"Order \{item.Result.Id\} will be shipped via \{item.Result.ShipVia\}");
+        \}
+    \}, cancellationToken);
 \}
 `}
 </CodeBlock>

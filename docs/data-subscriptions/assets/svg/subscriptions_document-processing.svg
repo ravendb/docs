@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 770" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+    <marker id="arrowR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1100" height="770" fill="#ffffff"/>
+
+  <!-- lifelines -->
+  <line x1="145" y1="55" x2="145" y2="755" stroke="#cccccc" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="555" y1="55" x2="555" y2="755" stroke="#cccccc" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="955" y1="55" x2="955" y2="755" stroke="#cccccc" stroke-width="1" stroke-dasharray="4 4"/>
+
+  <!-- lane headers -->
+  <g font-size="14" font-weight="bold" fill="#1a1a1a" text-anchor="middle">
+    <rect x="25" y="15" width="240" height="38" rx="6" fill="#eef0f3" stroke="#333"/>
+    <text x="145" y="39">Subscription worker (client)</text>
+    <rect x="430" y="15" width="250" height="38" rx="6" fill="#eef0f3" stroke="#333"/>
+    <text x="555" y="39">Subscription connection (server)</text>
+    <rect x="845" y="15" width="220" height="38" rx="6" fill="#eef0f3" stroke="#333"/>
+    <text x="955" y="39">Cluster</text>
+  </g>
+
+  <!-- vertical flow arrows (server) -->
+  <g stroke="#333" stroke-width="1.5" marker-end="url(#arrow)">
+    <line x1="555" y1="150" x2="555" y2="184"/>
+    <line x1="555" y1="249" x2="555" y2="289"/>
+    <line x1="555" y1="340" x2="555" y2="369"/>
+    <line x1="555" y1="420" x2="555" y2="449"/>
+    <line x1="555" y1="500" x2="555" y2="534"/>
+    <line x1="555" y1="585" x2="555" y2="624"/>
+  </g>
+  <!-- vertical flow arrows (client) -->
+  <g stroke="#333" stroke-width="1.5" marker-end="url(#arrow)">
+    <line x1="145" y1="150" x2="145" y2="289"/>
+    <line x1="145" y1="340" x2="145" y2="449"/>
+    <line x1="145" y1="500" x2="145" y2="534"/>
+    <line x1="145" y1="585" x2="145" y2="624"/>
+  </g>
+
+  <!-- start arrow -->
+  <line x1="145" y1="70" x2="145" y2="99" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrowR)"/>
+
+  <!-- horizontal message arrows -->
+  <g stroke="#333" stroke-width="1.5" marker-end="url(#arrow)">
+    <line x1="265" y1="125" x2="429" y2="125"/>            <!-- C1 -> S1 -->
+    <line x1="430" y1="315" x2="266" y2="315"/>            <!-- S3 -> C2 -->
+    <line x1="430" y1="475" x2="266" y2="475"/>            <!-- S5 -> C3 -->
+    <line x1="265" y1="560" x2="429" y2="560"/>            <!-- C4 -> S6 -->
+    <line x1="430" y1="650" x2="266" y2="650"/>            <!-- S7 -> C5 -->
+  </g>
+  <!-- cluster message arrows (red) -->
+  <g stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrowR)">
+    <line x1="845" y1="217" x2="681" y2="217"/>            <!-- Cluster1 -> S2 -->
+    <line x1="680" y1="560" x2="844" y2="560"/>            <!-- S6 -> Cluster2 -->
+  </g>
+
+  <!-- loop-back arrows (red) -->
+  <g fill="none" stroke="#c0392b" stroke-width="1.5">
+    <path d="M145,675 V730 H12 V315 H24" marker-end="url(#arrowR)"/>      <!-- C5 back to C2 -->
+    <path d="M555,675 V742 H720 V567 A7,7 0 0 1 720,553 V395 H681" marker-end="url(#arrowR)"/>    <!-- S7 back to S4; hops over the server->cluster arrow -->
+  </g>
+
+  <!-- message labels -->
+  <g font-size="11" fill="#555" text-anchor="middle">
+    <text x="347" y="118">Connection request</text>
+    <text x="347" y="308">Connection accepted</text>
+    <text x="347" y="468">Documents sent</text>
+    <text x="347" y="553">Acknowledgment</text>
+    <text x="347" y="643">Confirmation</text>
+  </g>
+
+  <!-- boxes -->
+  <g font-size="13" fill="#222" text-anchor="middle">
+    <!-- client boxes -->
+    <rect x="25" y="100" width="240" height="50" rx="6" fill="#fbfbfc" stroke="#333"/>
+    <text x="145" y="120">Worker starts with your</text>
+    <text x="145" y="137">batch-processing logic</text>
+
+    <rect x="25" y="290" width="240" height="50" rx="6" fill="#fbfbfc" stroke="#333"/>
+    <text x="145" y="320">Waits for documents</text>
+
+    <rect x="25" y="450" width="240" height="50" rx="6" fill="#fbfbfc" stroke="#333"/>
+    <text x="145" y="470">Documents processed</text>
+    <text x="145" y="487">by your logic</text>
+
+    <rect x="25" y="535" width="240" height="50" rx="6" fill="#fbfbfc" stroke="#333"/>
+    <text x="145" y="565">Acknowledges the batch</text>
+
+    <rect x="25" y="625" width="240" height="50" rx="6" fill="#fbfbfc" stroke="#333"/>
+    <text x="145" y="655">Acknowledgment confirmed</text>
+
+    <!-- server boxes -->
+    <rect x="430" y="100" width="250" height="50" rx="6" fill="#fbfbfc" stroke="#333"/>
+    <text x="555" y="120">Subscription connection</text>
+    <text x="555" y="137">request received</text>
+
+    <rect x="430" y="185" width="250" height="64" rx="6" fill="#fbfbfc" stroke="#333"/>
+    <text x="555" y="206">Checks the subscription exists</text>
+    <text x="555" y="222">and the worker may connect,</text>
+    <text x="555" y="238">per its connection strategy</text>
+
+    <rect x="430" y="290" width="250" height="50" rx="6" fill="#fbfbfc" stroke="#333"/>
+    <text x="555" y="310">Subscription connection</text>
+    <text x="555" y="327">approved</text>
+
+    <rect x="430" y="370" width="250" height="50" rx="6" fill="#fbfbfc" stroke="#333"/>
+    <text x="555" y="390">Queries the database for</text>
+    <text x="555" y="407">the next matching batch</text>
+
+    <rect x="430" y="450" width="250" height="50" rx="6" fill="#fbfbfc" stroke="#333"/>
+    <text x="555" y="480">Sends documents to the worker</text>
+
+    <rect x="430" y="535" width="250" height="50" rx="6" fill="#fbfbfc" stroke="#333"/>
+    <text x="555" y="555">Sends the acknowledgment</text>
+    <text x="555" y="572">to the cluster</text>
+
+    <rect x="430" y="625" width="250" height="50" rx="6" fill="#fbfbfc" stroke="#333"/>
+    <text x="555" y="655">Ready to send the next batch</text>
+
+    <!-- cluster boxes -->
+    <rect x="845" y="192" width="220" height="50" rx="6" fill="#fbfbfc" stroke="#333"/>
+    <text x="955" y="212">Subscription progress</text>
+    <text x="955" y="229">found</text>
+
+    <rect x="845" y="535" width="220" height="50" rx="6" fill="#fbfbfc" stroke="#333"/>
+    <text x="955" y="555">Subscription progress</text>
+    <text x="955" y="572">stored</text>
+  </g>
+
+  <!-- document source: the responsible node's database -->
+  <g>
+    <ellipse cx="345" cy="372" rx="60" ry="8" fill="#f4f6f8" stroke="#333"/>
+    <path d="M285,372 v48 a60,8 0 0 0 120,0 v-48" fill="#f4f6f8" stroke="#333"/>
+    <text x="345" y="393" font-size="13" fill="#222" text-anchor="middle">Database</text>
+    <text x="345" y="409" font-size="11" fill="#555" text-anchor="middle">(responsible node)</text>
+    <line x1="405" y1="395" x2="429" y2="395" stroke="#333" stroke-width="1.5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  </g>
+</svg>
