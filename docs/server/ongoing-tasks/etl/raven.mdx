@@ -1004,7 +1004,7 @@ When you delete a document you can store a deletion marker document that will pr
  * In the below example if the auxiliary document `LocalOnlyDeletions/{docId}` exists then we skip this deletion during ETL. 
    The auxiliary document can be created to protect certain documents from deletion in the destination database.
  * You can add `@expires` tag to the metadata when storing the marker document, so it would be automatically cleaned up after a certain time
-   by [the expiration extension](../../../documents/document-expiration/client-api.mdx#setting-the-document-expiration-time).
+   by [the document expiration feature](../../../documents/document-expiration/client-api.mdx#scheduling-a-document-s-expiration).
       
 <TabItem>
 ```js
