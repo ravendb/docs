@@ -436,7 +436,7 @@ public static void Main(string[] args)
     
 * Auto-indexes are created when all of the following conditions are met:  
     * A query is issued without specifying an index (a dynamic query).
-    * The query includes a filtering condition.
+    * The query filters on fields other than the document ID, or sorts the results (`order by`).
     * No suitable auto-index exists that can satisfy the query.
     * Creation of auto-indexes has not been disabled.
     
@@ -446,7 +446,7 @@ public static void Main(string[] args)
 * Note: dynamic queries can be issued either when [querying](../../studio/database/queries/query-view.mdx#query-view) or when [patching](../../documents/patching-documents/patch-multiple-documents/patch-view.mdx#patch-configuration).
     
 * Over time, RavenDB automatically adjusts and merges auto-indexes to efficiently serve your queries.  
-  For more details, see [Query a collection - with filtering (dynamic query)](../../querying/overview.mdx#dynamicQuery).
+  For more details, see [Query a collection - with filtering or sorting (dynamic query)](../../querying/overview.mdx#2-query-a-collection---with-filtering).
 
 </ContentFrame>
 <ContentFrame>
@@ -454,7 +454,7 @@ public static void Main(string[] args)
 ### Naming convention
     
 * Auto-indexes are easily identified by their names, which start with the `Auto/` prefix.
-* Their name also includes the name of the queried collection and a list of fields used in the query predicate to filter matching results.
+* Their name also includes the name of the queried collection and a list of the fields the query uses to filter or sort the results.
 * For example, issuing the following query:
     
 <Tabs groupId='languageSyntax'>

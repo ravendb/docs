@@ -149,10 +149,11 @@ Indexes in RavenDB are split across the following multiple axes:
 #### Auto Indexes -vs- Static Indexes
 * **Auto Indexes**:  
   * Auto-indexes are created by the server.  
-  * When a query that has some filtering condition doesn't specify a specific index to be used,  
+  * When a query that has some filtering condition or sorting (`order by`) doesn't specify a specific index to be used,  
     the server Query Optimizer will first analyze the query and search for an already existing Auto-index that can answer the query.  
   * If there is no such index, the Query Optimizer creates on the fly an Auto-index that can answer this query and all previous queries on that collection.  
   * When the new Auto-index has caught up, RavenDB cleans up all the old Auto-indexes that are now superseded by the new one.
+  * Learn more in [Queries always provide results using an index](../../../querying/overview.mdx#queries-always-provide-results-using-an-index).
 
 * **Static Indexes**:  
   * Static-indexes are created by the user (database admin only) from the Studio or from the [Client API](../../../indexes/creating-and-deploying.mdx).  

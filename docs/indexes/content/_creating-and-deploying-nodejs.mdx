@@ -296,7 +296,7 @@ async function main() \{
 * Indexes **created by the server** are called `dynamic` or `auto` indexes.
 * Auto-indexes are created when all of the following conditions are met:
     * A query is issued without specifying an index (a dynamic query).
-    * The query includes a filtering condition.
+    * The query filters on fields other than the document ID, or sorts the results (`order by`).
     * No suitable auto-index exists that can satisfy the query.
     * Creation of auto-indexes has not been disabled.
 * For such queries, RavenDB's Query Optimizer searches for an existing auto-index that can satisfy the query.
@@ -304,14 +304,14 @@ async function main() \{
   (Static-indexes are not taken into account when determining which auto-index should handle the query).
 * Note: dynamic queries can be issued either when [querying](../../studio/database/queries/query-view.mdx#query-view) or when [patching](../../documents/patching-documents/patch-multiple-documents/patch-view.mdx#patch-configuration).
 * Over time, RavenDB automatically adjusts and merges auto-indexes to efficiently serve your queries.  
-  For more details, see [Query a collection - with filtering (dynamic query)](../../querying/overview.mdx#dynamicQuery).
+  For more details, see [Query a collection - with filtering or sorting (dynamic query)](../../querying/overview.mdx#2-query-a-collection---with-filtering).
 
 </Admonition>
 <Admonition type="note" title="">
 
 ##### Naming convention
 * Auto-indexes are easily identified by their names, which start with the `Auto/` prefix.
-* Their name also includes the name of the queried collection and a list of fields used in the query predicate to filter matching results.
+* Their name also includes the name of the queried collection and a list of the fields the query uses to filter or sort the results.
 * For example, issuing the following query:
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">

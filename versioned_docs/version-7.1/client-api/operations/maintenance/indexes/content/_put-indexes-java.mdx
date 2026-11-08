@@ -5,6 +5,13 @@ import CodeBlock from '@theme/CodeBlock';
 
 **PutIndexesOperation** is used to insert indexes into a database.
 
+<Admonition type="note" title="Auto-indexes">
+
+When a dynamic query filters on fields other than the document ID, or sorts the results, RavenDB uses a suitable existing auto-index or creates one if needed.
+Learn more in [Creating auto indexes](../../../../../indexes/creating-and-deploying.mdx#auto-indexes).
+
+</Admonition>
+
 ### Syntax
 
 <TabItem value="put_1_0" label="put_1_0">

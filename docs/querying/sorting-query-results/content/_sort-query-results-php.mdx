@@ -46,7 +46,9 @@ import Panel from '@site/src/components/Panel';
     
 ### Order by field value - dynamic query   
 
-Use `orderBy` or `orderByDescending` (see below) to order the results by the specified document field.
+Use `orderBy` or `orderByDescending` (see below) to order the results by the specified document field.  
+The query is served by an auto-index that includes the sorted field, even when no filtering is applied.  
+RavenDB uses an existing auto-index or creates one if needed, see [Query a collection - with filtering or sorting](../../../querying/overview.mdx#2-query-a-collection---with-filtering).
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -897,6 +899,12 @@ order by custom(UnitsInStock, "MyCustomSorter")
   RavenDB may create or extend an auto-index to include that field.  
   This adds indexing work before the sort can be served efficiently.  
   On hot paths, prefer a static index that already contains the sortable field.    
+
+* **Sorting uses an auto-index even without filtering.**  
+  A dynamic query that has an `order by` clause but no filtering condition is still served by an auto-index,  
+  not by the raw collection documents.  
+  For example, `from Employees order by FirstName` uses an auto-index that includes `FirstName`, creating one if needed.  
+  Learn more in [Query a collection - with filtering or sorting](../../../querying/overview.mdx#2-query-a-collection---with-filtering).
 
 </Panel>
 
