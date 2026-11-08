@@ -25,13 +25,18 @@ import ContentFrame from "@site/src/components/ContentFrame";
 # Document Refresh: Studio View
 <Admonition type="note" title="">
 
-* The **document refresh** feature updates a document at a time you schedule.  
-  This update triggers features that react to document changes, like indexing, ETL tasks, and data subscriptions.
+* The **document refresh** feature re-saves an existing document once the time you schedule for it has passed,
+  without changing the document's data.  
+  Re-saving the document triggers features that react to document updates, like indexing, ETL tasks, and data
+  subscriptions.  
+  Use *document refresh* for documents that need to be processed at a later time, like documents that hold emails to send
+  on a set date, room reservations to release once they expire, or reminders to raise when they are due.
+
+* To schedule a document's refresh, set the `@refresh` metadata property of the document to the intended refresh time.  
+  The `@refresh` property is removed when the document is re-saved.
 
 * Use Studio's **Document Refresh** view to enable *document refresh* for a database, set the interval between 
   checks for documents to refresh, and limit the number of documents the feature processes in a single run.
-
-* To schedule a document's refresh, set the `@refresh` metadata property of the document to the intended refresh time.
 
 * To enable and configure *document refresh* using the client API, and to learn how the feature refreshes documents, see
   [Document Refresh: Client API](../../documents/document-refresh/client-api.mdx).
@@ -91,7 +96,7 @@ or with an `Operator` or `Cluster Admin` [security clearance](../../server/secur
      When this option is **off**, any number of documents can be processed during a single run.
       - Each run processes the documents due for refresh in the order of their refresh times, earliest first.  
         Documents that share a refresh time are processed in the order of their document IDs.
-      - If the number of documents due for refresh exceeds the set limit, the documents are processed over multiple
+      - If the number of documents due for refresh exceeds the set limit, the documents will be processed over multiple
         consecutive runs.
 
 4. **Example of a document scheduled for refresh**  
@@ -110,43 +115,44 @@ to its metadata, and save the document.
 
 1. **`@refresh`**  
    Add a `@refresh` property to the document's `@metadata`, and set the property's value to the intended refresh time.
+   * Add a **time zone designator** to the value (`Z` for UTC, or an offset from UTC), so the document is refreshed at the moment
+     you intend.  
+     A refresh time set without a time zone designator is read in the server machine's time zone.  
+     If this time zone differs from the one you meant, the document will be refreshed earlier or later than you intended.
 
-   <Admonition type="note" title="">
-   Add a time zone designator to the value (`Z` for UTC, or an offset from UTC), so the document is refreshed at the moment
-   you intend.  
-   A refresh time set without a time zone designator is read in the server machine's time zone.  
-   If this time zone differs from the one you meant, the document will be refreshed earlier or later than you intended.
-
-   Examples:
-   * `"@refresh": "2027-11-05T08:00:00.0000000Z"` sets the refresh time to 08:00 UTC.
-   * `"@refresh": "2027-11-05T10:00:00.0000000+02:00"` sets the refresh time to 10:00 in a time zone two hours ahead of
-     UTC, which is 08:00 UTC.
-   * `"@refresh": "2027-11-05T08:00:00.0000000"` sets the refresh time to 08:00 in the server machine's time zone.
-   </Admonition>
+     Examples:
+     - `"@refresh": "2027-11-05T08:00:00.0000000Z"` sets the refresh time to 08:00 UTC.
+     - `"@refresh": "2027-11-05T10:00:00.0000000+02:00"` sets the refresh time to 10:00 in a time zone two hours ahead of
+       UTC, which is 08:00 UTC.
+     - `"@refresh": "2027-11-05T08:00:00.0000000"` sets the refresh time to 08:00 in the server machine's time zone.
+   * When the document is refreshed, the `@refresh` property is **removed from its metadata**, so the document is refreshed
+     only once.  
+     To refresh the document again, set its `@refresh` property to a new time.
+   * Reverting a document to a [revision](../../document-extensions/revisions/overview.mdx) also **removes the `@refresh`
+     property from the reverted document**.  
+     See [Reverting documents to revisions](../../documents/document-refresh/client-api.mdx#reverting-documents-to-revisions)
 
 2. **Refresh**  
    Once the document is saved, the **Properties** panel, on the right side of the document view, shows the time left until
    the document's refresh.  
    Hovering over the time left until the refresh shows the refresh date and time in UTC.
+   * If *document refresh* **is disabled for the database**, a warning icon is displayed next to the time left until the refresh:
+     ![Document refresh is disabled](./assets/document-view_refresh-disabled.png)
 
-   <Admonition type="note" title="">
-   If *document refresh* is disabled for the database, a warning icon is displayed next to the time left until the refresh:
-   ![Document refresh is disabled](./assets/document-view_refresh-disabled.png)
-
-   The refresh is still scheduled:
-   * If you enable the feature before the refresh time, the document will be refreshed in the feature's first run after
-     the refresh time.
-   * If the refresh time passes while the feature is disabled, the document will be refreshed in the feature's first run
-     after you enable the feature.
-   * In both cases, the document may be refreshed in a later run if the number of documents due for refresh exceeds the
-     [maximum set for a single run](../../documents/document-refresh/document-refresh-view.mdx#set-max-number-of-documents-to-process-in-a-single-run).
-   </Admonition>
+     The refresh is **still scheduled**:
+     - If you enable the feature before the refresh time, the document will be refreshed in the feature's first run after
+       the refresh time.
+     - If the refresh time passes while the feature is disabled, the document will be refreshed in the feature's first run
+       after you enable the feature.
+     - In both cases, the document may be refreshed in a later run if the number of documents due for refresh exceeds the
+       maximum set for a single run using the
+       [Set max number of documents to process in a single run](../../documents/document-refresh/document-refresh-view.mdx#set-max-number-of-documents-to-process-in-a-single-run)
+       option above.
+   * A document that is **in conflict** is not refreshed while the conflict remains, even after its refresh time passes.  
+     See [Conflicted documents](../../documents/document-refresh/client-api.mdx#conflicted-documents)
 
 3. **Save**  
    Save the document.  
    The refresh is scheduled once you save the document.
-
-When the document is refreshed, the `@refresh` property is removed from its metadata, so the document is refreshed only once.  
-To refresh the document again, set its `@refresh` property to a new time.
 
 </Panel>

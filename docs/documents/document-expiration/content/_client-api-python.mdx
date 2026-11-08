@@ -1,0 +1,356 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+<Admonition type="note" title="">
+
+* The **document expiration** feature deletes a document once the time you schedule for it has passed.  
+  Use *document expiration* for documents that are needed only for a limited time, like documents that hold shopping
+  carts, login sessions, or cached data.  
+  Deleting the document triggers features that react to the deletion of documents, like indexing, replication, and ETL tasks.
+
+* To schedule a document's expiration, set the `@expires` [metadata](../../../client-api/session/how-to/get-and-modify-entity-metadata.mdx)
+  property of the document to the intended expiration time.
+
+* To enable *document expiration* for a database, send the server an `ExpirationConfiguration` object using the
+  [ConfigureExpirationOperation](../../../documents/document-expiration/client-api.mdx#configureexpirationoperation) operation.  
+  The `ExpirationConfiguration` object also sets the frequency at which the *document expiration* feature checks the database
+  for documents whose expiration time has passed.
+
+* To enable and configure *document expiration* using Studio, see
+  [Document Expiration: Studio View](../../../documents/document-expiration/document-expiration-view.mdx).
+
+* In this article:
+   * [Expiring documents](../../../documents/document-expiration/client-api.mdx#expiring-documents)
+      * [The expiration process](../../../documents/document-expiration/client-api.mdx#the-expiration-process)
+   * [Enabling document expiration](../../../documents/document-expiration/client-api.mdx#enabling-document-expiration)
+   * [Scheduling a document's expiration](../../../documents/document-expiration/client-api.mdx#scheduling-a-document-s-expiration)
+   * [Expiration considerations](../../../documents/document-expiration/client-api.mdx#expiration-considerations)
+   * [Syntax](../../../documents/document-expiration/client-api.mdx#syntax)
+      * [ConfigureExpirationOperation](../../../documents/document-expiration/client-api.mdx#configureexpirationoperation)
+      * [Classes](../../../documents/document-expiration/client-api.mdx#classes)
+
+</Admonition>
+
+<Panel heading="Expiring documents">
+
+Using **document expiration**, you can schedule RavenDB to delete a document at a set time.  
+This way, data that is needed only for a limited time is removed once the set time has passed, with no further action
+required from your application.  
+
+For example:
+
+* A shopping cart that is kept only for a certain time.
+* An email link that expires after a few hours.
+* The details of a login session.
+* Cached data, like data copied from an SQL server.
+
+---
+
+### The expiration process
+
+1. **Enabling document expiration for a database:**  
+   *Document expiration* is **disabled** by default. 
+   See [Enabling document expiration](../../../documents/document-expiration/client-api.mdx#enabling-document-expiration) below.
+
+2. **Scheduling a document's expiration:**  
+   Add an `@expires` property to the
+   [metadata](../../../client-api/session/how-to/get-and-modify-entity-metadata.mdx) of the document you want to
+   delete, and set the property's value to the intended expiration time.  
+   e.g., `"@expires": "2026-12-01T08:00:00.0000000Z"`  
+   See [Scheduling a document's expiration](../../../documents/document-expiration/client-api.mdx#scheduling-a-document-s-expiration) below.
+
+   <Admonition type="note" title="">
+   Some RavenDB features may also add the `@expires` property to documents they create.  
+   Like any other document scheduled for expiration, a document scheduled by one of these features is deleted only if
+   *document expiration* is enabled for the database.
+
+   * [AI agents](../../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx) add the `@expires` property to
+     the conversation documents they store, if an expiration period is set for the conversation.  
+     AI agents also add the `@expires` property to the conversation history documents they store, if an expiration period
+     is set for history documents in the agent's configuration.
+   * An [embeddings generation task](../../../ai-integration/generating-embeddings/embedding-collections.mdx#expiration-policy)
+     always adds the `@expires` property to the documents of its embeddings cache collection, according to the task's
+     cache expiration period (90 days by default).
+   </Admonition>
+
+3. **Deleting the scheduled document:**  
+   The *document expiration* feature periodically checks the database for documents whose expiration time has passed (every
+   60 seconds by default).
+
+   * At the first check after a document's expiration time, the document is deleted.
+   * The document may be deleted in a later check if the number of documents due for deletion exceeds the maximum set for
+     a single run using the Studio option
+     [Set max number of documents to process in a single run](../../../documents/document-expiration/document-expiration-view.mdx#set-max-number-of-documents-to-process-in-a-single-run).
+   * Like any other deleted document, a document deleted by the *document expiration* feature is replaced by a
+     [tombstone](../../../monitoring/tombstones/overview.mdx), and its attachments, counters, and time series are deleted with it.
+
+4. **Processing the deletion:**  
+   Features that react to the deletion of documents process the deletion.  
+   For example:
+
+   * Indexes remove the index entries that refer to the deleted document.
+   * The deletion is replicated to the other nodes of the
+     [database group](../../../server/clustering/distribution/distributed-database.mdx),
+     and to the destinations of [external replication](../../../server/ongoing-tasks/external-replication.mdx) tasks.
+   * [ETL tasks](../../../server/ongoing-tasks/etl/basics.mdx) apply the deletion at their destinations.
+   * If [revisions](../../../document-extensions/revisions/overview.mdx) are enabled for the document's collection, the
+     document's revisions are moved to the [Revisions Bin](../../../studio/database/document-extensions/revisions/revisions-bin.mdx),
+     or deleted if the revisions configuration is set to purge the revisions of deleted documents.
+
+</Panel>
+
+<Panel heading="Enabling document expiration">
+
+To enable *document expiration* for a database, send the server an
+[ExpirationConfiguration](../../../documents/document-expiration/client-api.mdx#expirationconfiguration) object with its `disabled` property
+set to `False`, using the
+[ConfigureExpirationOperation](../../../documents/document-expiration/client-api.mdx#configureexpirationoperation) operation.
+
+e.g., the following code enables *document expiration* and sets the interval between checks to five minutes.
+
+```python
+# Define the expiration configuration
+expiration_configuration = ExpirationConfiguration(
+    # Enable document expiration for the database
+    disabled=False,
+    # Check the database every 5 minutes for documents whose expiration time has passed
+    delete_frequency_in_sec=300,
+)
+
+# Send the configuration to the server
+store.maintenance.send(ConfigureExpirationOperation(expiration_configuration))
+```
+<br />
+
+<Admonition type="note" title="">
+On a **secure server**, enabling or configuring the *document expiration* feature requires, like other changes to a database's
+configuration, a client certificate with `Admin` access to the database (or with an `Operator` or `Cluster Admin`
+[security clearance](../../../server/security/authorization/security-clearance-and-permissions.mdx)).  
+Setting a document's `@expires` metadata property, on the other hand, is a change to the document, which `Read/Write` access
+permits.  
+See [Setting up Authentication and Authorization](../../../client-api/setting-up-authentication-and-authorization.mdx)
+</Admonition>
+
+The `ExpirationConfiguration` object holds the following settings:
+
+* #### `disabled`
+  Set this property to `False` to enable *document expiration*, or to `True` to disable the feature.  
+  The default value for this property is `None`, so set the property explicitly.
+
+* #### `delete_frequency_in_sec`
+  Sets the interval, in seconds, between the *document expiration* feature's checks for documents whose expiration time has passed.  
+  The default value for this property is 60 seconds.
+  - **The `delete_frequency_in_sec` value must be greater than 0:**  
+    Sending a value of 0 or less fails with a `RavenException`.  
+    e.g., the following code sends a `delete_frequency_in_sec` value of 0 and catches the resulting exception.
+
+    ```python
+    try:
+        store.maintenance.send(
+            ConfigureExpirationOperation(ExpirationConfiguration(disabled=False, delete_frequency_in_sec=0))
+        )
+    except RavenException as e:
+        # The exception's message includes:
+        # "Expiration delete frequency for database '<database name>' must be greater than 0."
+        pass
+    ```
+  - **On a [Community license](https://ravendb.net/buy), the `delete_frequency_in_sec` value must be at least 129600 (36 hours):**  
+    Enabling *document expiration* with a lower value, or without setting `delete_frequency_in_sec` (so that the 60-second default
+    applies), fails with a `LicenseLimitException`.  
+    e.g., the code at the beginning of this section, which sets `delete_frequency_in_sec` to 300, fails on a Community license.
+
+---
+
+You can also enable *document expiration* when you create a database, by setting the `expiration` property of the database record
+to an `ExpirationConfiguration` object.
+
+</Panel>
+
+<Panel heading="Scheduling a document's expiration">
+
+To schedule a document's expiration, set the `@expires` metadata property of the document to the intended expiration time, and
+save the document.
+
+<Admonition type="warning" title="">
+The `@expires` metadata property is reserved for the *document expiration* feature.  
+Do not use it for any other purpose: RavenDB reads any value set for this property as an expiration time.  
+A valid date and time schedules the document's deletion, and any other value makes saving the document fail.
+</Admonition>
+
+e.g., the following code stores a new shopping cart document and schedules the document's expiration for one hour from now.
+
+```python
+with store.open_session() as session:
+    # Store a new document
+    cart = ShoppingCart(customer_id="customers/1-A")
+    session.store(cart, "shoppingCarts/1-A")
+
+    # Set the document's expiration time to one hour from now, as a UTC string
+    expiration_time = datetime.now(timezone.utc) + timedelta(hours=1)
+    session.advanced.get_metadata_for(cart)["@expires"] = expiration_time.strftime("%Y-%m-%dT%H:%M:%S.%f0Z")
+
+    # Save the document
+    session.save_changes()
+```
+<br />
+
+* #### Setting the expiration time in UTC
+  Set the `@expires` property to a string that holds a UTC time with a `Z` suffix, which marks the time as UTC, so the server
+  reads the intended time correctly.  
+  e.g., for a UTC `datetime` value, `expiration_time.strftime("%Y-%m-%dT%H:%M:%S.%f0Z")` returns a string like
+  `"2026-12-01T08:00:00.0000000Z"`
+
+  <Admonition type="note" title="">
+  Do not set the property to a `datetime` object, even a timezone-aware one (e.g., `datetime.now(timezone.utc) + timedelta(hours=1)`).  
+  If you set a `datetime` object, the client will send the value without a time zone designator, and the server will read the
+  value as the server machine's local time. If the client machine and the server machine are in different time zones, the
+  document will be deleted at a different time than intended.
+  </Admonition>
+
+* #### Setting an invalid expiration time
+  If the value of the `@expires` property is not a valid date and time, `save_changes` raises a `RavenException`, and none
+  of the session's changes are saved.
+
+* #### Scheduling while *document expiration* is disabled
+  Setting the `@expires` property while *document expiration* is disabled for the database still schedules the document's
+  expiration:
+  - If you enable the feature before the expiration time, the document will be deleted at the feature's first check after
+    the expiration time.
+  - If the expiration time passes while the feature is disabled, the document will be deleted at the feature's first check
+    after you enable the feature.
+  - In both cases, the document may be deleted in a later check if the number of documents due for deletion exceeds the
+    maximum set for a single run using the Studio option
+    [Set max number of documents to process in a single run](../../../documents/document-expiration/document-expiration-view.mdx#set-max-number-of-documents-to-process-in-a-single-run).
+
+* #### Changing or canceling a scheduled expiration
+  To change a document's expiration time, set its `@expires` property to a new time and save the document.  
+  To cancel the expiration, remove the `@expires` property from the document's metadata and save the document.  
+  e.g., `del session.advanced.get_metadata_for(cart)["@expires"]`
+
+</Panel>
+
+<Panel heading="Expiration considerations">
+
+* #### Deletion delays
+  A document is deleted at the *document expiration* feature's first check after the document's expiration time, not at the
+  exact moment the expiration time passes.
+  - The deletion may be delayed by up to the interval between checks (set by
+    [delete_frequency_in_sec](../../../documents/document-expiration/client-api.mdx#delete_frequency_in_sec), 60 seconds by default).
+  - The deletion may be delayed further if the number of documents due for deletion exceeds the maximum set for a single run
+    using the Studio option
+    [Set max number of documents to process in a single run](../../../documents/document-expiration/document-expiration-view.mdx#set-max-number-of-documents-to-process-in-a-single-run).
+
+* #### Documents remain available until they are deleted
+  A document whose expiration time has passed is not hidden from your application.  
+  Until the document is deleted, loading or querying can still return the document, and indexes still hold the
+  document's entries.
+
+* #### Conflicted documents
+  A document that is in [conflict](../../../server/clustering/replication/replication-conflicts.mdx) is deleted only if all
+  its conflicting versions have an `@expires` property, and the expiration time of all these versions has passed.
+  - A document remains in conflict only if the conflict is not resolved automatically: by default, RavenDB resolves
+    conflicts to the most recently modified version of the document (see
+    [Conflict Detection](../../../server/clustering/replication/replication-conflicts.mdx#conflict-detection)).
+
+* #### Reverting documents to revisions
+  When you revert a document to a revision
+  (or [revert documents to a specific time](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-time.mdx)),
+  the reverted document gets the content of the revision **without** the revision's `@expires` property, even if the revision
+  holds this property.  
+  - The `@expires` property is omitted from the reverted document because the revision's expiration time was set when
+    the revision was created, and has usually already passed by the time of the revert.  
+    Keeping the property would delete the reverted document right after the revert.
+  - Since the `@expires` property is omitted, the reverted document will no longer be scheduled for deletion unless you set
+    its `@expires` property again.
+
+* #### Exporting and importing documents
+  By default, export and import operations include documents whose expiration time has passed.  
+  To leave these documents out, set the `include_expired` option of the export or import operation to `False`.  
+  Imported documents keep their `@expires` property: if *document expiration* is enabled for the destination database,
+  imported documents whose expiration time has passed will be deleted at the feature's first check after the import.
+
+* #### Compare-exchange items
+  Compare-exchange items can also be scheduled for expiration by an `@expires` property in their metadata.  
+  Their expiration is handled separately, not by the *document expiration* feature.
+
+</Panel>
+
+<Panel heading="Syntax">
+
+<ContentFrame>
+
+### ConfigureExpirationOperation
+
+Sends an `ExpirationConfiguration` object to the server, to enable or disable *document expiration* for a database and configure the
+feature.
+
+```python
+ConfigureExpirationOperation(configuration: ExpirationConfiguration)
+```
+<br />
+Usage:
+
+```python
+result = store.maintenance.send(ConfigureExpirationOperation(expiration_configuration))
+```
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **configuration** | [ExpirationConfiguration](../../../documents/document-expiration/client-api.mdx#expirationconfiguration) | The *document expiration* configuration to apply to the database. |
+
+| Return value | |
+|-----------|-------------|
+| [ConfigureExpirationOperationResult](../../../documents/document-expiration/client-api.mdx#configureexpirationoperationresult) | Contains `raft_command_index`. |
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Classes
+
+<Tabs groupId='expiration-classes'>
+<TabItem value="ExpirationConfiguration" label="ExpirationConfiguration">
+
+#### `ExpirationConfiguration`
+
+**Defines the *document expiration* configuration of a database.**
+
+```python
+class ExpirationConfiguration:
+    def __init__(self, disabled: Optional[bool] = None, delete_frequency_in_sec: Optional[int] = None): ...
+```
+<br />
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **disabled** | `bool` | Set to `False` to enable *document expiration* for the database, or to `True` to disable the feature.<br />The default value is `None`, so set the property explicitly. |
+| **delete_frequency_in_sec** | `int` | The interval, in seconds, between the feature's checks for documents whose expiration time has passed.<br />The value must be greater than 0.<br />If `None`, the default value of 60 seconds applies.<br />On a Community license, the value must be at least 129600 (36 hours). See [Enabling document expiration](../../../documents/document-expiration/client-api.mdx#enabling-document-expiration). |
+
+</TabItem>
+<TabItem value="ConfigureExpirationOperationResult" label="ConfigureExpirationOperationResult">
+
+#### `ConfigureExpirationOperationResult`
+
+**The result of sending a `ConfigureExpirationOperation` operation to the server.**
+
+```python
+class ConfigureExpirationOperationResult:
+    def __init__(self, raft_command_index: int): ...
+```
+<br />
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **raft_command_index** | `int` | The Raft index of the command that applied the configuration. |
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+</Panel>
