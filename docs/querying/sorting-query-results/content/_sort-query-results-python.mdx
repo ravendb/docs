@@ -579,6 +579,8 @@ employees = list(
     .add_parameter("term1", "English")
     .add_parameter("term2", "Italian")
 )
+
+# Highest scores (best matches) first
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -586,6 +588,8 @@ employees = list(
 from "Employees"
 where search(Notes, "English") or boost(search(Notes, "Italian"), 10)
 order by score()
+
+// Highest scores (best matches) first
 ```
 </TabItem>
 </Tabs>
@@ -620,6 +624,8 @@ employees = list(
     .add_parameter("term1", "English")
     .add_parameter("term2", "Italian")
 )
+
+# Lowest scores (weakest matches) first
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -627,6 +633,8 @@ employees = list(
 from "Employees"
 where search(Notes, "English") or boost(search(Notes, "Italian"), 10)
 order by score() desc
+
+// Lowest scores (weakest matches) first
 ```
 </TabItem>
 </Tabs>
@@ -838,7 +846,7 @@ number_of_units_in_stock_per_category = list(
     .raw_query("""from Products
                   group by Category
                   order by Sum as long
-                  select key() as Category, sum(UnitsInStock) as Sum""", ProductsSum)
+                  select Category, sum(UnitsInStock) as Sum""", ProductsSum)
 )
 
 # Results will contain the total number of units in stock per category
@@ -859,7 +867,7 @@ class ProductsSum:
 from "Products"
 group by Category
 order by Sum as long
-select key() as 'Category', sum(UnitsInStock) as Sum
+select Category, sum(UnitsInStock) as Sum
 ```
 </TabItem>
 </Tabs>
@@ -926,7 +934,7 @@ limit 20
   Use a numeric ordering type when ordering numeric fields explicitly.    
 
 * When using RQL directly, if no ordering type is specified, the server uses the default ordering for the field.  
-  To force a specific ordering type, specify `as long`, `as double`, `as string`, or `as alphanumeric`.
+  To force a specific ordering type, specify `as long`, `as double`, `as string`, or `as alphaNumeric`.
 
 <Admonition type="note" title="">
 
@@ -955,14 +963,14 @@ products = list(
 products = list(
     session.advanced
     .raw_query("""from Products
-                  order by QuantityPerUnit as alphanumeric""", Product)
+                  order by QuantityPerUnit as alphaNumeric""", Product)
 )
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
-order by QuantityPerUnit as alphanumeric
+order by QuantityPerUnit as alphaNumeric
 ```
 </TabItem>
 </Tabs>

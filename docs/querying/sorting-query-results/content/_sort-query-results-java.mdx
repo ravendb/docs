@@ -549,6 +549,8 @@ List<Employee> employees = session.advanced()
     .addParameter("term1", "English")
     .addParameter("term2", "Italian")
     .toList();
+
+// Highest scores (best matches) first
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -556,6 +558,8 @@ List<Employee> employees = session.advanced()
 from "Employees"
 where search(Notes, "English") or boost(search(Notes, "Italian"), 10)
 order by score()
+
+// Highest scores (best matches) first
 ```
 </TabItem>
 </Tabs>
@@ -588,6 +592,8 @@ List<Employee> employees = session.advanced()
     .addParameter("term1", "English")
     .addParameter("term2", "Italian")
     .toList();
+
+// Lowest scores (weakest matches) first
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -595,6 +601,8 @@ List<Employee> employees = session.advanced()
 from "Employees"
 where search(Notes, "English") or boost(search(Notes, "Italian"), 10)
 order by score() desc
+
+// Lowest scores (weakest matches) first
 ```
 </TabItem>
 </Tabs>
@@ -876,7 +884,7 @@ limit 20
   Use a numeric ordering type when ordering numeric fields explicitly.
     
 * When using RQL directly, if no ordering type is specified, the server uses the default ordering for the field.  
-  To force a specific ordering type, specify `as long`, `as double`, `as string`, or `as alphanumeric`.
+  To force a specific ordering type, specify `as long`, `as double`, `as string`, or `as alphaNumeric`.
 
 <Admonition type="note" title="">
 

@@ -563,6 +563,8 @@ const employees = await session.advanced
     .addParameter("term1", "English")
     .addParameter("term2", "Italian")
     .all();
+
+// Highest scores (best matches) first
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -570,6 +572,8 @@ const employees = await session.advanced
 from "Employees"
 where search(Notes, "English") or boost(search(Notes, "Italian"), 10)
 order by score()
+
+// Highest scores (best matches) first
 ```
 </TabItem>
 </Tabs>
@@ -602,6 +606,8 @@ const employees = await session.advanced
     .addParameter("term1", "English")
     .addParameter("term2", "Italian")
     .all();
+
+// Lowest scores (weakest matches) first
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -609,6 +615,8 @@ const employees = await session.advanced
 from "Employees"
 where search(Notes, "English") or boost(search(Notes, "Italian"), 10)
 order by score() desc
+
+// Lowest scores (weakest matches) first
 ```
 </TabItem>
 </Tabs>
@@ -810,7 +818,7 @@ const numberOfUnitsInStockPerCategory = await session.advanced
     .rawQuery(`from Products
                group by Category
                order by sum as long
-               select key() as Category, sum(UnitsInStock) as sum`)
+               select Category, sum(UnitsInStock) as sum`)
     .all();
 
 // Results will contain the total number of units in stock per category
@@ -822,7 +830,7 @@ const numberOfUnitsInStockPerCategory = await session.advanced
 from "Products"
 group by Category
 order by sum as long
-select key() as 'Category', sum(UnitsInStock) as sum
+select Category, sum(UnitsInStock) as sum
 ```
 </TabItem>
 </Tabs>
@@ -886,7 +894,7 @@ limit 20
   Use a numeric ordering type when ordering numeric fields explicitly.    
     
 * When using RQL directly, if no ordering type is specified, the server uses the default ordering for the field.  
-  To force a specific ordering type, specify `as long`, `as double`, `as string`, or `as alphanumeric`.    
+  To force a specific ordering type, specify `as long`, `as double`, `as string`, or `as alphaNumeric`.    
 
 <Admonition type="note" title="">
 
@@ -914,14 +922,14 @@ const products = await session
 ```js
 const products = await session.advanced
     .rawQuery(`from Products
-               order by QuantityPerUnit as alphanumeric`)
+               order by QuantityPerUnit as alphaNumeric`)
     .all();
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
-order by QuantityPerUnit as alphanumeric
+order by QuantityPerUnit as alphaNumeric
 ```
 </TabItem>
 </Tabs>

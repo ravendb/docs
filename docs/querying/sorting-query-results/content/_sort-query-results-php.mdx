@@ -173,7 +173,7 @@ order by UnitsInStock as long desc
 
 ### Ordering Type
 
-* By default, the `orderBy` methods use `OrderingType::string`, which orders the values lexicographically.  
+* By default, the `orderBy` methods use `OrderingType::string()`, which orders the values lexicographically.  
 
 * E.g. in the above example, `OrderingType::long()` is passed to order `UnitsInStock` as a number,  
   because this property's data type is integer.
@@ -431,6 +431,8 @@ $employees = $session->advanced()
     ->addParameter("term1", "English")
     ->addParameter("term2", "Italian")
     ->toList();
+
+// Highest scores (best matches) first
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -438,6 +440,8 @@ $employees = $session->advanced()
 from "Employees"
 where search(Notes, "English") or boost(search(Notes, "Italian"), 10)
 order by score()
+
+// Highest scores (best matches) first
 ```
 </TabItem>
 </Tabs>
@@ -472,6 +476,8 @@ $employees = $session->advanced()
     ->addParameter("term1", "English")
     ->addParameter("term2", "Italian")
     ->toList();
+
+// Lowest scores (weakest matches) first
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -479,6 +485,8 @@ $employees = $session->advanced()
 from "Employees"
 where search(Notes, "English") or boost(search(Notes, "Italian"), 10)
 order by score() desc
+
+// Lowest scores (weakest matches) first
 ```
 </TabItem>
 </Tabs>
@@ -702,7 +710,7 @@ $numberOfUnitsInStockPerCategory = $session->advanced()
     ->rawQuery(ProductsSum::class, "from Products
                                     group by Category
                                     order by Sum as long
-                                    select key() as Category, sum(UnitsInStock) as Sum")
+                                    select Category, sum(UnitsInStock) as Sum")
     ->toList();
 
 // Results will contain the total number of units in stock per category
@@ -744,7 +752,7 @@ class ProductsSum
 from "Products"
 group by Category
 order by Sum as long
-select key() as 'Category', sum(UnitsInStock) as Sum
+select Category, sum(UnitsInStock) as Sum
 ```
 </TabItem>
 </Tabs>
@@ -795,22 +803,22 @@ limit 20
 
 <Panel heading="Force ordering type">
 
-* By default, the `orderBy` methods use `OrderingType::string`, which orders the values lexicographically.
+* By default, the `orderBy` methods use `OrderingType::string()`, which orders the values lexicographically.
 
 * You can force a different ordering type by passing it explicitly to `orderBy` or `orderByDescending`.   
   The following ordering types are available:
 
-    * `OrderingType::long`
-    * `OrderingType::double`
-    * `OrderingType::alphaNumeric`
-    * `OrderingType::string` (lexicographic ordering)
+    * `OrderingType::long()`
+    * `OrderingType::double()`
+    * `OrderingType::alphaNumeric()`
+    * `OrderingType::string()` (lexicographic ordering)
     
 * Use the appropriate ordering type for the field value.  
   For example, ordering numeric values as strings can produce lexicographic order, where `"10"` comes before `"9"`.  
   Use a numeric ordering type when ordering numeric fields explicitly.    
 
 * When using RQL directly, if no ordering type is specified, the server uses the default ordering for the field.  
-  To force a specific ordering type, specify `as long`, `as double`, `as string`, or `as alphanumeric`.
+  To force a specific ordering type, specify `as long`, `as double`, `as string`, or `as alphaNumeric`.
 
 <Admonition type="note" title="">
 
@@ -840,14 +848,14 @@ $products = $session
 /** @var array<Product> $products */
 $products = $session->advanced()
     ->rawQuery(Product::class, "from Products
-                                order by QuantityPerUnit as alphanumeric")
+                                order by QuantityPerUnit as alphaNumeric")
     ->toList();
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
-order by QuantityPerUnit as alphanumeric
+order by QuantityPerUnit as alphaNumeric
 ```
 </TabItem>
 </Tabs>
@@ -1046,6 +1054,6 @@ function orderByDescending(string $field, $sorterNameOrOrdering = null): Documen
 | Parameter  | Type     | Description          |
 |------------|----------|----------------------|
 | **$field** | `string` | The field to sort by |
-| **$sorterNameOrOrdering** | `string` | The ordering type to sort the results by:<br/>`OrderingType::long`<br/>`OrderingType::double`<br/>`OrderingType::alphaNumeric`<br/>`OrderingType::string` (default) |
+| **$sorterNameOrOrdering** | `string` | The ordering type to sort the results by:<br/>`OrderingType::long()`<br/>`OrderingType::double()`<br/>`OrderingType::alphaNumeric()`<br/>`OrderingType::string()` (default) |
 
 </Panel>

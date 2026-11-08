@@ -986,6 +986,8 @@ List<Employee> employees = session.Advanced
     .AddParameter("term1", "English")
     .AddParameter("term2", "Italian")
     .ToList();
+
+// Highest scores (best matches) first
 ```
 </TabItem>
 <TabItem value="RawQuery_async" label="RawQuery_async">
@@ -997,6 +999,8 @@ List<Employee> employees = await asyncSession.Advanced
     .AddParameter("term1", "English")
     .AddParameter("term2", "Italian")
     .ToListAsync();
+
+// Highest scores (best matches) first
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -1004,6 +1008,8 @@ List<Employee> employees = await asyncSession.Advanced
 from "Employees"
 where search(Notes, "English") or boost(search(Notes, "Italian"), 10)
 order by score()
+
+// Highest scores (best matches) first
 ```
 </TabItem>
 </Tabs>
@@ -1072,6 +1078,8 @@ List<Employee> employees = session.Advanced
     .AddParameter("term1", "English")
     .AddParameter("term2", "Italian")
     .ToList();
+
+// Lowest scores (weakest matches) first
 ```
 </TabItem>
 <TabItem value="RawQuery_async" label="RawQuery_async">
@@ -1083,6 +1091,8 @@ List<Employee> employees = await asyncSession.Advanced
     .AddParameter("term1", "English")
     .AddParameter("term2", "Italian")
     .ToListAsync();
+
+// Lowest scores (weakest matches) first
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -1090,6 +1100,8 @@ List<Employee> employees = await asyncSession.Advanced
 from "Employees"
 where search(Notes, "English") or boost(search(Notes, "Italian"), 10)
 order by score() desc
+
+// Lowest scores (weakest matches) first
 ```
 </TabItem>
 </Tabs>
@@ -1621,7 +1633,7 @@ limit 20
   Use a numeric ordering type when ordering numeric fields explicitly.
     
 * When using RQL directly, if no ordering type is specified, the server uses the default ordering for the field.  
-  To force a specific ordering type, specify `as long`, `as double`, `as string`, or `as alphanumeric`.
+  To force a specific ordering type, specify `as long`, `as double`, `as string`, or `as alphaNumeric`.
 
 <Admonition type="note" title="">
 
@@ -1679,7 +1691,7 @@ List<Product> products = await asyncSession.Advanced
 ```csharp
 List<Product> products = session.Advanced
     .RawQuery<Product>(@"from Products
-                         order by QuantityPerUnit as alphanumeric")
+                         order by QuantityPerUnit as alphaNumeric")
     .ToList();
 ```
 </TabItem>
@@ -1687,14 +1699,14 @@ List<Product> products = session.Advanced
 ```csharp
 List<Product> products = await asyncSession.Advanced
     .AsyncRawQuery<Product>(@"from Products
-                              order by QuantityPerUnit as alphanumeric")
+                              order by QuantityPerUnit as alphaNumeric")
     .ToListAsync();
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Products"
-order by QuantityPerUnit as alphanumeric
+order by QuantityPerUnit as alphaNumeric
 ```
 </TabItem>
 </Tabs>
