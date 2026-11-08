@@ -115,10 +115,10 @@ to its metadata, and save the document.
 
 1. **`@refresh`**  
    Add a `@refresh` property to the document's `@metadata`, and set the property's value to the intended refresh time.
-   * Add a **time zone designator** to the value (`Z` for UTC, or an offset from UTC), so the document is refreshed at the moment
-     you intend.  
-     A refresh time set without a time zone designator is read in the server machine's time zone.  
-     If this time zone differs from the one you meant, the document will be refreshed earlier or later than you intended.
+   * Add a **time zone designator** to the value (`Z` for UTC, or an offset from UTC) to specify the time zone of the
+     refresh time.  
+     A refresh time set without a time zone designator is read in the server machine's time zone. If this time zone differs
+     from the one you meant, the document will be refreshed earlier or later than you intended.
 
      Examples:
      - `"@refresh": "2027-11-05T08:00:00.0000000Z"` sets the refresh time to 08:00 UTC.
