@@ -78,11 +78,11 @@ For example:
    </Admonition>
 
 3. **Deleting the scheduled document:**  
-   The *document expiration* feature periodically checks the database for documents whose expiration time has passed (every
-   60 seconds by default).
+   The *document expiration* feature runs periodically (every 60 seconds by default).  
+   Each time the feature runs, it checks the database for documents whose expiration time has passed.
 
-   * At the first check after a document's expiration time, the document is deleted.
-   * The document may be deleted in a later check if the number of documents due for deletion exceeds the maximum set for
+   * In the feature's first run after a document's expiration time, the document is deleted.
+   * The document may be deleted in a later run if the number of documents due for deletion exceeds the maximum set for
      a single run using the Studio option
      [Set max number of documents to process in a single run](../../../documents/document-expiration/document-expiration-view.mdx#set-max-number-of-documents-to-process-in-a-single-run).
    * Like any other deleted document, a document deleted by the *document expiration* feature is replaced by a
@@ -218,11 +218,11 @@ with store.open_session() as session:
 * #### Scheduling while *document expiration* is disabled
   Setting the `@expires` property while *document expiration* is disabled for the database still schedules the document's
   expiration:
-  - If you enable the feature before the expiration time, the document will be deleted at the feature's first check after
+  - If you enable the feature before the expiration time, the document will be deleted in the feature's first run after
     the expiration time.
-  - If the expiration time passes while the feature is disabled, the document will be deleted at the feature's first check
-    after you enable the feature.
-  - In both cases, the document may be deleted in a later check if the number of documents due for deletion exceeds the
+  - If the expiration time passes while the feature is disabled, the document will be deleted after the feature is
+    enabled, during its first run.
+  - In both cases, the document may be deleted in a later run if the number of documents due for deletion exceeds the
     maximum set for a single run using the Studio option
     [Set max number of documents to process in a single run](../../../documents/document-expiration/document-expiration-view.mdx#set-max-number-of-documents-to-process-in-a-single-run).
 
@@ -236,9 +236,9 @@ with store.open_session() as session:
 <Panel heading="Expiration considerations">
 
 * #### Deletion delays
-  A document is deleted at the *document expiration* feature's first check after the document's expiration time, not at the
+  A document is deleted in the *document expiration* feature's first run after the document's expiration time, not at the
   exact moment the expiration time passes.
-  - The deletion may be delayed by up to the interval between checks (set by
+  - The deletion may be delayed by up to the interval between runs (set by
     [delete_frequency_in_sec](../../../documents/document-expiration/client-api.mdx#delete_frequency_in_sec), 60 seconds by default).
   - The deletion may be delayed further if the number of documents due for deletion exceeds the maximum set for a single run
     using the Studio option
@@ -271,7 +271,7 @@ with store.open_session() as session:
   By default, export and import operations include documents whose expiration time has passed.  
   To leave these documents out, set the `include_expired` option of the export or import operation to `False`.  
   Imported documents keep their `@expires` property: if *document expiration* is enabled for the destination database,
-  imported documents whose expiration time has passed will be deleted at the feature's first check after the import.
+  imported documents whose expiration time has passed will be deleted in the feature's first run after the import.
 
 * #### Compare-exchange items
   Compare-exchange items can also be scheduled for expiration by an `@expires` property in their metadata.  

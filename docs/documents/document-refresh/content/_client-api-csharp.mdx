@@ -70,13 +70,14 @@ email document to its worker only after the document is refreshed.
    See [Scheduling a document refresh](../../../documents/document-refresh/client-api.mdx#scheduling-a-document-refresh) below.
 
 3. **Refreshing the scheduled document:**  
-   The *document refresh* feature periodically checks the database for documents to refresh (every 60 seconds by default).
+   The *document refresh* feature runs periodically (every 60 seconds by default).  
+   Each time the feature runs, it checks the database for documents to refresh.
 
-   * At the first check after a document's refresh time, the `@refresh` property is removed from the document's metadata,
+   * In the feature's first run after a document's refresh time, the `@refresh` property is removed from the document's metadata,
      and the modified document is stored.  
      As a result, the document's [change vector](../../../server/clustering/replication/change-vector.mdx) is incremented,
      indicating that the document was updated.
-   * The document may be refreshed in a later check if the number of documents due for refresh exceeds the maximum set for
+   * The document may be refreshed in a later run if the number of documents due for refresh exceeds the maximum set for
      a single run by [MaxItemsToProcess](../../../documents/document-refresh/client-api.mdx#maxitemstoprocess).
 
 4. **Processing the refreshed document:**  
@@ -238,18 +239,18 @@ using (var session = store.OpenSession())
 * #### Scheduling while *document refresh* is disabled
   Setting the `@refresh` property while *document refresh* is disabled for the database still schedules the document's
   refresh:
-  - If you enable the feature before the refresh time, the document will be refreshed at the feature's first check after
+  - If you enable the feature before the refresh time, the document will be refreshed in the feature's first run after
     the refresh time.
-  - If the refresh time passes while the feature is disabled, the document will be refreshed at the feature's first check
-    after you enable the feature.
-  - In both cases, the document may be refreshed in a later check if the number of documents due for refresh exceeds the
+  - If the refresh time passes while the feature is disabled, the document will be refreshed after the feature is
+    enabled, during its first run.
+  - In both cases, the document may be refreshed in a later run if the number of documents due for refresh exceeds the
     maximum set for a single run by [MaxItemsToProcess](../../../documents/document-refresh/client-api.mdx#maxitemstoprocess).
 
 * #### Conflicted documents
   A document that is in [conflict](../../../server/clustering/replication/replication-conflicts.mdx) is not refreshed while
   the conflict remains, even if the refresh time of all its conflicting versions has passed.
   - If the document that resolves the conflict holds a `@refresh` property whose time has passed, the document will be
-    refreshed at the feature's first check after the conflict is resolved.
+    refreshed in the feature's first run after the conflict is resolved.
   - A document remains in conflict only if the conflict is not resolved automatically: by default, RavenDB resolves
     conflicts to the most recently modified version of the document (see
     [Conflict Detection](../../../server/clustering/replication/replication-conflicts.mdx#conflict-detection)).
