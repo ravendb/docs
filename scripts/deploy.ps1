@@ -215,6 +215,11 @@ if (-not (Test-Path package.json)) { throw 'package.json not found' }
 npm ci --no-audit --fund false
 if ($LASTEXITCODE) { throw 'npm ci failed' }
 
+# Serve the newest skill, not the commit in package-lock.json.
+Write-Host 'Installing the latest agent skill (ravendb/skills main)...' -ForegroundColor Cyan
+npm install --no-save --no-audit --fund false github:ravendb/skills#main
+if ($LASTEXITCODE) { throw 'npm install of ravendb/skills main failed' }
+
 Write-Host "Running 'npm run build'..." -ForegroundColor Gray
 npm run build
 if ($LASTEXITCODE) { throw 'Docusaurus build failed' }

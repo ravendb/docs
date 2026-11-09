@@ -92,6 +92,10 @@ const config: Config = {
     url: "https://docs.ravendb.net/",
     baseUrl: "/",
 
+    // .generated/static holds the agent skill, copied there from the @ravendb/skills dependency
+    // by agent-hint-plugin.
+    staticDirectories: ["static", ".generated/static"],
+
     onBrokenLinks: isStrict ? "throw" : "warn",
     onBrokenAnchors: "ignore",
 

@@ -41,7 +41,6 @@ src/
   pages/                     # Custom standalone pages
   theme/                     # Docusaurus theme overrides
 scripts/                     # Build/deploy automation
-static/skills/ravendb/       # Agent skill served verbatim at /skills/ravendb/
 static/icons/                # SVG icon assets (source for icon type generation)
 sidebars.ts                  # Main docs sidebar config
 sidebarsCloud.js             # Cloud docs sidebar
@@ -80,8 +79,17 @@ Noindex for legacy versions is set declaratively in `docusaurus.config.ts` (`ver
 
 ## Hosted Agent Skill
 
-`static/skills/ravendb/` is served verbatim at `/skills/ravendb/SKILL.md`, outside the version
-prefix. `SKILL.md` links to `references/` with relative paths, so moving or flattening the tree
+The skill is authored in [ravendb/skills](https://github.com/ravendb/skills) and installed here as
+the `@ravendb/skills` npm dependency, which tracks ravendb/skills `main` on GitHub. Edit it there,
+not here. `deploy.ps1` and the PR build install `main` again after `npm ci`, so every deploy
+serves the newest skill and PRs are built with it. `package-lock.json` records the commit `main`
+pointed at when it was last installed; only local builds use that one, until someone runs
+`npm update @ravendb/skills`.
+
+Only `skills/ravendb/` from the package is published, at `/skills/ravendb/`, outside the version
+prefix: `agent-hint-plugin` copies that subtree byte for byte into the gitignored
+`.generated/static/`, which `staticDirectories` serves for `start`, `build` and their `:current`
+variants. `SKILL.md` links to `references/` with relative paths, so moving or flattening the tree
 breaks navigation, and `md` must stay in `staticAssetRegex` in `scripts/handle_redirects.js` or
 these URLs 301 to a versioned path that does not exist.
 
