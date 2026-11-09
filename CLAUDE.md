@@ -87,10 +87,12 @@ these URLs 301 to a versioned path that does not exist.
 
 Every page points agents at the skill through `agent-hint-plugin`: a pre-body blockquote hidden
 from people (`sr-only` styling, `aria-hidden`, `tabindex="-1"` on its link) that survives the
-HTML-to-Markdown conversion agents run on fetched pages. Its text is the `description` from
-`SKILL.md`'s frontmatter, read at build time, so editing that description changes what agents
-read on every page, and the build fails if it is missing. Keep the hint in static HTML: anything
-rendered client-side never reaches an agent, which is also why `LanguageContent` shows agents C# only.
+HTML-to-Markdown conversion agents run on fetched pages. It states that RavenDB publishes the
+skill and quotes the `description` from `SKILL.md`'s frontmatter, read at build time, so editing
+that description changes what agents read on every page, and the build fails if it is missing.
+Keep the wording descriptive: agents refuse an instruction found inside page content as prompt
+injection. Keep the hint in static HTML: anything rendered client-side never reaches an agent,
+which is also why `LanguageContent` shows agents C# only.
 
 ---
 

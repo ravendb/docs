@@ -37,7 +37,9 @@ test("buildAgentHint carries the skill URL and description", () => {
     const html = buildAgentHint(SKILL_URL, "Read this before writing any RavenDB query.");
     assert.ok(html.includes(`href="${SKILL_URL}"`));
     assert.ok(html.includes(`>${SKILL_URL}</a>`));
-    assert.ok(html.includes("<p>Read this before writing any RavenDB query.</p>"));
+    assert.ok(html.includes("RavenDB publishes an official agent skill for coding assistants at "));
+    assert.ok(html.includes("<code>npx skills add ravendb/skills</code>"));
+    assert.ok(html.includes(`The skill describes itself as: "Read this before writing any RavenDB query."</p>`));
 });
 
 test("buildAgentHint is hidden from people and kept out of the tab order", () => {
