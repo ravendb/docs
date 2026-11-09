@@ -1,0 +1,611 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+import ContentFrame from "@site/src/components/ContentFrame";
+
+<Admonition type="note" title="">
+
+* This article explains how **quantization** affects vector search and how to configure the format of indexed embeddings.  
+
+* The examples cover both [dynamic queries](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx)
+  and [queries against static indexes](../../../ai-integration/vector-search/vector-search-using-static-index.mdx).
+
+* In this article:
+  * [What is quantization](#what-is-quantization)
+  * [Supported quantization formats](#supported-quantization-formats)
+  * [Configuring quantization in dynamic queries](#configuring-quantization-in-dynamic-queries)
+  * [Configuring quantization in static indexes](#configuring-quantization-in-static-indexes)
+  * [Quantization and embeddings generation tasks](#quantization-and-embeddings-generation-tasks)
+  * [Field configuration methods in RQL](#field-configuration-methods-in-rql)
+  * [`VectorQuantizer` reference](#vectorquantizer-reference)
+
+</Admonition>
+
+<Panel heading="What is quantization">
+
+Quantization is a technique that reduces the precision of numerical data.
+It converts high-precision values, such as 32-bit floating-point numbers, into lower-precision formats like 8-bit integers or binary representations.
+
+The quantization process, applied to each dimension (or item) in the numerical array, 
+serves as a form of compression by reducing the number of bits used to represent each value in the vector.
+For example, transitioning from 32-bit floats to 8-bit integers significantly reduces data size while preserving the vector's essential structure.  
+
+Although it introduces some precision loss, quantization minimizes storage requirements and optimizes memory usage.  
+It also reduces computational overhead, making operations like similarity searches faster and more efficient.
+
+</Panel>
+
+<Panel heading="Supported quantization formats">
+
+For non-quantized raw 32-bit data or text stored in your documents,
+RavenDB allows you to choose the quantization format for the generated embeddings stored in the index.
+The quantization format applies to how vectors are stored internally in the index, regardless of the client language used to submit the data.
+
+The selected quantization type determines the similarity search technique that will be applied.
+By default, raw text processed by the built-in model and numerical embeddings supplied in `Single` format are indexed as `Single`.
+For task-generated embeddings, see [Quantization and embeddings generation tasks](#quantization-and-embeddings-generation-tasks).
+
+The available quantization options are:  
+
+   * `Single` (a 32-bit floating point value per dimension):  
+     Provides precise vector representations.  
+     The [Cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity) method will be used for searching and matching.  
+
+   * `Int8` (an 8-bit integer value per dimension):  
+     Reduces storage requirements while maintaining good performance.  
+     Saves up to 75% storage compared to 32-bit floating-point values.  
+     The Cosine similarity method will be used for searching and matching.  
+
+   * `Binary` (1-bit per dimension):  
+     Minimizes storage usage, suitable for use cases where binary representation suffices.  
+     Saves approximately 96% storage compared to 32-bit floating-point values.  
+     The [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) method will be used for searching and matching.  
+      
+     <Admonition type="note" title="">
+     If your documents contain data that is already quantized,  
+     it cannot be re-quantized to a lower precision format (e.g., Int8 cannot be converted to Binary).
+     </Admonition>
+
+</Panel>
+
+<Panel heading="Configuring quantization in dynamic queries">
+
+<ContentFrame>
+
+### Example: Raw text with Int8 quantization    
+
+---    
+    
+In the following example: 
+  * The source data consists of text.
+  * The generated embeddings will use the `Int8` format.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+```python
+similar_products = list(
+        session.query(object_type=Product)
+        .vector_search_text(
+            # Specify the source text field for the embeddings
+            "Name",
+            # Provide the search term for comparison
+            "italian food",
+            # Set the quantization type for the generated embeddings
+            target_quantization=VectorEmbeddingType.INT8,
+        )
+        .wait_for_non_stale_results()
+    )
+```
+</TabItem>
+<TabItem value="raw_query" label="raw_query">
+```python
+similar_products = list(
+        session.advanced.raw_query(
+            (
+                "from 'Products' "
+                # Wrap the 'Name' field with 'embedding.text_i8'
+                "where vector.search(embedding.text_i8(Name), $searchTerm)"
+            ),
+            object_type=Product,
+        )
+        .add_parameter("searchTerm", "italian food")
+        .wait_for_non_stale_results()
+    )
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Products"
+// Wrap the 'Name' field with 'embedding.text_i8'
+where vector.search(embedding.text_i8(Name), $searchTerm)
+{ "searchTerm" : "italian food" }
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+    
+### Example: Numerical embeddings with Binary quantization    
+    
+---    
+
+* The following example uses the `Movie` class and sample data from  
+  [Dynamic vector search - querying NUMERICAL content](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#dynamic-vector-search-querying-numerical-content).
+
+* In this example:  
+    * The `tags_embedded_as_single` field contains a pre-generated embedding in `Single` format.
+    * The indexed embeddings and the query vector are quantized to `Binary`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+```python
+similar_movies = list(
+        session.query(object_type=Movie)
+        # 'vector_search' - the source embedding type is Single
+        .vector_search(
+            # Specify the source field
+            embedding_field="tags_embedded_as_single",
+            # Provide the vector to use for comparison
+            vector=[6.599999904632568, 7.699999809265137],
+            # Quantize the indexed embeddings and query vector to Binary
+            target_quantization=VectorEmbeddingType.BINARY,
+        )
+        .wait_for_non_stale_results()
+    )
+```
+</TabItem>
+<TabItem value="raw_query" label="raw_query">
+```python
+similar_movies = list(
+        session.advanced.raw_query(
+            (
+                "from 'Movies' "
+                # Wrap the 'tags_embedded_as_single' field with 'embedding.f32_i1'
+                "where vector.search("
+                    "embedding.f32_i1(tags_embedded_as_single), "
+                    "$queryVector)"
+            ),
+            object_type=Movie,
+        )
+        .add_parameter("queryVector", [6.599999904632568, 7.699999809265137])
+        .wait_for_non_stale_results()
+    )
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Movies"
+// Wrap the 'tags_embedded_as_single' field with 'embedding.f32_i1'
+where vector.search(embedding.f32_i1(tags_embedded_as_single), $queryVector)
+{ "queryVector" : { "@vector" : [6.599999904632568,7.699999809265137] }}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>    
+    
+</Panel>
+
+<Panel heading="Configuring quantization in static indexes">
+
+Configure the format of each vector field in the **index definition**:
+
+* `source_embedding_type` specifies the format of the source data.
+* `destination_embedding_type` specifies the format used to store the embeddings in the index.
+
+The following index defines a vector field named `vector_from_text` for the `Products` collection.  
+It generates embeddings from each product's `Name` field.  
+    
+The source type is `Text` and the destination type is `Int8`,  
+so the embeddings are quantized to `Int8` before being stored in the index.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+```python
+class Products_ByVector_Int8(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        # Call 'CreateVector' to create a VECTOR FIELD.
+        # Pass the document field containing the text
+        # from which the embeddings will be generated.
+        self.map = (
+            "from p in docs.Products "
+            "select new { vector_from_text = CreateVector(p.Name) }"
+        )
+
+        self._vector(
+            "vector_from_text",
+            VectorOptions(
+                # Define the source embedding type
+                source_embedding_type=VectorEmbeddingType.TEXT,
+
+                # Define the quantization for the destination embedding
+                destination_embedding_type=VectorEmbeddingType.INT8,
+            ),
+        )
+
+        # The index MUST use the Corax search engine
+        self.search_engine_type = SearchEngineType.CORAX
+```
+</TabItem>
+<TabItem value="JS_index" label="JS_index">
+```python
+class Products_ByVector_Int8_JS(AbstractJavaScriptIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.maps = {
+            "map('Products', function (p) {"
+            "   return { vector_from_text: createVector(p.Name) };"
+            "})"
+        }
+
+        self.fields = {
+            "vector_from_text": IndexFieldOptions(
+                vector=VectorOptions(
+                    source_embedding_type=VectorEmbeddingType.TEXT,
+                    destination_embedding_type=VectorEmbeddingType.INT8,
+                )
+            )
+        }
+
+        self.search_engine_type = SearchEngineType.CORAX
+```
+</TabItem>
+<TabItem value="IndexDefinition" label="IndexDefinition">
+```python
+index_definition = IndexDefinition(
+    name="Products/ByVector/Int8",
+    maps={
+        "from p in docs.Products "
+        "select new { vector_from_text = CreateVector(p.Name) }"
+    },
+    fields={
+        "vector_from_text": IndexFieldOptions(
+            vector=VectorOptions(
+                source_embedding_type=VectorEmbeddingType.TEXT,
+                destination_embedding_type=VectorEmbeddingType.INT8,
+            )
+        )
+    },
+    configuration={"Indexing.Static.SearchEngineType": "Corax"},
+)
+
+store.maintenance.send(PutIndexesOperation(index_definition))
+```
+</TabItem>
+</Tabs>
+
+For additional field settings, see [Parameters defined in the index definition](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#parameters-defined-in-the-index-definition).  
+For Studio configuration, see [Configure the vector field in the Studio](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#configure-the-vector-field-in-the-studio).
+
+</Panel>
+
+<Panel heading="Quantization and embeddings generation tasks">
+
+* When using an [embeddings generation task](../../../ai-integration/generating-embeddings/overview.mdx),
+  the index receives numerical embeddings that the task has already generated and stored.
+
+* The task's `Quantization` setting determines their stored format.  
+  Configure it in [Studio](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configuring-an-embeddings-generation-task-from-the-studio)
+  or through the `quantization` property in the [Client API](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#syntax).
+
+* The index reads those stored embeddings and can apply further quantization to its indexed copy.  
+  For example, a task can store `Single` embeddings while an index reads them as `Single` and stores an `Int8` copy.
+
+---
+    
+<ContentFrame>    
+    
+### Default behavior and allowed formats
+
+Without additional vector-field configuration, the index uses the format stored by the embeddings generation task.  
+Further quantization is possible only when the task stores `Single` embeddings:
+
+| Format stored by the embeddings generation task | Allowed formats in the index  |
+|-------------------------------------------------|-------------------------------|
+| `Single`                                        | `Single`, `Int8`, or `Binary` |
+| `Int8`                                          | `Int8`                        |
+| `Binary`                                        | `Binary`                      |
+
+</ContentFrame>     
+<ContentFrame>   
+    
+### Quantizing task-generated embeddings in dynamic queries
+    
+Specify the task with `embedding_generation_task_identifier`.      
+  * For a task storing `Single` embeddings,   
+    add `target_quantization` to request `Int8` or `Binary` for the auto-index.
+  * For a task that stores `Int8` or `Binary`, omit `target_quantization` or request the same format.  
+    Requesting `Binary` for an `Int8` task, or `Int8` for a `Binary` task, causes an indexing error.    
+
+In the following example:
+  * The query uses the embeddings generation task defined in [this example](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configuring-an-embeddings-generation-task-from-the-client-api).  
+    The task stores `Single` embeddings for the _Name_ field of _Category_ documents.
+  * `target_quantization` requests the `Int8` format,  
+    so the auto-index stores an `Int8` copy of the task's embeddings.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+```python
+similar_categories = list(
+        session.query(object_type=Category)
+        .vector_search_text(
+            "Name",
+            "candy",
+            minimum_similarity=0.75,
+            # The task stores 'Single' embeddings
+            embedding_generation_task_identifier="id-for-task-open-ai",
+            # The auto-index stores an 'Int8' copy of them
+            target_quantization=VectorEmbeddingType.INT8,
+        )
+        .wait_for_non_stale_results()
+    )
+```
+</TabItem>
+<TabItem value="raw_query" label="raw_query">
+```python
+similar_categories = list(
+        session.advanced.raw_query(
+            (
+                "from 'Categories' "
+                # Wrap the 'Name' field with 'embedding.text_i8'
+                # and specify the task identifier inside 'ai.task'
+                "where vector.search("
+                    "embedding.text_i8(Name, ai.task('id-for-task-open-ai')), "
+                    "$searchTerm, "
+                    "0.75)"
+            ),
+            object_type=Category,
+        )
+        .add_parameter("searchTerm", "candy")
+        .wait_for_non_stale_results()
+    )
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Categories"
+// Wrap the 'Name' field with 'embedding.text_i8'
+// and specify the task identifier inside 'ai.task'
+where vector.search(
+    embedding.text_i8(Name, ai.task('id-for-task-open-ai')),
+    $searchTerm,
+    0.75)
+{ "searchTerm" : "candy" }
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>    
+    
+### Quantizing task-generated embeddings in static indexes
+
+Use `LoadVector(...)` to read the task's stored embeddings.  
+    
+When configuring the vector field with `VectorOptions`, `source_embedding_type` must match their numerical format.
+A mismatch causes an indexing error. `Text` is not a valid source type for `LoadVector`.  
+Choose a destination format allowed in [Default behavior and allowed formats](#default-behavior-and-allowed-formats).      
+
+In the following example:
+  * The index loads the embeddings stored by the task defined in [this example](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configuring-an-embeddings-generation-task-from-the-client-api).  
+    The task stores `Single` embeddings for the _Name_ field of _Category_ documents.
+  * `source_embedding_type` is set to `Single` to match the task,  
+    and `destination_embedding_type` is set to `Int8`, so the index stores an `Int8` copy.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+```python
+class Categories_ByPreMadeTextEmbeddings_Int8(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        # Call 'LoadVector' to create a VECTOR FIELD. Pass:
+        # * The document field name to be indexed (as a string)
+        # * The identifier of the task that generated the embeddings
+        #   for the 'Name' field
+        self.map = (
+            'from c in docs.Categories '
+            'select new '
+            '{'
+            '   vector_from_text_embeddings = LoadVector("Name", "id-for-task-open-ai")'
+            '}'
+        )
+
+        self._vector(
+            "vector_from_text_embeddings",
+            VectorOptions(
+                # Must match the format stored by the task
+                source_embedding_type=VectorEmbeddingType.SINGLE,
+
+                # The format stored in the index
+                destination_embedding_type=VectorEmbeddingType.INT8,
+            ),
+        )
+
+        # The index MUST use the Corax search engine
+        self.search_engine_type = SearchEngineType.CORAX
+```
+</TabItem>
+<TabItem value="JS_index" label="JS_index">
+```python
+class Categories_ByPreMadeTextEmbeddings_Int8_JS(AbstractJavaScriptIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.maps = {
+            'map("Categories", function (c) {'
+            '   return {'
+            '       vector_from_text_embeddings: loadVector("Name", "id-for-task-open-ai")'
+            '   };'
+            '})'
+        }
+
+        self.fields = {
+            "vector_from_text_embeddings": IndexFieldOptions(
+                vector=VectorOptions(
+                    source_embedding_type=VectorEmbeddingType.SINGLE,
+                    destination_embedding_type=VectorEmbeddingType.INT8,
+                )
+            )
+        }
+
+        self.search_engine_type = SearchEngineType.CORAX
+```
+</TabItem>
+<TabItem value="IndexDefinition" label="IndexDefinition">
+```python
+index_definition = IndexDefinition(
+    name="Categories/ByPreMadeTextEmbeddings/Int8",
+    maps={
+        'from c in docs.Categories '
+        'select new '
+        '{'
+        '   vector_from_text_embeddings = LoadVector("Name", "id-for-task-open-ai")'
+        '}'
+    },
+    fields={
+        "vector_from_text_embeddings": IndexFieldOptions(
+            vector=VectorOptions(
+                source_embedding_type=VectorEmbeddingType.SINGLE,
+                destination_embedding_type=VectorEmbeddingType.INT8,
+            )
+        )
+    },
+    configuration={"Indexing.Static.SearchEngineType": "Corax"},
+)
+
+store.maintenance.send(PutIndexesOperation(index_definition))
+```
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="">
+
+#### Explicit vector options 
+
+`VectorOptions()` defaults both source and destination types to `Single`.  
+For a task that stores `Int8` or `Binary`, set both types to the format stored by the embeddings generation task.
+
+</Admonition>
+
+</ContentFrame>
+<ContentFrame>  
+    
+### Preparing the search-term embedding at query time
+
+For text queries, RavenDB uses the referenced task to embed the search term  
+and prepares the query embedding in the index's format for the similarity comparison.
+
+</ContentFrame>    
+</Panel>
+
+<Panel heading="Field configuration methods in RQL">
+
+* In a **dynamic RQL query**, wrap the document field passed as the first argument of `vector.search` with one of the methods below.
+    
+* Each method specifies the source data format and the format of the embeddings stored in the auto-index.  
+  For task-generated embeddings, also see [Quantization and embeddings generation tasks](#quantization-and-embeddings-generation-tasks).
+
+    <Admonition type="note" title="">
+    
+    #### Available methods
+        
+    * `embedding.text`:  
+      Generates embeddings from text as multi-dimensional vectors with 32-bit floating-point values,  
+      without applying quantization.  
+    
+    * `embedding.text_i8`:  
+      Generates embeddings from text as multi-dimensional vectors with 8-bit integer values.
+    
+    * `embedding.text_i1`:   
+      Generates embeddings from text as multi-dimensional vectors in a binary format.
+        
+    * `embedding.f32`:  
+      Indicates that the source data contains 32-bit floating-point embeddings (`Single`).  
+      No quantization is applied. This is also the default when no wrapper is specified.
+    
+    * `embedding.f32_i8`:  
+      Converts multi-dimensional vectors with 32-bit floating-point values into vectors with 8-bit integer values.  
+    
+    * `embedding.f32_i1`:  
+      Converts multi-dimensional vectors with 32-bit floating-point values into vectors in a binary format.  
+        
+    * `embedding.i8`:  
+      Indicates that the source data is already quantized as Int8  (cannot be further quantized).  
+    
+    * `embedding.i1`:  
+      Indicates that the source data is already quantized as binary (cannot be further quantized).  
+    
+    </Admonition>
+
+* Wrap the field name using any of the relevant methods listed above, based on your requirements.  
+  For example, the following RQL generates embeddings from the `Name` field  
+  and quantizes them to `Int8` for storage in the auto-index:
+
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="RQL" label="RQL">
+    ```sql
+    from "Products"
+    // Wrap the document field with 'embedding.text_i8'
+    where vector.search(embedding.text_i8(Name), "italian food", 0.82, 20)
+    ```
+    </TabItem>
+    </Tabs>
+
+* In a **dynamic query over document fields containing numerical embeddings**,
+  omitting a field-configuration wrapper treats the source values as **32-bit floating-point (`Single`)** embeddings and applies no quantization.  
+  The following example searches such a field:
+
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="RQL" label="RQL">
+    ```sql
+    from "Movies"
+    // No wrapping
+    where vector.search(tags_embedded_as_single, $queryVector, 0.85, 10)
+    {"queryVector" : { "@vector" : [6.599999904632568, 7.699999809265137] }}
+    ```
+    </TabItem>
+    </Tabs>
+
+* In a **static-index query**, pass the existing vector field name as the first argument of `vector.search`.  
+  The field-configuration wrappers listed above are not supported in this position and cause an `InvalidQueryException`.  
+  RavenDB uses the field's configured source and destination formats, so an unwrapped static field can still store and search `Int8` or `Binary` vectors.  
+  The following example queries the index defined in [Configuring quantization in static indexes](#configuring-quantization-in-static-indexes):
+
+    <Tabs groupId='languageSyntax'>
+    <TabItem value="RQL" label="RQL">
+    ```sql
+    from index "Products/ByVector/Int8"
+    // Pass the vector field name without a wrapper
+    where vector.search(vector_from_text, $searchTerm, 0.82, 20)
+    { "searchTerm" : "italian food" }
+    ```
+    </TabItem>
+    </Tabs>
+
+</Panel>
+
+<Panel heading="`VectorQuantizer` reference">
+
+* `VectorQuantizer` provides client-side methods for converting 32-bit floating-point embeddings into RavenDB-compatible quantized formats. 
+  Use them when preparing quantized embeddings to store in documents or supply as query vectors.
+
+* Other quantizers may produce representations that are incompatible with RavenDB.
+
+```python
+# from ravendb.documents.queries.vector import VectorQuantizer
+
+class VectorQuantizer:
+    # Quantizes to Int8, including the metadata required by RavenDB
+    @staticmethod
+    def to_int8(raw_embedding: List[float]) -> List[int]:
+        ...
+
+    # Quantizes to Binary, packing one bit per dimension into a byte array
+    @staticmethod
+    def to_int1(raw_embedding: List[float]) -> List[int]:
+        ...
+```
+
+</Panel>

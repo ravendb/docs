@@ -57,7 +57,7 @@ import Panel from '@site/src/components/Panel';
 * **Perform vector search:**  
   Once the embeddings are stored, you can perform vector searches on your document content by:  
   * Running a [dynamic query](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#querying-pre-made-embeddings-generated-by-tasks), which automatically creates an auto-index for the search.  
-  * Defining a [static index](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-pre-made-text-embeddings) to store and query embeddings efficiently.  
+  * Defining a [static index](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-vector-data-text) to store and query embeddings efficiently.  
 
       The query search term is split into chunks, and each chunk is looked up in the cache.  
       If not found, RavenDB requests an embedding from the provider and caches it.  
@@ -102,7 +102,7 @@ import Panel from '@site/src/components/Panel';
 
 * An embeddings generation tasks can be created from:
     * The **AI Tasks view in the Studio**, where you can create, edit, and delete tasks. Learn more in [AI Tasks - list view](../../../ai-integration/ai-tasks-list-view.mdx).
-    * The **Client API** - see [Configuring an embeddings generation task - from the Client API](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configuring-an-embeddings-generation-task---from-the-client-api)
+    * The **Client API** - see [Configuring an embeddings generation task - from the Client API](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configuring-an-embeddings-generation-task-from-the-client-api)
 * From the Studio:  
 
      ![Add ai task 1](../assets/add-ai-task-1.png)

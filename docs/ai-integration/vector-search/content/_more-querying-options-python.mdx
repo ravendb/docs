@@ -1,0 +1,444 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+import ContentFrame from '@site/src/components/ContentFrame';
+
+<Admonition type="note" title="">
+
+* This article explains how to use **exact search**, combine vector search with **regular filters**,  
+  and combine **multiple vector search clauses**.  
+
+* The examples cover both [dynamic queries](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx)
+  and [queries against static indexes](../../../ai-integration/vector-search/vector-search-using-static-index.mdx).
+
+* In this article:
+  * [Exact search](#exact-search)
+    * [Dynamic query](#exact-search-dynamic-query)
+    * [Static index query](#exact-search-static-index-query)
+  * [Combining vector search with regular filters](#combining-vector-search-with-regular-filters)
+    * [Dynamic query](#regular-filters-dynamic-query)
+    * [Static index query](#regular-filters-static-index-query)
+    * [How filtered vector search works](#how-filtered-vector-search-works)   
+  * [Combining multiple vector searches](#combining-multiple-vector-searches)   
+    * [Dynamic query](#multiple-vector-searches-dynamic-query)
+    * [Static index query](#multiple-vector-searches-static-index-query)
+
+</Admonition>
+
+<Panel heading="Exact search">
+
+* By default, vector searches use the **Approximate Nearest-Neighbor (ANN)** method,  
+  which uses the HNSW graph to find similar vectors efficiently.  
+
+* You can explicitly request **exact search** to scan the relevant vectors and find the actual closest matches.  
+  This provides greater accuracy at a higher computational cost.  
+
+* To request exact search, set `is_exact=True` in the Client API,  
+  or wrap `vector.search(...)` with `exact(...)` in RQL.  
+  Exact search supports both text and numerical content.  
+
+* Learn about the accuracy and performance tradeoffs in
+  [What affects vector search results](../../../ai-integration/vector-search/what-affects-vector-search-results.mdx#using-exact-search).
+
+<ContentFrame>
+    
+### Dynamic query {/* #exact-search-dynamic-query */}    
+
+The following example performs an exact search on the `Name` field of Product documents.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+```python
+similar_products = list(
+        session.query(object_type=Product)
+        .vector_search_text(
+            "Name",
+            "italian food",
+            # Optionally, set the 'is_exact' param to True to perform an Exact search
+            is_exact=True,
+        )
+        .wait_for_non_stale_results()
+    )
+```
+</TabItem>
+<TabItem value="raw_query" label="raw_query">
+```python
+similar_products = list(
+        session.advanced.raw_query(
+            (
+                "from 'Products' "
+                # Wrap the query with the 'exact()' method
+                "where exact(vector.search(embedding.text(Name), $searchTerm))"
+            ),
+            object_type=Product,
+        )
+        .add_parameter("searchTerm", "italian food")
+        .wait_for_non_stale_results()
+    )
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Products"
+// Wrap the vector.search query with the 'exact()' method
+where exact(vector.search(embedding.text(Name), "italian food"))
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Static index query {/* #exact-search-static-index-query */}
+
+* The following example performs an exact search on the `vector_from_text` field of the `Products/ByVector/Text` index.
+  The complete index definition is available in [Indexing raw text](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-raw-text).  
+    
+* Results include Product documents whose `Name` is similar to `"italian food"`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+```python
+similar_products = list(
+        session.query_index_type(Products_ByVector_Text, Product)
+        .vector_search_with_text_field(
+            "vector_from_text",
+            "italian food",
+            # Optionally, set the 'is_exact' param to True to perform an Exact search
+            is_exact=True,
+        )
+        .wait_for_non_stale_results()
+    )
+```
+</TabItem>
+<TabItem value="raw_query" label="raw_query">
+```python
+similar_products = list(
+        session.advanced.raw_query(
+            (
+                "from index 'Products/ByVector/Text' "
+                # Wrap the query with the 'exact()' method
+                "where exact(vector.search(vector_from_text, $searchTerm))"
+            ),
+            object_type=Product,
+        )
+        .add_parameter("searchTerm", "italian food")
+        .wait_for_non_stale_results()
+    )
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Products/ByVector/Text"
+// Wrap the vector.search query with the 'exact()' method
+where exact(vector.search(vector_from_text, "italian food"))
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Combining vector search with regular filters">
+
+You can perform a vector search and a regular search in the same query.  
+
+<ContentFrame>
+
+### Dynamic query {/* #regular-filters-dynamic-query */}
+
+* A single auto-index will be created for both search predicates.
+
+* Results include Product documents whose `Name` is similar to `"italian food"` **AND** whose `PricePerUnit` is greater than `35`.  
+  The following auto-index will be generated: `Auto/Products/ByPricePerUnitAndVector.search(embedding.text(Name))`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+```python
+similar_products = list(
+        session.query(object_type=Product)
+        # Perform a vector search:
+        .vector_search_text("Name", "italian food", 0.75, 16)
+        # Perform a filtering condition:
+        .where_greater_than("PricePerUnit", 35)
+        .wait_for_non_stale_results()
+    )
+```
+</TabItem>
+<TabItem value="raw_query" label="raw_query">
+```python
+similar_products = list(
+        session.advanced.raw_query(
+            (
+                "from 'Products' "
+                "where (PricePerUnit > $minPrice) and (vector.search(embedding.text(Name), $searchTerm, 0.75, 16))"
+            ),
+            object_type=Product,
+        )
+        .add_parameter("minPrice", 35.0)
+        .add_parameter("searchTerm", "italian food")
+        .wait_for_non_stale_results()
+    )
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Products"
+// The filtering condition:
+where (PricePerUnit > $minPrice)
+and (vector.search(embedding.text(Name), $searchTerm, 0.75, 16))
+{ "minPrice" : 35.0, "searchTerm" : "italian food" }
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Static index query {/* #regular-filters-static-index-query */}
+
+* The following example queries the `Products/ByMultipleFields` index defined in
+  [Indexing multiple field types](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-multiple-field-types).  
+  It combines a vector search on `vector_from_text` with a regular filter on `price_per_unit`.
+    
+* Results include Product documents whose `Name` is similar to `"italian food"` **AND** whose `PricePerUnit` is greater than `35`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+```python
+similar_products = list(
+        session.query_index_type(Products_ByMultipleFields, Product)
+        # Perform a vector search:
+        .vector_search_with_text_field("vector_from_text", "italian food", 0.75, 16)
+        # Perform a filtering condition:
+        .where_greater_than("price_per_unit", 35)
+        .wait_for_non_stale_results()
+    )
+```
+</TabItem>
+<TabItem value="raw_query" label="raw_query">
+```python
+similar_products = list(
+        session.advanced.raw_query(
+            (
+                "from index 'Products/ByMultipleFields' "
+                "where (price_per_unit > $minPrice) and (vector.search(vector_from_text, $searchTerm, 0.75, 16))"
+            ),
+            object_type=Product,
+        )
+        .add_parameter("minPrice", 35.0)
+        .add_parameter("searchTerm", "italian food")
+        .wait_for_non_stale_results()
+    )
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Products/ByMultipleFields"
+// The filtering condition:
+where (price_per_unit > $minPrice)
+and (vector.search(vector_from_text, $searchTerm, 0.75, 16))
+{ "minPrice" : 35.0, "searchTerm" : "italian food" }
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+<Admonition type="note" title="">
+    
+### How filtered vector search works    
+
+When a vector search query is combined with a filtering condition using **AND** (e.g., `where vector.search(...) and PricePerUnit > 35`),
+RavenDB integrates the filter into the vector search process rather than running the vector search independently and discarding non-matching results afterward.  
+
+**Internal Strategies**   
+RavenDB first evaluates the filter to determine how many documents match and then dynamically selects a strategy:    
+    
+* **Exact search over filtered documents:**  
+  This mode is triggered when any of the following conditions is true:    
+    
+  * The filter match count is **below** the scanning threshold (default: `1024`).  
+    Can be customized via the [Indexing.Corax.VectorSearch.VectorSearchScanningThreshold](../../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchvectorsearchscanningthreshold) configuration key.
+  * An [Exact search](#exact-search) is explicitly requested.  
+  * The requested _number of candidates_ exceeds half the filter match count.  
+    Learn about the `number_of_candidates` parameter in [The query parameters](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#the-dynamic-query-parameters).
+    
+  In this mode, an exact search is performed over **only** the documents that match the filter.   
+
+* **Approximate search:**  
+  When none of the conditions above apply, RavenDB uses approximate HNSW graph traversal to find the nearest vectors to the search term.
+  The filter is applied to the documents associated with the candidate vectors.  
+    
+  If fewer than the requested _number of candidates_ have matching documents,
+  RavenDB repeats the HNSW search with a larger internal candidate count while its search limits allow.  
+    
+  This process attempts to retrieve additional candidates that satisfy both the similarity requirement and the filter.  
+  The number of matching candidates returned can still be lower than requested because of the similarity threshold or internal search limits.
+    
+  Note:    
+  Re-search rounds are efficient because RavenDB caches the HNSW graph's internal state (including previously computed results), 
+  avoiding redundant distance calculations for previously visited nodes.    
+    
+</Admonition>
+
+</Panel>
+
+<Panel heading="Combining multiple vector searches">
+
+You can combine multiple vector search statements in the same query using logical operators.  
+This is useful when you want to retrieve documents that match more than one vector-based criterion.
+
+<Admonition type="info" title="">
+
+**How multiple vector search clauses are evaluated**:
+
+* The logical operators determine how matches are combined:  
+  * **OR** combines the results of separately evaluated vector searches. A document can match either clause.  
+  * **AND** requires a document to match every clause. RavenDB can use the matches from one vector clause as a filter for another.  
+
+* The `number_of_candidates` parameter limits the number of matching vectors returned by each vector search.  
+  * You can set it separately for each clause; see [query parameters](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#the-dynamic-query-parameters).  
+  * If omitted, the value comes from [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforquerying) (default: `16`).  
+
+* Increasing the _number of candidates_ expands the candidate pool and can help combined queries find more matches,
+  at the cost of additional search work.
+
+</Admonition>
+
+<ContentFrame>
+
+### Dynamic query {/* #multiple-vector-searches-dynamic-query */}    
+
+* The following query uses semantic similarity comparisons and returns companies in either of these cases:  
+  * `Name` is similar to `"snack"` **AND** `Address.Country` is similar to `"europe"`.
+  * `Name` is similar to `"dairy"`.
+
+* Running the query example on the RavenDB sample data will generate the following auto-index:  
+  `Auto/Companies/ByVector.search(embedding.text(Address.Country))AndVector.search(embedding.text(Name))`.  
+  This index includes two vector fields: `Address.Country` and `Name`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+```python
+companies = list(
+        session.query(object_type=Company)
+        # Use open_subclause & close_subclause to differentiate between clauses:
+        # ======================================================================
+        .open_subclause()
+        # Search for companies that sell snacks or similar
+        .vector_search_text("Name", "snack", minimum_similarity=0.78)
+        # Use 'and_also' for an AND operation
+        .and_also()
+        # Compare the country name with 'europe'
+        .vector_search_text("Address.Country", "europe", minimum_similarity=0.82)
+        .close_subclause()
+        # Use 'or_else' for an OR operation
+        .or_else()
+        .open_subclause()
+        # Search for companies that sell dairy products or similar
+        .vector_search_text("Name", "dairy", minimum_similarity=0.80)
+        .close_subclause()
+        .wait_for_non_stale_results()
+    )
+```
+</TabItem>
+<TabItem value="raw_query" label="raw_query">
+```python
+companies = list(
+        session.advanced.raw_query(
+            """
+            from Companies
+            where
+                (
+                    vector.search(embedding.text(Name), $searchTerm1, 0.78)
+                    and
+                    vector.search(embedding.text(Address.Country), $searchTerm2, 0.82)
+                )
+                or
+                (
+                    vector.search(embedding.text(Name), $searchTerm3, 0.80)
+                )
+            """,
+            object_type=Company,
+        )
+        .add_parameter("searchTerm1", "snack")
+        .add_parameter("searchTerm2", "europe")
+        .add_parameter("searchTerm3", "dairy")
+        .wait_for_non_stale_results()
+    )
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Companies"
+where
+(
+  vector.search(embedding.text(Name), $searchTerm1, 0.78)
+  and
+  vector.search(embedding.text(Address.Country), $searchTerm2, 0.82)
+)
+or
+(
+  vector.search(embedding.text(Name), $searchTerm3, 0.80)
+)
+{"searchTerm1" : "snack", "searchTerm2" : "europe", "searchTerm3" : "dairy"}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Static index query {/* #multiple-vector-searches-static-index-query */}
+
+* The following example queries the `Products/ByVector/Text` index defined in
+  [Indexing raw text](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-raw-text).  
+  It runs two vector searches on the same `vector_from_text` field and combines them using **OR**.
+    
+* Results include Product documents whose `Name` is similar to `"italian food"` **OR** `"seafood"`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+```python
+similar_products = list(
+        session.query_index_type(Products_ByVector_Text, Product)
+        .vector_search_with_text_field("vector_from_text", "italian food", minimum_similarity=0.80)
+        # Use 'or_else' for an OR operation
+        .or_else()
+        .vector_search_with_text_field("vector_from_text", "seafood", minimum_similarity=0.80)
+        .wait_for_non_stale_results()
+    )
+```
+</TabItem>
+<TabItem value="raw_query" label="raw_query">
+```python
+similar_products = list(
+        session.advanced.raw_query(
+            (
+                "from index 'Products/ByVector/Text' "
+                "where vector.search(vector_from_text, $searchTerm1, 0.80) "
+                "or vector.search(vector_from_text, $searchTerm2, 0.80)"
+            ),
+            object_type=Product,
+        )
+        .add_parameter("searchTerm1", "italian food")
+        .add_parameter("searchTerm2", "seafood")
+        .wait_for_non_stale_results()
+    )
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Products/ByVector/Text"
+where vector.search(vector_from_text, $searchTerm1, 0.80)
+or vector.search(vector_from_text, $searchTerm2, 0.80)
+{"searchTerm1" : "italian food", "searchTerm2" : "seafood"}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+</Panel>

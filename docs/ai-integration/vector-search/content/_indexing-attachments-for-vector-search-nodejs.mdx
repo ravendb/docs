@@ -1,7 +1,7 @@
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
@@ -12,20 +12,22 @@ import CodeBlock from '@theme/CodeBlock';
   indexing a vector field.
 
 * In this article:
-    * [Overview](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#overview)
-    * [Indexing TEXT attachments](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#indexing-text-attachments)
-    * [Indexing NUMERICAL attachments](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#indexing-numerical-attachments)
-      * [LINQ index](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#linq-index)
-      * [JS index](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#js-index)
-    * [Indexing ALL attachments](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#indexing-all-attachments)
+    * [Overview](#overview)
+    * [Indexing TEXT attachments](#indexing-text-attachments)
+    * [Indexing NUMERICAL attachments](#indexing-numerical-attachments)
+      * [LINQ index](#linq-index)
+      * [JS index](#js-index)
+    * [Indexing ALL attachments](#indexing-all-attachments)
 
 </Admonition>
 
-## Overview
+<Panel heading="Overview">
 
 <Admonition type="note" title="">
 
-#### Attachments in RavenDB
+### Attachments in RavenDB
+    
+---    
 
 * Attachments in RavenDB allow you to associate binary files with your JSON documents.  
   You can use attachments to store images, PDFs, videos, text files, or any other format.  
@@ -40,10 +42,16 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-#### Indexing attachment content for vector search
+### Indexing attachment content for vector search
+    
+---    
 
 You can index attachment content in a vector field within a static-index,    
-enabling vector search on text or numerical data that is stored in the attachments:
+enabling vector search on text or numerical data that is stored in the attachments.
+
+Only **local attachments** can have their content indexed.  
+[Remote attachment](../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx) content is unavailable during indexing.  
+The examples below skip remote attachments.
 
 * **Attachments with TEXT**:  
     * During indexing, RavenDB processes the text into a single embedding per attachment using the built-in  
@@ -52,14 +60,16 @@ enabling vector search on text or numerical data that is stored in the attachmen
 * **Attachments with NUMERICAL data**:  
     * While attachments can store any file type, RavenDB does Not generate embeddings from images, videos, or other non-textual content.  
       Each attachment must contain a **single** precomputed embedding vector, generated externally.  
-    * RavenDB indexes the embedding vector from the attachment in and can apply [quantization](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#quantization-options)
+    * RavenDB indexes the embedding vector from the attachment and can apply [quantization](../../../ai-integration/vector-search/quantization.mdx)
       (e.g., index it in _Int8_ format) if this is configured.  
     * All embeddings indexed within the same vector-field in the static-index must be vectors of the **same dimension** to ensure consistency in indexing and search.
       They must also be created using the **same model**.
 
 </Admonition>
 
-## Indexing TEXT attachments
+</Panel>
+
+<Panel heading="Indexing TEXT attachments">
  
 * The following index defines a **vector field** named `vectorFromAttachment`.
 
@@ -67,31 +77,37 @@ enabling vector search on text or numerical data that is stored in the attachmen
   This applies to all _Company_ documents that contain an attachment with that name.
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="Index (C# LINQ)" label="Index (C# LINQ)">
+<TabItem value="JS_index" label="JS_index">
 ```js
-class Companies_ByVector_FromTextAttachment extends AbstractCsharpIndexCreationTask {
+class Companies_ByVector_FromTextAttachment
+    extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
 
+        const { loadAttachment, createVector } = this.mapUtils();
+
         // Index-field 'vectorFromAttachment' will hold embeddings
         // generated from the TEXT in the attachments.
-        this.map = `docs.Companies.Select(company => new {
-            company = company,
-            // Load the attachment from the document (ensure it is not null)
-            attachment = this.LoadAttachment(company, "description.txt")
-        }).Where(this0 => this0.attachment != null).Select(this0 => new {
-            // Index the text content from the attachment in the vector field
-            vectorFromAttachment = 
-                this.CreateVector(this0.attachment.GetContentAsString(Encoding.UTF8))
-        })`
-    
+        this.map("Companies", company => {
+
+            // Load the attachment and skip missing or remote attachments
+            const attachment = loadAttachment(company, "description.txt");
+            if (!attachment || attachment.RemoteFlags !== "None") return null;
+
+            return {
+                // Index the text content from the attachment in the vector field
+                vectorFromAttachment:
+                    createVector(attachment.getContentAsString("utf8"))
+            };
+        });
+
         // Configure the vector field:
         this.vectorField("vectorFromAttachment", {
             // Specify 'Text' as the source format
-            sourceEmbeddingType: "Text", 
+            sourceEmbeddingType: "Text",
             // Specify the desired destination format within the index
             destinationEmbeddingType: "Single"
-        })
+        });
 
         this.searchEngineType = "Corax";
     }
@@ -104,16 +120,18 @@ const indexDefinition = new IndexDefinition();
 
 indexDefinition.name = "Companies/ByVector/FromTextAttachment";
 
-indexDefinition.maps = [`
+indexDefinition.maps = new Set([`
     from company in docs.Companies
-    
+
     let attachment = LoadAttachment(company, "description.txt")
-    where attachment != null
-    
+    where attachment != null && attachment.RemoteFlags.ToString() == "None"
+
     select new
     {
-        vectorFromAttachment = CreateVector(attachment.GetContentAsString(Encoding.UTF8))
-    }`]
+        vectorFromAttachment =
+            CreateVector(attachment.GetContentAsString(Encoding.UTF8))
+    }`
+]);
 
 indexDefinition.fields = {
     "vectorFromAttachment": {
@@ -126,9 +144,9 @@ indexDefinition.fields = {
 
 indexDefinition.configuration = {
     "Indexing.Static.SearchEngineType": "Corax"
-}
+};
 
-await documentStore.maintenance.send(new PutIndexesOperation(indexDefinition));
+await store.maintenance.send(new PutIndexesOperation(indexDefinition));
 ```
 </TabItem>
 <TabItem value="Storing_text_attachments" label="Storing_text_attachments">
@@ -136,34 +154,48 @@ await documentStore.maintenance.send(new PutIndexesOperation(indexDefinition));
 // Prepare text as `Buffer` instances to be stored as attachments:
 // ===============================================================
 const byteArray1 = Buffer.from(
-    "Supplies soft drinks, fruit juices, and flavored syrups to restaurants and retailers.",
+    "Supplies soft drinks, fruit juices, and flavored syrups " +
+    "to restaurants and retailers.",
     "utf-8");
 const byteArray2 = Buffer.from(
-    "Supplies fine dining restaurants with premium meats, cheeses, and wines across France.",
+    "Supplies fine dining restaurants with premium meats, " +
+    "cheeses, and wines across France.",
     "utf-8");
 const byteArray3 = Buffer.from(
-    "An American grocery chain known for its fresh produce, organic foods, and local meats.",
+    "An American grocery chain known for its fresh produce, " +
+    "organic foods, and local meats.",
     "utf-8");
 const byteArray4 = Buffer.from(
-    "An Asian grocery store specializing in ingredients for Japanese and Thai cuisine.",
+    "An Asian grocery store specializing in ingredients " +
+    "for Japanese and Thai cuisine.",
     "utf-8");
 const byteArray5 = Buffer.from(
-    "A rural general store offering homemade jams, fresh-baked bread, and locally crafted gifts.",
+    "A rural general store offering homemade jams, " +
+    "fresh-baked bread, and locally crafted gifts.",
     "utf-8");
 
 const session = store.openSession();
 
+// Load existing Company documents from RavenDB's sample data:
+// ===========================================================
 const company1 = await session.load("companies/11-A");
 const company2 = await session.load("companies/26-A");
 const company3 = await session.load("companies/32-A");
 const company4 = await session.load("companies/41-A");
 const company5 = await session.load("companies/43-A");
 
-session.advanced.attachments.store(company1, "description.txt", byteArray1, "text/plain");
-session.advanced.attachments.store(company2, "description.txt", byteArray2, "text/plain");
-session.advanced.attachments.store(company3, "description.txt", byteArray3, "text/plain");
-session.advanced.attachments.store(company4, "description.txt", byteArray4, "text/plain");
-session.advanced.attachments.store(company5, "description.txt", byteArray5, "text/plain");
+// Store the attachments in the documents:
+// =======================================
+session.advanced.attachments.store(company1, "description.txt",
+    byteArray1, "text/plain");
+session.advanced.attachments.store(company2, "description.txt",
+    byteArray2, "text/plain");
+session.advanced.attachments.store(company3, "description.txt",
+    byteArray3, "text/plain");
+session.advanced.attachments.store(company4, "description.txt",
+    byteArray4, "text/plain");
+session.advanced.attachments.store(company5, "description.txt",
+    byteArray5, "text/plain");
 
 await session.saveChanges();
 ```
@@ -176,26 +208,27 @@ Results will include _Company_ documents whose attachment contains text similar 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
 ```js
-const relevantCompanies = await session.query({ index: Companies_ByVector_FromTextAttachment })
+const relevantCompanies = await session
+    .query({ index: Companies_ByVector_FromTextAttachment })
     .vectorSearch(
-        field => field.withField("vectorFromAttachment"),
-        queryVector => queryVector.byText("chinese food"),
-        {
-            similarity: 0.8
-        }
-    )
+        field => field
+            .withField("vectorFromAttachment"),
+        searchTerm => searchTerm
+            .byText("chinese food"),
+        { similarity: 0.8 })
     .waitForNonStaleResults()
     .all();
 ```
 </TabItem>
 <TabItem value="RawQuery" label="RawQuery">
 ```js
-const relevantCompanies = await session.advanced.rawQuery(`
-    from index "Companies/ByVector/FromTextAttachment"
-    where vector.search(vectorFromAttachment, $searchTerm, 0.8)`)
-        .addParameter("searchTerm", "chinese food")
-        .waitForNonStaleResults() 
-        .all();
+const relevantCompanies = await session.advanced
+    .rawQuery(`
+        from index 'Companies/ByVector/FromTextAttachment'
+        where vector.search(vectorFromAttachment, $searchTerm, 0.8)`)
+    .addParameter("searchTerm", "chinese food")
+    .waitForNonStaleResults()
+    .all();
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -209,45 +242,69 @@ where vector.search(vectorFromAttachment, $searchTerm, 0.8)
 
 You can now extract the text from the attachments of the resulting documents:
 
+<Tabs groupId='languageSyntax'>
 <TabItem value="extract_attachment_content" label="extract_attachment_content">
 ```js
-// Extract text from the attachment of the first resulting document
-// ================================================================
-
+// Extract text from the attachment of the first resulting document, if any
 const company = relevantCompanies[0];
-const attachment = await session.advanced.attachments.get(company, "description.txt");
-
-const attachmentResult = await getAttachmentAsString(attachment);
-console.log(`Attachment text: ${attachmentResult}`);
+if (company) {
+    const attachmentResult =
+        await session.advanced.attachments.get(company, "description.txt");
+    if (attachmentResult) {
+        try {
+            // Decode the attachment content as UTF-8 text
+            const chunks = [];
+            for await (const chunk of attachmentResult.data) {
+                chunks.push(chunk);
+            }
+            const attachmentText = Buffer.concat(chunks).toString("utf-8");
+        } finally {
+            attachmentResult.dispose();
+        }
+    }
+}
 ```
 </TabItem>
+</Tabs>
 
-## Indexing NUMERICAL attachments
+</Panel>
+
+<Panel heading="Indexing NUMERICAL attachments">
+
+### LINQ index
 
 * The following index defines a **vector field** named `vectorFromAttachment`.  
 
-* It indexes embeddings generated from the numerical data stored in the `vector.raw` attachment.  
+* It indexes the precomputed embedding vector stored in the `vector.raw` attachment.  
   This applies to all _Company_ documents that contain an attachment with that name.
 
 * Each attachment contains raw numerical data in 32-bit floating-point format.  
 
+* This index uses a C# LINQ map (`AbstractCsharpIndexCreationTask` or `IndexDefinition`),  
+  because JavaScript indexes do not support `getContentAsStream()` (see [JS index](#js-index) below).
+
 <Tabs groupId='languageSyntax'>
 <TabItem value="Index (C# LINQ)" label="Index (C# LINQ)">
 ```js
-class Companies_ByVector_FromNumericalAttachment extends AbstractCsharpIndexCreationTask {
+class Companies_ByVector_FromNumericalAttachment
+    extends AbstractCsharpIndexCreationTask {
     constructor() {
         super();
 
-        // Index-field 'vectorFromAttachment' will hold embeddings
-        // generated from the NUMERICAL content in the attachments.
-        this.map = `docs.Companies.Select(company => new {
-            company = company,
-            // Load the attachment from the document (ensure it is not null)
-            attachment = this.LoadAttachment(company, "vector.raw")
-        }).Where(this0 => this0.attachment != null).Select(this0 => new {
-            // Index the attachment's content in the vector field
-            vectorFromAttachment = this.CreateVector(this0.attachment.GetContentAsStream())
-        })`
+        // Index-field 'vectorFromAttachment' will hold precomputed embedding vectors
+        // read from the attachments.
+        this.map = `
+            from company in docs.Companies
+
+            // Load the attachment and skip missing or remote attachments
+            let attachment = LoadAttachment(company, "vector.raw")
+            where attachment != null && attachment.RemoteFlags.ToString() == "None"
+
+            select new
+            {
+                // Index the attachment's content in the vector field
+                vectorFromAttachment = CreateVector(attachment.GetContentAsStream())
+            }`;
 
         // Configure the vector field:
         this.vectorField("vectorFromAttachment", {
@@ -256,7 +313,7 @@ class Companies_ByVector_FromNumericalAttachment extends AbstractCsharpIndexCrea
             // Define the desired destination format within the index
             destinationEmbeddingType: "Single"
         });
-    
+
         this.searchEngineType = "Corax";
     }
 }
@@ -268,15 +325,17 @@ const indexDefinition = new IndexDefinition();
 
 indexDefinition.name = "Companies/ByVector/FromNumericalAttachment";
 
-indexDefinition.maps = [`
+indexDefinition.maps = new Set([`
     from company in docs.Companies
+
     let attachment = LoadAttachment(company, "vector.raw")
-    where attachment != null
+    where attachment != null && attachment.RemoteFlags.ToString() == "None"
+
     select new
     {
         vectorFromAttachment = CreateVector(attachment.GetContentAsStream())
-    }
-`]
+    }`
+]);
 
 indexDefinition.fields = {
     "vectorFromAttachment": {
@@ -289,16 +348,17 @@ indexDefinition.fields = {
 
 indexDefinition.configuration = {
     "Indexing.Static.SearchEngineType": "Corax"
-}
-    
-await documentStore.maintenance.send(new PutIndexesOperation(indexDefinition));
+};
+
+await store.maintenance.send(new PutIndexesOperation(indexDefinition));
 ```
 </TabItem>
 <TabItem value="Storing_numerical_attachments" label="Storing_numerical_attachments">
 ```js
-// These vectors are simple pre-computed embedding vectors with 32-bit floating-point values.
+// These vectors are simple precomputed embedding vectors
+// with 32-bit floating-point values.
 // Note: In a real scenario, embeddings would be generated by a model.
-// ==========================================================================================
+// ===================================================================
 const v1 = new Float32Array([0.1, 0.2, 0.3, 0.4]);
 const v2 = new Float32Array([0.1, 0.7, 0.8, 0.9]);
 const v3 = new Float32Array([0.5, 0.6, 0.7, 0.8]);
@@ -318,12 +378,12 @@ const company2 = await session.load("companies/51-A");
 const company3 = await session.load("companies/52-A");
 
 // Store the attachments in the documents:
-// ========================================
+// =======================================
 session.advanced.attachments.store(company1, "vector.raw", buffer1);
 session.advanced.attachments.store(company2, "vector.raw", buffer2);
 session.advanced.attachments.store(company3, "vector.raw", buffer3);
 
-await session.saveChanges();    
+await session.saveChanges();
 ```
 </TabItem>
 </Tabs>
@@ -334,23 +394,26 @@ Results will include _Company_ documents whose attachment contains vectors simil
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
 ```js
-const similarCompanies  = await session.query({ index: Companies_ByVector_FromNumericalAttachment })
+const similarCompanies = await session
+    .query({ index: Companies_ByVector_FromNumericalAttachment })
     .vectorSearch(
-        field => field.withField("vectorFromAttachment"),
-        queryVector => queryVector.byEmbedding([0.1, 0.2, 0.3, 0.4])
-    )
+        field => field
+            .withField("vectorFromAttachment"),
+        queryVector => queryVector
+            .byEmbedding([0.1, 0.2, 0.3, 0.4]))
     .waitForNonStaleResults()
     .all();
 ```
 </TabItem>
 <TabItem value="RawQuery" label="RawQuery">
 ```js
-const similarCompanies  = await session.advanced.rawQuery(`
-    from index "Companies/ByVector/FromNumericalAttachment"
-    where vector.search(vectorFromAttachment, $queryVector)`)
-        .addParameter("queryVector", [0.1, 0.2, 0.3, 0.4])
-        .waitForNonStaleResults()
-        .all();
+const similarCompanies = await session.advanced
+    .rawQuery(`
+        from index 'Companies/ByVector/FromNumericalAttachment'
+        where vector.search(vectorFromAttachment, $queryVector)`)
+    .addParameter("queryVector", [0.1, 0.2, 0.3, 0.4])
+    .waitForNonStaleResults()
+    .all();
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -362,11 +425,128 @@ where vector.search(vectorFromAttachment, $queryVector)
 </TabItem>
 </Tabs>
 
-## Indexing ALL attachments
+---    
+    
+### JS index
+
+* The following is the JavaScript index format equivalent to the [LINQ index](#linq-index) shown above.
+
+* The main difference is that JavaScript indexes do Not support `getContentAsStream()` on attachment objects:
+  * Because of this, embedding vectors must be stored in attachments as **Base64-encoded strings**.  
+  * Use `getContentAsString()` to retrieve the attachment content as a string, as shown in this example.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="JS_index" label="JS_index">
+```js
+class Companies_ByVector_FromNumericalAttachment_JS
+    extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        const { loadAttachment, createVector } = this.mapUtils();
+
+        this.map("Companies", company => {
+
+            const attachment = loadAttachment(company, "vector_base64.raw");
+            if (!attachment || attachment.RemoteFlags !== "None") return null;
+
+            return {
+                vectorFromAttachment:
+                    createVector(attachment.getContentAsString("utf8"))
+            };
+        });
+
+        this.vectorField("vectorFromAttachment", {
+            sourceEmbeddingType: "Single",
+            destinationEmbeddingType: "Single"
+        });
+
+        this.searchEngineType = "Corax";
+    }
+}
+```
+</TabItem>
+<TabItem value="Storing_numerical_attachments_as_base64" label="Storing_numerical_attachments_as_base64">
+```js
+// These vectors are simple precomputed embedding vectors
+// with 32-bit floating-point values.
+// Note: In a real scenario, embeddings would be generated by a model.
+// ===================================================================
+const v1 = new Float32Array([0.1, 0.2, 0.3, 0.4]);
+const v2 = new Float32Array([0.1, 0.7, 0.8, 0.9]);
+const v3 = new Float32Array([0.5, 0.6, 0.7, 0.8]);
+
+// Prepare the embedding vectors as a BASE64 string to be stored as attachments:
+// =============================================================================
+const base64ForV1 = Buffer.from(v1.buffer).toString("base64");
+const base64ForV2 = Buffer.from(v2.buffer).toString("base64");
+const base64ForV3 = Buffer.from(v3.buffer).toString("base64");
+
+// Convert to `Buffer` for streaming:
+// ==================================
+const buffer1 = Buffer.from(base64ForV1, "utf-8");
+const buffer2 = Buffer.from(base64ForV2, "utf-8");
+const buffer3 = Buffer.from(base64ForV3, "utf-8");
+
+const session = store.openSession();
+
+// Load existing Company documents from RavenDB's sample data:
+// ===========================================================
+const company1 = await session.load("companies/60-A");
+const company2 = await session.load("companies/61-A");
+const company3 = await session.load("companies/62-A");
+
+// Store the attachments in the documents:
+// =======================================
+session.advanced.attachments.store(company1, "vector_base64.raw", buffer1);
+session.advanced.attachments.store(company2, "vector_base64.raw", buffer2);
+session.advanced.attachments.store(company3, "vector_base64.raw", buffer3);
+
+await session.saveChanges();
+```
+</TabItem>
+</Tabs>
+
+Execute a vector search using the index:  
+Results will include _Company_ documents whose attachment contains vectors similar to the query vector.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const similarCompanies = await session.advanced
+    .rawQuery(`
+        from index 'Companies/ByVector/FromNumericalAttachment/JS'
+        where vector.search(vectorFromAttachment, $queryVector)`)
+    .addParameter("queryVector", [0.1, 0.2, 0.3, 0.4])
+    .waitForNonStaleResults()
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Companies/ByVector/FromNumericalAttachment/JS"
+where vector.search(vectorFromAttachment, $queryVector)
+{ "queryVector" : [0.1, 0.2, 0.3, 0.4] }
+```
+</TabItem>
+</Tabs>
+
+</Panel>
+
+<Panel heading="Indexing ALL attachments">
 
 * The following index defines a vector field named `vectorFromAttachment`.
 
-* It indexes embeddings generated from the numerical data stored in ALL attachments of all _Company_ documents.
+* It indexes the precomputed embedding vectors stored in ALL local attachments of all _Company_ documents.
+
+* This example assumes that **every local attachment** on the indexed documents contains a single embedding vector  
+  stored as raw 32-bit floating-point values. All vectors must have the same number of dimensions and be generated using the same model.  
+    
+  If the documents also contain other attachment formats, such as text, PDFs, or Base64-encoded vectors,  
+  filter the attachments by name before passing their content to `CreateVector()`.
+
+* This index uses a C# LINQ map (`AbstractCsharpIndexCreationTask` or `IndexDefinition`),  
+  because JavaScript indexes do not support `getContentAsStream()`.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Index (C# LINQ)" label="Index (C# LINQ)">
@@ -375,17 +555,21 @@ class Companies_ByVector_AllAttachments extends AbstractCsharpIndexCreationTask 
     constructor() {
         super();
 
-        // Index-field 'vectorFromAttachment' will hold embeddings
-        // generated from the NUMERICAL content of ALL attachments.
-        this.map = `docs.Companies.Select(company => new {
-            company = company,
-            // Load ALL attachments from the document
-            attachments = this.LoadAttachments(company)
-        }).Select(this0 => new {
-            // Index the attachments content in the vector field    
-            vectorFromAttachment = 
-                this.CreateVector(this0.attachments.Select(e => e.GetContentAsStream()))
-        })`;
+        // Index-field 'vectorFromAttachment' will hold precomputed embedding vectors
+        // read from ALL local attachments.
+        this.map = `
+            from company in docs.Companies
+
+            // Load ALL local attachments from the document
+            let attachments = LoadAttachments(company)
+                .Where(attachment => attachment.RemoteFlags.ToString() == "None")
+
+            select new
+            {
+                // Index the attachments' content in the vector field
+                vectorFromAttachment =
+                    CreateVector(attachments.Select(e => e.GetContentAsStream()))
+            }`;
 
         // Configure the vector field:
         this.vectorField("vectorFromAttachment", {
@@ -404,20 +588,23 @@ const indexDefinition = new IndexDefinition();
 
 indexDefinition.name = "Companies/ByVector/AllAttachments";
 
-indexDefinition.maps = [`
+indexDefinition.maps = new Set([`
     from company in docs.Companies
-    let attachments = LoadAttachments(company)  
+
+    let attachments = LoadAttachments(company)
+        .Where(attachment => attachment.RemoteFlags.ToString() == "None")
+
     select new
     {
         vectorFromAttachment =
             CreateVector(attachments.Select(e => e.GetContentAsStream()))
-    }
-`];
+    }`
+]);
 
 indexDefinition.fields = {
     "vectorFromAttachment": {
         vector: {
-            sourceEmbeddingType: "Single", 
+            sourceEmbeddingType: "Single",
             destinationEmbeddingType: "Single"
         }
     }
@@ -425,16 +612,17 @@ indexDefinition.fields = {
 
 indexDefinition.configuration = {
     "Indexing.Static.SearchEngineType": "Corax"
-}  
+};
 
-await documentStore.maintenance.send(new PutIndexesOperation(indexDefinition));
+await store.maintenance.send(new PutIndexesOperation(indexDefinition));
 ```
 </TabItem>
 <TabItem value="Storing_numerical_attachments" label="Storing_numerical_attachments">
 ```js
-// These vectors are simple pre-computed embedding vectors with 32-bit floating-point values.
+// These vectors are simple precomputed embedding vectors
+// with 32-bit floating-point values.
 // Note: In a real scenario, embeddings would be generated by a model.
-// ==========================================================================================
+// ===================================================================
 const v1 = new Float32Array([0.1, 0.2, 0.3, 0.4]);
 const v2 = new Float32Array([0.5, 0.6, 0.7, 0.8]);
 
@@ -470,35 +658,40 @@ await session.saveChanges();
 </Tabs>
 
 Execute a vector search using the index:  
-Results will include Company documents whose attachments contains vectors similar to the query vector.
+Results will include _Company_ documents whose attachments contain vectors similar to the query vector.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
 ```js
-const similarCompanies = await session.query({ index: Companies_ByVector_AllAttachments })
+const similarCompanies = await session
+    .query({ index: Companies_ByVector_AllAttachments })
     .vectorSearch(
-        field => field.withField("vectorFromAttachment"),
-        queryVector => queryVector.byEmbedding([-0.1, 0.2, -0.7, -0.8])
-    )
+        field => field
+            .withField("vectorFromAttachment"),
+        queryVector => queryVector
+            .byEmbedding([-0.1, 0.2, -0.7, -0.8]))
     .waitForNonStaleResults()
     .all();
 ```
 </TabItem>
 <TabItem value="RawQuery" label="RawQuery">
 ```js
-const similarCompanies = await session.advanced.rawQuery(`
-    from index "Companies/ByVector/AllAttachments"
-    where vector.search(vectorFromAttachment, $queryVector)`)
-        .addParameter("queryVector", [-0.1, 0.2, -0.7, -0.8])
-        .waitForNonStaleResults()
-        .all();
+const similarCompanies = await session.advanced
+    .rawQuery(`
+        from index 'Companies/ByVector/AllAttachments'
+        where vector.search(vectorFromAttachment, $queryVector)`)
+    .addParameter("queryVector", [-0.1, 0.2, -0.7, -0.8])
+    .waitForNonStaleResults()
+    .all();
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
 from index "Companies/ByVector/AllAttachments"
 where vector.search(vectorFromAttachment, $queryVector)
-{ "queryVector" : [0.1, 0.2, -0.7, -0.8] }
+{ "queryVector" : [-0.1, 0.2, -0.7, -0.8] }
 ```
 </TabItem>
 </Tabs>
+
+</Panel>

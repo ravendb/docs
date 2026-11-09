@@ -1,7 +1,7 @@
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
@@ -12,20 +12,22 @@ import CodeBlock from '@theme/CodeBlock';
   indexing a vector field.
 
 * In this article:
-    * [Overview](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#overview)
-    * [Indexing TEXT attachments](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#indexing-text-attachments)
-    * [Indexing NUMERICAL attachments](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#indexing-numerical-attachments)
-      * [LINQ index](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#linq-index)
-      * [JS index](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#js-index)
-    * [Indexing ALL attachments](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#indexing-all-attachments)
+    * [Overview](#overview)
+    * [Indexing TEXT attachments](#indexing-text-attachments)
+    * [Indexing NUMERICAL attachments](#indexing-numerical-attachments)
+      * [LINQ index](#linq-index)
+      * [JS index](#js-index)
+    * [Indexing ALL attachments](#indexing-all-attachments)
 
 </Admonition>
 
-## Overview
+<Panel heading="Overview">
 
 <Admonition type="note" title="">
 
-#### Attachments in RavenDB
+### Attachments in RavenDB
+    
+---    
 
 * Attachments in RavenDB allow you to associate binary files with your JSON documents.  
   You can use attachments to store images, PDFs, videos, text files, or any other format.  
@@ -40,10 +42,16 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="">
 
-#### Indexing attachment content for vector search
+### Indexing attachment content for vector search
+    
+---    
 
 You can index attachment content in a vector field within a static-index,    
-enabling vector search on text or numerical data that is stored in the attachments:
+enabling vector search on text or numerical data that is stored in the attachments.
+
+Only **local attachments** can have their content indexed.  
+[Remote attachment](../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx) content is unavailable during indexing.  
+The examples below skip remote attachments.
 
 * **Attachments with TEXT**:  
     * During indexing, RavenDB processes the text into a single embedding per attachment using the built-in  
@@ -52,14 +60,16 @@ enabling vector search on text or numerical data that is stored in the attachmen
 * **Attachments with NUMERICAL data**:  
     * While attachments can store any file type, RavenDB does Not generate embeddings from images, videos, or other non-textual content.  
       Each attachment must contain a **single** precomputed embedding vector, generated externally.  
-    * RavenDB indexes the embedding vector from the attachment in and can apply [quantization](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#quantization-options)
+    * RavenDB indexes the embedding vector from the attachment and can apply [quantization](../../../ai-integration/vector-search/quantization.mdx)
       (e.g., index it in _Int8_ format) if this is configured.  
     * All embeddings indexed within the same vector-field in the static-index must be vectors of the **same dimension** to ensure consistency in indexing and search.
       They must also be created using the **same model**.
 
 </Admonition>
 
-## Indexing TEXT attachments
+</Panel>
+
+<Panel heading="Indexing TEXT attachments">
  
 * The following index defines a **vector field** named `VectorFromAttachment`.
 
@@ -68,8 +78,8 @@ enabling vector search on text or numerical data that is stored in the attachmen
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="LINQ_index" label="LINQ_index">
-<CodeBlock language="csharp">
-{`public class Companies_ByVector_FromTextAttachment :
+```csharp
+public class Companies_ByVector_FromTextAttachment :
     AbstractIndexCreationTask<Company, Companies_ByVector_FromTextAttachment.IndexEntry>
 {
     public class IndexEntry()
@@ -83,9 +93,10 @@ enabling vector search on text or numerical data that is stored in the attachmen
     {
         Map = companies => from company in companies
             
-            // Load the attachment from the document (ensure it is not null)
+            // Load the attachment and skip missing or remote attachments
             let attachment = LoadAttachment(company, "description.txt")
-            where attachment != null
+            where attachment != null &&
+                  attachment.RemoteFlags == RemoteAttachmentFlags.None
             
             select new IndexEntry()
             {
@@ -107,12 +118,11 @@ enabling vector search on text or numerical data that is stored in the attachmen
         SearchEngineType = Raven.Client.Documents.Indexes.SearchEngineType.Corax;
     }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="JS_index" label="JS_index">
-<CodeBlock language="csharp">
-{`public class Companies_ByVector_FromTextAttachment_JS :
+```csharp
+public class Companies_ByVector_FromTextAttachment_JS :
     AbstractJavaScriptIndexCreationTask
 {
     public Companies_ByVector_FromTextAttachment_JS()
@@ -122,10 +132,11 @@ enabling vector search on text or numerical data that is stored in the attachmen
             @"map('Companies', function (company) {
 
                    var attachment = loadAttachment(company, 'description.txt');
-                   if (!attachment) return null;
+                   if (!attachment || attachment.RemoteFlags !== 'None') return null;
  
                    return {
-                       VectorFromAttachment: createVector(attachment.getContentAsString('utf8'))
+                       VectorFromAttachment:
+                           createVector(attachment.getContentAsString('utf8'))
                    };
             })"
         };
@@ -148,12 +159,11 @@ enabling vector search on text or numerical data that is stored in the attachmen
         SearchEngineType = Raven.Client.Documents.Indexes.SearchEngineType.Corax;
     }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="IndexDefinition" label="IndexDefinition">
-<CodeBlock language="csharp">
-{`var indexDefinition = new IndexDefinition
+```csharp
+var indexDefinition = new IndexDefinition
 {
     Name = "Companies/ByVector/FromTextAttachment",
     
@@ -162,7 +172,7 @@ enabling vector search on text or numerical data that is stored in the attachmen
         @"from company in docs.Companies
 
           let attachment = LoadAttachment(company, ""description.txt"")
-          where attachment != null
+          where attachment != null && attachment.RemoteFlags.ToString() == ""None""
 
           select new 
           {
@@ -193,23 +203,26 @@ enabling vector search on text or numerical data that is stored in the attachmen
 };
 
 store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Storing_text_attachments" label="Storing_text_attachments">
-<CodeBlock language="csharp">
-{`// Prepare text as \`byte[]\` to be stored as attachments:
+```csharp
+// Prepare text as `byte[]` to be stored as attachments:
 // =====================================================
 var byteArray1 = Encoding.UTF8.GetBytes(
-    "Supplies soft drinks, fruit juices, and flavored syrups to restaurants and retailers.");
+    "Supplies soft drinks, fruit juices, and flavored syrups " +
+    "to restaurants and retailers.");
 var byteArray2 = Encoding.UTF8.GetBytes(
-    "Supplies fine dining restaurants with premium meats, cheeses, and wines across France.");
+    "Supplies fine dining restaurants with premium meats, " +
+    "cheeses, and wines across France.");
 var byteArray3 = Encoding.UTF8.GetBytes(
-    "An American grocery chain known for its fresh produce, organic foods, and local meats.");
+    "An American grocery chain known for its fresh produce, " +
+    "organic foods, and local meats.");
 var byteArray4 = Encoding.UTF8.GetBytes(
     "An Asian grocery store specializing in ingredients for Japanese and Thai cuisine.");
 var byteArray5 = Encoding.UTF8.GetBytes(
-    "A rural general store offering homemade jams, fresh-baked bread, and locally crafted gifts.");
+    "A rural general store offering homemade jams, " +
+    "fresh-baked bread, and locally crafted gifts.");
 
 using (var session = store.OpenSession())
 {
@@ -236,8 +249,7 @@ using (var session = store.OpenSession())
     
     session.SaveChanges();
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
@@ -246,8 +258,8 @@ Results will include _Company_ documents whose attachment contains text similar 
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`var relevantCompanies = session
+```csharp
+var relevantCompanies = session
     .Query<Companies_ByVector_FromTextAttachment.IndexEntry,
         Companies_ByVector_FromTextAttachment>()
     .VectorSearch(
@@ -258,12 +270,11 @@ Results will include _Company_ documents whose attachment contains text similar 
     .Customize(x => x.WaitForNonStaleResults())
     .OfType<Company>()
     .ToList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`var relevantCompanies = await asyncSession
+```csharp
+var relevantCompanies = await asyncSession
     .Query<Companies_ByVector_FromTextAttachment.IndexEntry,
         Companies_ByVector_FromTextAttachment>()
     .VectorSearch(
@@ -274,12 +285,11 @@ Results will include _Company_ documents whose attachment contains text similar 
     .Customize(x => x.WaitForNonStaleResults())
     .OfType<Company>()
     .ToListAsync();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`var relevantCompanies = session.Advanced
+```csharp
+var relevantCompanies = session.Advanced
     .DocumentQuery<Companies_ByVector_FromTextAttachment.IndexEntry,
         Companies_ByVector_FromTextAttachment>()
     .VectorSearch(
@@ -290,12 +300,11 @@ Results will include _Company_ documents whose attachment contains text similar 
     .WaitForNonStaleResults()
     .OfType<Company>()
     .ToList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery_async" label="DocumentQuery_async">
-<CodeBlock language="csharp">
-{`var relevantCompanies = await asyncSession.Advanced
+```csharp
+var relevantCompanies = await asyncSession.Advanced
     .AsyncDocumentQuery<Companies_ByVector_FromTextAttachment.IndexEntry,
         Companies_ByVector_FromTextAttachment>()
     .VectorSearch(
@@ -306,84 +315,102 @@ Results will include _Company_ documents whose attachment contains text similar 
     .WaitForNonStaleResults()
     .OfType<Company>()
     .ToListAsync();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RawQuery" label="RawQuery">
-<CodeBlock language="csharp">
-{`var relevantCompanies = session.Advanced
+```csharp
+var relevantCompanies = session.Advanced
     .RawQuery<Company>(@"
         from index 'Companies/ByVector/FromTextAttachment'
         where vector.search(VectorFromAttachment, $searchTerm, 0.8)")
     .AddParameter("searchTerm", "chinese food")
     .WaitForNonStaleResults()
     .ToList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RawQuery_async" label="RawQuery_async">
-<CodeBlock language="csharp">
-{`var relevantCompanies = await asyncSession.Advanced
+```csharp
+var relevantCompanies = await asyncSession.Advanced
     .AsyncRawQuery<Company>(@"
         from index 'Companies/ByVector/FromTextAttachment'
         where vector.search(VectorFromAttachment, $searchTerm, 0.8)")
     .AddParameter("searchTerm", "chinese food")
     .WaitForNonStaleResults()
     .ToListAsync();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from index "Companies/ByVector/FromTextAttachment"
+```sql
+from index "Companies/ByVector/FromTextAttachment"
 where vector.search(VectorFromAttachment, $searchTerm, 0.8)
 { "searchTerm" : "chinese food" }
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
 You can now extract the text from the attachments of the resulting documents:
 
+<Tabs groupId='languageSyntax'>
 <TabItem value="extract_attachment_content" label="extract_attachment_content">
-<CodeBlock language="csharp">
-{`// Extract text from the attachment of the first resulting document
-// ================================================================
-
-// Retrieve the attachment stream
-var company = relevantCompanies[0];
-var attachmentResult =  session.Advanced.Attachments.Get(company, "description.txt");
-var attStream = attachmentResult.Stream;
-                
-// Read the attachment content into memory and decode it as a UTF-8 string
-var ms = new MemoryStream();
-attStream.CopyTo(ms);
-string attachmentText = Encoding.UTF8.GetString(ms.ToArray());
-`}
-</CodeBlock>
+```csharp
+// Extract text from the attachment of the first resulting document, if any
+var company = relevantCompanies.FirstOrDefault();
+if (company != null)
+{
+    using var attachmentResult =
+        session.Advanced.Attachments.Get(company, "description.txt");
+    if (attachmentResult != null)
+    {
+        // Decode the attachment content as UTF-8 text
+        using var reader = new StreamReader(attachmentResult.Stream, Encoding.UTF8);
+        string attachmentText = reader.ReadToEnd();
+    }
+}
+```
 </TabItem>
+<TabItem value="extract_attachment_content_async" label="extract_attachment_content_async">
+```csharp
+// Extract text from the attachment of the first resulting document, if any
+var company = relevantCompanies.FirstOrDefault();
+if (company != null)
+{
+    using var attachmentResult =
+        await asyncSession.Advanced.Attachments.GetAsync(company, "description.txt");
+    if (attachmentResult != null)
+    {
+        // Decode the attachment content as UTF-8 text
+        using var reader = new StreamReader(attachmentResult.Stream, Encoding.UTF8);
+        string attachmentText = await reader.ReadToEndAsync();
+    }
+}
+```
+</TabItem>
+</Tabs>
 
-## Indexing NUMERICAL attachments
+</Panel>
+
+<Panel heading="Indexing NUMERICAL attachments">
 
 ### LINQ index
 
 * The following index defines a **vector field** named `VectorFromAttachment`.  
 
-* It indexes embeddings generated from the numerical data stored in the `vector.raw` attachment.  
+* It indexes the precomputed embedding vector stored in the `vector.raw` attachment.  
   This applies to all _Company_ documents that contain an attachment with that name.
 
 * Each attachment contains raw numerical data in 32-bit floating-point format.  
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="LINQ_index" label="LINQ_index">
-<CodeBlock language="csharp">
-{`public class Companies_ByVector_FromNumericalAttachment :
-    AbstractIndexCreationTask<Company, Companies_ByVector_FromNumericalAttachment.IndexEntry>
+```csharp
+public class Companies_ByVector_FromNumericalAttachment :
+    AbstractIndexCreationTask<Company,
+        Companies_ByVector_FromNumericalAttachment.IndexEntry>
 {
     public class IndexEntry()
     {
-        // This index-field will hold embeddings
-        // generated from the NUMERICAL content in the attachments.
+        // This index-field will hold precomputed embedding vectors
+        // read from the attachments.
         public object VectorFromAttachment { get; set; }
     }
     
@@ -391,9 +418,10 @@ string attachmentText = Encoding.UTF8.GetString(ms.ToArray());
     {
         Map = companies => from company in companies
             
-            // Load the attachment from the document (ensure it is not null)
+            // Load the attachment and skip missing or remote attachments
             let attachment = LoadAttachment(company, "vector.raw")
-            where attachment != null
+            where attachment != null &&
+                  attachment.RemoteFlags == RemoteAttachmentFlags.None
             
             select new IndexEntry
             {
@@ -414,12 +442,11 @@ string attachmentText = Encoding.UTF8.GetString(ms.ToArray());
         SearchEngineType = Raven.Client.Documents.Indexes.SearchEngineType.Corax;
     }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="IndexDefinition" label="IndexDefinition">
-<CodeBlock language="csharp">
-{`var indexDefinition = new IndexDefinition 
+```csharp
+var indexDefinition = new IndexDefinition 
 {
     Name = "Companies/ByVector/FromNumericalAttachment",
 
@@ -428,7 +455,7 @@ string attachmentText = Encoding.UTF8.GetString(ms.ToArray());
         @"from company in docs.Companies
 
           let attachment = LoadAttachment(company, ""vector.raw"")
-          where attachment != null
+          where attachment != null && attachment.RemoteFlags.ToString() == ""None""
     
           select new
           {
@@ -458,19 +485,19 @@ string attachmentText = Encoding.UTF8.GetString(ms.ToArray());
 };
 
 store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Storing_numerical_attachments" label="Storing_numerical_attachments">
-<CodeBlock language="csharp">
-{`// These vectors are simple pre-computed embedding vectors with 32-bit floating-point values.
+```csharp
+// These vectors are simple precomputed embedding vectors
+// with 32-bit floating-point values.
 // Note: In a real scenario, embeddings would be generated by a model.
-// ==========================================================================================
+// ===================================================================
 var v1 = new float[] { 0.1f, 0.2f, 0.3f, 0.4f };
 var v2 = new float[] { 0.1f, 0.7f, 0.8f, 0.9f };
 var v3 = new float[] { 0.5f, 0.6f, 0.7f, 0.8f };
 
-// Prepare the embedding vectors as \`byte[]\` to be stored as attachments:
+// Prepare the embedding vectors as `byte[]` to be stored as attachments:
 // =====================================================================
 var byteArray1 = MemoryMarshal.Cast<float, byte>(v1).ToArray();
 var byteArray2 = MemoryMarshal.Cast<float, byte>(v2).ToArray();
@@ -486,14 +513,16 @@ using (var session = store.OpenSession())
     
     // Store the attachments in the documents (using MemoryStream):
     // ============================================================
-    session.Advanced.Attachments.Store(company1, "vector.raw", new MemoryStream(byteArray1));
-    session.Advanced.Attachments.Store(company2, "vector.raw", new MemoryStream(byteArray2));
-    session.Advanced.Attachments.Store(company3, "vector.raw", new MemoryStream(byteArray3));
+    session.Advanced.Attachments.Store(company1, "vector.raw",
+        new MemoryStream(byteArray1));
+    session.Advanced.Attachments.Store(company2, "vector.raw",
+        new MemoryStream(byteArray2));
+    session.Advanced.Attachments.Store(company3, "vector.raw",
+        new MemoryStream(byteArray3));
     
     session.SaveChanges();
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
@@ -502,8 +531,8 @@ Results will include _Company_ documents whose attachment contains vectors simil
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`var similarCompanies = session
+```csharp
+var similarCompanies = session
     .Query<Companies_ByVector_FromNumericalAttachment.IndexEntry,
         Companies_ByVector_FromNumericalAttachment>()
     .VectorSearch(
@@ -514,12 +543,11 @@ Results will include _Company_ documents whose attachment contains vectors simil
     .Customize(x => x.WaitForNonStaleResults())
     .OfType<Company>()
     .ToList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`var similarCompanies = await asyncSession
+```csharp
+var similarCompanies = await asyncSession
     .Query<Companies_ByVector_FromNumericalAttachment.IndexEntry,
         Companies_ByVector_FromNumericalAttachment>()
     .VectorSearch(
@@ -530,12 +558,11 @@ Results will include _Company_ documents whose attachment contains vectors simil
     .Customize(x => x.WaitForNonStaleResults())
     .OfType<Company>()
     .ToListAsync();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`var similarCompanies = session.Advanced
+```csharp
+var similarCompanies = session.Advanced
     .DocumentQuery<Companies_ByVector_FromNumericalAttachment.IndexEntry,
         Companies_ByVector_FromNumericalAttachment>()
     .VectorSearch(
@@ -546,12 +573,11 @@ Results will include _Company_ documents whose attachment contains vectors simil
     .WaitForNonStaleResults()
     .OfType<Company>()
     .ToList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery_async" label="DocumentQuery_async">
-<CodeBlock language="csharp">
-{`var similarCompanies = await asyncSession.Advanced
+```csharp
+var similarCompanies = await asyncSession.Advanced
     .AsyncDocumentQuery<Companies_ByVector_FromNumericalAttachment.IndexEntry,
         Companies_ByVector_FromNumericalAttachment>()
     .VectorSearch(
@@ -562,46 +588,44 @@ Results will include _Company_ documents whose attachment contains vectors simil
     .WaitForNonStaleResults()
     .OfType<Company>()
     .ToListAsync();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RawQuery" label="RawQuery">
-<CodeBlock language="csharp">
-{`var similarCompanies = session.Advanced
+```csharp
+var similarCompanies = session.Advanced
     .RawQuery<Company>(@"
         from index 'Companies/ByVector/FromNumericalAttachment'
         where vector.search(VectorFromAttachment, $queryVector)")
     .AddParameter("queryVector", new float[] { 0.1f, 0.2f, 0.3f, 0.4f })
     .WaitForNonStaleResults()
     .ToList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RawQuery_async" label="RawQuery_async">
-<CodeBlock language="csharp">
-{`var similarCompanies = await asyncSession.Advanced
+```csharp
+var similarCompanies = await asyncSession.Advanced
     .AsyncRawQuery<Company>(@"
         from index 'Companies/ByVector/FromNumericalAttachment'
         where vector.search(VectorFromAttachment, $queryVector)")
     .AddParameter("queryVector", new float[] { 0.1f, 0.2f, 0.3f, 0.4f })
     .WaitForNonStaleResults()
     .ToListAsync();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from index "Companies/ByVector/FromNumericalAttachment"
+```sql
+from index "Companies/ByVector/FromNumericalAttachment"
 where vector.search(VectorFromAttachment, $queryVector)
 { "queryVector" : [0.1, 0.2, 0.3, 0.4] }
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
+---    
+    
 ### JS index
 
-* The following is the JavaScript index format equivalent to the [LINQ index](../../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx#linq-index) shown above.
+* The following is the JavaScript index format equivalent to the [LINQ index](#linq-index) shown above.
 
 * The main difference is that JavaScript indexes do Not support `getContentAsStream()` on attachment objects:
   * Because of this, embedding vectors must be stored in attachments as **Base64-encoded strings**.  
@@ -609,8 +633,8 @@ where vector.search(VectorFromAttachment, $queryVector)
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="JS_index" label="JS_index">
-<CodeBlock language="csharp">
-{`public class Companies_ByVector_FromNumericalAttachment_JS :
+```csharp
+public class Companies_ByVector_FromNumericalAttachment_JS :
     AbstractJavaScriptIndexCreationTask
 {
     public Companies_ByVector_FromNumericalAttachment_JS()
@@ -620,10 +644,11 @@ where vector.search(VectorFromAttachment, $queryVector)
             @"map('Companies', function (company) {
 
                  var attachment = loadAttachment(company, 'vector_base64.raw');
-                 if (!attachment) return null;
+                 if (!attachment || attachment.RemoteFlags !== 'None') return null;
 
                  return {
-                     VectorFromAttachment: createVector(attachment.getContentAsString('utf8'))
+                     VectorFromAttachment:
+                         createVector(attachment.getContentAsString('utf8'))
                  };
             })"
         };
@@ -641,14 +666,14 @@ where vector.search(VectorFromAttachment, $queryVector)
         SearchEngineType = Raven.Client.Documents.Indexes.SearchEngineType.Corax;
     }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Storing_numerical_attachments_as_base64" label="Storing_numerical_attachments_as_base64">
-<CodeBlock language="csharp">
-{`// These vectors are simple pre-computed embedding vectors with 32-bit floating-point values.
+```csharp
+// These vectors are simple precomputed embedding vectors
+// with 32-bit floating-point values.
 // Note: In a real scenario, embeddings would be generated by a model.
-// ==========================================================================================
+// ===================================================================
 var v1 = new float[] { 0.1f, 0.2f, 0.3f, 0.4f };
 var v2 = new float[] { 0.1f, 0.7f, 0.8f, 0.9f };
 var v3 = new float[] { 0.5f, 0.6f, 0.7f, 0.8f };
@@ -675,14 +700,16 @@ using (var session = store.OpenSession())
     
     // Store the attachments in the documents (using MemoryStream):
     // ============================================================
-    session.Advanced.Attachments.Store(company1, "vector_base64.raw", new MemoryStream(byteArray1));
-    session.Advanced.Attachments.Store(company2, "vector_base64.raw", new MemoryStream(byteArray2));
-    session.Advanced.Attachments.Store(company3, "vector_base64.raw", new MemoryStream(byteArray3));
+    session.Advanced.Attachments.Store(company1, "vector_base64.raw",
+        new MemoryStream(byteArray1));
+    session.Advanced.Attachments.Store(company2, "vector_base64.raw",
+        new MemoryStream(byteArray2));
+    session.Advanced.Attachments.Store(company3, "vector_base64.raw",
+        new MemoryStream(byteArray3));
     
     session.SaveChanges();
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
@@ -691,55 +718,60 @@ Results will include _Company_ documents whose attachment contains vectors simil
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="RawQuery" label="RawQuery">
-<CodeBlock language="csharp">
-{`var similarCompanies = session.Advanced
+```csharp
+var similarCompanies = session.Advanced
     .RawQuery<Company>(@"
         from index 'Companies/ByVector/FromNumericalAttachment/JS'
         where vector.search(VectorFromAttachment, $queryVector)")
     .AddParameter("queryVector", new float[] { 0.1f, 0.2f, 0.3f, 0.4f })
     .WaitForNonStaleResults()
     .ToList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RawQuery_async" label="RawQuery_async">
-<CodeBlock language="csharp">
-{`var similarCompanies = await asyncSession.Advanced
+```csharp
+var similarCompanies = await asyncSession.Advanced
     .AsyncRawQuery<Company>(@"
         from index 'Companies/ByVector/FromNumericalAttachment/JS'
         where vector.search(VectorFromAttachment, $queryVector)")
     .AddParameter("queryVector", new float[] { 0.1f, 0.2f, 0.3f, 0.4f })
     .WaitForNonStaleResults()
     .ToListAsync();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from index "Companies/ByVector/FromNumericalAttachment/JS"
+```sql
+from index "Companies/ByVector/FromNumericalAttachment/JS"
 where vector.search(VectorFromAttachment, $queryVector)
 { "queryVector" : [0.1, 0.2, 0.3, 0.4] }
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
-## Indexing ALL attachments
+</Panel>
+
+<Panel heading="Indexing ALL attachments">
 
 * The following index defines a vector field named `VectorFromAttachment`.
 
-* It indexes embeddings generated from the numerical data stored in ALL attachments of all _Company_ documents.
+* It indexes the precomputed embedding vectors stored in ALL local attachments of all _Company_ documents.
+
+* This example assumes that **every local attachment** on the indexed documents contains a single embedding vector  
+  stored as raw 32-bit floating-point values. All vectors must have the same number of dimensions and be generated using the same model.  
+    
+  If the documents also contain other attachment formats, such as text, PDFs, or Base64-encoded vectors,  
+  filter the attachments by name before passing their content to `CreateVector()`.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="LINQ_index" label="LINQ_index">
-<CodeBlock language="csharp">
-{`public class Companies_ByVector_AllAttachments :
+```csharp
+public class Companies_ByVector_AllAttachments :
     AbstractIndexCreationTask<Company, Companies_ByVector_AllAttachments.IndexEntry>
 {
     public class IndexEntry()
     {
-        // This index-field will hold embeddings
-        // generated from the NUMERICAL content of ALL attachments.
+        // This index-field will hold precomputed embedding vectors
+        // read from ALL local attachments.
         public object VectorFromAttachment { get; set; }
     }
     
@@ -747,12 +779,13 @@ where vector.search(VectorFromAttachment, $queryVector)
     {
         Map = companies => from company in companies
             
-            // Load ALL attachments from the document
+            // Load ALL local attachments from the document
             let attachments = LoadAttachments(company)
+                .Where(attachment => attachment.RemoteFlags == RemoteAttachmentFlags.None)
             
             select new IndexEntry
             {
-                // Index the attachments content in the vector field
+                // Index the attachments' content in the vector field
                 VectorFromAttachment = CreateVector(
                     attachments.Select(e => e.GetContentAsStream()))
             };
@@ -768,12 +801,11 @@ where vector.search(VectorFromAttachment, $queryVector)
         SearchEngineType = Raven.Client.Documents.Indexes.SearchEngineType.Corax;
     }
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="IndexDefinition" label="IndexDefinition">
-<CodeBlock language="csharp">
-{`var indexDefinition = new IndexDefinition 
+```csharp
+var indexDefinition = new IndexDefinition 
 {
     Name = "Companies/ByVector/AllAttachments",
 
@@ -782,6 +814,7 @@ where vector.search(VectorFromAttachment, $queryVector)
         @"from company in docs.Companies
 
           let attachments = LoadAttachments(company)
+              .Where(attachment => attachment.RemoteFlags.ToString() == ""None"")
     
           select new
           {
@@ -812,21 +845,21 @@ where vector.search(VectorFromAttachment, $queryVector)
 };
 
 store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Storing_numerical_attachments" label="Storing_numerical_attachments">
-<CodeBlock language="csharp">
-{`// These vectors are simple pre-computed embedding vectors with 32-bit floating-point values.
+```csharp
+// These vectors are simple precomputed embedding vectors
+// with 32-bit floating-point values.
 // Note: In a real scenario, embeddings would be generated by a model.
-// ==========================================================================================
+// ===================================================================
 var v1 = new float[] { 0.1f, 0.2f, 0.3f, 0.4f };
 var v2 = new float[] { 0.5f, 0.6f, 0.7f, 0.8f };
 
 var v3 = new float[] { -0.1f, 0.2f, -0.7f, -0.8f };
 var v4 = new float[] { 0.3f, -0.6f, 0.9f, -0.9f };
 
-// Prepare the embedding vectors as \`byte[]\` to be stored as attachments:
+// Prepare the embedding vectors as `byte[]` to be stored as attachments:
 // =====================================================================
 var byteArray1 = MemoryMarshal.Cast<float, byte>(v1).ToArray();
 var byteArray2 = MemoryMarshal.Cast<float, byte>(v2).ToArray();
@@ -844,26 +877,29 @@ using (var session = store.OpenSession())
     // Store multiple attachments in the documents (using MemoryStream):
     // =================================================================
     
-    session.Advanced.Attachments.Store(company1, "vector1.raw", new MemoryStream(byteArray1));
-    session.Advanced.Attachments.Store(company1, "vector2.raw", new MemoryStream(byteArray2));
+    session.Advanced.Attachments.Store(company1, "vector1.raw",
+        new MemoryStream(byteArray1));
+    session.Advanced.Attachments.Store(company1, "vector2.raw",
+        new MemoryStream(byteArray2));
     
-    session.Advanced.Attachments.Store(company2, "vector1.raw", new MemoryStream(byteArray3));
-    session.Advanced.Attachments.Store(company2, "vector2.raw", new MemoryStream(byteArray4));
+    session.Advanced.Attachments.Store(company2, "vector1.raw",
+        new MemoryStream(byteArray3));
+    session.Advanced.Attachments.Store(company2, "vector2.raw",
+        new MemoryStream(byteArray4));
     
     session.SaveChanges();
 }
-`}
-</CodeBlock>
+```
 </TabItem>
 </Tabs>
 
 Execute a vector search using the index:  
-Results will include Company documents whose attachments contains vectors similar to the query vector.
+Results will include _Company_ documents whose attachments contain vectors similar to the query vector.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="csharp">
-{`var similarCompanies = session
+```csharp
+var similarCompanies = session
     .Query<Companies_ByVector_AllAttachments.IndexEntry,
         Companies_ByVector_AllAttachments>()
     .VectorSearch(
@@ -874,12 +910,11 @@ Results will include Company documents whose attachments contains vectors simila
     .Customize(x => x.WaitForNonStaleResults())
     .OfType<Company>()
     .ToList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="Query_async" label="Query_async">
-<CodeBlock language="csharp">
-{`var similarCompanies = await asyncSession
+```csharp
+var similarCompanies = await asyncSession
     .Query<Companies_ByVector_AllAttachments.IndexEntry,
         Companies_ByVector_AllAttachments>()
     .VectorSearch(
@@ -890,12 +925,11 @@ Results will include Company documents whose attachments contains vectors simila
     .Customize(x => x.WaitForNonStaleResults())
     .OfType<Company>()
     .ToListAsync();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`var similarCompanies = session.Advanced
+```csharp
+var similarCompanies = session.Advanced
     .DocumentQuery<Companies_ByVector_AllAttachments.IndexEntry,
         Companies_ByVector_AllAttachments>()
     .VectorSearch(
@@ -906,12 +940,11 @@ Results will include Company documents whose attachments contains vectors simila
     .WaitForNonStaleResults()
     .OfType<Company>()
     .ToList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="DocumentQuery_async" label="DocumentQuery_async">
-<CodeBlock language="csharp">
-{`var similarCompanies = await asyncSession.Advanced
+```csharp
+var similarCompanies = await asyncSession.Advanced
     .AsyncDocumentQuery<Companies_ByVector_AllAttachments.IndexEntry,
         Companies_ByVector_AllAttachments>()
     .VectorSearch(
@@ -922,39 +955,37 @@ Results will include Company documents whose attachments contains vectors simila
     .WaitForNonStaleResults()
     .OfType<Company>()
     .ToListAsync();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RawQuery" label="RawQuery">
-<CodeBlock language="csharp">
-{`var similarCompanies = session.Advanced
+```csharp
+var similarCompanies = session.Advanced
     .RawQuery<Company>(@"
         from index 'Companies/ByVector/AllAttachments'
         where vector.search(VectorFromAttachment, $queryVector)")
-    .AddParameter("queryVector", new float[] { 0.1f, 0.2f, -0.7f, -0.8f })
+    .AddParameter("queryVector", new float[] { -0.1f, 0.2f, -0.7f, -0.8f })
     .WaitForNonStaleResults()
     .ToList();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RawQuery_async" label="RawQuery_async">
-<CodeBlock language="csharp">
-{`var similarCompanies = await asyncSession.Advanced
+```csharp
+var similarCompanies = await asyncSession.Advanced
     .AsyncRawQuery<Company>(@"
         from index 'Companies/ByVector/AllAttachments'
         where vector.search(VectorFromAttachment, $queryVector)")
-    .AddParameter("queryVector", new float[] { 0.1f, 0.2f, -0.7f, -0.8f })
+    .AddParameter("queryVector", new float[] { -0.1f, 0.2f, -0.7f, -0.8f })
     .WaitForNonStaleResults()
     .ToListAsync();
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from index "Companies/ByVector/AllAttachments"
+```sql
+from index "Companies/ByVector/AllAttachments"
 where vector.search(VectorFromAttachment, $queryVector)
-{ "queryVector" : [0.1, 0.2, -0.7, -0.8] }
-`}
-</CodeBlock>
+{ "queryVector" : [-0.1, 0.2, -0.7, -0.8] }
+```
 </TabItem>
 </Tabs>
+
+</Panel>

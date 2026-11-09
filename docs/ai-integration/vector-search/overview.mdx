@@ -25,13 +25,13 @@ import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
-* In this article:
-    * [What is a vector database](../../ai-integration/vector-search/overview.mdx#what-is-a-vector-database)
-    * [Why choose RavenDB as your vector database](../../ai-integration/vector-search/overview.mdx#why-choose-ravendb-as-your-vector-database)
-    * [Vector search in RavenDB](../../ai-integration/vector-search/overview.mdx#vector-search-in-ravendb)
-      * [Vector search using a dynamic query](../../ai-integration/vector-search/overview.mdx#vector-search-using-a-dynamic-query)
-      * [Vector search using a static-index](../../ai-integration/vector-search/overview.mdx#vector-search-using-a-static-index)
-      * [Vector search on encrypted databases](../../ai-integration/vector-search/overview.mdx#vector-search-on-encrypted-databases)
+In this article:
+  * [What is a vector database](#what-is-a-vector-database)
+  * [Why choose RavenDB as your vector database](#why-choose-ravendb-as-your-vector-database)
+  * [Vector search in RavenDB](#vector-search-in-ravendb)
+    * [Vector search using a dynamic query](#vector-search-using-a-dynamic-query)
+    * [Vector search using a static-index](#vector-search-using-a-static-index)
+    * [Vector search on encrypted databases](#vector-search-on-encrypted-databases)
     
 </Admonition>
 
@@ -55,8 +55,10 @@ import Panel from '@site/src/components/Panel';
 * Each embedding is an array of numbers (e.g. [0.45, 3.6, 1.25, 0.7, ...]), where each dimension represents specific characteristics of the data, capturing its contextual meaning.  
   Words, phrases, entire documents, images, audio, and other types of data can all be vectorized.
 
-* The raw data is converted into embeddings using [transformers](https://huggingface.co/docs/transformers).  
-  To optimize storage and computation, transformers can encode embeddings with lower-precision data types, such as 8-bit integers, through a technique called [quantization](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#quantization-options).
+* Raw data is converted into embeddings using embedding models, such as [transformer models](https://huggingface.co/docs/transformers).  
+  To optimize storage and computation, embeddings can be converted to lower-precision formats,  
+  such as 8-bit integers, through a technique called [quantization](../../ai-integration/vector-search/quantization.mdx).  
+  RavenDB can apply quantization to generated embeddings before storing them in the index.
 
 **Indexing embeddings and searching**:  
 
@@ -65,7 +67,7 @@ import Panel from '@site/src/components/Panel';
   The distance between two embeddings in the vector space correlates with the similarity of their original inputs within that model's context.
   
 * Vectors representing similar data are positioned close to each other in the vector space.  
-  This is achieved using algorithms such as [HNSW](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world), which is designed for indexing and querying embeddings.  
+  These vectors are indexed and queried using algorithms such as [HNSW](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world).
   HNSW constructs a graph-based structure that efficiently retrieves approximate nearest neighbors in high-dimensional spaces.  
 
 * This architecture enables **similarity searches**. Instead of conventional keyword-based queries,  
@@ -117,12 +119,12 @@ import Panel from '@site/src/components/Panel';
   This type is highly optimized to reduce storage space and enhance the speed of reading arrays from disk.
 
 * **HNSW algorithm usage**:  
-  All embeddings, whether generated from textual input or pre-made numerical arrays,  
-  are indexed and searched for using the [HNSW](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world) algorithm.
+  RavenDB indexes embeddings using [HNSW](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world) for efficient approximate nearest-neighbor searches.  
+  You can also request an [exact search](../../ai-integration/vector-search/more-querying-options.mdx#exact-search).
 
 * **Optimize storage via quantization**:  
   RavenDB allows you to select the quantization format for the generated embeddings when creating the index.  
-  Learn more in [Quantization options](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#quantization-options).
+  Learn more in [Vector Search: Quantization](../../ai-integration/vector-search/quantization.mdx).
 
 * **Perform vector search**:  
   Leverage RavenDB's [Auto-indexes](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx)
@@ -147,21 +149,20 @@ You can perform ad-hoc vector search queries without creating an index in advanc
 RavenDB will automatically generate a Corax auto-index behind the scenes to support the query.  
     
 **When using a dynamic vector query, you can**:  
-* Query raw text  
-* Query pre-generated TEXT embeddings (created by RavenDB embeddings tasks)  
-* Query pre-generated TEXT or NUMERICAL embeddings (created externally - e.g., for **images**)  
+
+* Search raw text.
+* Search pre-generated TEXT embeddings created by RavenDB embeddings tasks.
+* Search pre-generated TEXT or NUMERICAL embeddings created externally—for example, for images.
+* Search using an existing document's ID.
    
 ---
     
 * ✔ **Query raw text**:    
    Provide a plain text phrase as your search term.  
-   RavenDB will generate embeddings on the fly for:
-   * the textual content of your documents, and
-   * the search term itself  
-   using the built-in `bge-micro-v2` model.  
-    
-   These embeddings are then compared to find semantically similar documents.  
-   Learn more in: [Dynamic vector search - querying TEXT](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#dynamic-vector-search---querying-text).
+   RavenDB generates embeddings for the document text during indexing and for the search term when querying,  
+   using the built-in `bge-micro-v2` model.
+   It compares the search-term embedding against the indexed embeddings to find semantically similar documents.  
+   Learn more in: [Dynamic vector search - querying TEXT](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#dynamic-vector-search-querying-text).
 
 * ✔ **Query pre-generated TEXT embeddings (created by RavenDB embeddings tasks)**:  
    If your database already contains embeddings generated by a RavenDB [Embeddings generation task](../../ai-integration/generating-embeddings/overview.mdx),  
@@ -178,13 +179,19 @@ RavenDB will automatically generate a Corax auto-index behind the scenes to supp
    This option is suitable for non-textual content, such as **images, audio, or video**, which RavenDB cannot embed automatically. 
    Store the vectors in your documents as numeric arrays (e.g., _float[]_) and provide an embedding vector as the search input.  
     
-   Learn more in: [Dynamic vector search - querying NUMERICAL content](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#dynamic-vector-search---querying-numerical-content).
+   Learn more in: [Dynamic vector search - querying NUMERICAL content](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#dynamic-vector-search-querying-numerical-content).
 
+* ✔ **Search using an existing document's ID**:  
+   Specify an existing document's ID to use the indexed embedding of its selected field as the search input.  
+   Learn more in: [Dynamic vector search - querying for similar documents](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#dynamic-vector-search-querying-for-similar-documents).
+
+---
+    
 <Admonition type="info" title="">    
-The full description of how to perform a **dynamic vector search query** is available in article:  
-[Vector Search using a Dynamic Query](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx). 
-It explains how to configure inputs and search parameters, apply quantization,
-combine vector and regular filters, choose between exact or approximate modes, and more.    
+* For basic usage, query inputs, and the `VectorSearch` API, see [Vector Search using a Dynamic Query](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx).  
+* For quantization configuration, see [Vector Search: Quantization](../../ai-integration/vector-search/quantization.mdx).  
+* For exact search, combining vector search with regular filters, and combining multiple vector searches,  
+  see [Vector Search: More Querying Options](../../ai-integration/vector-search/more-querying-options.mdx).
 </Admonition>
 
 </Admonition>
@@ -197,10 +204,15 @@ Static indexes are optimized for performance and repeated use.
 You can define a static-index (Corax only) that includes one or more vector fields, giving you full control over how embeddings are created, stored, and queried.
     
 **When defining the static index, you can index the following types of content in vector fields**:  
-* Index embeddings from raw text
-* Index embeddings from pre-generated TEXT embeddings (via RavenDB embeddings tasks)
-* Index embeddings from pre-made TEXT or NUMERICAL embeddings (e.g., images)
-* Index embeddings from attachment content
+  * Index embeddings from raw text
+  * Index embeddings from pre-generated TEXT embeddings (via RavenDB embeddings tasks)
+  * Index embeddings from pre-made TEXT or NUMERICAL embeddings (e.g., images)
+  * Index embeddings from attachment content
+
+**When querying the index, you can search using**:  
+  * A text search term.
+  * A numerical embedding vector.
+  * An existing document's ID.
     
 ---
     
@@ -210,7 +222,7 @@ You can define a static-index (Corax only) that includes one or more vector fiel
    * <u>When querying the index</u>:  
      You provide a text search term, which is embedded using the same model and compared against the indexed vectors.
      
-       Learn more in: [Indexing vector data - TEXT](../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-vector-data---text).
+       Learn more in: [Indexing vector data - TEXT](../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-vector-data-text).
     
 * ✔ **Index embeddings from pre-generated TEXT embeddings (via RavenDB embeddings tasks)**:  
    * <u>At indexing time</u>:  
@@ -219,7 +231,7 @@ You can define a static-index (Corax only) that includes one or more vector fiel
    * <u>When querying the index</u>:    
      You provide a text search term, which is embedded using the same task (i.e., same model), and compared against the stored vectors.
    
-       Learn more in: [Indexing pre-made text-embeddings](../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-pre-made-text-embeddings).
+       Learn more in: [Indexing text-embeddings generated by tasks](../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-text-embeddings-generated-by-tasks---from-current-document).
     
 * ✔ **Index embeddings from pre-made TEXT or NUMERICAL embeddings (e.g., images)**:  
     * <u>At indexing time</u>:  
@@ -231,15 +243,21 @@ You can define a static-index (Corax only) that includes one or more vector fiel
       These values can then be indexed directly into a vector field.
     
     * <u>When querying the index</u>, you can search using:  
-      * A text input, which is embedded before comparison, or  
+      * [A text input](../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-numerical-data-and-querying-using-text-input), embedded using the same model that generated the indexed vectors, or  
       * A numeric vector, provided directly as the search term  
         
-      Learn more in: [Indexing vector data - NUMERICAL](../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-vector-data---numerical).
+      Learn more in: [Indexing vector data - NUMERICAL](../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-vector-data-numerical).
 
 * ✔ **Index embeddings from attachment content**:    
    You can index attachments using a static-index to enable vector search on their content.  
    Learn more in: [Indexing attachments for vector search](../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx).    
+
+* ✔ **Search using an existing document's ID**:  
+   Specify an existing document's ID to use the indexed embedding of its selected field as the search input.  
+   Learn more in: [Querying the static index for similar documents](../../ai-integration/vector-search/vector-search-using-static-index.mdx#querying-the-static-index-for-similar-documents).
  
+---
+    
 <Admonition type="info" title="">    
 The full description of how to perform a **vector search query using a static-index** in RavenDB is available in article:
 [Vector Search using a Static-Index](../../ai-integration/vector-search/vector-search-using-static-index.mdx).
