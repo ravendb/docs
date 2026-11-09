@@ -30,6 +30,12 @@ const staticAssetRegex =
 
 const versionRegex = /^\/(\d+\.\d+)(\/.*)?/;
 
+// Kept in sync with markdown-export by its edge test.
+const MARKDOWN_VERSIONS = ["7.2", "7.1", "6.2"];
+const MARKDOWN_SECTIONS = ["cloud", "quill", "guides", "samples"];
+
+const markdownPageRegex = /^(.+?)((?:\.(?:csharp|java|python|php|nodejs))?\.md)$/;
+
 function redirect(targetUrl) {
     return {
         statusCode: 301,
@@ -40,11 +46,60 @@ function redirect(targetUrl) {
     };
 }
 
-async function handler(event) {
-    const request = event.request;
-    const uri = request.uri;
+function acceptWeight(accept, mediaType) {
+    const ranges = accept.toLowerCase().split(",");
+    for (let i = 0; i < ranges.length; i++) {
+        const params = ranges[i].split(";");
+        if (params[0].trim() !== mediaType) continue;
+        for (let j = 1; j < params.length; j++) {
+            const param = params[j].trim();
+            if (param.startsWith("q=")) return parseFloat(param.slice(2)) || 0;
+        }
+        return 1;
+    }
+    return -1;
+}
 
-    if (staticAssetRegex.test(uri)) {
+// A tie goes to Markdown: Claude Code sends text/markdown and text/html without weights.
+function prefersMarkdown(accept) {
+    const markdown = acceptWeight(accept || "", "text/markdown");
+    return markdown > 0 && markdown >= acceptWeight(accept || "", "text/html");
+}
+
+function markMarkdownResponse(event) {
+    const response = event.response;
+    const contentType = response.headers["content-type"];
+    if (contentType && contentType.value.startsWith("text/markdown")) {
+        response.headers["x-robots-tag"] = { value: "noindex" };
+    }
+    return response;
+}
+
+// Associated with both viewer-request and viewer-response.
+async function handler(event) {
+    if (event.context && event.context.eventType === "viewer-response") {
+        return markMarkdownResponse(event);
+    }
+    const request = event.request;
+    let uri = request.uri;
+
+    const accept = request.headers && request.headers.accept;
+    let markdownSuffix = "";
+    let explicitMarkdown = false;
+    const markdownMatch = uri.startsWith("/skills/") ? null : uri.match(markdownPageRegex);
+    if (markdownMatch) {
+        uri = markdownMatch[1];
+        markdownSuffix = markdownMatch[2];
+        explicitMarkdown = true;
+    } else if (staticAssetRegex.test(uri)) {
+        return request;
+    } else if (accept && prefersMarkdown(accept.value)) {
+        markdownSuffix = ".md";
+    }
+    const redirectSuffix = explicitMarkdown ? markdownSuffix : "";
+
+    function serve(path, hasMarkdown) {
+        request.uri = explicitMarkdown || (markdownSuffix && hasMarkdown) ? path + markdownSuffix : path + "/index.html";
         return request;
     }
 
@@ -53,10 +108,9 @@ async function handler(event) {
 
     if (normalizedUri.startsWith("/templates")) {
         if (hasTrailingSlash) {
-            return redirect(normalizedUri);
+            return redirect(normalizedUri + redirectSuffix);
         }
-        request.uri = uri + "/index.html";
-        return request;
+        return serve(normalizedUri, false);
     }
 
     if (
@@ -69,16 +123,15 @@ async function handler(event) {
             const redirectData = await kvsHandle.get(normalizedUri);
             const redirectJsonValue = JSON.parse(redirectData);
             if (redirectJsonValue.targetUrl) {
-                return redirect(redirectJsonValue.targetUrl);
+                return redirect(redirectJsonValue.targetUrl + redirectSuffix);
             }
         } catch (_) {
             // No redirect rule found
         }
         if (hasTrailingSlash) {
-            return redirect(normalizedUri);
+            return redirect(normalizedUri + redirectSuffix);
         }
-        request.uri = uri + "/index.html";
-        return request;
+        return serve(normalizedUri, MARKDOWN_SECTIONS.indexOf(normalizedUri.split("/")[1]) >= 0);
     }
 
     const versionMatch = normalizedUri.match(versionRegex);
@@ -115,9 +168,8 @@ async function handler(event) {
     }
 
     if (redirectRequired) {
-        return redirect(targetUri);
+        return redirect(targetUri + redirectSuffix);
     }
 
-    request.uri = normalizedUri + "/index.html";
-    return request;
+    return serve(normalizedUri, MARKDOWN_VERSIONS.indexOf(version) >= 0);
 }
