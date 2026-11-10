@@ -142,6 +142,12 @@ Override `Dispose` if your sorter wraps another comparator or uses pooled arrays
 Without overriding `Dispose`, the sorter still works, but the pooled arrays are not returned for reuse.  
 This can cause repeated large allocations, especially for queries without a limit.
 
+<Admonition type="note" title="">
+Overriding `Dispose` requires RavenDB 7.2.8 or later.
+On versions earlier than 7.2.8, `FieldComparator` has no `Dispose` method, and a sorter that overrides it fails to deploy with "no suitable method found to override".  
+To use the samples in this article on a version earlier than 7.2.8, remove their `Dispose` override.
+</Admonition>
+    
 ---
     
 ### Example

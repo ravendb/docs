@@ -31,7 +31,6 @@ Use `PutServerWideSortersOperation` to deploy one or more server-wide custom sor
 Deploying a custom sorter with an existing name replaces the previous version.  
 Once deployed, you can use it to sort query results in queries made on **any database** in your cluster.    
 
-<TabItem>
 ```js
 // Assign the code of your custom sorter as a `string`
 const mySorterCode = "<code of custom sorter>";
@@ -52,7 +51,7 @@ const putSortersServerWideOp = new PutServerWideSortersOperation(customSorterDef
 // Execute the operation by passing it to maintenance.server.send
 await store.maintenance.server.send(putSortersServerWideOp);
 ```
-</TabItem>
+<br/>
     
 You can now order query results using the server-wide custom sorter on any database.    
     
@@ -130,9 +129,9 @@ In addition to deleting a server-wide custom sorter via [The server-wide custom 
 you can use `DeleteServerWideSorterOperation` to delete a server-wide custom sorter.  
 Once removed, the sorter will no longer be available for ordering query results in any database in the cluster. 
 
-```csharp
+```js
 // Define the delete sorter operation, pass the name of the sorter to delete
-const deleteSorterOp = new DeleteServerWideSorterOperation("MyServerWideCustomSorter");;
+const deleteSorterOp = new DeleteServerWideSorterOperation("MyServerWideCustomSorter");
 
 // Execute the operation by passing it to maintenance.server.send
 await store.maintenance.server.send(deleteSorterOp);
@@ -154,13 +153,13 @@ See [Test custom sorter](../../../../querying/sorting-query-results/custom-sorte
 Deploys one or more custom sorters to the server-wide scope.
 
 ```js
-const putSortersOp = new PutServerWideSortersOperation(sortersToAdd);        
+const putSortersOp = new PutServerWideSortersOperation(...sortersToAdd);        
 ```
 <br/>
 
-| Parameter        | Type           | Description                                                         |
-|------------------|----------------|---------------------------------------------------------------------|
-| **sortersToAdd** | `...object[]`  | One or more sorter definitions to deploy. At least one is required. |
+| Parameter        | Type                    | Description                                                         |
+|------------------|-------------------------|---------------------------------------------------------------------|
+| **sortersToAdd** | `...SorterDefinition[]` | One or more sorter definitions to deploy. At least one is required. |
 
 ```js
 // The sorter definition object 

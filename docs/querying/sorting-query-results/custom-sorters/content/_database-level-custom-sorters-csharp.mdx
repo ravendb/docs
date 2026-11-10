@@ -286,6 +286,7 @@ public MySorterWithDiagnostics(string fieldName, int numHits, int sortPos, bool 
 }
 
 // Forward Dispose so the wrapped comparator returns its pooled slot array.
+// Requires RavenDB 7.2.8 or later. On earlier versions, remove this override.
 public override void Dispose()
 {
     _inner.Dispose();
