@@ -1,0 +1,28 @@
+.header {
+    margin-bottom: 2.5rem;
+}
+
+.title {
+    font-size: 3rem;
+}
+
+@media (max-width: 576px) {
+    .title {
+        font-size: 2rem;
+    }
+}
+
+.tagline {
+    margin-bottom: 0;
+    font-size: 1.1rem;
+    color: var(--ifm-color-emphasis-700);
+}
+
+:global(.blog-list-page) main article {
+    margin-bottom: 2.75rem !important;
+}
+
+:global(.blog-list-page) main article + article {
+    border-top: 1px solid var(--ifm-toc-border-color);
+    padding-top: 1.75rem;
+}

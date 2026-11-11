@@ -202,6 +202,8 @@ Detailed articles on using custom components are available in the `templates` di
 
 Alternatively, you can view them at `/templates` while your local environment is active.
 
+To add a Cloud What's New entry, follow [`cloud-whats-new/README.md`](cloud-whats-new/README.md).
+
 ## Page metadata and sidebar settings
 
 Each `.mdx` file begins with a block delimited by `---` that defines metadata used by Docusaurus for rendering, sidebar navigation, and page behavior.
