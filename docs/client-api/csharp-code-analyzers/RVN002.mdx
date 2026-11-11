@@ -191,6 +191,28 @@ var results = session.Query<Order>()
   .Where(x => x.Company == "companies/1-A")
   ```
 
+- After `Select`, a cast of the source element to another type is not recognized by RVN002 as returning the source element unchanged.
+  For example, `Select(o => (ExpressOrder)o)` casts an `Order` to the derived type `ExpressOrder`.
+    
+  `Where` and the four ordering operators after the cast are reported, even though the client sends the same query as it would without the cast.  
+    
+  To change the element type without triggering RVN002, use `OfType<T>()` instead of the cast.  
+  In RavenDB LINQ queries, `OfType<T>()` only changes the element type. It does not filter documents by type.
+
+  ```csharp
+  // RVN002 is reported on Where
+  .Select(o => (ExpressOrder)o)
+  .Where(x => x.Carrier == "ACME")
+
+  // RVN002 is not reported
+  .OfType<ExpressOrder>()
+  .Where(x => x.Carrier == "ACME")
+  ```
+
+  Do not replace the cast with `as`:  
+  RavenDB's LINQ provider does not support `Select(o => o as ExpressOrder)`.  
+  The client throws `NotSupportedException` when it translates this query, before sending it to the server.
+
 - Tracking across statements is limited to local-variable initializers. Later assignments are not followed,  
   so diagnostics may be missed or based on an earlier query value.
 
