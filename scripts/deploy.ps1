@@ -20,7 +20,7 @@ Prerequisites
 * Project `package.json` includes `@docusaurus/core` and `@docusaurus/cli`
 
 Phase 3 also pushes the CloudFront config kept in this repo: the redirect table,
-the viewer-request function and the CSP. After the invalidation it pushes the
+the edge function and the CSP. After the invalidation it pushes the
 Algolia config. See CLAUDE.md.
 
 Example
@@ -215,6 +215,11 @@ if (-not (Test-Path package.json)) { throw 'package.json not found' }
 npm ci --no-audit --fund false
 if ($LASTEXITCODE) { throw 'npm ci failed' }
 
+# Serve the newest skill, not the commit in package-lock.json.
+Write-Host 'Installing the latest agent skill (ravendb/skills main)...' -ForegroundColor Cyan
+npm install --no-save --no-audit --fund false github:ravendb/skills#main
+if ($LASTEXITCODE) { throw 'npm install of ravendb/skills main failed' }
+
 Write-Host "Running 'npm run build'..." -ForegroundColor Gray
 npm run build
 if ($LASTEXITCODE) { throw 'Docusaurus build failed' }
@@ -250,9 +255,21 @@ if ($DryRun) {
     Write-Host "  [2/4] Sync: static files with --delete (HTML, images, icons, sitemap, robots.txt, etc.)" -ForegroundColor Gray
     aws s3 sync $BuildDir "s3://$S3BucketName/" --only-show-errors `
         --exclude "assets/*" `
+        --exclude "*.md" `
         --cache-control "public, max-age=3600, must-revalidate" `
         --delete
     if ($LASTEXITCODE) { throw 'aws s3 sync (static files) failed' }
+
+    # Explicit charset; runs before phase 3 publishes the edge function that serves these.
+    Write-Host "  [2/4] Sync: Markdown (*.md) with --delete" -ForegroundColor Gray
+    aws s3 sync $BuildDir "s3://$S3BucketName/" --only-show-errors `
+        --exclude "*" `
+        --include "*.md" `
+        --exclude "assets/*" `
+        --content-type "text/markdown; charset=utf-8" `
+        --cache-control "public, max-age=3600, must-revalidate" `
+        --delete
+    if ($LASTEXITCODE) { throw 'aws s3 sync (Markdown) failed' }
 
     # Phase 3: push the CloudFront configuration that lives in this repo, then
     # invalidate so every edge location fetches the new index.html, which

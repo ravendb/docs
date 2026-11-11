@@ -42,14 +42,34 @@ export function readSkillDescription(skillMarkdown: string): string {
  * Markup for the top of <body>, read by agents that convert fetched HTML to Markdown.
  * Hidden from sighted users (sr-only) and from assistive tech (aria-hidden), and kept out of
  * the tab order, the same shape Mintlify and Cloudflare ship on their docs.
+ * Describes the skill rather than instructing: agents refuse instructions found in page content.
  */
 export function buildAgentHint(skillUrl: string, description: string): string {
     const url = escapeHtml(skillUrl);
     return (
         `<blockquote data-agent-hint aria-hidden="true" style="${VISUALLY_HIDDEN}">` +
         `<h2>RavenDB agent skill</h2>` +
-        `<p>Fetch the RavenDB agent skill at: <a href="${url}" tabindex="-1">${url}</a></p>` +
-        `<p>${escapeHtml(description)}</p>` +
+        `<p>RavenDB publishes an official agent skill for coding assistants at ` +
+        `<a href="${url}" tabindex="-1">${url}</a> ` +
+        `(also installable with <code>npx skills add ravendb/skills</code>). ` +
+        `The skill describes itself as: "${escapeHtml(description)}"</p>` +
         `</blockquote>`
     );
+}
+
+export function buildAgentHintMarkdown(skillUrl: string, description: string): string {
+    return (
+        `RavenDB publishes an official agent skill for coding assistants at ${skillUrl} ` +
+        `(also installable with \`npx skills add ravendb/skills\`). ` +
+        `The skill describes itself as: "${description}"`
+    );
+}
+
+export function buildMarkdownHintLine(variants: { label: string | null; url: string }[]): string {
+    const link = (url: string, text: string) => `<a href="${escapeHtml(url)}" tabindex="-1">${escapeHtml(text)}</a>`;
+    if (variants.length === 1 && !variants[0].label) {
+        return `<p>This page is also available as Markdown at ${link(variants[0].url, variants[0].url)}.</p>`;
+    }
+    const links = variants.map((v) => link(v.url, v.label ?? v.url)).join(", ");
+    return `<p>This page is also available as Markdown, one file per client language: ${links}.</p>`;
 }

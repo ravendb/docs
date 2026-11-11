@@ -73,7 +73,7 @@ function markdownHeading(text: string, anchorId: string, depth: number): MdastNo
 
 // Identical to the id the component used to compute at render time, so that live anchors keep
 // working: github-slugger, which Docusaurus would otherwise apply, rewrites 175 of them.
-function panelAnchorId(heading: string): string {
+export function panelAnchorId(heading: string): string {
     return heading
         .toLowerCase()
         .replace(/[^\w]+/g, "-")
