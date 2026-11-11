@@ -260,7 +260,13 @@ Since RavenDB 4.0, **all** index updates are side-by-side by default. The new in
 
 ## **Auto indexes**
 
-Auto-indexes are **created** when queries that do **not specify an index name** are executed and, after in-depth query analysis, **no matching AUTO index is found** on the server-side.
+* Auto-indexes are created when all of the following conditions are met:  
+    * A query is issued without specifying an index (a dynamic query).
+    * The query filters on fields other than the document ID, or sorts the results (`order by`).
+    * No suitable auto-index exists that can satisfy the query.
+    * Creation of auto-indexes has not been disabled.
+
+For more details, see [Query a collection - with filtering or sorting (dynamic query)](../../client-api/session/querying/how-to-query.mdx#dynamicQuery).
 
 <Admonition type="note" title="">
 The query optimizer doesn't take into account the static indexes when it determines what index should be used to handle a query.
@@ -268,7 +274,7 @@ The query optimizer doesn't take into account the static indexes when it determi
 
 ### Naming convention
 
-Auto-indexes can be recognized by the `Auto/` prefix in their name. Their name also contains the name of a collection that was queried, and list of fields that were required to find valid query results.
+Auto-indexes can be recognized by the `Auto/` prefix in their name. Their name also includes the name of the queried collection and a list of the fields the query uses to filter or sort the results.
 
 For instance, issuing a query like this
 

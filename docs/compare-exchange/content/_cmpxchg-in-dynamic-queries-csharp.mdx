@@ -10,7 +10,7 @@ import CodeBlock from '@theme/CodeBlock';
   * **Filter** documents based on compare-exchange values.  
   
 * Dynamic queries are queries that do not rely on a predefined static index.  
-  When you run a dynamic query with a filtering condition, RavenDB automatically creates an auto-index to serve it.  
+  When a dynamic query filters on fields other than the document ID, or sorts the results, RavenDB uses a suitable existing auto-index or creates one if needed.  
   Learn more about dynamic queries in the [Query overview](../../querying/overview.mdx).
 
 * In this article: 
@@ -34,7 +34,7 @@ import CodeBlock from '@theme/CodeBlock';
   * the number of guests (from the compare-exchange item's value), and  
   * the room number (from the document field).  
   
-* No auto-index is created in this case, since the query doesn’t apply any filters.
+* No auto-index is created in this case, since the query doesn’t apply any filtering or sorting.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">

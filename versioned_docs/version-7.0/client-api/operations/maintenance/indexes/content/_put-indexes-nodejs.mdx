@@ -36,7 +36,7 @@ There are a few ways to deploy a static-index from the Client API:
 
 ##### Auto-indexes:
 
-* An auto-index is created by the server when making a filtering query that doesn't specify which index to use.
+* When a dynamic query filters on fields other than the document ID, or sorts the results, RavenDB uses a suitable existing auto-index or creates one if needed.
   Learn more in [Creating auto indexes](../../../../../indexes/creating-and-deploying.mdx#auto-indexes).
 
 </Admonition>
