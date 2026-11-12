@@ -693,9 +693,10 @@ $numberOfUnitsInStockPerCategory = $session
     // Make an aggregation query
     // Group by Category
     ->groupBy("Category")
-    // Order by the Sum value
     ->selectKey("Category")
+    // Sum the number of units in stock per category
     ->selectSum(new GroupByField("UnitsInStock", "Sum"))
+    // Order by the Sum value
     ->orderBy("Sum", OrderingType::long())
     ->ofType(ProductsSum::class)
     ->toList();
@@ -1054,6 +1055,6 @@ function orderByDescending(string $field, $sorterNameOrOrdering = null): Documen
 | Parameter  | Type     | Description          |
 |------------|----------|----------------------|
 | **$field** | `string` | The field to sort by |
-| **$sorterNameOrOrdering** | `string` | The ordering type to sort the results by:<br/>`OrderingType::long()`<br/>`OrderingType::double()`<br/>`OrderingType::alphaNumeric()`<br/>`OrderingType::string()` (default) |
+| **$sorterNameOrOrdering** | `OrderingType` or `string` | The ordering type to sort the results by:<br/>`OrderingType::long()`<br/>`OrderingType::double()`<br/>`OrderingType::alphaNumeric()`<br/>`OrderingType::string()` (default)<br/>or the name of a custom sorter (`string`) |
 
 </Panel>
