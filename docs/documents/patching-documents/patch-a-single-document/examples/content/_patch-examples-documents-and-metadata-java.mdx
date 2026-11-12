@@ -79,7 +79,7 @@ store.operations().send(new PatchOperation(
 
 * A patch script can modify a document's metadata by accessing `this['@metadata']`.
 * The following example sets `@expires` to one minute in the future.  
-  When [document expiration](../../../../../server/extensions/expiration.mdx) is enabled, RavenDB deletes the document after this time is reached.
+  When [document expiration](../../../../../documents/document-expiration/client-api.mdx) is enabled, RavenDB deletes the document after this time is reached.
 * Patching metadata with a script is supported only by the _defer_ or _operations_ syntax.
 
 <Tabs groupId='languageSyntax'>

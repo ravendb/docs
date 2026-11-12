@@ -1,0 +1,339 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+<Admonition type="note" title="">
+
+* The **document refresh** feature re-saves an existing document once the time you schedule for it has passed,
+  without changing the document's data.  
+  Re-saving the document triggers features that react to document updates, like indexing, ETL tasks, and data
+  subscriptions.  
+  Use *document refresh* for documents that need to be processed at a later time, like documents that hold emails to send
+  on a set date, room reservations to release once they expire, or reminders to raise when they are due.
+
+* To schedule a document's refresh, set the `@refresh` [metadata](../../../client-api/session/how-to/get-and-modify-entity-metadata.mdx)
+  property of the document to the intended refresh time.  
+  The `@refresh` property is removed when the document is re-saved.
+
+* To enable *document refresh* for a database, send the server a `RefreshConfiguration` object using the
+  [ConfigureRefreshOperation](../../../documents/document-refresh/client-api.mdx#configurerefreshoperation) operation.  
+  The `RefreshConfiguration` object also sets the frequency at which the *document refresh* feature checks the database
+  for documents to refresh.
+
+* To enable and configure *document refresh* using Studio, see
+  [Document Refresh: Studio View](../../../documents/document-refresh/document-refresh-view.mdx).
+
+* In this article:
+   * [Refreshing documents](../../../documents/document-refresh/client-api.mdx#refreshing-documents)
+      * [The refresh process](../../../documents/document-refresh/client-api.mdx#the-refresh-process)
+   * [Enabling document refresh](../../../documents/document-refresh/client-api.mdx#enabling-document-refresh)
+   * [Scheduling a document refresh](../../../documents/document-refresh/client-api.mdx#scheduling-a-document-refresh)
+   * [Syntax](../../../documents/document-refresh/client-api.mdx#syntax)
+      * [ConfigureRefreshOperation](../../../documents/document-refresh/client-api.mdx#configurerefreshoperation)
+      * [Classes](../../../documents/document-refresh/client-api.mdx#classes)
+
+</Admonition>
+
+<Panel heading="Refreshing documents">
+
+Using **document refresh**, you can schedule RavenDB to re-save a document at a set time.  
+This way, features that react to document changes (e.g., indexes and ETL tasks) process the document once the set time has
+passed, with no further action required from your application.
+
+For example:
+
+* An email that should be sent on a set date.
+* A room reservation that should be released once it expires.
+* A reminder that should be raised when it is due.
+
+To have a document processed only once its refresh time has passed, make the subscription query, index definition, or ETL
+script that handles the document skip documents whose metadata still holds the `@refresh` property.  
+e.g., a data subscription with the query `from Emails as e where true and not exists(e.'@metadata'.'@refresh')` sends an
+email document to its worker only after the document is refreshed.
+
+---
+
+### The refresh process
+
+1. **Enabling document refresh for a database:**  
+   *Document refresh* is **disabled** by default. 
+   See [Enabling document refresh](../../../documents/document-refresh/client-api.mdx#enabling-document-refresh) below.
+
+2. **Scheduling a document's refresh:**  
+   Add a `@refresh` property to the
+   [metadata](../../../client-api/session/how-to/get-and-modify-entity-metadata.mdx) of the document you want to
+   refresh, and set the property's value to the intended refresh time.  
+   e.g., `"@refresh": "2026-12-01T08:00:00.0000000Z"`  
+   See [Scheduling a document refresh](../../../documents/document-refresh/client-api.mdx#scheduling-a-document-refresh) below.
+
+3. **Refreshing the scheduled document:**  
+   The *document refresh* feature runs periodically (every 60 seconds by default).  
+   Each time the feature runs, it checks the database for documents to refresh.
+
+   * In the feature's first run after a document's refresh time, the `@refresh` property is removed from the document's metadata,
+     and the modified document is stored.  
+     As a result, the document's [change vector](../../../server/clustering/replication/change-vector.mdx) is incremented,
+     indicating that the document was updated.
+   * The document may be refreshed in a later run if the number of documents due for refresh exceeds the maximum set for
+     a single run using the Studio option
+     [Set max number of documents to process in a single run](../../../documents/document-refresh/document-refresh-view.mdx#set-max-number-of-documents-to-process-in-a-single-run).
+
+4. **Processing the refreshed document:**  
+   Features that react to document changes are triggered by this update and process the refreshed document.  
+   For example:
+
+   * The document is re-indexed by the indexes defined for the document's collection.
+   * The document is replicated to the other nodes of the
+     [database group](../../../server/clustering/distribution/distributed-database.mdx),
+     and to the destinations of [external replication](../../../server/ongoing-tasks/external-replication.mdx) tasks.
+   * An [ETL task](../../../server/ongoing-tasks/etl/basics.mdx) whose transformation script handles the document's collection
+     runs the script over the document.
+   * A [data subscription](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx) whose query matches the
+     updated document sends the document to the subscription's worker (or to one of its workers, for a
+     [concurrent subscription](../../../client-api/data-subscriptions/concurrent-subscriptions.mdx)).
+   * If [revisions](../../../document-extensions/revisions/overview.mdx) are enabled for the document's collection, a new revision
+     of the document is created.
+
+5. **Rescheduling the document's refresh:**  
+   Since the `@refresh` property is removed, the document is refreshed only once.  
+   To refresh the document again, set the document's `@refresh` metadata property to a new time.
+
+</Panel>
+
+<Panel heading="Enabling document refresh">
+
+To enable *document refresh* for a database, send the server a
+[RefreshConfiguration](../../../documents/document-refresh/client-api.mdx#refreshconfiguration) object with its `disabled` property
+set to `false`, using the
+[ConfigureRefreshOperation](../../../documents/document-refresh/client-api.mdx#configurerefreshoperation) operation.
+
+e.g., the following code enables *document refresh* and sets the interval between checks to five minutes.
+
+```php
+// Define the refresh configuration
+$refreshConfiguration = new RefreshConfiguration();
+
+// Enable document refresh for the database
+$refreshConfiguration->setDisabled(false);
+
+// Check the database for documents to refresh every 5 minutes
+$refreshConfiguration->setRefreshFrequencyInSec(300);
+
+// Send the configuration to the server
+$store->maintenance()->send(new ConfigureRefreshOperation($refreshConfiguration));
+```
+<br />
+
+<Admonition type="note" title="">
+On a **secure server**, enabling or configuring the *document refresh* feature requires, like other changes to a database's
+configuration, a client certificate with `Admin` access to the database (or with an `Operator` or `Cluster Admin`
+[security clearance](../../../server/security/authorization/security-clearance-and-permissions.mdx)).  
+Setting a document's `@refresh` metadata property, on the other hand, is a change to the document, which `Read/Write` access
+permits.  
+See [Setting up Authentication and Authorization](../../../client-api/setting-up-authentication-and-authorization.mdx)
+</Admonition>
+
+The `RefreshConfiguration` object holds the following settings:
+
+* #### `disabled`
+  Set this property to `false` to enable *document refresh*, or to `true` to disable the feature.  
+  The default value for this property is `false`, so sending a new `RefreshConfiguration` object enables *document refresh*
+  unless you explicitly set `disabled` to `true`.
+
+* #### `refreshFrequencyInSec`
+  Sets the interval, in seconds, between the *document refresh* feature's checks for documents to refresh.  
+  The default value for this property is 60 seconds.
+  - **The `refreshFrequencyInSec` value must be greater than 0:**  
+    Sending a value of 0 or less fails with a `RavenException`.  
+    e.g., the following code sends a `refreshFrequencyInSec` value of 0 and catches the resulting exception.
+
+    ```php
+    try {
+        $configuration = new RefreshConfiguration();
+        $configuration->setDisabled(false);
+        $configuration->setRefreshFrequencyInSec(0);
+
+        $store->maintenance()->send(new ConfigureRefreshOperation($configuration));
+    } catch (RavenException $e) {
+        // The exception's message includes:
+        // "Refresh frequency for database '<database name>' must be greater than 0."
+    }
+    ```
+  - **On a [Community license](https://ravendb.net/buy), the `refreshFrequencyInSec` value must be at least 129600 (36 hours):**  
+    Enabling *document refresh* with a lower value, or without setting `refreshFrequencyInSec` (so that the 60-second default
+    applies), fails with a `RavenException`.  
+    e.g., the code at the beginning of this section, which sets `refreshFrequencyInSec` to 300, fails on a Community license.
+
+</Panel>
+
+<Panel heading="Scheduling a document refresh">
+
+To schedule a document's refresh, set the `@refresh` metadata property of the document to the intended refresh time, and save
+the document.
+
+<Admonition type="warning" title="">
+The `@refresh` metadata property is reserved for the *document refresh* feature.  
+Do not use it for any other purpose: RavenDB reads any value set for this property as a refresh time.  
+A valid date and time schedules the document's refresh, and any other value makes saving the document fail.
+</Admonition>
+
+e.g., the following code schedules a refresh of the `users/1-A` document for one hour from now.
+
+```php
+$session = $store->openSession();
+try {
+    // Load the document
+    $user = $session->load(User::class, "users/1-A");
+
+    // Set the document's refresh time to one hour from now, in UTC
+    $refreshTime = new DateTime("+1 hour", new DateTimeZone("UTC"));
+    $session->advanced()->getMetadataFor($user)->put("@refresh", $refreshTime);
+
+    // Save the document
+    $session->saveChanges();
+} finally {
+    $session->close();
+}
+```
+<br />
+
+* #### Setting the refresh time in UTC
+  Set the `@refresh` property to a `DateTime` object in the UTC time zone (e.g., `new DateTime("+1 hour", new DateTimeZone("UTC"))`).  
+  The client sends the object's time with a `Z` suffix, which marks the time as UTC, so the server reads the intended time
+  correctly.  
+  e.g., `"@refresh": "2026-12-01T08:00:00.0000000Z"`
+
+  <Admonition type="note" title="">
+  Do not set the property to a `DateTime` object in another time zone (e.g., `new DateTime("+1 hour")`, which uses PHP's default
+  time zone).  
+  If you set such an object, the client will send the object's time as it is in the object's time zone, with a `Z` suffix,
+  and the server will read the time as UTC. Unless the object's time zone is UTC, the document will be refreshed at a
+  different time than intended.
+  </Admonition>
+
+* #### Setting an invalid refresh time
+  If the value of the `@refresh` property is not a valid date and time, `saveChanges` throws a `RavenException`, and none
+  of the session's changes are saved.
+
+* #### Scheduling while *document refresh* is disabled
+  Setting the `@refresh` property while *document refresh* is disabled for the database still schedules the document's
+  refresh:
+  - If you enable the feature before the refresh time, the document will be refreshed in the feature's first run after
+    the refresh time.
+  - If the refresh time passes while the feature is disabled, the document will be refreshed after the feature is
+    enabled, during its first run.
+  - In both cases, the document may be refreshed in a later run if the number of documents due for refresh exceeds the
+    maximum set for a single run using the Studio option
+    [Set max number of documents to process in a single run](../../../documents/document-refresh/document-refresh-view.mdx#set-max-number-of-documents-to-process-in-a-single-run).
+
+* #### Conflicted documents
+  A document that is in [conflict](../../../server/clustering/replication/replication-conflicts.mdx) is not refreshed while
+  the conflict remains, even if the refresh time of all its conflicting versions has passed.
+  - If the document that resolves the conflict holds a `@refresh` property whose time has passed, the document will be
+    refreshed in the feature's first run after the conflict is resolved.
+  - A document remains in conflict only if the conflict is not resolved automatically: by default, RavenDB resolves
+    conflicts to the most recently modified version of the document (see
+    [Conflict Detection](../../../server/clustering/replication/replication-conflicts.mdx#conflict-detection)).
+
+* #### Changing or canceling a scheduled refresh
+  To change a document's refresh time, set its `@refresh` property to a new time and save the document.  
+  To cancel the refresh, remove the `@refresh` property from the document's metadata using a
+  [patch](../../../documents/patching-documents/patch-a-single-document/api-overview.mdx).  
+  e.g., `$store->operations()->send(new PatchOperation("users/1-A", null, PatchRequest::forScript("delete this['@metadata']['@refresh'];")));`
+
+* #### Reverting documents to revisions
+  When you revert a document to a revision
+  (or [revert documents to a specific time](../../../document-extensions/revisions/revert-documents-to-revisions/revert-documents-to-specific-time.mdx)),
+  the reverted document gets the content of the revision **without** the revision's `@refresh` property, even if the revision
+  holds this property.  
+  - The `@refresh` property is omitted from the reverted document because the revision's refresh time was set when
+    the revision was created, and has usually already passed by the time of the revert.  
+    Keeping the property would refresh the reverted document right after the revert.
+  - Since the `@refresh` property is omitted, the reverted document will no longer be scheduled for a refresh unless you set
+    its `@refresh` property again.
+
+</Panel>
+
+<Panel heading="Syntax">
+
+<ContentFrame>
+
+### ConfigureRefreshOperation
+
+Sends a `RefreshConfiguration` object to the server, to enable or disable *document refresh* for a database and configure the
+feature.
+
+```php
+public function __construct(?RefreshConfiguration $configuration)
+```
+<br />
+Usage:
+
+```php
+$result = $store->maintenance()->send(new ConfigureRefreshOperation($refreshConfiguration));
+```
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **configuration** | [RefreshConfiguration](../../../documents/document-refresh/client-api.mdx#refreshconfiguration) | The *document refresh* configuration to apply to the database. |
+
+| Return value | |
+|-----------|-------------|
+| [ConfigureRefreshOperationResult](../../../documents/document-refresh/client-api.mdx#configurerefreshoperationresult) | Contains `raftCommandIndex`. |
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Classes
+
+<Tabs groupId='refresh-classes'>
+<TabItem value="RefreshConfiguration" label="RefreshConfiguration">
+
+#### `RefreshConfiguration`
+
+**Defines the *document refresh* configuration of a database.**
+
+```php
+class RefreshConfiguration
+{
+    bool $disabled
+    ?int $refreshFrequencyInSec
+}
+```
+<br />
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **disabled** | `bool` | Set to `false` to enable *document refresh* for the database, or to `true` to disable the feature.<br />The default value is `false`. |
+| **refreshFrequencyInSec** | `?int` | The interval, in seconds, between the feature's checks for documents to refresh.<br />The value must be greater than 0.<br />If `null`, the default value of 60 seconds applies.<br />On a Community license, the value must be at least 129600 (36 hours). See [Enabling document refresh](../../../documents/document-refresh/client-api.mdx#enabling-document-refresh). |
+
+</TabItem>
+<TabItem value="ConfigureRefreshOperationResult" label="ConfigureRefreshOperationResult">
+
+#### `ConfigureRefreshOperationResult`
+
+**The result of sending a `ConfigureRefreshOperation` operation to the server.**
+
+```php
+class ConfigureRefreshOperationResult
+{
+    ?int $raftCommandIndex
+}
+```
+<br />
+
+| Property | Type | Description |
+|----------|------|-------------|
+| **raftCommandIndex** | `?int` | The Raft index of the command that applied the configuration. |
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+</Panel>

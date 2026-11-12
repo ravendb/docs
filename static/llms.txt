@@ -79,8 +79,8 @@ Documentation is versioned. The current version is 7.2. Use the `/7.2/` URL pref
 - [Cluster Transactions](https://docs.ravendb.net/7.2/server/clustering/cluster-transactions): ACID transactions across cluster nodes
 - [Backup Overview](https://docs.ravendb.net/7.2/server/ongoing-tasks/backup-overview): Schedule full and incremental backups
 - [Documents Compression](https://docs.ravendb.net/7.2/server/storage/documents-compression): Automatic document compression for storage efficiency
-- [Expiration](https://docs.ravendb.net/7.2/server/extensions/expiration): Automatically schedule document cleanup
-- [Refresh](https://docs.ravendb.net/7.2/server/extensions/refresh): Re-trigger document processing on schedule
+- [Expiration](https://docs.ravendb.net/7.2/documents/document-expiration/client-api): Automatically schedule document cleanup
+- [Refresh](https://docs.ravendb.net/7.2/documents/document-refresh/client-api): Re-trigger document processing on schedule
 - [Embedded Server](https://docs.ravendb.net/7.2/server/embedded): Run RavenDB in-process without a separate server
 - [Configuration Options](https://docs.ravendb.net/7.2/server/configuration/configuration-options): All server configuration settings
 
