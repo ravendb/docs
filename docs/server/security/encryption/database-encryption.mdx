@@ -256,7 +256,7 @@ await store.Maintenance.Server.SendAsync(
 * The HNSW node cache is disabled for **Corax vector indexes on encrypted databases**.
   This applies to both static indexes and auto-indexes created by dynamic vector queries.
 
-* The cache is incompatible with encryption, so [Indexing.Corax.VectorSearch.CacheSizeInMb](../../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchcachesizeinmb) is ignored on encrypted databases.
+* The cache is incompatible with encryption, so [Indexing.Corax.VectorSearch.CacheSizeInMb](../../../ai-integration/vector-search/configuration.mdx#indexingcoraxvectorsearchcachesizeinmb) is ignored on encrypted databases.
   Vector queries read the HNSW graph from disk.
 
 * Without the cache, vector queries may require more disk reads, which can reduce query performance.  

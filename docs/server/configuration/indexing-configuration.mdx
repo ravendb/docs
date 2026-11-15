@@ -27,7 +27,6 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * In this article:  
   * Server-wide scope:  
     [Indexing.CleanupIntervalInMin](../../server/configuration/indexing-configuration.mdx#indexingcleanupintervalinmin)  
-    [Indexing.Corax.VectorSearch.MaxNumberOfThreadsForLocalEmbeddingsGeneration](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchmaxnumberofthreadsforlocalembeddingsgeneration)  
     [Indexing.GlobalScratchSpaceLimitInMb](../../server/configuration/indexing-configuration.mdx#indexingglobalscratchspacelimitinmb)  
     [Indexing.MaxNumberOfConcurrentlyRunningIndexes](../../server/configuration/indexing-configuration.mdx#indexingmaxnumberofconcurrentlyrunningindexes)  
     [Indexing.MaxTimeToWaitAfterFlushAndSyncWhenExceedingScratchSpaceLimitInSec](../../server/configuration/indexing-configuration.mdx#indexingmaxtimetowaitafterflushandsyncwhenexceedingscratchspacelimitinsec)  
@@ -68,14 +67,6 @@ import LanguageContent from "@site/src/components/LanguageContent";
     [Indexing.Corax.MaxMemoizationSizeInMb](../../server/configuration/indexing-configuration.mdx#indexingcoraxmaxmemoizationsizeinmb)  
     [Indexing.Corax.Static.ComplexFieldIndexingBehavior](../../server/configuration/indexing-configuration.mdx#indexingcoraxstaticcomplexfieldindexingbehavior)  
     [Indexing.Corax.UnmanagedAllocationsBatchSizeLimitInMb](../../server/configuration/indexing-configuration.mdx#indexingcoraxunmanagedallocationsbatchsizelimitinmb)  
-    [Indexing.Corax.VectorSearch.CacheSizeInMb](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchcachesizeinmb)  
-    [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultminimumsimilarity)  
-    [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForIndexing](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforindexing)  
-    [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforquerying)  
-    [Indexing.Corax.VectorSearch.DefaultNumberOfEdges](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofedges)  
-    [Indexing.Corax.VectorSearch.MaximumConcurrentBatchesForHnswAcceleration](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchmaximumconcurrentbatchesforhnswacceleration)  
-    [Indexing.Corax.VectorSearch.OrderByScoreAutomatically](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchorderbyscoreautomatically)  
-    [Indexing.Corax.VectorSearch.VectorSearchScanningThreshold](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchvectorsearchscanningthreshold)  
     [Indexing.Encrypted.TransactionSizeLimitInMb](../../server/configuration/indexing-configuration.mdx#indexingencryptedtransactionsizelimitinmb)  
     [Indexing.IndexEmptyEntries](../../server/configuration/indexing-configuration.mdx#indexingindexemptyentries)  
     [Indexing.IndexMissingFieldsAsNull](../../server/configuration/indexing-configuration.mdx#indexingindexmissingfieldsasnull)  
@@ -120,23 +111,6 @@ Time (in minutes) between auto-index cleanup.
 
 - **Type**: `int`
 - **Default**: `10`
-- **Scope**: Server-wide only
-
-
-
-## Indexing.Corax.VectorSearch.MaxNumberOfThreadsForLocalEmbeddingsGeneration
-
-* Maximum number of threads that will be used for generating embedding from text locally.
-
-* The default value, which is determined based on the number of processors cores,  
-  is set by the constructor of class `IndexingConfiguration`:
-
-  * If the machine has 2 or fewer processor cores, only 1 thread is used.
-  * For machines with up to 8 cores, 2 threads are used.
-  * For machines with up to 16 cores, 4 threads are used.
-  * For machines with more than 16 cores, the value is set to 6 threads.
-- **Type**: `int`
-- **Default**: `DefaultValueSetInConstructor`
 - **Scope**: Server-wide only
 
 
@@ -600,117 +574,6 @@ The maximum amount of memory in megabytes that Corax can use for memoization dur
    * In all other cases (i.e., standard 64-bit environments), the default is `2048 MB`.
 - **Type**: `int`
 - **Default**: `DefaultValueSetInConstructor`
-- **Scope**: Server-wide, or per database, or per index
-
-
-
-## Indexing.Corax.VectorSearch.CacheSizeInMb
-
-* The memory budget (in MB) used to size the HNSW node cache for each vector field in an index.  
-  The cache keeps the upper-level nodes of the HNSW graph in memory, so vector queries read less from disk.
-
-* Set to `0` to disable the cache.  
-  Changing this value does not require re-indexing.
-
-* The cache is not supported on [encrypted databases](../../server/security/encryption/database-encryption.mdx#vector-search-node-cache).  
-  This setting is ignored on encrypted databases, and vector search reads the HNSW graph from disk.
-
-* This setting is available from RavenDB 7.2.5.
-
----
-
-- **Type**: `int`
-- **Default**: `10`
-- **Scope**: Server-wide, or per database, or per index
-
-
-
-## Indexing.Corax.VectorSearch.DefaultMinimumSimilarity
-
-* The default minimum similarity to use when making a vector search query.  
-
-* Values can be between `0.0f` and `1.0f`.  
-  A value closer to `1.0f` requires higher similarity between vectors,  
-  while a value closer to `0.0f` allows for less similarity.
-- **Type**: `float`
-- **Default**: `0f`
-- **Scope**: Server-wide, or per database, or per index
-
-
-
-## Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForIndexing
-
-The default number of candidates (potential neighboring vectors) that RavenDB evaluates during vector indexing.
-
-- **Type**: `int`
-- **Default**: `16`
-- **Scope**: Server-wide, or per database, or per index
-
-
-
-## Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying
-
-* The default maximum number of vectors that we will return from a graph search.  
-* The number of the resulting documents that correspond to these vectors may be:  
-  * lower than this number - when multiple vectors originated from the same document.
-  * higher than this number - when the same vector is shared between multiple documents.
-- **Type**: `int`
-- **Default**: `16`
-- **Scope**: Server-wide, or per database, or per index
-
-
-
-## Indexing.Corax.VectorSearch.DefaultNumberOfEdges
-
-The default number of edges that will be created for a vector during vector indexing.
-
-- **Type**: `int`
-- **Default**: `12`
-- **Scope**: Server-wide, or per database, or per index
-
-
-
-## Indexing.Corax.VectorSearch.MaximumConcurrentBatchesForHnswAcceleration
-
-EXPERT ONLY:
-
-The maximum number of concurrent batches used to accelerate HNSW distance calculations during vector indexing.
-
-Parallel graph construction can improve indexing throughput, but the resulting graph is not guaranteed to be identical
-to a strictly sequential build. As a result, approximate vector search results may differ slightly even for the same data
-and insertion order. Learn more in [What affects vector search results](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#the-approximate-nature-of-hnsw).
-
-- **Type**: `int`
-- **Default**: `512`
-- **Scope**: Server-wide, or per database, or per index
-
-
-
-## Indexing.Corax.VectorSearch.OrderByScoreAutomatically
-
-Order by score automatically when `vector.search` is inside a query.
-
-- **Type**: `bool`
-- **Default**: `true`
-- **Scope**: Server-wide, or per database, or per index
-
-
-
-## Indexing.Corax.VectorSearch.VectorSearchScanningThreshold
-
-EXPERT ONLY:
-
-* The threshold of filter match count for exact scanning instead of approximate search.
-
-* When a vector search query is combined with a filtering condition using _AND_, the filter is integrated directly into the vector search. 
-  If the number of documents matching the filter is **below** this threshold, an exact search is performed over the filtered documents rather than using the HNSW approximate search.
-
-* Learn more in [How filtered vector search works](../../ai-integration/vector-search/more-querying-options.mdx#how-filtered-vector-search-works).
-
----
-
-- **Type**: `int`
-- **Default**: `1024`
 - **Scope**: Server-wide, or per database, or per index
 
 
