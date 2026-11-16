@@ -17,7 +17,7 @@ import Panel from '@site/src/components/Panel';
 * Queries defined with `Query` or `DocumentQuery` are **translated by the RavenDB client to [RQL](../../querying/rql/what-is-rql.mdx)** when sent to the server.
     
 * All queries in RavenDB use an **index** to provide results, even when you don't specify one.  
-  Learn more below in [Queries always provide results using an index](../../querying/overview.mdx#queries-always-provide-results-using-an-index).
+  Learn more below in [Queries always provide results using an index](#queries-always-provide-results-using-an-index).
 
 * Queries that do Not specify which index to use are called **Dynamic Queries**.  
   This article displays examples of dynamic queries only.  
@@ -35,12 +35,12 @@ import Panel from '@site/src/components/Panel';
 ---
 
 * In this article:
-  * [Queries always provide results using an index](../../querying/overview.mdx#queries-always-provide-results-using-an-index)  
-  * [Session.Query](../../querying/overview.mdx#session-query)  
-  * [Session.Advanced.DocumentQuery](../../querying/overview.mdx#session-advanced-documentquery)  
-  * [Session.Advanced.RawQuery](../../querying/overview.mdx#session-advanced-rawquery)
-  * [Custom methods and extensions for LINQ](../../querying/overview.mdx#custom-methods-and-extensions-for-linq)  
-  * [Syntax](../../querying/overview.mdx#syntax)  
+  * [Queries always provide results using an index](#queries-always-provide-results-using-an-index)  
+  * [Session.Query](#session-query)  
+  * [Session.Advanced.DocumentQuery](#session-advanced-documentquery)  
+  * [Session.Advanced.RawQuery](#session-advanced-rawquery)
+  * [Custom methods and extensions for LINQ](#custom-methods-and-extensions-for-linq)  
+  * [Syntax](#syntax)  
 
 </Admonition>
 
@@ -61,9 +61,9 @@ import Panel from '@site/src/components/Panel';
 
 We differentiate between the following **3 query scenarios**:
 
-  1. **[Query a specific index](../../querying/overview.mdx#1-query-a-specific-index)** - uses the index you specify (typically a static index).
-  2. **[Query a collection - using an auto-index](../../querying/overview.mdx#2-query-a-collection---using-an-auto-index)** - uses an existing or newly created auto-index.
-  3. **[Query a collection - query full collection | query by ID](../../querying/overview.mdx#3-query-a-collection---query-full-collection--query-by-id)** - reads directly from collection storage.
+  1. **[Query a specific index](#1-query-a-specific-index)** - uses the index you specify (typically a static index).
+  2. **[Query a collection - using an auto-index](#2-query-a-collection---using-an-auto-index)** - uses an existing or newly created auto-index.
+  3. **[Query a collection - query full collection | query by ID](#3-query-a-collection---query-full-collection--query-by-id)** - reads directly from collection storage.
 
 </Admonition>
 <Admonition type="note" title="">
@@ -73,7 +73,7 @@ We differentiate between the following **3 query scenarios**:
 **Query type**: Index query  
 **Index used**: The specified index (typically a static-index)  
 
-* Static indexes are defined by the user, as opposed to [auto-indexes](../../querying/overview.mdx#2-query-a-collection---using-an-auto-index),
+* Static indexes are defined by the user, as opposed to [auto-indexes](#2-query-a-collection---using-an-auto-index),
   which the server creates to serve dynamic queries.
   Learn more in [Auto indexes -vs- Static indexes](../../studio/database/indexes/indexes-overview.mdx#auto-indexes--vs--static-indexes).  
   To query a specific index, specify the index in the query.
@@ -96,7 +96,7 @@ We differentiate between the following **3 query scenarios**:
 * The query optimizer looks for a suitable **AUTO-index** when a dynamic query includes **one or more of the following**:
 
   * A `where` condition on fields other than the document ID,  
-    or an ID condition not listed in [Query by document ID](../../querying/overview.mdx#3-query-a-collection---query-full-collection--query-by-id).
+    or an ID condition not listed in [Query by document ID](#3-query-a-collection---query-full-collection--query-by-id).
   * An `order by` clause to sort the results.
   * A `group by` clause to group the results.
   * A `suggest()` call in the `select` clause to request term suggestions.
@@ -135,7 +135,7 @@ We differentiate between the following **3 query scenarios**:
 
 * **Field filtering (`where`)**  
   Example RQL: &nbsp; `from Employees where FirstName == "Laura"`  
-  See more examples in [Session.Query](../../querying/overview.mdx#session-query) below.
+  See more examples in [Session.Query](#session-query) below.
 
 * **Sorting without a `where` condition**  
   Sorting alone is enough to require an auto-index.  
@@ -215,7 +215,7 @@ We differentiate between the following **3 query scenarios**:
     No search engine index (Lucene or Corax) is involved in this process.
 
   * Example RQL: &nbsp; `from Employees where id() == "employees/1-A"`  
-    See more examples [below](../../querying/overview.mdx#session-query).
+    See more examples [below](#session-query).
 
 </Admonition>
 
@@ -229,7 +229,7 @@ We differentiate between the following **3 query scenarios**:
 * The following examples show **dynamic queries** that do not specify which index to use.  
   Please refer to [querying an index](../../indexes/querying/query-index.mdx) for other examples.
 
-* Querying can be enhanced using these [extension methods](../../querying/overview.mdx#custom-methods-and-extensions-for-linq).
+* Querying can be enhanced using these [extension methods](#custom-methods-and-extensions-for-linq).
  
 ---
 
@@ -613,7 +613,7 @@ from "Employees" where FirstName = "Robert"
 
 <Panel heading="Session.Advanced.RawQuery">
 
-* Queries defined with [Query](../../querying/overview.mdx#session-query) or [DocumentQuery](../../querying/overview.mdx#session-advanced-documentquery) are translated by the RavenDB client to [RQL](../../querying/rql/what-is-rql.mdx)  
+* Queries defined with [Query](#session-query) or [DocumentQuery](#session-advanced-documentquery) are translated by the RavenDB client to [RQL](../../querying/rql/what-is-rql.mdx)  
   when sent to the server.
 
 * The session also gives you a way to express the query directly in RQL using the `RawQuery` method.
@@ -661,7 +661,7 @@ List<Employee> employees = await asyncSession
 
 <Panel heading="Custom methods and extensions for LINQ">
 
-* Available custom methods and extensions for the session's [Query](../../querying/overview.mdx#session-query) method:
+* Available custom methods and extensions for the session's [Query](#session-query) method:
 
    * [AggregateBy](../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)
    * AnyAsync
@@ -697,7 +697,7 @@ List<Employee> employees = await asyncSession
     
 ---
     
-* The available methods for the session's [DocumentQuery](../../querying/overview.mdx#session-advanced-documentquery) method
+* The available methods for the session's [DocumentQuery](#session-advanced-documentquery) method
   are listed in [Custom methods and extensions](../../querying/document-query/what-is-document-query.mdx#custom-methods-and-extensions).    
 
 </Panel>
@@ -740,6 +740,6 @@ IRawDocumentQuery<T> RawQuery<T>(string query);
 
 | Return Value | |
 | - | - |
-| `IRavenQueryable`<br/>`IDocumentQuery`<br/>`IRawDocumentQuery` | Instances exposing additional query methods and [extensions](../../querying/overview.mdx#custom-methods-and-extensions-for-linq) |
+| `IRavenQueryable`<br/>`IDocumentQuery`<br/>`IRawDocumentQuery` | Instances exposing additional query methods and [extensions](#custom-methods-and-extensions-for-linq) |
 
 </Panel>

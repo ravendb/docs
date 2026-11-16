@@ -295,44 +295,80 @@ async function main() \{
 ##### Auto-indexes creation
 * Indexes **created by the server** are called `dynamic` or `auto` indexes.
 * Auto-indexes are created when all of the following conditions are met:
-    * A query is issued without specifying an index (a dynamic query).
-    * The query filters on fields other than the document ID, or sorts the results (`order by`).
-    * No suitable auto-index exists that can satisfy the query.
-    * Creation of auto-indexes has not been disabled.
+    1. A query is issued without specifying an index (a dynamic query).
+    2. The query includes **one or more of the following**:
+        * A `where` condition on fields other than the document ID,  
+          or an ID condition not listed in [Query by document ID](../../querying/overview.mdx#3-query-a-collection---query-full-collection--query-by-id).
+        * An `order by` clause to sort the results.
+        * A `group by` clause to group the results.
+        * A `suggest()` call in the `select` clause to request term suggestions.
+    3. No suitable auto-index exists that can satisfy the query.
+    4. Creation of auto-indexes has not been disabled.
 * For such queries, RavenDB's Query Optimizer searches for an existing auto-index that can satisfy the query.
   If no suitable auto-index is found, RavenDB will either create a new auto-index or optimize an existing auto-index.
   (Static-indexes are not taken into account when determining which auto-index should handle the query).
+* Queries with `group by` are served by auto map-reduce indexes.  
+  Learn more in [How to perform group by query](../../client-api/session/querying/how-to-perform-group-by-query.mdx).
 * Note: dynamic queries can be issued either when [querying](../../studio/database/queries/query-view.mdx#query-view) or when [patching](../../documents/patching-documents/patch-multiple-documents/patch-view.mdx#patch-configuration).
 * Over time, RavenDB automatically adjusts and merges auto-indexes to efficiently serve your queries.  
-  For more details, see [Query a collection - with filtering or sorting (dynamic query)](../../querying/overview.mdx#2-query-a-collection---with-filtering).
+  For more details, see [Query a collection - using an auto-index (dynamic query)](../../querying/overview.mdx#2-query-a-collection---using-an-auto-index).
 
 </Admonition>
 <Admonition type="note" title="">
 
 ##### Naming convention
 * Auto-indexes are easily identified by their names, which start with the `Auto/` prefix.
-* Their name also includes the name of the queried collection and a list of the fields the query uses to filter or sort the results.
+* For auto-indexes without `group by`, the name also includes the queried collection and the fields used in `where` conditions, `order by` clauses, or `suggest()` calls.
 * For example, issuing the following query:
-<Tabs groupId='languageSyntax'>
-<TabItem value="Query" label="Query">
-<CodeBlock language="js">
-{`const employees = await session
-    .query({ collection: 'employees' })
-    .whereEquals("FirstName", "Robert")
-    .whereEquals("LastName", "King")
-    .all();
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="RQL" label="RQL">
-<CodeBlock language="sql">
-{`from Employees
-where FirstName = "Robert" and LastName = "King"
-`}
-</CodeBlock>
-</TabItem>
-  </Tabs>
-  will result in the creation of an auto-index named `Auto/Employees/ByFirstNameAndLastName`.
+
+	<Tabs groupId='languageSyntax'>
+	<TabItem value="Query" label="Query">
+	<CodeBlock language="js">
+	{`const employees = await session
+	    .query({ collection: 'employees' })
+	    .whereEquals("FirstName", "Robert")
+	    .whereEquals("LastName", "King")
+	    .all();
+	`}
+	</CodeBlock>
+	</TabItem>
+	<TabItem value="RQL" label="RQL">
+	<CodeBlock language="sql">
+	{`from Employees
+	where FirstName = "Robert" and LastName = "King"
+	`}
+	</CodeBlock>
+	</TabItem>
+	</Tabs>
+
+    creates an auto-index named `Auto/Employees/ByFirstNameAndLastName` if no suitable auto-index already exists.
+
+* Auto map-reduce index names include aggregation fields, such as `Count`, and end with `ReducedBy<fields>`,  
+  where `<fields>` are the grouping keys. For example, issuing the following query:
+
+	<Tabs groupId='languageSyntax'>
+	<TabItem value="Query" label="Query">
+	<CodeBlock language="js">
+	{`const results = await session
+	    .query({ collection: "Orders" })
+	    .groupBy("Company")
+	    .selectKey("Company")
+	    .selectCount("Count")
+	    .all();
+	`}
+	</CodeBlock>
+	</TabItem>
+	<TabItem value="RQL" label="RQL">
+	<CodeBlock language="sql">
+	{`from Orders
+	group by Company
+	select key() as Company, count() as Count
+	`}
+	</CodeBlock>
+	</TabItem>
+	</Tabs>
+
+    creates `Auto/Orders/ByCountReducedByCompany` if no suitable auto map-reduce index already exists.
 
 </Admonition>
 <Admonition type="note" title="">

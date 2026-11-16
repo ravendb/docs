@@ -29,18 +29,25 @@ There are a few ways to deploy a static-index from the Client API:
     * Call `executeIndex()` or `executeIndexes()` on your _DocumentStore_ object.
     * Call `IndexCreation.createIndexes()`.
 
-* Alternatively, you can execute the `PutIndexesOperation` maintenance operation on the _DocumentStore_, **as explained below**.
+* Alternatively, you can execute the `PutIndexesOperation` maintenance operation on the _DocumentStore_,  
+  as explained in [Put indexes operation with IndexDefinition](../../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#put-indexes-operation-with-indexdefinition).
 
 </Admonition>
 <Admonition type="note" title="">
 
 ##### Auto-indexes:
 
-* When a dynamic query filters on fields other than the document ID, or sorts the results, RavenDB uses a suitable existing auto-index or creates one if needed.
-  Learn more in [Creating auto indexes](../../../../../indexes/creating-and-deploying.mdx#auto-indexes).
+RavenDB uses a suitable existing auto-index, or creates one if needed,  
+when a dynamic query includes **one or more of the following**:  
+  * A `where` condition on fields other than the document ID,
+    or an ID condition not listed in [Query by document ID](../../../../../querying/overview.mdx#3-query-a-collection---query-full-collection--query-by-id).
+  * An `order by` clause to sort the results.
+  * A `group by` clause to group the results.
+  * A `suggest()` call in the `select` clause to request term suggestions.
+
+Learn more in [Creating auto indexes](../../../../../indexes/creating-and-deploying.mdx#auto-indexes).
 
 </Admonition>
-
 
 ## Put indexes operation with IndexDefinition 
 

@@ -964,8 +964,8 @@ var numberOfUnitsInStockPerCategory = await asyncSession
 ```
 </TabItem>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="csharp">
-{`var numberOfUnitsInStockPerCategory = session.Advanced
+```csharp
+var numberOfUnitsInStockPerCategory = session.Advanced
     .DocumentQuery<Product>()
      // Group by Category
     .GroupBy("Category")
@@ -983,8 +983,7 @@ var numberOfUnitsInStockPerCategory = await asyncSession
 
 // Results will contain the total number of units in stock per category
 // ordered by that number in ascending order.
-`}
-</CodeBlock>
+```
 </TabItem>
 <TabItem value="RQL" label="RQL">
 ```sql
