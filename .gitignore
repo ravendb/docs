@@ -24,3 +24,6 @@ yarn-error.log*
 /.claude
 .vs
 screenshots
+
+# Copied from the @ravendb/skills dependency by agent-hint-plugin
+/.generated

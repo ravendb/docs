@@ -24,6 +24,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # The skill production serves (see deploy.ps1).
+      - name: Install the latest agent skill
+        run: npm install --no-save --no-audit --fund false github:ravendb/skills#main
+
       - name: Lint
         run: npm run lint
 
