@@ -211,6 +211,7 @@ const config: Config = {
         videoEmbeds.videoAvailabilityPlugin,
         require.resolve("./src/plugins/recent-samples-plugin"),
         require.resolve("./src/plugins/agent-hint-plugin"),
+        require.resolve("./src/plugins/markdown-export"),
     ],
     headTags: [
         {

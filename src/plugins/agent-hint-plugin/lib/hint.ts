@@ -56,3 +56,20 @@ export function buildAgentHint(skillUrl: string, description: string): string {
         `</blockquote>`
     );
 }
+
+export function buildAgentHintMarkdown(skillUrl: string, description: string): string {
+    return (
+        `RavenDB publishes an official agent skill for coding assistants at ${skillUrl} ` +
+        `(also installable with \`npx skills add ravendb/skills\`). ` +
+        `The skill describes itself as: "${description}"`
+    );
+}
+
+export function buildMarkdownHintLine(variants: { label: string | null; url: string }[]): string {
+    const link = (url: string, text: string) => `<a href="${escapeHtml(url)}" tabindex="-1">${escapeHtml(text)}</a>`;
+    if (variants.length === 1 && !variants[0].label) {
+        return `<p>This page is also available as Markdown at ${link(variants[0].url, variants[0].url)}.</p>`;
+    }
+    const links = variants.map((v) => link(v.url, v.label ?? v.url)).join(", ");
+    return `<p>This page is also available as Markdown, one file per client language: ${links}.</p>`;
+}

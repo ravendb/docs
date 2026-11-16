@@ -1,4 +1,4 @@
-# Publishes scripts/handle_redirects.js to the CloudFront function that runs on viewer-request.
+# Publishes scripts/handle_redirects.js to the CloudFront function on viewer-request and viewer-response.
 # Deploying the site does not touch it, so an edit there has no effect until this runs: the site
 # deploys cleanly while the edge keeps behaving like the previous release. Called by deploy.ps1
 # phase 3; -Check reports drift without writing, for CI.
