@@ -110,8 +110,9 @@ products = list(
     .query_index_type(Products_ByUnitsInStock, Products_ByUnitsInStock.IndexEntry)
     # Apply filtering (optional)
     .where_greater_than("UnitsInStock", 10)
-    # Call 'order_by_descending', pass the index-field by which to order the results
-    .order_by_descending("UnitsInStock").of_type(Product)
+    # Call 'order_by_descending'
+    # Pass the index-field by which to order the results and the ordering type
+    .order_by_descending("UnitsInStock", OrderingType.LONG).of_type(Product)
 )
 
 # Results will be sorted by the 'UnitsInStock' value in descending order,
@@ -148,7 +149,10 @@ class Products_ByUnitsInStock(AbstractIndexCreationTask):
 
     def __init__(self):
         super().__init__()
-        self.map = "from p in products select new { UnitsInStock = p.UnitsInStock }"
+        self.map = (
+            "from p in docs.Products "
+            "select new { UnitsInStock = p.UnitsInStock }"
+        )
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -166,11 +170,9 @@ order by UnitsInStock as long desc
 
 ### Ordering Type
 
-* By default, the `order_by` methods will determine the `OrderingType` from the property path expression  
-  and specify that ordering type in the generated RQL that is sent to the server.  
+* If no ordering type is specified in the query, the field name is sent without a type and the server applies its default (lexicographical) ordering.
 
-* E.g. in the above example, ordering by `"UnitsInStock"` will result in `OrderingType.LONG`
-  because that property data type is an integer.
+* In the above example, the ordering type was set to `OrderingType.LONG`.
 
 * Different ordering can be forced - see [Force ordering type](../../../querying/sorting-query-results/sort-query-results.mdx#force-ordering-type) below.
 
@@ -455,7 +457,10 @@ class Products_BySearchName(AbstractIndexCreationTask):
     def __init__(self):
         super().__init__()
         # Both index-fields are assigned the same content (The 'Name' from the document)
-        self.map = "from p in products select new {Name = p.Name, NameForSorting = p.Name}"
+        self.map = (
+            "from p in docs.Products "
+            "select new { Name = p.Name, NameForSorting = p.Name }"
+        )
 
         # Configure only the 'Name' index-field for FTS
         self._index("Name", FieldIndexing.SEARCH)
@@ -800,8 +805,8 @@ number_of_products_per_category = list(
 ```python
 # The query results are projected into this class
 class ProductsCount:
-    def __init__(self, category: str = None, count: int = None):
-        self.category = category
+    def __init__(self, Category: str = None, count: int = None):
+        self.Category = Category
         self.count = count
 ```
 </TabItem>
@@ -857,9 +862,9 @@ number_of_units_in_stock_per_category = list(
 ```python
 # The query results are projected into this class
 class ProductsSum:
-    def __init__(self, category: str = None, sum: int = None):
-        self.category = category
-        self.sum = sum
+    def __init__(self, Category: str = None, Sum: int = None):
+        self.Category = Category
+        self.Sum = Sum
 ```
 </TabItem>
 <TabItem value="RQL" label="RQL">
@@ -918,8 +923,7 @@ limit 20
 
 <Panel heading="Force ordering type">
 
-* By default, the `order_by` methods will determine the `OrderingType` from the property path expression  
-  and specify that ordering type in the generated RQL that is sent to the server.
+* If no ordering type is specified in the query then the server will apply the default lexicographical ordering.
 
 * You can force a different ordering type by passing it explicitly to `order_by` or `order_by_descending`.   
   The following ordering types are available:
