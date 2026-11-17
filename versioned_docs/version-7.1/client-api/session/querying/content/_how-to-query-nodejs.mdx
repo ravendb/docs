@@ -68,7 +68,7 @@ For each scenario, a different index type is used, as described below.
 * You can specify which **STATIC-static index** the query will use.
 
 * Static indexes are defined by the user, as opposed to auto-indexes that are created by the server  
-  when querying a collection with some filtering or sorting applied. See [Static-index vs Auto-index](../../../../studio/database/indexes/indexes-overview.mdx#auto-indexes--vs--static-indexes).
+  to serve dynamic queries. See [Static-index vs Auto-index](../../../../studio/database/indexes/indexes-overview.mdx#auto-indexes--vs--static-indexes).
 
 * Example RQL: &nbsp; `from index "Employees/ByFirstName" where FirstName == "Laura"`  
   See more examples in [querying an index](../../../../indexes/querying/query-index.mdx).
@@ -82,10 +82,15 @@ For each scenario, a different index type is used, as described below.
 *  **Query type**: Dynamic Query  
    **Index used**: Auto-index
 
-* When querying a collection without specifying an index, and the query either filters by some condition  
-  (other than just the document ID) or sorts the results (`order by`), the query-optimizer will analyze the query  
-  to see if an **AUTO-index** that can answer the query already exists,  
-  i.e. an auto-index on the collection queried with index-fields that match the fields the query filters and sorts by.  
+* When querying a collection without specifying an index, and the query includes **one or more of the following**:
+  * A `where` condition on fields other than the document ID,  
+    or an ID condition other than a simple ID lookup (`id() = ...`, `id() in (...)`, `startsWith(id(), ...)`).
+  * An `order by` clause to sort the results.
+  * A `group by` clause to group the results.
+  * A `suggest()` call in the `select` clause to request term suggestions.
+
+  then the query-optimizer will analyze the query to see if an **AUTO-index** that can answer the query already exists,  
+  i.e. an auto-index on the collection queried with index-fields that match the fields the query uses.  
 
 * If such auto-index (Not a static one...) is found, it will be used to fetch the results.
 
@@ -130,8 +135,8 @@ For each scenario, a different index type is used, as described below.
 
 * Full collection query:
 
-  * When querying a collection without specifying an index, with no filtering condition and no sorting (`order by`),  
-    then all documents from the specified collection are returned.
+  * When querying a collection without specifying an index, with no `where`, `filter`, `order by`, or `group by` clause  
+    and no `suggest()` call, then all documents from the specified collection are returned.
 
   * RavenDB uses the raw collection documents in its **internal storage indexes** as the source for this query.  
     No auto-index is created.
@@ -140,7 +145,8 @@ For each scenario, a different index type is used, as described below.
 
 * Query by document ID:
  
-  * When querying a collection only by document ID or IDs, with no sorting (`order by`),  
+  * When querying a collection only by simple ID lookups (`id() = ...`, `id() in (...)`, `startsWith(id(), ...)`),  
+    with no sorting (`order by`), grouping (`group by`), or `suggest()` call,  
     then similar to the full collection query, no auto-index is created.  
   
   * RavenDB uses the raw collection documents as the source for this query.
