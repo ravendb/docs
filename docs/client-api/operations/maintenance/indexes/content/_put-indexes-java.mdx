@@ -7,7 +7,14 @@ import CodeBlock from '@theme/CodeBlock';
 
 <Admonition type="note" title="Auto-indexes">
 
-When a dynamic query filters on fields other than the document ID, or sorts the results, RavenDB uses a suitable existing auto-index or creates one if needed.
+RavenDB uses a suitable existing auto-index, or creates one if needed,  
+when a dynamic query includes **one or more of the following**:  
+  * A `where` condition on fields other than the document ID,
+    or an ID condition not listed in [Query by document ID](../../../../../querying/overview.mdx#3-query-a-collection---query-full-collection--query-by-id).
+  * An `order by` clause to sort the results.
+  * A `group by` clause to group the results.
+  * A `suggest()` call in the `select` clause to request term suggestions.
+
 Learn more in [Creating auto indexes](../../../../../indexes/creating-and-deploying.mdx#auto-indexes).
 
 </Admonition>

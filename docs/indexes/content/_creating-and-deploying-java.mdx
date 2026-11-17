@@ -261,12 +261,20 @@ Since RavenDB 4.0, **all** index updates are side-by-side by default. The new in
 ## **Auto indexes**
 
 * Auto-indexes are created when all of the following conditions are met:  
-    * A query is issued without specifying an index (a dynamic query).
-    * The query filters on fields other than the document ID, or sorts the results (`order by`).
-    * No suitable auto-index exists that can satisfy the query.
-    * Creation of auto-indexes has not been disabled.
+    1. A query is issued without specifying an index (a dynamic query).
+    2. The query includes **one or more of the following**:
+        * A `where` condition on fields other than the document ID,  
+          or an ID condition not listed in [Query by document ID](../../querying/overview.mdx#3-query-a-collection---query-full-collection--query-by-id).
+        * An `order by` clause to sort the results.
+        * A `group by` clause to group the results.
+        * A `suggest()` call in the `select` clause to request term suggestions.
+    3. No suitable auto-index exists that can satisfy the query.
+    4. Creation of auto-indexes has not been disabled.
 
-For more details, see [Query a collection - with filtering or sorting (dynamic query)](../../querying/overview.mdx#2-query-a-collection---with-filtering).
+* Queries with `group by` are served by auto map-reduce indexes.  
+  Learn more in [How to perform group by query](../../client-api/session/querying/how-to-perform-group-by-query.mdx).
+
+For more details, see [Query a collection - using an auto-index (dynamic query)](../../querying/overview.mdx#2-query-a-collection---using-an-auto-index).
 
 <Admonition type="note" title="">
 The query optimizer doesn't take into account the static indexes when it determines what index should be used to handle a query.
@@ -274,7 +282,7 @@ The query optimizer doesn't take into account the static indexes when it determi
 
 ### Naming convention
 
-Auto-indexes can be recognized by the `Auto/` prefix in their name. Their name also includes the name of the queried collection and a list of the fields the query uses to filter or sort the results.
+Auto-indexes can be recognized by the `Auto/` prefix in their name. For auto-indexes without `group by`, the name also includes the queried collection and the fields used in `where` conditions, `order by` clauses, or `suggest()` calls.
 
 For instance, issuing a query like this
 
@@ -299,7 +307,35 @@ where FirstName = 'Robert' and LastName = 'King'
 </TabItem>
 </Tabs>
 
-will result in a creation of a index named `Auto/Employees/ByFirstNameAndLastName`.
+creates an auto-index named `Auto/Employees/ByFirstNameAndLastName` if no suitable auto-index already exists.
+
+Auto map-reduce index names include aggregation fields, such as `Count`, and end with `ReducedBy<fields>`,  
+where `<fields>` are the grouping keys. For example, issuing the following query:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<CompanyCount> results = session
+    .query(Order.class)
+    .groupBy("Company")
+    .selectKey("Company")
+    .selectCount("Count")
+    .ofType(CompanyCount.class)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders
+group by Company
+select key() as Company, count() as Count
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+creates `Auto/Orders/ByCountReducedByCompany` if no suitable auto map-reduce index already exists.
 
 ### Auto indexes and indexing state
 
