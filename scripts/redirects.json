@@ -1242,5 +1242,12 @@
         "value": {
             "targetUrl": "/quill/networking/dns-and-ip-configuration"
         }
+    },
+    {
+        "key": "/indexes/querying/exploration-queries",
+        "value": {
+            "targetUrl": "/querying/filtering-query-results/exploration-queries",
+            "minimumVersion": "7.2"
+        }
     }
 ]
