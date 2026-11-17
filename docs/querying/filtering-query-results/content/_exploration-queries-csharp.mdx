@@ -2257,12 +2257,15 @@ The following expressions can be used in an RQL `filter` clause:
     
 #### Quote string values
 
-Write string literals in quotes, for example `filter Address.Country == "USA"`.  
-An unquoted identifier such as `USA` is interpreted as a field name.  
-For example, `filter Address.Country == USA` compares `Address.Country` with a field named `USA`,  
-which can return no matches without reporting an error.
+Write string literals in single or double quotes, for example:  
+`filter Address.Country == "USA"` or `filter Address.Country == 'USA'`.
 
-Missing or misspelled field names can also produce unexpected results without reporting an error.
+An unquoted identifier such as `USA` is interpreted as a field name.  
+For example: `filter Address.Country == USA` compares the values of the `Address.Country` and `USA` fields  
+in the same document.  
+    
+Unintended field comparisons and missing or misspelled field names can produce unexpected results,  
+including no matches, without reporting an error.
 
 ---
 
