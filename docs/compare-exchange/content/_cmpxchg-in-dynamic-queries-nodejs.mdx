@@ -9,9 +9,19 @@ import CodeBlock from '@theme/CodeBlock';
   * **Project** compare-exchange values into the query results.    
   * **Filter** documents based on compare-exchange values.  
   
-* Dynamic queries are queries that do not rely on a predefined static index.  
-  When you run a dynamic query with a filtering condition, RavenDB automatically creates an auto-index to serve it.  
+* Dynamic queries are queries that do not rely on a predefined **static-index**.  
+  RavenDB uses a suitable existing **auto-index**, or creates one if needed,  
+  when a dynamic query includes one or more of the following:
+
+  * A `where` condition on fields other than the document ID,
+    or an ID condition not listed in [Query by document ID](../../querying/overview.mdx#3-query-a-collection---query-full-collection--query-by-id).
+  * An `order by` clause to sort the results.
+  * A `group by` clause to group the results.
+  * A `suggest()` call in the `select` clause to request term suggestions.
+
   Learn more about dynamic queries in the [Query overview](../../querying/overview.mdx).
+
+---
 
 * In this article: 
   * [Projecting compare-exchange values in query results](../../compare-exchange/cmpxchg-in-dynamic-queries.mdx#projecting-compare-exchange-values-in-query-results)  
@@ -34,7 +44,8 @@ import CodeBlock from '@theme/CodeBlock';
   * the number of guests (from the compare-exchange item's value), and  
   * the room number (from the document field).  
   
-* No auto-index is created in this case, since the query doesn’t apply any filters.
+* No auto-index is created in this case, since the query has no `where`, `order by`, or `group by` clause,  
+  and no `suggest()` call.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -100,8 +111,8 @@ select {
   If your compare-exchange value is of another type, you can still filter the results - 
   see the [next example](../../compare-exchange/cmpxchg-in-dynamic-queries.mdx#example-2---filtering-when-the-compare-exchange-value-is-an-object).
   
-* Since this query uses filtering, RavenDB will automatically create an auto-index to serve it.  
-  In this case, the auto-index `Auto/Users/ByEmail` will be created.  
+* Since this query has a `where` condition on `Email`, it is served by an auto-index;  
+  if no suitable one exists, RavenDB creates `Auto/Users/ByEmail`.
   
 <Tabs groupId='languageSyntax'>
 <TabItem value="RawQuery" label="RawQuery">
@@ -154,8 +165,8 @@ class User {
 
 * Retrieve the compare-exchange value outside the query, then use its content to build the filter logic.  
 
-* Since this query uses filtering, RavenDB will automatically create an auto-index to serve it.  
-  In this case, the auto-index `Auto/Users/ByEmail` will be created.
+* Since this query has `where` conditions on `Email`, it is served by an auto-index;  
+  if no suitable one exists, RavenDB creates `Auto/Users/ByEmail`.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">

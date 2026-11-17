@@ -230,9 +230,35 @@ from "Employees" where id() = "employees/1-A"
 <br/>
 
 ```sql
-// Dynamic query - with filtering
+// Dynamic query - with a where condition
 // Data source: Auto-index (server uses an existing auto-index or creates a new one)
 from "Employees" where FirstName = "Laura"
+```
+<br/>
+
+```sql
+// Dynamic query - with sorting (no where condition)
+// Data source: Auto-index (server uses an existing auto-index or creates a new one)
+from "Employees" order by FirstName
+```
+<br/>
+
+```sql
+// Dynamic query - with grouping
+// Data source: Auto map-reduce index 
+// (server uses an existing auto map-reduce index or creates a new one)
+from "Orders"
+group by Company
+select count()
+```
+<br/>
+
+```sql
+// Dynamic query - requesting term suggestions
+// Data source: Auto-index with suggestions enabled for Name  
+// (server uses an existing auto-index or creates a new one)
+from "Products"
+select suggest(Name, "chaig")
 ```
 
 </ContentFrame>

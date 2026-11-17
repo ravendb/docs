@@ -240,6 +240,15 @@ from "Employees" where FirstName = "Laura"
 </CodeBlock>
 </TabItem>
 
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`// Dynamic query - with sorting (no filtering)
+// Data source: Auto-index (server uses an existing auto-index or creates a new one)
+from "Employees" order by FirstName
+`}
+</CodeBlock>
+</TabItem>
+
 </Admonition>
 
 <Admonition type="note" title="">

@@ -39,6 +39,10 @@ import CodeBlock from '@theme/CodeBlock';
 
 * Use `orderBy` or `orderByDescending` (see below) to order the results by the specified document field.
 
+* The query is served by an auto-index that includes the sorted field, even when no filtering is applied.  
+  For example, `from Employees order by FirstName` uses an auto-index that includes `FirstName`, creating one if needed.  
+  Learn more in [Query a collection - with filtering or sorting](../../../../client-api/session/querying/how-to-query.mdx#dynamicQuery).
+
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
 <CodeBlock language="php">
