@@ -302,10 +302,13 @@ where ShipToCountry == "poland" or CompanyCountry == "portugal"
 <Panel heading="Automatic score-based ordering">
 
 * By default, whenever boosting is applied, either via dynamic querying or when querying an index 
-  that has a boosting factor in its definition, the results will be automatically ordered by the score.  
+  that has a boosting factor in its definition, the results will be automatically ordered by the score, highest scores first.  
 
 * This behavior can be modified using the [OrderByScoreAutomaticallyWhenBoostingIsInvolved](../../server/configuration/indexing-configuration.mdx#indexingorderbyscoreautomaticallywhenboostingisinvolved)  
   configuration key.  
+
+* To explicitly control the score ordering, see [Order by score](../../querying/sorting-query-results/sort-query-results.mdx#order-by-score).  
+  `orderByScore()` lists the highest scores first, while `orderByScoreDescending()` lists the lowest scores first.
 
 * Refer to the [Get resulting score](../../querying/sorting-query-results/sort-query-results.mdx#get-resulting-score) 
   section to learn how to retrieve the calculated score of each result.  
