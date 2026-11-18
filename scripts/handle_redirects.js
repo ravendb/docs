@@ -31,7 +31,7 @@ const staticAssetRegex =
 const versionRegex = /^\/(\d+\.\d+)(\/.*)?/;
 
 // Kept in sync with markdown-export by its edge test.
-const MARKDOWN_VERSIONS = ["7.2", "7.1", "6.2"];
+const MARKDOWN_VERSIONS = ["7.2", "6.2"];
 const MARKDOWN_SECTIONS = ["cloud", "quill", "guides", "samples"];
 
 const markdownPageRegex = /^(.+?)((?:\.(?:csharp|java|python|php|nodejs))?\.md)$/;
