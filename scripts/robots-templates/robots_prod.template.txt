@@ -1,26 +1,31 @@
 # robots.txt for RavenDB Documentation
 User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Disallow: /templates/
 {{DISALLOW_LEGACY_VERSIONS}}
 Allow: /
 
 # AI Search Crawlers
 User-agent: GPTBot
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Disallow: /templates/
 {{DISALLOW_LEGACY_VERSIONS}}
 Allow: /
 
 User-agent: OAI-SearchBot
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Disallow: /templates/
 {{DISALLOW_LEGACY_VERSIONS}}
 Allow: /
 
 User-agent: ClaudeBot
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Disallow: /templates/
 {{DISALLOW_LEGACY_VERSIONS}}
 Allow: /
 
 User-agent: PerplexityBot
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Disallow: /templates/
 {{DISALLOW_LEGACY_VERSIONS}}
 Allow: /
