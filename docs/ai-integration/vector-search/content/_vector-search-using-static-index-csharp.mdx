@@ -99,11 +99,11 @@ For numerical input only - define the size of the array from your source documen
 
 **Number of edges** -  
 Specify the number of edges that will be created for a vector during indexing.  
-If not specified, the default value is taken from the following configuration key: [Indexing.Corax.VectorSearch.DefaultNumberOfEdges](../../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofedges).
+If not specified, the default value is taken from the following configuration key: [Indexing.Corax.VectorSearch.DefaultNumberOfEdges](../../../ai-integration/vector-search/configuration.mdx#indexingcoraxvectorsearchdefaultnumberofedges).
 
 **Number of candidates for indexing time** -   
 The  number of candidates (potential neighboring vectors) that RavenDB evaluates during vector indexing.  
-If not specified, the default value is taken from the following configuration key: [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForIndexing](../../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforindexing).   
+If not specified, the default value is taken from the following configuration key: [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForIndexing](../../../ai-integration/vector-search/configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforindexing).   
 (Note, this param differs from the number of candidates for query time).
 
 </Admonition>
@@ -146,17 +146,22 @@ You can specify the minimum similarity to use when searching for related vectors
     
 A value closer to `1.0f` requires **higher** similarity between vectors, while a value closer to `0.0f` allows for **less** similarity.  
     
-If not specified, the default value is taken from the following configuration key: [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity](../../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultminimumsimilarity).
+If not specified, the default value is taken from the following configuration key: [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity](../../../ai-integration/vector-search/configuration.mdx#indexingcoraxvectorsearchdefaultminimumsimilarity).
 
 **Number of candidates at query time** -  
-You can specify the maximum number of vectors that RavenDB will return from a graph search.  
-The number of the resulting documents that correspond to these vectors may be:  
+You can specify the maximum number of matching vectors that RavenDB returns for each embedding used as search input.  
+If you supply multiple search texts with `ByTexts`, or an embeddings task splits the search term into chunks,  
+RavenDB runs a separate search for each resulting embedding, and the maximum applies to each search.  
+In approximate search, increasing this value can improve accuracy but requires more computation.
 
-  * lower than the number of candidates - when multiple vectors originated from the same document.   
-    
-  * higher than the number of candidates - when the same vector is shared between multiple documents.
+The number of documents returned may be:  
+  * **lower** than the number of candidates - when several matching vectors belong to the same document,  
+    or when fewer vectors meet the minimum similarity.
+  * **higher** than the number of candidates - when the same vector is shared between multiple documents,  
+    or when results from several searches are combined.
 
-If not specified, the default value is taken from the following configuration key: [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforquerying).
+If not specified, the default value is taken from the following configuration key:
+[Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../../ai-integration/vector-search/configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforquerying).
 
 **Search method** -  
 You can specify the search method at query time:  
@@ -176,7 +181,7 @@ The server will search for the most similar vectors in the indexed vector space,
 The documents that correspond to the resulting vectors are then returned to the client.
 
 By default, the resulting documents will be ordered by their score, with the highest scores (best matches) first.  
-You can modify this behavior using the [Indexing.Corax.VectorSearch.OrderByScoreAutomatically](../../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchorderbyscoreautomatically) configuration key.  
+You can modify this behavior using the [Indexing.Corax.VectorSearch.OrderByScoreAutomatically](../../../ai-integration/vector-search/configuration.mdx#indexingcoraxvectorsearchorderbyscoreautomatically) configuration key.  
 
 In addition, you can apply any of the 'order by' methods to your query, as explained in [Sort query results](../../../querying/sorting-query-results/sort-query-results.mdx).  
 `OrderByScore()` (`order by score()` in RQL) lists the most similar results (highest scores) first.  
@@ -464,7 +469,7 @@ where exact(vector.search(VectorFromText, $searchTerm, 0.82, 20))
 
 The index in this example defines a **vector field** named `VectorFromTextEmbeddings`.  
 It indexes text-embeddings that were generated by this
-[Embedding generation task](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configuring-an-embeddings-generation-task-from-the-studio).
+[Embedding generation task](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configuring-an-embeddings-generation-task-from-studio).
  
 <Tabs groupId='languageSyntax'>
 <TabItem value="LINQ_index" label="LINQ_index">
@@ -700,6 +705,9 @@ where exact(vector.search(VectorFromTextEmbeddings, $searchTerm, 0.75, 20))
 ```
 </TabItem>
 </Tabs>
+
+* To also retrieve the text of the chunks that matched the search term,  
+  see [Retrieving matching chunk text](../../../ai-integration/vector-search/more-querying-options.mdx#chunk-text-static-index-query).
     
 ---    
 
@@ -713,7 +721,7 @@ The index in this example is defined on the _Products_ collection,
 but the embeddings it indexes were generated from the related _Category_ documents:  
 
   * Each _Product_ document references a category via its `Category` field  (e.g., `categories/1-A`).  
-  * An [embeddings generation task](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configuring-an-embeddings-generation-task-from-the-studio)
+  * An [embeddings generation task](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configuring-an-embeddings-generation-task-from-studio)
     is defined on the _Categories_ collection and generates embeddings  
     from each category's `Name` field.  
   * For each product, `LoadVector` uses the product's `Category` value to load the embeddings generated  
@@ -975,6 +983,14 @@ where vector.search(CategoryVectorFromTextEmbeddings, $searchTerm, 0.75, 20)
 ```
 </TabItem>
 </Tabs>
+
+If you add [highlighting](../../../ai-integration/vector-search/more-querying-options.mdx#chunk-text-static-index-query) to this query,
+no [matching chunk text](../../../ai-integration/vector-search/more-querying-options.mdx#retrieving-matching-chunk-text) is currently returned.  
+The index loads embeddings from the related _Category_ documents, but the query returns _Product_ documents.  
+
+RavenDB looks for stored chunk text only in the embeddings documents of the returned _Product_ documents,  
+not in those of the related _Category_ documents.
+Learn more in [Supported queries and limitations](../../../ai-integration/vector-search/more-querying-options.mdx#supported-queries-and-limitations).
 
 ---
 
@@ -1634,12 +1650,12 @@ store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
 Execute a vector search using the index:  
 
   * Pass a textual search term to the `ByText` method,  
-    along with the ID of the embedding generation task that will convert the text into an embedding.
+    along with the identifier of the embedding generation task that will convert the text into an embedding.
   
   * The query is only meaningful if the vector field being searched contains numerical embeddings  
     generated using the same model as the one configured in the specified task.
 
-  * The specified task ID must reference an existing and **enabled** [Embeddings generation task](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx).  
+  * The specified task identifier must reference an existing and **enabled** [Embeddings generation task](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx).  
     If the task is not found or is disabled, RavenDB throws an `InvalidQueryException`.  
     To avoid this error, you can verify the task before issuing the query.  
     See [Get embeddings generation task details](../../../ai-integration/generating-embeddings/overview.mdx#get-embeddings-generation-task-details)
@@ -1966,7 +1982,7 @@ or vector.search(VectorFromText, $searchTerm2, 0.8)
     
 * **Vector search with filtering**:  
   You can also combine vector search with filtering conditions on regular (non-vector) fields in the same query.  
-  Learn more in [Combining vector search with regular filters](../../../ai-integration/vector-search/more-querying-options.mdx#combining-vector-search-with-regular-filters).
+  Learn more in [Combining vector search with other `where` conditions](../../../ai-integration/vector-search/more-querying-options.mdx#combining-vector-search-with-other-where-conditions).
 
 </Admonition>
 
