@@ -34,4 +34,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: FAKEACCESSKEY
           AWS_DEFAULT_REGION: us-east-1
         run: |
-          scripts/deploy.ps1 -DryRun -Versions "6.2,7.1" -CloudFrontDistributionId "FAKEDISTID" -S3BucketName "FAKEBUCKET"
+          scripts/deploy.ps1 -DryRun -Versions "6.2,7.2" -CloudFrontDistributionId "FAKEDISTID" -S3BucketName "FAKEBUCKET"

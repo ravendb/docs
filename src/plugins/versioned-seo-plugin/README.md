@@ -104,7 +104,7 @@ npm test                     # unit tests for redirects, rewrite, verifier, pari
 npm run validate-redirects   # schema + cycles + target-existence on scripts/redirects.json
 
 # strict build — fails on any unresolved canonical or any legacy page missing noindex
-DOCUSAURUS_VERSIONS='6.2, 7.1, current' \
+DOCUSAURUS_VERSIONS='6.2, current' \
   DOCUSAURUS_STRICT=true \
   DOCUSAURUS_STRICT_SEO=true \
   npm run build

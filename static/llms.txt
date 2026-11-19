@@ -22,10 +22,7 @@ Every page is also available as Markdown at its URL plus `.md`, for example http
 ## Versions
 
 - [7.2 (Current)](https://docs.ravendb.net/7.2/): Current version
-- [7.1](https://docs.ravendb.net/7.1/): Previous stable release
-- [7.0](https://docs.ravendb.net/7.0/): First 7.x release
 - [6.2](https://docs.ravendb.net/6.2/): Long-term support
-- [6.0](https://docs.ravendb.net/6.0/): Previous LTS
 
 ## Client API
 

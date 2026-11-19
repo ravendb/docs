@@ -4,7 +4,7 @@ const { ALGOLIA_APP_ID, ALGOLIA_INDEX_NAME } = require("./algolia.js");
 const indexSettings = require("./algolia-index-settings.json");
 
 const recordExtractor = ({ url, $, helpers }) => {
-    const LANDING_PAGES = ["", "/7.2", "/7.1", "/6.2", "/cloud", "/guides", "/samples", "/quill"];
+    const LANDING_PAGES = ["", "/7.2", "/6.2", "/cloud", "/guides", "/samples", "/quill"];
     const SECTION_LABELS = {
         guides: "Guides",
         cloud: "Cloud",

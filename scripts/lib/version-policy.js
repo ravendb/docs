@@ -9,10 +9,11 @@
 const CURRENT_VERSION = "7.2";
 
 // Non-current versions still supported and indexed.
-const ACTIVE_VERSIONS = ["7.1", "6.2"];
+const ACTIVE_VERSIONS = ["6.2"];
 
 // Older versions kept on disk but noindex'd.
 const LEGACY_VERSIONS = [
+    "7.1",
     "7.0",
     "6.0",
     "5.4",
