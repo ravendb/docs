@@ -1,0 +1,759 @@
+---
+title: "Monitoring RavenDB with the Datadog Integration"
+tags: [monitoring, integration, docker]
+icon: "metrics"
+description: "Set up Datadog's official RavenDB integration: the bundled dashboard, RavenDB logs, and alerts for down nodes, expiring certificates and stalled backups."
+published_at: 2026-11-19
+see_also:
+  - title: "Prometheus"
+    link: "monitoring/integrations/prometheus"
+    source: "docs"
+    path: "Server > Monitoring > Integrations"
+  - title: "Security Clearance and Permissions"
+    link: "server/security/authorization/security-clearance-and-permissions"
+    source: "docs"
+    path: "Server > Security > Authorization"
+  - title: "Leverage RavenDB Observability with Datadog"
+    link: "./leverage-ravendb-observability-with-datadog"
+    source: "guides"
+proficiency_level: "Beginner"
+author: "Paweł Lachowski"
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+import Image from "@theme/IdealImage";
+
+## Align RavenDB metrics with Datadog
+
+Continuous monitoring is how you learn that something is going wrong before your users do. A database rarely runs alone, though. It sits next to application servers, queues and caches, and each of them tends to come with its own console. When the database console is one more tab nobody keeps open, problems get noticed late, usually by someone else.
+
+Datadog gathers metrics and alerts from the whole system in one place, and RavenDB is part of that picture through Datadog's official RavenDB integration. The Datadog Agent reads the [Prometheus endpoint](https://docs.ravendb.net/monitoring/integrations/prometheus) that every RavenDB server already exposes and turns it into Datadog metrics, with a ready-made dashboard on top.
+
+Cluster health, CPU and memory, storage, backups, indexes, licensing and certificate expiry land next to the rest of your system, and RavenDB itself needs no configuration for it.
+
+Here is what each chapter covers:
+
+* [What you will need](#what-you-will-need) lists the tools, the Datadog plan and the RavenDB license feature the setup depends on.
+* [How the integration reads RavenDB](#how-the-integration-reads-ravendb) explains what the check collects, how often it runs, and which metric groups are opt-in.
+* [Install the integration and point it at RavenDB](#install-the-integration-and-point-it-at-ravendb) sets up the RavenDB tile in Datadog and runs the Agent with the RavenDB check in Docker.
+* [Check that data arrives](#check-that-data-arrives) confirms in the Agent's status and in Metrics Explorer that the check runs and its metrics reach Datadog.
+* [Explore the bundled dashboard](#explore-the-bundled-dashboard) walks through the ready-made RavenDB dashboard and the panels that need a word of explanation.
+* [Turn on database, index and collection metrics](#turn-on-database-index-and-collection-metrics) adds the opt-in metric groups and keeps the number of series they create under control.
+* [Send RavenDB logs to Datadog](#send-ravendb-logs-to-datadog) ships the server log and the audit log, and finds the entries behind a failing ETL task or subscription.
+* [Get alerted on the failures a CPU chart misses](#get-alerted-on-the-failures-a-cpu-chart-misses) builds monitors for a node that stops answering, an expiring certificate or license, and backups that stop or fail.
+* [Monitor a secured cluster](#monitor-a-secured-cluster) extends the setup to every node of a secured cluster, filters the dashboard by node and connects to RavenDB Cloud.
+
+## What you will need
+
+To follow along, you need:
+
+* [Docker](https://www.docker.com/), to run the Datadog Agent
+* A [Datadog](https://www.datadoghq.com/) account. The free plan covers everything in this guide except logs, which need Log Management, Datadog's paid log product. The free plan also keeps metrics for only one day.
+* A running [RavenDB](https://ravendb.net/) server whose license includes the Monitoring Endpoints feature
+
+The license is the one requirement that is easy to miss. The integration reads RavenDB's monitoring endpoint, and that endpoint is a licensed feature: without it, RavenDB answers every request with 402 Payment Required and the message "Your current license doesn't include the monitoring endpoints feature".
+
+Enterprise, AI and Developer licenses include it; Professional and Community licenses do not, and on RavenDB Cloud it is available for an additional fee. You can compare what each license covers on the [RavenDB pricing page](https://ravendb.net/buy).
+
+The Agent is Datadog's collector: a small program that runs next to your services and ships their metrics to your Datadog account. We will run it in a Docker container, which keeps the whole setup to a few files and one command.
+
+If you prefer to [install the Agent](https://docs.datadoghq.com/agent/) directly on the RavenDB machine, the check's configuration stays the same. The install command, the config folder and the commands that start and inspect the Agent differ, and we give them along the way.
+
+We tested this setup with RavenDB 7.2.6 and Datadog Agent 7.84.6, on a Datadog account on the free plan. The Let's Encrypt and RavenDB Cloud checks ran on RavenDB 7.2.7, and the logs part on a 14-day trial account.
+
+## How the integration reads RavenDB
+
+Every RavenDB server publishes its current state at `/admin/monitoring/v1/prometheus`, as plain text in the format of Prometheus, the open-source monitoring system. The endpoint is always on, so there is nothing to enable in RavenDB: no settings change, no exporter to install, no restart.
+
+The integration is a check that the Agent runs every 15 seconds. Each run reads the endpoint, renames every metric into Datadog's naming style, so `ravendb_cpu_machine_usage` becomes `ravendb.cpu.machine.usage`, and sends the values to Datadog. Each run also reports whether the read succeeded at all. That signal is what we will use later to find out when a node stops answering.
+
+Out of the box, the check collects server-level metrics: CPU, memory, network, storage, cluster state, backups, license and certificates. Database, index, collection and garbage collection (GC) metrics are opt-in, because they grow with your data: every database, index and collection adds its own set of time series. We will turn them on once the basics work.
+
+If you already send RavenDB metrics to Datadog over OpenTelemetry, as in our earlier guide [Leverage RavenDB Observability with Datadog](./leverage-ravendb-observability-with-datadog), that setup keeps working. The two routes name their metrics differently, though (`ravendb.server.resources.cpu.machine` there, `ravendb.cpu.machine.usage` here), so the dashboard and monitors in this guide need the integration. Next, we install it.
+
+## Install the integration and point it at RavenDB
+
+The integration has two halves. The Datadog side holds the dashboard, and the Agent side holds the check that reads RavenDB. We will set up both, starting in Datadog.
+
+### Install the tile in Datadog
+
+Each integration in Datadog has a tile: a page that describes the integration and installs its Datadog-side assets, such as dashboards. To install the RavenDB tile:
+
+1. In Datadog, open Integrations.
+2. Search for RavenDB and click the RavenDB tile.
+3. Click Install.
+
+The tile describes the integration and shows the Install button:
+
+<Image img={require("./assets/datadog-integration1.webp")} alt="The RavenDB integration tile in Datadog with its Install button" />
+
+Installing the tile is what adds the bundled "RavenDB" dashboard to your account; sending metrics alone doesn't. One click is all it takes, and once data arrives, the tile confirms that the integration is working:
+
+<Image img={require("./assets/datadog-integration2.webp")} alt="The RavenDB tile after installation" />
+
+The tile doesn't touch your Agent, though. The check itself still has to be added to the Agent, which is the next step.
+
+### Add the integration to the Agent
+
+The RavenDB integration lives in Datadog's community catalog, so the stock Agent image doesn't include it. We will build a small image of our own that adds it, give the Agent a config file that says where RavenDB is, and start everything with Docker Compose. Create a new folder for the four files that follow.
+
+First, the Dockerfile. It starts from the Agent image and installs the integration package at a fixed version, so every rebuild gives you the same check:
+
+```dockerfile
+FROM registry.datadoghq.com/agent:7.84.6
+RUN agent integration install -r -t datadog-ravendb==1.0.0
+```
+
+This is the route Datadog describes for community integrations in containers, on its [Use Community and Marketplace Integrations](https://docs.datadoghq.com/agent/guide/use-community-integrations/) page. The `-r` flag lets the install run as root, the user a Docker build runs as. To move to a newer version of the integration later, change the version number and rebuild.
+
+The same page covers host installs, where the command runs as the Agent's own user and needs no `-r`. On a Linux host, the command is `sudo -u dd-agent datadog-agent integration install -t datadog-ravendb==1.0.0`.
+
+On a Windows host, run `& "$env:ProgramFiles\Datadog\Datadog Agent\bin\agent.exe" integration install -t datadog-ravendb==1.0.0` in PowerShell as administrator.
+
+### Tell the Agent where RavenDB is
+
+The Agent looks for the check's configuration in a folder named after the integration, so create `ravendb.d/conf.yaml` next to the Dockerfile:
+
+```yaml
+init_config:
+
+instances:
+  - openmetrics_endpoint: http://host.docker.internal:8080/admin/monitoring/v1/prometheus
+    tags:
+      - ravendb_cluster:local
+      - ravendb_node:A
+      - node_tag:A
+```
+
+`openmetrics_endpoint` is the only required setting. The Agent runs inside a container, where `localhost` means the container itself, so we point it at `host.docker.internal`, Docker's name for the machine the container runs on. If your RavenDB listens on another port, change `8080` to match.
+
+The tags name the node and its cluster in Datadog, because RavenDB's metrics don't carry those labels themselves. The bundled dashboard uses all three: it splits its CPU, memory and disk charts by `ravendb_node`, filters every panel by `node_tag`, and shows its GC Pause % panel only for metrics with a `ravendb_cluster` tag.
+
+Set `ravendb_cluster` to a name of your choice, and both node tags to the node's tag, the letter RavenDB gives each node of a cluster. RavenDB Studio, the server's web interface, shows the node tag under Manage Server, then Cluster:
+
+<Image img={require("./assets/datadog-integration3.webp")} alt="The Cluster view in RavenDB Studio showing the node tag A" />
+
+For a host install, the same file goes to `/etc/datadog-agent/conf.d/ravendb.d/` on Linux or `C:\ProgramData\Datadog\conf.d\ravendb.d\` on Windows, with `localhost` in the endpoint.
+
+Restart the Agent to load it, with `sudo systemctl restart datadog-agent` on Linux or `& "$env:ProgramFiles\Datadog\Datadog Agent\bin\agent.exe" restart-service` on Windows, as listed on Datadog's [Agent Commands](https://docs.datadoghq.com/agent/configuration/agent-commands/) page.
+
+The check reads the endpoint every 15 seconds. To read it less often, add `min_collection_interval: 30` to the instance, in seconds. The node monitor later in this guide waits for three failed reads, so a longer interval also makes it slower to alert.
+
+To group RavenDB under a Datadog service, add `service: ravendb` to the instance. The check then adds the `service:ravendb` tag to every metric and to its health check. Set in `init_config` instead, the service applies to every instance, and an instance's own `service` takes precedence.
+
+The integration's [sample configuration](https://github.com/DataDog/integrations-extras/blob/master/ravendb/datadog_checks/ravendb/data/conf.yaml.example) lists every option the check takes, with its default. This guide covers each of them where it is needed.
+
+### Add the API key and start the Agent
+
+The API key and your Datadog site go into a `.env` file, so they stay out of the Compose file and out of Git:
+
+```text
+DD_API_KEY=<DATADOG_API_KEY>
+DD_SITE=<DATADOG_SITE>
+```
+
+To get the key, open Organization Settings in Datadog and pick [API Keys](https://docs.datadoghq.com/account_management/api-app-keys/). Application Keys is a separate page right next to it, and an application key won't authenticate the Agent. For `DD_SITE`, use the [Datadog site](https://docs.datadoghq.com/getting_started/site/) your account belongs to, for example `datadoghq.com` or `datadoghq.eu`.
+
+Finally, `docker-compose.yml` ties it together:
+
+```yaml
+services:
+  datadog-agent:
+    build: .
+    container_name: dd-agent
+    env_file: .env
+    environment:
+      - DD_HOSTNAME=ravendb-host
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./ravendb.d:/etc/datadog-agent/conf.d/ravendb.d:ro
+    restart: unless-stopped
+```
+
+The volume mounts our `ravendb.d` folder where the Agent reads check configs. `DD_HOSTNAME` gives the Agent a readable host name, which inside a container it can't work out on its own. `restart: unless-stopped` starts the Agent again after a crash or a reboot, unless you stopped it yourself.
+
+`extra_hosts` maps `host.docker.internal` to the host through Docker's [`host-gateway`](https://docs.docker.com/reference/cli/docker/container/run/#add-host) value. On Docker Desktop, this reaches a RavenDB bound to 127.0.0.1 with no change to RavenDB.
+
+On Linux with Docker Engine, `host-gateway` leads to the Docker bridge, where a RavenDB bound to 127.0.0.1 doesn't answer. Replace `extra_hosts` with `network_mode: host`, and use `localhost` in the endpoint.
+
+If RavenDB runs in a container too, leave out `extra_hosts` and put both containers on the same Docker network. The Agent then reaches RavenDB by its container name, for example `http://ravendb:8080/admin/monitoring/v1/prometheus`.
+
+Open a terminal in the folder and start the Agent:
+
+```bash
+docker compose up -d --build
+```
+
+<Admonition type="warning" title="A local setup">
+
+An unsecured RavenDB is fine on a development machine and nowhere else. On a real server, run RavenDB with certificates and give the Agent a client certificate, as shown in [Monitor a secured cluster](#monitor-a-secured-cluster).
+
+</Admonition>
+
+## Check that data arrives
+
+Before heading to Datadog, ask the Agent itself whether the check runs:
+
+```bash
+docker exec dd-agent agent status
+```
+
+On a host install, run `sudo datadog-agent status` on Linux, or `& "$env:ProgramFiles\Datadog\Datadog Agent\bin\agent.exe" status` on Windows.
+
+Scroll to the Checks part of the output and find `ravendb`. A healthy check shows `[OK]`, 45 metric samples and 1 service check per run (46 samples when RavenDB runs on Linux, which also reports CPU IO wait):
+
+```text
+    ravendb (1.0.0)
+    ---------------
+      Instance ID: ravendb:9dd3dfe5e1d4da3 [OK]
+      Configuration Source: file:/etc/datadog-agent/conf.d/ravendb.d/conf.yaml[0]
+      Total Runs: 21
+      Metric Samples: Last Run: 45, Total: 945
+      Events: Last Run: 0, Total: 0
+      Service Checks: Last Run: 1, Total: 21
+      First Execution Time : 202ms
+      Average Execution Time : 26ms
+      Last Execution Date : 2026-11-18 08:30:30.126 UTC (1794990630126)
+      Last Successful Execution Date : 2026-11-18 08:30:30 UTC (1794990630000)
+```
+
+If the instance shows `[ERROR]` instead, the `Error:` line under it says why. These are the three you are most likely to meet:
+
+* `402 Client Error: Payment Required`: the license doesn't include the Monitoring Endpoints feature.
+* `Max retries exceeded ... NewConnectionError`: nothing listens at the URL in `conf.yaml`, so check the host and port.
+* `403 Client Error: Forbidden`: the server is secured and the Agent needs a client certificate.
+
+The URL in those messages ends in `?skipDatabasesMetrics=true&skipIndexesMetrics=true&skipCollectionsMetrics=true`. The check adds these flags itself, to keep the opt-in metric groups out until you turn them on.
+
+In our run, the first data showed up in Datadog about 35 seconds after `docker compose up`. Open Metrics, then Explorer, and type `ravendb` in the metric field. The list fills with the integration's metrics, and the panel on the right shows the type and tags of the one you point at:
+
+<Image img={require("./assets/datadog-integration4.webp")} alt="Metrics Explorer listing the ravendb metrics" />
+
+One detail matters for later: Datadog lowercases tag values. A database named `Demo` arrives as `database_name:demo`, and the node tag `A` shows as `a`, so monitor scopes use the lowercase form.
+
+## Explore the bundled dashboard
+
+Open the RavenDB tile again and go to its Monitoring Resources tab. It lists the "RavenDB" dashboard:
+
+<Image img={require("./assets/datadog-integration5.webp")} alt="The Monitoring Resources tab of the RavenDB tile, listing the RavenDB dashboard" />
+
+Click the dashboard to open it. Right after we installed the tile, the dashboard was missing from the Dashboard List search, so the tile is the quickest way in.
+
+The dashboard opens with two groups side by side. Overview shows the RavenDB version, the license type, and the days left on the license and on the server certificate. Network shows network load, concurrent requests and TCP connections, with node uptime and cluster elections between the two:
+
+<Image img={require("./assets/datadog-integration6.webp")} alt="The overview and network groups of the RavenDB dashboard" />
+
+Scrolling down, the resource utilization group compares the RavenDB process's CPU with the whole machine's and shows memory use, next to disk space and disk IO:
+
+<Image img={require("./assets/datadog-integration7.webp")} alt="The resource utilization and disk groups of the RavenDB dashboard" />
+
+Further down are databases and collections, indexes, and a logs stream. Right now the database, index and collection panels are empty, because those metric groups are opt-in. We will turn them on in the next section. The logs stream fills in once RavenDB's log reaches Datadog, which we set up right after that.
+
+A few panels need a word of explanation. "CPU IO Wait" stays empty when RavenDB runs on Windows, where RavenDB doesn't report IO wait. "Cluster Elections" stays empty in version 1.0.0 of the integration, because it queries `ravendb.cluster.current.term`, while the metric arrives as `ravendb.cluster.current.term.count`. The `ravendb_cluster` tag doesn't change that.
+
+To change a panel, such as pointing Cluster Elections at the right metric, work on a [copy of the dashboard](https://docs.datadoghq.com/dashboards/configure/): click Clone at the top right of the dashboard, or click Configure and pick Clone dashboard. Datadog suggests "RavenDB (cloned)" as the name of the copy.
+
+The dashboard's JSON is also in the integration's repository, as [ravendb_overview.json](https://github.com/DataDog/integrations-extras/blob/master/ravendb/assets/dashboards/ravendb_overview.json). To load it into a dashboard of your own:
+
+1. Create a new dashboard.
+2. Click Configure and pick Import dashboard JSON.
+
+The RavenDB dashboard itself doesn't offer Import dashboard JSON, only Clone dashboard.
+
+"Certificate Expires In" shows a negative value on an unsecured server, because a server without a certificate reports -1. On a secured server, it counts down the days to expiry.
+
+The panel to keep an eye on is "Database Alerts Count". It shows, for each database, how many alerts RavenDB has raised in that database's [notification center](https://docs.ravendb.net/monitoring/alerts-and-notifications/notification-center), the Studio panel that lists alerts and hints. It will be the base of one of our monitors.
+
+## Turn on database, index and collection metrics
+
+So far, the Agent collects server-level metrics only. To see each database's documents, backups and alerts, and each index's state, turn on the opt-in groups. The backup monitors later in this guide need them.
+
+Add four lines to the instance in `ravendb.d/conf.yaml`:
+
+```yaml
+init_config:
+
+instances:
+  - openmetrics_endpoint: http://host.docker.internal:8080/admin/monitoring/v1/prometheus
+    enable_database_metrics: true
+    enable_index_metrics: true
+    enable_collection_metrics: true
+    enable_gc_metrics: true
+    tags:
+      - ravendb_cluster:local
+      - ravendb_node:A
+      - node_tag:A
+```
+
+Behind the scenes, these options turn off the `skip*` flags we saw in the URL and add `includeGcMetrics`, which are the [endpoint's own parameters](https://docs.ravendb.net/monitoring/integrations/prometheus). The GC metrics feed the dashboard's "GC Pause %" panel, which also needs the `ravendb_cluster` tag. Restart the Agent to load the change:
+
+```bash
+docker compose restart
+```
+
+Within a minute, the Databases & Collections group on the dashboard fills in: request rate, write rate and request duration per database, the number of databases, and the Database Alerts Count panel:
+
+<Image img={require("./assets/datadog-integration8.webp")} alt="The Databases and Collections group of the RavenDB dashboard with data per database" />
+
+Further down, the storage and indexes panels fill in as well: storage size per database, document counts per collection, the number of indexes per database, stale indexes and indexing throughput:
+
+<Image img={require("./assets/datadog-integration9.webp")} alt="The storage and Indexes groups of the RavenDB dashboard" />
+
+Per-database metrics come from databases that are loaded. RavenDB unloads a database after 900 seconds without requests, the default of [`Databases.MaxIdleTimeInSec`](https://docs.ravendb.net/server/configuration/database-configuration#databasesmaxidletimeinsec), and its series pause until the next request wakes it up. If the database panels stay empty right after a restart, open the database in Studio or send it a request.
+
+### Keep the number of series down
+
+Each group adds its own time series. With the defaults, the check sends 45 series. Database metrics add 36 per database, index metrics 13 per index, collection metrics 5 per collection, and GC metrics 16. A database that was never backed up sends 35, because the backup age only appears after its first backup.
+
+On a database with 7 indexes and 9 collections, that comes to 233. Datadog counts these as standard integration metrics, not [custom metrics](https://docs.datadoghq.com/metrics/custom_metrics/), which the free plan doesn't include, so they work on the free plan.
+
+The count grows with your data: a server with 200 indexes sends 2,600 series for the indexes alone. The four `enable_*` options are the coarse control: RavenDB leaves a group that is off out of its response, so the Agent never receives it.
+
+For finer control, list the metrics you don't need under `exclude_metrics`. Each entry is a regular expression matched against the raw metric names from the endpoint, such as `ravendb_index_type`, so one entry can cover a whole family of metrics.
+
+This instance keeps all four groups but drops three per-index settings and the four size metrics of each collection, none of which the bundled dashboard uses:
+
+```yaml
+init_config:
+
+instances:
+  - openmetrics_endpoint: http://host.docker.internal:8080/admin/monitoring/v1/prometheus
+    enable_database_metrics: true
+    enable_index_metrics: true
+    enable_collection_metrics: true
+    enable_gc_metrics: true
+    exclude_metrics:
+      - ravendb_index_(lock_mode|priority|type)
+      - ravendb_collection_.*_size_bytes
+    tags:
+      - ravendb_cluster:local
+      - ravendb_node:A
+      - node_tag:A
+```
+
+On our test database with 7 indexes and 9 collections, this removed 57 series: 3 per index and 4 per collection.
+
+The Agent's general filter, `metric_patterns`, works as well, but it matches the Datadog names, with the dots escaped. The same exclusion there reads `ravendb\.index\.(lock\.mode|priority|type)$`.
+
+`metric_patterns` also takes an `include` list, which turns the filter around. With `include` set to `ravendb\.(cpu|memory)\.`, the check sent only its 14 CPU and memory series. The health check still ran, so the node monitor later in this guide keeps working.
+
+With the metrics in place, the next step is RavenDB's log.
+
+## Send RavenDB logs to Datadog
+
+Metrics show that something changed; RavenDB's log shows why. With the log in Datadog, a spike on the dashboard and the log lines written in the same minute are one search apart, and the dashboard's "RavenDB Logs" panel fills in.
+
+Logs need Datadog Log Management, which the free plan doesn't include. The 14-day trial does, so you can try this part before choosing a plan. Metrics, the dashboard and the monitors keep working on the free plan either way.
+
+RavenDB writes its log to `server.log` in the `Logs` folder of the server directory. Each entry is one pipe-separated line that starts with a date, and some entries, such as the startup banner, span several lines.
+
+### Point the Agent at the log file
+
+The log goes into the same config file as the metrics. Add a `logs` entry at the end of `ravendb.d/conf.yaml`, at the same level as `instances`:
+
+```yaml
+logs:
+  - type: file
+    path: /var/log/ravendb/logs/*.log
+    service: ravendb
+    source: ravendb
+    tags:
+      - ravendb_node:A
+      - node_tag:A
+    log_processing_rules:
+      - type: multi_line
+        name: ravendb_multiline
+        pattern: '^\d{4}-\d{2}-\d{2}'
+      - type: exclude_at_match
+        name: skip_column_header
+        pattern: '^Date\|NodeTag\|'
+```
+
+`source: ravendb` is what the dashboard's logs panel searches for, and the `node_tag` tag lets the dashboard's node filter cover the logs too. The [multi-line rule](https://docs.datadoghq.com/agent/logs/advanced_log_collection/) starts a new entry at every line that begins with a date, so an entry that spans several lines arrives as one entry instead of one per line.
+
+The exclude rule drops the column header that RavenDB writes at the top of the file (`Date|NodeTag|...`), which would otherwise arrive as an entry of its own.
+
+### Turn on log collection
+
+The Agent doesn't collect logs until you tell it to, and it needs to see the `Logs` folder. Both changes go into `docker-compose.yml`:
+
+```yaml
+services:
+  datadog-agent:
+    build: .
+    container_name: dd-agent
+    env_file: .env
+    environment:
+      - DD_HOSTNAME=ravendb-host
+      - DD_LOGS_ENABLED=true
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./ravendb.d:/etc/datadog-agent/conf.d/ravendb.d:ro
+      - <RAVENDB_SERVER_FOLDER>/Logs:/var/log/ravendb/logs:ro
+    restart: unless-stopped
+```
+
+`DD_LOGS_ENABLED` switches on the Agent's [log collection](https://docs.datadoghq.com/containers/docker/log/). The new volume mounts RavenDB's `Logs` folder, read-only, at the path the `logs` entry reads from. Replace `<RAVENDB_SERVER_FOLDER>` with the folder RavenDB runs from.
+
+A restart doesn't pick up new environment variables or volumes, so recreate the container instead:
+
+```bash
+docker compose up -d
+```
+
+### Check that logs arrive
+
+The Agent's status now has a Logs Agent part. Run `docker exec dd-agent agent status` again and look for it:
+
+```text
+Logs Agent
+==========
+
+    Reliable: Sending compressed logs in HTTPS to agent-http-intake.logs.datadoghq.com. on port 443 (API Key: ********************************)
+    BytesSent: 459127
+    EncodedBytesSent: 3321
+    LogsProcessed: 187
+    LogsSent: 187
+    LogsTruncated: 0
+    RetryCount: 0
+```
+
+Further down, under Integrations, the `ravendb` entry shows `Status: OK` and `1 files tailed out of 1 files matching`. If it says no files match, the volume path and the `path` in `conf.yaml` don't meet.
+
+`LogsSent` grows only when RavenDB writes something new, because the Agent starts at the end of the file. On a quiet server, open a database in Studio to get a few fresh lines.
+
+In Datadog, open Logs and search for `source:ravendb`. The RavenDB entries appear with the `ravendb` service and your host name:
+
+<Image img={require("./assets/datadog-integration10.webp")} alt="RavenDB log entries in Datadog's Log Explorer" />
+
+Every entry arrives with status Info, WARN and ERROR lines included. The integration ships no log pipeline, so Datadog doesn't read the level that RavenDB writes into each line. The level is still in the line itself, for example `|WARN|`.
+
+The dashboard's "RavenDB Logs" panel fills in too. When you pick a node in the dashboard's `node_tag` filter, the panel narrows to that node's entries, thanks to the `node_tag` tag in the `logs` entry:
+
+<Image img={require("./assets/datadog-integration11.webp")} alt="The RavenDB Logs panel on the bundled dashboard" />
+
+### Find the entries behind a problem
+
+Datadog doesn't split RavenDB's entries into fields, so you find a problem's entries by searching for the words in them. Every RavenDB entry follows the column header that the exclude rule drops: `Date|NodeTag|Level|ThreadID|Resource|Component|Logger|Message|Data`.
+
+Resource is the database the entry belongs to, or a server-wide area such as Server or Cluster. Logger names the part of RavenDB that wrote the entry.
+
+Datadog's [log search](https://docs.datadoghq.com/logs/explorer/search_syntax/) splits a line into words at spaces and most punctuation, so the level and the database name are words of their own. A dotted name, such as a logger's, stays one word, so match its end with a wildcard: `*RavenEtl` finds `Raven.Server.Documents.ETL.Providers.Raven.RavenEtl`.
+
+An [ETL task](https://docs.ravendb.net/server/ongoing-tasks/etl/basics) that stopped delivering documents is one example. When the task's script fails, RavenDB writes a WARN entry for every document it skips, with the task and script names in quotes. This entry comes from our test task `broken-etl`, whose script `boom` always fails:
+
+```text
+2026-11-18 08:40:45.7655|A|WARN|47|Demo||Raven.Server.Documents.ETL.Providers.Raven.RavenEtl|Could not process ETL script for 'broken-etl/boom', skipping document: products/77-A|Raven.Client.Exceptions.Documents.Patching.JavaScriptException: At 25:3 Script failed for document ID ''. {"message":"test failure"}
+```
+
+To list only the ETL warnings of the `Demo` database, search for:
+
+```text
+source:ravendb *RavenEtl WARN Demo
+```
+
+In our run, the search returned all 154 warnings the failing task wrote, one for each skipped document.
+
+A [subscription](https://docs.ravendb.net/client-api/data-subscriptions/what-are-data-subscriptions) worker that can't connect is another example. RavenDB writes each connection attempt as an INFO entry from the `SubscriptionConnection` logger: `[CREATE]` when a connection arrives, and `[FAIL]` with the reason when RavenDB refuses the connection or it drops:
+
+```text
+2026-11-18 08:40:49.5498|A|INFO|128|Demo||Raven.Server.Documents.TcpHandlers.SubscriptionConnection|2026-11-18T08:40:49.5503968Z: [FAIL] for subscription 'orders-sub-logtest', id '122', for database 'Demo' on 'A' from 'client worker' with IP '127.0.0.1:51329', Raven.Client.Exceptions.Documents.Subscriptions.SubscriptionInUseException: Subscription orders-sub-logtest is occupied, connection cannot be opened
+```
+
+`SubscriptionInUseException` means another worker already holds the subscription. `SubscriptionDoesNotExistException` means the worker asked for a subscription name the database doesn't have. To see every refused or dropped connection, search for:
+
+```text
+source:ravendb *SubscriptionConnection FAIL
+```
+
+In our run, the search returned the 4 failed connections and none of the successful ones. These entries are INFO, so a search for WARN or ERROR would miss them.
+
+### Add the audit log
+
+RavenDB's [audit log](https://docs.ravendb.net/server/security/audit-log/audit-log-overview) answers a different question: who connected, with which certificate, and what they changed. It is available on secured servers only. It records every connection with the client certificate it used, refused ones included, and changes such as a new database or index.
+
+The audit log is off until `Security.AuditLog.FolderPath` in the server's `settings.json` points to a folder. RavenDB then writes `server.audit.log` there, in the same pipe-separated layout as `server.log`, with `Audit` as the logger.
+
+Because the layout is the same, the Agent reads the audit log with the same rules. Mount its folder next to the `Logs` folder in `docker-compose.yml`, and replace `<AUDIT_LOG_FOLDER>` with the folder you set:
+
+```yaml
+    volumes:
+      - ./ravendb.d:/etc/datadog-agent/conf.d/ravendb.d:ro
+      - <RAVENDB_SERVER_FOLDER>/Logs:/var/log/ravendb/logs:ro
+      - <AUDIT_LOG_FOLDER>:/var/log/ravendb/audit:ro
+```
+
+Then add a second item to the `logs` list in `ravendb.d/conf.yaml`. It differs from the first only in its `path`:
+
+```yaml
+logs:
+  - type: file
+    path: /var/log/ravendb/logs/*.log
+    service: ravendb
+    source: ravendb
+    tags:
+      - ravendb_node:A
+      - node_tag:A
+    log_processing_rules:
+      - type: multi_line
+        name: ravendb_multiline
+        pattern: '^\d{4}-\d{2}-\d{2}'
+      - type: exclude_at_match
+        name: skip_column_header
+        pattern: '^Date\|NodeTag\|'
+  - type: file
+    path: /var/log/ravendb/audit/*.log
+    service: ravendb
+    source: ravendb
+    tags:
+      - ravendb_node:A
+      - node_tag:A
+    log_processing_rules:
+      - type: multi_line
+        name: ravendb_multiline
+        pattern: '^\d{4}-\d{2}-\d{2}'
+      - type: exclude_at_match
+        name: skip_column_header
+        pattern: '^Date\|NodeTag\|'
+```
+
+Recreate the container with `docker compose up -d`. The Agent's status then lists both paths under `ravendb`, each with `1 files tailed out of 1 files matching`.
+
+A connection with a certificate RavenDB doesn't know is logged with the status `UnfamiliarCertificate`, so this search lists them:
+
+```text
+source:ravendb UnfamiliarCertificate
+```
+
+In our run, two connections with unknown certificates showed up as 4 entries: one when each connection opened and one when it closed.
+
+With metrics and logs in Datadog, the next step is having Datadog tell you when something goes wrong.
+
+## Get alerted on the failures a CPU chart misses
+
+A CPU monitor is the usual first alert, and the [OpenTelemetry guide](./leverage-ravendb-observability-with-datadog) mentioned earlier walks through one. A CPU threshold has a blind spot, though: when a node stops answering, there is no CPU value at all, so the monitor has nothing to compare and stays quiet.
+
+The monitors in this section watch for the failures that look like silence: a node that stops answering, a certificate or license running out, and a backup that stopped running. Each one is a regular Datadog monitor, so you add recipients the way you do for any monitor, in the Configure notifications section of the editor.
+
+### Know when a node stops answering
+
+Besides metrics, every check run reports a service check: a status that Datadog keeps next to the metrics. This one is named `ravendb.openmetrics.health`. It is OK when the Agent read the endpoint and CRITICAL when it couldn't, whatever the reason: the node is down, the network is cut, or RavenDB refused the Agent's certificate. A monitor on it catches all three.
+
+To create it:
+
+1. In Datadog, open Monitors and click New Monitor.
+2. Pick [Service Check](https://docs.datadoghq.com/monitors/types/service_check/) as the monitor type.
+3. Under Pick a Service Check, choose `ravendb.openmetrics.health`.
+4. Under Set alert conditions, keep Check Alert, and under Trigger a separate alert for each, choose `ravendb_node`.
+5. Set Status: Critical to 3 consecutive failures.
+6. Write the message and add your recipients, then click Create and Publish.
+
+Steps 4 and 5 are the part that matters, one alert per node after three failed reads:
+
+<Image img={require("./assets/datadog-integration12.webp")} alt="The service check monitor set to alert per ravendb_node after 3 consecutive failures" />
+
+Three failures at the check's 15-second interval means the monitor waits about 45 seconds before it decides. When we stopped RavenDB, the monitor went to ALERT 85 seconds later, which includes Datadog's evaluation delay. It recovered to OK about 40 seconds after RavenDB came back:
+
+<Image img={require("./assets/datadog-integration13.webp")} alt="The node monitor in ALERT for ravendb_node:a" />
+
+Because the alert is split by `ravendb_node`, the notification names the node in trouble, which matters once you monitor a cluster.
+
+### Catch certificates and licenses before they expire
+
+RavenDB reports the time left on its license and on its server certificate in seconds. Both are easy to forget and both are fully predictable, which makes them the cheapest alerts to set up. A [Let's Encrypt certificate](https://docs.ravendb.net/server/security/authentication/lets-encrypt-certificates) from the RavenDB setup renews itself, so for it, this monitor is the safety net.
+
+The metric monitor editor can divide a query, so the monitor can work in days. The editor splits a monitor into parts: the metric query, how it is evaluated, and the thresholds. To build this one:
+
+1. Create a new [metric monitor](https://docs.datadoghq.com/monitors/types/metric/). Under Define the metric, switch to Source and enter `min:ravendb.license.expiration.left.seconds{*} by {ravendb_node} / 86400`.
+2. Under Evaluation Details, evaluate the minimum of the query over the last 5 minutes.
+3. Under Set alert conditions, trigger when the value is below the threshold, with 7 as the alert threshold and 30 as the warning threshold.
+
+The monitor then warns a month ahead and alerts a week ahead. The editor shows the division as a formula, `a / 86400`, and draws the preview in days:
+
+<Image img={require("./assets/datadog-integration14.webp")} alt="The license monitor with the expiry shown in days" />
+
+Export Monitor, next to the save buttons, shows the monitor as JSON:
+
+<Image img={require("./assets/datadog-integration15.webp")} alt="The Export Monitor dialog with the license monitor as JSON" />
+
+Its `query` field puts the metric query, the evaluation and the threshold into one line:
+
+```text
+min(last_5m):min:ravendb.license.expiration.left.seconds{*} by {ravendb_node} / 86400 < 7
+```
+
+The monitors below are written in this form. The part between the colon and the comparison goes into the source view, the aggregation and window at the start (`min(last_5m)`) go into Evaluation Details, and the comparison goes into the alert conditions.
+
+The certificate monitor uses the same setup with `ravendb.certificate.server.certificate.expiration.left.seconds`. Scope it to your secured servers only: an unsecured server reports -1 for the certificate, so on such a server the monitor fires the moment you save it. With the cluster tag from [Monitor a secured cluster](#monitor-a-secured-cluster), the query reads:
+
+```text
+min(last_5m):min:ravendb.certificate.server.certificate.expiration.left.seconds{ravendb_cluster:production} by {ravendb_node} / 86400 < 7
+```
+
+On our unsecured test server, where we left the scope at `*`, the editor's preview already counted an alert before the monitor was saved:
+
+<Image img={require("./assets/datadog-integration16.webp")} alt="The certificate monitor editor with the expiry in days and one alert in the preview" />
+
+### Notice when backups stop
+
+A [periodic backup](https://docs.ravendb.net/backup/create/periodic-tasks/database-backup) that stopped running doesn't make any noise. The metric `ravendb.database.time.since.last.backup.seconds` counts the time since each database's last successful backup, so a monitor on it notices when that time grows past your backup interval.
+
+For a daily backup, 26 hours gives the backup two hours of slack:
+
+```text
+max(last_15m):max:ravendb.database.time.since.last.backup.seconds{*} by {database_name} > 93600
+```
+
+The editor shows the threshold as "1d 2h", since the metric is in seconds:
+
+<Image img={require("./assets/datadog-integration17.webp")} alt="The backup monitor with a threshold of 1d 2h per database" />
+
+The metric has three properties worth knowing before you rely on it:
+
+* A database that was never backed up sends no value, so it never appears in the monitor. A single manual backup starts its series.
+* A failed backup doesn't reset the age. The monitor fires once the threshold passes, not at the moment of the failure.
+* An idle database that RavenDB unloaded sends nothing, and its group goes to No Data. What happens then is decided by "If data is missing for 5 minutes" under Set alert conditions, which shows the last known status by default.
+
+The second point is what the next monitor is for.
+
+### Hear about a failed backup right away
+
+When a backup run fails, RavenDB raises an alert in the database's notification center, and `ravendb.database.alerts.count` goes up by one. This is the number the dashboard's "Database Alerts Count" panel shows. A monitor on it fires as soon as the alert appears:
+
+```text
+max(last_5m):max:ravendb.database.alerts.count{*} by {database_name} > 0
+```
+
+In the editor, that is the metric with max by `database_name`, evaluated as the maximum over the last 5 minutes:
+
+<Image img={require("./assets/datadog-integration18.webp")} alt="The alerts-count monitor editor grouped by database_name" />
+
+The count includes every alert in the notification center, such as a failing ETL task, so write the message as "check the database's notification center in Studio" rather than "backup failed". Performance hints have their own metric and don't count here.
+
+On our test server, two databases had open alerts, from a failing backup and a failing ETL task, and the monitor went to ALERT for both:
+
+<Image img={require("./assets/datadog-integration19.webp")} alt="The alerts-count monitor in ALERT for two databases" />
+
+Once you fix the cause, dismiss the alert in Studio: open the notification center with the bell button at the top of Studio and click the alert's X button:
+
+<Image img={require("./assets/datadog-integration20.webp")} alt="A failed backup alert in the Studio notification center" />
+
+The count drops to 0, and the monitor's group returns to OK when the 5-minute window has passed; in our run that took about 6 minutes.
+
+Both monitors group by `database_name`, which makes them Multi Alert monitors: under Aggregation, the editor reads "Multi Alert - Send a notification for each database_name meeting the condition". Each notification names its database.
+
+One more note for monitors of your own: RavenDB's three counters (`ravendb.cluster.current.term.count`, `ravendb.cluster.index.count` and `ravendb.network.total.requests.count`) arrive as the change since the previous read, not as a running total. A monitor on them sums the values over its window.
+
+With all five monitors saved, the Monitors list shows their state at a glance. On our unsecured test server with failing backups, three of them were in ALERT:
+
+<Image img={require("./assets/datadog-integration21.webp")} alt="The Monitors list with the five RavenDB monitors" />
+
+So far, every monitor watched a single unsecured node. The next section takes the setup to a secured cluster.
+
+## Monitor a secured cluster
+
+A production cluster adds two things to the setup: every node needs watching, and every request needs a client certificate.
+
+### One instance per node
+
+Each node exposes its own endpoint, so the Agent reads each node separately. The usual layout is one Agent per node, each reading its own node. Where the Agent can't run on the nodes, one Agent with one instance per node works the same way. Give every instance the same `ravendb_cluster` tag and its own node tags:
+
+```yaml
+init_config:
+
+instances:
+  - openmetrics_endpoint: https://a.example.ravendb.cloud/admin/monitoring/v1/prometheus
+    tls_cert: /etc/datadog-agent/ravendb-tls/agent.crt
+    tls_private_key: /etc/datadog-agent/ravendb-tls/agent.key
+    tags: [ravendb_cluster:production, ravendb_node:A, node_tag:A]
+  - openmetrics_endpoint: https://b.example.ravendb.cloud/admin/monitoring/v1/prometheus
+    tls_cert: /etc/datadog-agent/ravendb-tls/agent.crt
+    tls_private_key: /etc/datadog-agent/ravendb-tls/agent.key
+    tags: [ravendb_cluster:production, ravendb_node:B, node_tag:B]
+  - openmetrics_endpoint: https://c.example.ravendb.cloud/admin/monitoring/v1/prometheus
+    tls_cert: /etc/datadog-agent/ravendb-tls/agent.crt
+    tls_private_key: /etc/datadog-agent/ravendb-tls/agent.key
+    tags: [ravendb_cluster:production, ravendb_node:C, node_tag:C]
+```
+
+RavenDB attaches its own cluster ID and node tag only to `ravendb.server.info`, so these tags are what lets every other metric be split by cluster and node. When one node stops answering, only its instance fails, and the health monitor alerts for that node alone.
+
+We tested this on a local three-node cluster, once without certificates and once with certificates from our own certificate authority (CA), with one Agent and an instance per node. All three instances showed `[OK]` with 45 samples per run. When we stopped node C, only its instance went to `[ERROR]`, and only `ravendb_node:C` reported CRITICAL.
+
+When one Agent reads every node, all their metrics carry the Agent's host name, which is not where RavenDB runs. To leave it out, add `empty_default_hostname: true` to each instance. The metrics and the health check then arrive without a host, and the node tags tell the nodes apart. The dashboard's Hosts panel groups by host, so it stays empty with this option.
+
+Logs are the exception. The Agent reads RavenDB's log file from the disk of the machine it runs on, so one Agent collects one node's log. To get every node's log into Datadog, run an Agent on each node, with a `logs` entry that carries that node's `node_tag`.
+
+### Give the Agent a client certificate
+
+On a secured server, the monitoring endpoint needs a client certificate with [Operator](https://docs.ravendb.net/server/security/authorization/security-clearance-and-permissions#operator) clearance or higher. Operator gives admin access to all databases but can't change the cluster.
+
+A certificate with ValidUser clearance gets 403 Forbidden, with the message "Operator/ClusterAdmin access is required but not given to this certificate". A dedicated certificate for the Agent keeps its access to what it needs and can be revoked on its own. Client certificates belong to the whole cluster, so one certificate covers every node: in our test, a certificate registered on node A was accepted by B and C as well.
+
+To [generate it in Studio](https://docs.ravendb.net/server/security/authentication/certificate-management#generate-client-certificate):
+
+1. Open Manage Server, then User Access Management. In earlier versions, this page is called Certificates.
+2. Click Generate client certificate.
+3. Name it, for example `datadog-agent`, and set Security Clearance to Operator.
+
+With Operator selected, the dialog notes that the certificate gets access to all databases:
+
+<Image img={require("./assets/datadog-integration22.webp")} alt="The Generate client certificate dialog in Studio with Security Clearance set to Operator" />
+
+Click Generate certificate. The browser downloads the certificate package as a zip file.
+
+The package holds a `.pfx` file and the same certificate as a PEM pair: a `.crt` file with the certificate and a `.key` file with its private key, both in the text-based PEM format. The Agent takes the PEM pair. Copy the two files next to the Compose file, in a `ravendb-tls` folder, and mount it in `docker-compose.yml`:
+
+```yaml
+    volumes:
+      - ./ravendb.d:/etc/datadog-agent/conf.d/ravendb.d:ro
+      - ./ravendb-tls:/etc/datadog-agent/ravendb-tls:ro
+```
+
+On a host install, keep the two files in a folder the Agent's user can read (`dd-agent` on Linux, [`ddagentuser`](https://docs.datadoghq.com/agent/guide/windows-agent-ddagent-user/) on Windows), and point `tls_cert` and `tls_private_key` at them.
+
+With an Operator certificate, the check showed `[OK]` with 45 samples per run in our test, the same as on the unsecured node.
+
+The Agent's certificate has an end date of its own: Studio's Expire in field defaults to 60 months. Once it expires, RavenDB refuses the Agent and the node monitor alerts for every node, so generate a new certificate before then.
+
+The Agent checks the server's certificate too. A Let's Encrypt certificate from the RavenDB setup passes as is. A server certificate from your own CA needs one more line per instance, `tls_ca_cert`, pointing to the CA certificate; without it, the check fails with `CERTIFICATE_VERIFY_FAILED`.
+
+### Filter the dashboard by node
+
+With a node tag on every instance, the `node_tag` filter at the top of the dashboard switches the whole view between nodes. Every panel follows it, the logs panel included. Pick a node to see only its data, or keep `*` to see the cluster as a whole. The filter lists the nodes in lowercase, so node B is `b`.
+
+With `*`, the CPU, memory and disk charts draw one line per node, split by `ravendb_node`, so a node that runs hot stands out. The database and index panels group by database instead, so pick a node to see that node's numbers.
+
+Here, the dashboard shows node B of our three-node test cluster:
+
+<Image img={require("./assets/datadog-integration23.webp")} alt="The RavenDB dashboard filtered to node B of a three-node cluster" />
+
+### RavenDB Cloud
+
+On RavenDB Cloud, no Agent runs on the nodes, so one Agent outside Cloud reads them all, one instance per node URL, as above. First, enable the Monitoring feature for your product in the Cloud portal. It is disabled by default:
+
+<Image img={require("./assets/datadog-integration24.webp")} alt="The Monitoring feature in the RavenDB Cloud portal with its Enable button" />
+
+With Monitoring enabled, the nodes expose the endpoint the integration reads. The portal's Monitoring settings link to SNMP, Telegraf/Grafana and OpenTelemetry setups, and the Datadog integration needs none of them.
+
+The Agent connects with an Operator client certificate, like on any secured cluster: generate one in your product's Studio, as shown above. The Cloud server certificate passes the Agent's check as is, so `tls_ca_cert` isn't needed. Cloud accepts connections only from the addresses on the product's [Allowed IPs](https://docs.ravendb.net/cloud/cloud-security#managing-allowed-ips) list, so add the IP address of the machine the Agent runs on there.
+
+That completes the setup.
+
+## Summary
+
+We connected RavenDB to Datadog with nothing changed in RavenDB: a two-line Dockerfile, one config file and an installed tile gave us the bundled dashboard and the metrics behind it. On top of that, we built monitors for the failures a CPU chart can't show.
+
+* The integration reads the Prometheus endpoint every RavenDB server already exposes, so the only RavenDB requirement is a license with Monitoring Endpoints.
+* The `ravendb.openmetrics.health` check catches what a CPU threshold misses: a node that is down, unreachable or refusing the Agent.
+* Expiring licenses and certificates and overdue backups are predictable, so they are the cheapest alerts to set up.
+* Node tags on every instance and Multi Alert monitors make each notification name the node or database in trouble.
+
+If you prefer Grafana, see [Grafana Cloud Configuration with OpenTelemetry](./grafana-cloud-configuration-with-opentelemetry).
