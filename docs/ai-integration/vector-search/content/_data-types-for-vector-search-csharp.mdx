@@ -94,7 +94,8 @@ using System;
 using System.Runtime.InteropServices;
 
 float[] embedding = { 0.1f, 0.2f, 0.3f };
-string base64Embedding = Convert.ToBase64String(MemoryMarshal.AsBytes(embedding.AsSpan()));
+string base64Embedding =
+    Convert.ToBase64String(MemoryMarshal.AsBytes(embedding.AsSpan()));
 ```
 <br/>
 

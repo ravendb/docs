@@ -99,7 +99,7 @@ import Panel from '@site/src/components/Panel';
 
 <Panel heading="Creating an embeddings generation task">
 
-* An embeddings generation tasks can be created from:
+* An embeddings generation task can be created from:
     * The **AI Tasks view in the Studio**, where you can create, edit, and delete tasks. Learn more in [AI Tasks - list view](../../../ai-integration/ai-tasks-list-view.mdx).
     * The **Client API** - see [Configuring an embeddings generation task - from the Client API](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configuring-an-embeddings-generation-task-from-the-client-api)
 * From the Studio:  
@@ -154,11 +154,11 @@ import Panel from '@site/src/components/Panel';
 
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="Get_task_info_via_operataion" label="Get_task_info_via_operataion">
+<TabItem value="Get_task_info_via_operation" label="Get_task_info_via_operation">
 ```csharp
 // Define the get task operation, pass the task NAME
-var getOngoingTaskOp = 
-    new GetOngoingTaskInfoOperation("theEmbeddingsGenerationTaskName", OngoingTaskType.EmbeddingsGeneration);
+var getOngoingTaskOp = new GetOngoingTaskInfoOperation(
+    "theEmbeddingsGenerationTaskName", OngoingTaskType.EmbeddingsGeneration);
     
 // Execute the operation by passing it to Maintenance.Send
 // Explicitly cast the result to the "EmbeddingsGeneration" type 
@@ -180,7 +180,7 @@ if (task != null)
 // Define the get database record operation, pass your database name
 var getDatabaseRecordOp = new GetDatabaseRecordOperation("yourDatabaseName");
   
-// Execute the operation by passing it to Maintenance.Send
+// Execute the operation by passing it to Maintenance.Server.Send
 var dbRecord = store.Maintenance.Server.Send(getDatabaseRecordOp);
   
 // Access the list of embeddings generation tasks

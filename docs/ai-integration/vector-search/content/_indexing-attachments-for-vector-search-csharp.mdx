@@ -219,7 +219,8 @@ var byteArray3 = Encoding.UTF8.GetBytes(
     "An American grocery chain known for its fresh produce, " +
     "organic foods, and local meats.");
 var byteArray4 = Encoding.UTF8.GetBytes(
-    "An Asian grocery store specializing in ingredients for Japanese and Thai cuisine.");
+    "An Asian grocery store specializing in ingredients " +
+    "for Japanese and Thai cuisine.");
 var byteArray5 = Encoding.UTF8.GetBytes(
     "A rural general store offering homemade jams, " +
     "fresh-baked bread, and locally crafted gifts.");
@@ -781,7 +782,8 @@ public class Companies_ByVector_AllAttachments :
             
             // Load ALL local attachments from the document
             let attachments = LoadAttachments(company)
-                .Where(attachment => attachment.RemoteFlags == RemoteAttachmentFlags.None)
+                .Where(attachment =>
+                    attachment.RemoteFlags == RemoteAttachmentFlags.None)
             
             select new IndexEntry
             {

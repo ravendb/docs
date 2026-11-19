@@ -309,7 +309,8 @@ var addAiIntegrationTaskResult = store.Maintenance.Send(addEmbeddingsGenerationT
                 // Use a token budget of 2048 for each chunk.
                 Name: text.split(this.Name, 2048),
     
-                // Process the document 'Description' field using method text.splitParagraphs().
+                // Process the document 'Description' field
+                // using method text.splitParagraphs().
                 // Use an estimated token budget of 2048 for each chunk,
                 // with an estimated overlap budget of 128 tokens.
                 Description: text.splitParagraphs(this.Description, 2048, 128)
@@ -553,8 +554,9 @@ var addAiIntegrationTaskResult = store.Maintenance.Send(addEmbeddingsGenerationT
 
 ```csharp
 // The 'EmbeddingsGenerationConfiguration' class inherits from 'EtlConfiguration'
-// and provides the following specialized configurations for the embeddings generation task:
-// =========================================================================================
+// and provides the following specialized configurations
+// for the embeddings generation task:
+// ==============================================================================
 
 public class EmbeddingsGenerationConfiguration : EtlConfiguration<AiConnectionString>
 {
@@ -565,7 +567,8 @@ public class EmbeddingsGenerationConfiguration : EtlConfiguration<AiConnectionSt
     public VectorEmbeddingType Quantization { get; set; }
     public ChunkingOptions ChunkingOptionsForQuerying { get; set; }
     public TimeSpan EmbeddingsCacheExpiration { get; set; } = TimeSpan.FromDays(90);
-    public TimeSpan EmbeddingsCacheForQueryingExpiration { get; set; } = TimeSpan.FromDays(14);
+    public TimeSpan EmbeddingsCacheForQueryingExpiration { get; set; } =
+        TimeSpan.FromDays(14);
     public bool StoreChunkText { get; set; }
 }
 ```
@@ -639,7 +642,8 @@ public enum VectorEmbeddingType
 #### Deploying the embeddings generation task:
 
 ```csharp
-public AddEmbeddingsGenerationOperation(EmbeddingsGenerationConfiguration configuration);
+public AddEmbeddingsGenerationOperation(
+    EmbeddingsGenerationConfiguration configuration);
 ```
 
 ---
