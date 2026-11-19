@@ -314,7 +314,7 @@ When a sub-agent declares a parameter with this flag:
 
 * A value is accepted only if it is **inherited** - from a matching parameter on the parent agent or from a matching parameter provided when starting a conversation.  
 
-* If no matching value can be inherited, invoking the sub-agent fails with `MissingAiAgentParameterException`. The parent's LLM is not allowed to invent a value.  
+* If no matching value can be inherited, running a conversation of the parent agent will fail with a `MissingAiAgentParameterException`. The parent's LLM is not allowed to generate a value.  
 
 This is the mechanism used to keep sensitive values under human control while still
 benefiting from the multi-agent structure. It is declared **on the sub-agent's parameter**, which lets each agent state its own trust requirements independently of its parents.  
