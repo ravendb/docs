@@ -43,7 +43,7 @@ RavenDB allows you to choose the quantization format for the generated embedding
 The quantization format applies to how vectors are stored internally in the index, regardless of the client language used to submit the data.
 
 The selected quantization type determines the similarity search technique that will be applied.
-By default, raw text processed by the built-in model and numerical embeddings supplied in `Single` format are indexed as `Single`.
+By default, raw text processed by the built-in model and numerical embeddings supplied in `Single` format are indexed as `Single`.  
 For task-generated embeddings, see [Quantization and embeddings generation tasks](#quantization-and-embeddings-generation-tasks).
 
 The available quantization options are:  
@@ -267,7 +267,7 @@ For Studio configuration, see [Configure the vector field in the Studio](../../.
   the index receives numerical embeddings that the task has already generated and stored.
 
 * The task's `Quantization` setting determines their stored format.  
-  Configure it in [Studio](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configuring-an-embeddings-generation-task-from-the-studio)
+  Configure it in [Studio](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configuring-an-embeddings-generation-task-from-studio)
   or through the `quantization` property in the [Client API](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#syntax).
 
 * The index reads those stored embeddings and can apply further quantization to its indexed copy.  
@@ -455,6 +455,19 @@ For text queries, RavenDB uses the referenced task to embed the search term
 and prepares the query embedding in the index's format for the similarity comparison.
 
 </ContentFrame>    
+
+<Admonition type="note" title="">
+
+#### Quantization and chunk text retrieval
+
+* [Retrieving matching chunk text](../../../ai-integration/vector-search/more-querying-options.mdx#retrieving-matching-chunk-text)
+  currently returns no chunk fragments when the index stores the task's embeddings in a different format than the task,
+  as in the examples above (the task stores `Single` embeddings and the index stores an `Int8` copy).
+    
+* To retrieve chunk text, keep the index format the same as the format stored by the task.
+
+</Admonition>
+
 </Panel>
 
 <Panel heading="Field configuration methods in RQL">

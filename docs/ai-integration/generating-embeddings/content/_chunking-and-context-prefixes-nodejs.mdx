@@ -1,0 +1,283 @@
+import Admonition from '@theme/Admonition';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* An [embeddings generation task](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx) can split long text into smaller chunks before sending it to the AI provider,  
+  and can add a context prefix to each chunk.
+
+* This article explains the available chunking methods and how to add a context prefix to chunks.
+
+* In this article:
+    * [Chunking methods and tokens](#chunking-methods-and-tokens)
+    * [Adding a context prefix to chunks](#adding-a-context-prefix-to-chunks)
+
+</Admonition>
+
+<Panel heading="Chunking methods and tokens">
+
+**Tokens and processing limits**:  
+
+* A token is the fundamental unit that Large Language Models (LLMs) use to process text.  
+  AI service providers that generate embeddings from text enforce token limits for each processed text part.  
+  If a text exceeds the provider’s limit, it may be truncated or rejected.
+
+---
+    
+**Using chunking methods**:  
+
+* To handle lengthy text, select a chunking method in the task definition and specify a token budget per chunk.
+  RavenDB splits the input text according to the selected method and budget.
+
+* Token counting depends on the method:
+  * `PlainText: Split` and `HTML: Strip` use the `cl100k_base` tokenizer.
+  * The line and paragraph methods use Semantic Kernel's default estimate of approximately one token per four characters.
+
+* These counts can differ from those of the AI provider's model, so leave room below the model's input token limit
+  when choosing a budget. The provider and model are defined in the [connection string](../../../ai-integration/connection-strings/overview.mdx).
+
+* The AI provider generates a single embedding for each chunk.  
+  Depending on the maximum tokens per chunk setting, a single input text may result in multiple embeddings.
+
+* If the task [stores the text of each chunk](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#store-chunk-text),
+  a vector search can also return the chunks that matched the search term
+  (see [Retrieving matching chunk text](../../../ai-integration/vector-search/more-querying-options.mdx#retrieving-matching-chunk-text)).
+  The chunk size then also determines how much text each returned chunk contains.
+
+---
+    
+**Available chunking methods**:  
+
+RavenDB offers several chunking methods that can be applied per source type.  
+These methods determine how input text is split before being sent to the provider.  
+
+All methods accept a string or a string array. Each array element is chunked separately.
+
+<Admonition type="note" title="">
+
+* `PlainText: Split`  
+  Splits plain text at token boundaries using the `cl100k_base` tokenizer and the specified token budget.  
+  A chunk boundary can fall within a word.
+
+     **Applies to**:  
+     Fields containing a plain text string or an array of plain text strings.  
+     **Return Value**:   
+     A list of text chunks split at token boundaries.
+
+* `PlainText: Split Lines`  
+  Uses the Semantic Kernel _SplitPlainTextLines_ method.  
+  Splits plain text into segments using line breaks and other separators as needed to meet the estimated token budget.
+
+     **Applies to**:  
+     Fields containing a plain text string or an array of plain text strings.  
+     **Return value**:  
+     A list of plain text segments.
+
+* `PlainText: Split Paragraphs`  
+  Uses the Semantic Kernel _SplitPlainTextParagraphs_ method.  
+  Splits long text and groups the resulting segments into chunks using the specified estimated token budget.
+  Optionally, set the _overlapTokens_ parameter to add overlapping text between consecutive chunks.  
+  This helps preserve context continuity across paragraph boundaries.  
+  
+     **Applies to**:  
+     Fields containing a plain text string or an array of plain text strings.  
+     **Return value**:   
+     A list of text chunks, optionally with overlapping text.
+
+* `Markdown: Split Lines`   
+  Uses the Semantic Kernel _SplitMarkDownLines_ method.  
+  Splits Markdown content into segments using separator rules intended for Markdown and an estimated token budget.
+  Does not guarantee that each chunk contains complete Markdown constructs, such as an entire fenced code block.
+  
+     **Applies to**:  
+     Fields containing a Markdown string or an array of Markdown strings.  
+     **Return value**:   
+     A list of Markdown text segments.
+
+* `Markdown: Split Paragraphs`  
+  Uses the Semantic Kernel _SplitMarkdownParagraphs_ method.  
+  Splits long Markdown text and groups the resulting segments into chunks using an estimated token budget.
+  Optionally, set the _overlapTokens_ parameter to add overlapping text between consecutive chunks.
+  This helps preserve context continuity across paragraph boundaries.
+  Does not guarantee that each chunk contains complete Markdown constructs, such as an entire fenced code block.      
+  
+     **Applies to**:  
+     Fields containing a Markdown string or an array of Markdown strings.  
+     **Return value**:  
+     A list of Markdown text chunks, optionally with overlapping text.
+
+* `HTML: Strip`  
+  Removes HTML tags and splits the resulting plain text using the same method as `PlainText: Split`.
+
+     **Applies to**:  
+     Fields containing an HTML string or an array of HTML strings.  
+     **Return value**:  
+     A list of plain text chunks derived from the HTML content.
+
+</Admonition>
+    
+---    
+
+**Chunking method syntax for the JavaScript scripts**:  
+
+```js
+// Available text-splitting methods:
+// =================================
+
+// Plain text methods:
+text.split(text | [text], maxTokensPerLine);
+text.splitLines(text | [text], maxTokensPerLine);
+text.splitParagraphs(line | [line], maxTokensPerLine, overlapTokens?);
+
+// Markdown methods:
+markdown.splitLines(text | [text], maxTokensPerLine);
+markdown.splitParagraphs(line | [line], maxTokensPerLine, overlapTokens?);
+
+// HTML processing:
+html.strip(htmlText | [htmlText], maxTokensPerChunk);
+
+// Optional: prepend context before embedding:
+<chunking-method>(...).withContextPrefix(contextPrefix);
+<string | [string]>.withContextPrefix(contextPrefix);
+embeddings.generate({ ... }).withContextPrefix(contextPrefix);
+```
+<br/>
+
+| Parameter                                | Type      | Description                                                       |
+|------------------------------------------|-----------|------------------------------------------------------------------ |
+| **text**                                 | `string`  | A plain text or markdown string to split.                         |
+| **line**                                 | `string`  | A single line or paragraph of text.                               |
+| **[text] / [line]**                      | `string[]`| An array of text or lines to split into chunks.                   |
+| **htmlText**                             | `string`  | A string containing HTML content to process.                      |
+| **maxTokensPerChunk / maxTokensPerLine** | `number`  | Required. A positive token budget per chunk, counted or estimated according to the selected method. |
+| **overlapTokens**                        | `number` (optional) | The estimated token budget for overlapping text between consecutive paragraph chunks.<br/>Default is `0`. |
+| **contextPrefix**                        | `string`  | Text that is prepended to chunks before they are sent to the embedding model. Required when `withContextPrefix(...)` is used. Cannot be empty or whitespace-only.<br/>Learn more in [Adding a context prefix to chunks](#adding-a-context-prefix-to-chunks). |
+
+For string or string array values passed directly to `embeddings.generate`,  
+the task uses its [default script chunking options](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configure-an-embeddings-generation-task---define-source-using-script).
+
+</Panel>
+
+<Panel heading="Adding a context prefix to chunks">
+
+**Why add a context prefix?**  
+Use `withContextPrefix(contextPrefix)` in a [SCRIPT-based](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configure-an-embeddings-generation-task---define-source-using-script)
+embeddings task to prepend context to the text sent to the embedding model.
+This is useful when individual chunks omit identifying document information, such as a title, category, or company name.
+
+**Prefix value and formatting**:  
+In a script, `contextPrefix` can be a string literal, a document field such as `this.Title`, or any string expression produced by the script.
+RavenDB trims trailing whitespace from the prefix and inserts a single space between the prefix and the chunk content.
+
+**Stored chunk text**:  
+If the task [stores the text of each chunk](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#store-chunk-text),
+the stored text includes the prefix,
+so chunks returned by [Retrieving matching chunk text](../../../ai-integration/vector-search/more-querying-options.mdx#retrieving-matching-chunk-text) start with it.
+
+**Where to apply the prefix**:  
+You can apply the prefix in a script at three levels:
+
+	* **Per chunked field**:  
+	  Chain `withContextPrefix(...)` onto any chunking method result to prepend the prefix to every chunk generated from that field.
+
+	* **Per non-chunked field**:  
+	  Chain `withContextPrefix(...)` directly onto a raw string or string array.  
+	  The string, or each string in the array, is emitted without chunking and with the prefix prepended.
+
+	* **For all generated fields**:  
+	  Chain `withContextPrefix(...)` onto the `embeddings.generate({...})` call to apply the same prefix to every generated field.
+	  A field-level prefix takes priority and is not overwritten by this object-wide prefix.    
+    
+**Example**:  
+
+	```js
+	embeddings.generate({
+    
+	    // Per field - on a chunked value:
+	    // Prepend the document's category to every chunk generated from the Content field.
+	    Content: text.splitParagraphs(this.Content, 512).withContextPrefix(this.Category),
+
+	    // No field-level prefix is defined here,
+	    // so the object-wide prefix below will apply to this field.
+	    Summary: text.splitParagraphs(this.Summary, 512),
+
+	    // Per field - on a non-chunked value:
+	    // Emit the Title field without chunking, with a literal prefix prepended.
+	    Title: this.Title.withContextPrefix('Article title:')
+    
+	}).withContextPrefix(this.Title); // Object-wide prefix
+	```
+---    
+   
+#### SCRIPT vs PATHS context prefixes
+
+Use the [SCRIPT option](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configure-an-embeddings-generation-task---define-source-using-script)
+with `withContextPrefix(...)` when the prefix must be computed per document,  
+for example from `this.Title` or `this.Category`.
+
+For source paths configured through the [PATHS option](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configure-an-embeddings-generation-task---define-source-using-paths) in the Client API,
+you can set a constant prefix with the `chunkingOptions.contextPrefix` property in the relevant `EmbeddingPathConfiguration`.
+
+Unlike the SCRIPT option, the PATHS option applies the same prefix text to every document for that path.  
+It cannot use values from the document being processed, such as the document's own title or category.  
+For dynamic, per-document prefixes, use the SCRIPT option.
+
+This property is currently not exposed in Studio for path configurations.  
+You can set it through the Client API. For example:  
+
+```js
+{
+    path: "Description",
+    chunkingOptions: {
+        chunkingMethod: "PlainTextSplitParagraphs",
+        maxTokensPerChunk: 2048,
+        overlapTokens: 128,
+
+        // Prepended to every chunk produced from this path.
+        // In PATHS, this is the same constant text for every processed document.
+        // Its tokens count against 'maxTokensPerChunk'.
+        contextPrefix: "Category description:"
+    }
+}
+```    
+<br/>
+    
+---
+    
+#### Context prefix and the token budget
+
+When a context prefix is applied to chunked input, its tokens count against the configured _Max tokens per chunk_.
+RavenDB also accounts for the separating space inserted between the prefix and the chunk content.
+
+This means the effective token budget available for the original chunk content is reduced by the prefix.  
+Keep the prefix short and focused on the missing context, such as a title, category, or company name.
+
+If the prefix leaves no room for chunk content, the task fails with an error.
+The task also fails if _Overlap tokens_ is greater than or equal to the remaining effective chunk budget after the prefix is accounted for.
+
+This token-budget reduction does not apply when `withContextPrefix(...)` is used in a script on a non-chunked raw string or string array.
+In that case, the string, or each string in the array, is emitted without chunking and with the prefix prepended.
+
+---
+    
+#### When to use a context prefix
+
+Use a context prefix when important document-level information may be absent from individual chunks.  
+Common examples are a title, category, company name, product name, or other identifier that appears once in the document but is needed to interpret later chunks.
+
+A context prefix is especially useful for specific queries that include, or depend on, that identifying context.  
+For example, if users search for information about a particular company, adding the company name to each chunk can make matching more precise and help the relevant document rank higher.
+
+There is a trade-off.
+Because the prefix becomes part of the embedding input, it can make search results more focused, but it can also push borderline-relevant chunks lower.
+For broad category-level queries where users expect an exhaustive set of relevant results, this may reduce recall.
+
+Keep the prefix short and focused on the missing context.
+Do not use it to summarize the whole document.  
+For chunked input, the prefix consumes part of the token budget and may increase the number of generated chunks.
+
+If you are unsure whether to use a prefix, test it on a small sample of your own data.  
+Create two otherwise identical embeddings generation tasks, one with a context prefix and one without,  
+then compare precision, recall, or other relevant metrics for the queries your users actually issue.     
+    
+</Panel>
