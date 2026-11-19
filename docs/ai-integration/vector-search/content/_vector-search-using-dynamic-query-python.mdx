@@ -263,7 +263,11 @@ similar_products = list(
         session.advanced.raw_query(
             # Wrap the document field 'Name' with 'embedding.text'
             # to indicate the source data type
-            "from 'Products' where vector.search(embedding.text(Name), $searchTerm, 0.82, 20)"
+            (
+                "from 'Products' "
+                "where vector.search(embedding.text(Name), $searchTerm, 0.82, 20)"
+            ),
+            object_type=Product,
         )
         .add_parameter("searchTerm", "italian food")
         .wait_for_non_stale_results()
@@ -331,13 +335,15 @@ similar_categories = list(
 ```python
 similar_categories = list(
         session.advanced.raw_query(
-            # Specify the identifier of the task that generated the embeddings inside 'ai.task'
+            # Specify the identifier of the task that generated the embeddings
+            # inside 'ai.task'
             (
                 "from 'Categories' "
                 "where vector.search("
                     "embedding.text(Name, ai.task('id-for-task-open-ai')), "
                     "$searchTerm, 0.75)"
-            )
+            ),
+            object_type=Category,
         )
         .add_parameter("searchTerm", "candy")
         .wait_for_non_stale_results()
@@ -387,7 +393,8 @@ where vector.search(embedding.text(Name, ai.task('id-for-task-open-ai')), $searc
 <TabItem value="Class" label="Class">
 ```python
 # Sample class representing a document with various formats of numerical vectors
-# The embedding vectors for these fields here are generated externally by you (not by RavenDB).
+# The embedding vectors for these fields here are generated externally by you
+# (not by RavenDB).
 class Movie:
     def __init__(
         self,
@@ -542,7 +549,7 @@ similar_movies = list(
                 "from 'Movies' "
                 "where vector.search(tags_embedded_as_single, $queryVector, 0.85, 10)"
             ),
-            Movie,
+            object_type=Movie,
         )
         .add_parameter("queryVector", [6.599999904632568, 7.699999809265137])
         .wait_for_non_stale_results()

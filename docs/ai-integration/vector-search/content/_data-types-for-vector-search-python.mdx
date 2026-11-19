@@ -64,7 +64,6 @@ Use when you prioritize storage efficiency and query speed.
 Prepare these vectors using RavenDB's vector quantizer methods ([VectorQuantizer reference](../../../ai-integration/vector-search/quantization.mdx#vectorquantizer-reference)):
 
 * `VectorQuantizer.to_int8` returns a `list[int]` that includes the metadata required by RavenDB.
-* `VectorQuantizer.to_int1` returns a `list[int]` with one bit per dimension packed into bytes.
 
 </Admonition>
 
@@ -85,7 +84,7 @@ import struct
 
 embedding = [0.1, 0.2, 0.3]
 base64_embedding = base64.b64encode(
-    struct.pack("f" * len(embedding), *embedding)
+    struct.pack(f"<{len(embedding)}f", *embedding)
 ).decode("utf-8")
 ```
 <br/>

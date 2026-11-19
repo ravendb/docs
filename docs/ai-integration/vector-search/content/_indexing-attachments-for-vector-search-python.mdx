@@ -212,16 +212,21 @@ with store.open_session() as session:
 
     # Store the attachments in the documents:
     # =======================================
-    session.advanced.attachments.store(company1, "description.txt",
-        bytes1, "text/plain")
-    session.advanced.attachments.store(company2, "description.txt",
-        bytes2, "text/plain")
-    session.advanced.attachments.store(company3, "description.txt",
-        bytes3, "text/plain")
-    session.advanced.attachments.store(company4, "description.txt",
-        bytes4, "text/plain")
-    session.advanced.attachments.store(company5, "description.txt",
-        bytes5, "text/plain")
+    session.advanced.attachments.store(
+        company1, "description.txt", bytes1, "text/plain"
+    )
+    session.advanced.attachments.store(
+        company2, "description.txt", bytes2, "text/plain"
+    )
+    session.advanced.attachments.store(
+        company3, "description.txt", bytes3, "text/plain"
+    )
+    session.advanced.attachments.store(
+        company4, "description.txt", bytes4, "text/plain"
+    )
+    session.advanced.attachments.store(
+        company5, "description.txt", bytes5, "text/plain"
+    )
 
     session.save_changes()
 ```
@@ -377,9 +382,9 @@ v3 = [0.5, 0.6, 0.7, 0.8]
 
 # Prepare the embedding vectors as `bytes` to be stored as attachments:
 # =====================================================================
-bytes1 = struct.pack("f" * len(v1), *v1)
-bytes2 = struct.pack("f" * len(v2), *v2)
-bytes3 = struct.pack("f" * len(v3), *v3)
+bytes1 = struct.pack(f"<{len(v1)}f", *v1)
+bytes2 = struct.pack(f"<{len(v2)}f", *v2)
+bytes3 = struct.pack(f"<{len(v3)}f", *v3)
 
 with store.open_session() as session:
     # Load existing Company documents from RavenDB's sample data:
@@ -496,9 +501,9 @@ v3 = [0.5, 0.6, 0.7, 0.8]
 
 # Prepare the embedding vectors as a BASE64 string to be stored as attachments:
 # =============================================================================
-base64_for_v1 = base64.b64encode(struct.pack("f" * len(v1), *v1)).decode("utf-8")
-base64_for_v2 = base64.b64encode(struct.pack("f" * len(v2), *v2)).decode("utf-8")
-base64_for_v3 = base64.b64encode(struct.pack("f" * len(v3), *v3)).decode("utf-8")
+base64_for_v1 = base64.b64encode(struct.pack(f"<{len(v1)}f", *v1)).decode("utf-8")
+base64_for_v2 = base64.b64encode(struct.pack(f"<{len(v2)}f", *v2)).decode("utf-8")
+base64_for_v3 = base64.b64encode(struct.pack(f"<{len(v3)}f", *v3)).decode("utf-8")
 
 # Convert to bytes for streaming:
 # ===============================
@@ -646,11 +651,11 @@ v4 = [0.3, -0.6, 0.9, -0.9]
 
 # Prepare the embedding vectors as `bytes` to be stored as attachments:
 # =====================================================================
-bytes1 = struct.pack("f" * len(v1), *v1)
-bytes2 = struct.pack("f" * len(v2), *v2)
+bytes1 = struct.pack(f"<{len(v1)}f", *v1)
+bytes2 = struct.pack(f"<{len(v2)}f", *v2)
 
-bytes3 = struct.pack("f" * len(v3), *v3)
-bytes4 = struct.pack("f" * len(v4), *v4)
+bytes3 = struct.pack(f"<{len(v3)}f", *v3)
+bytes4 = struct.pack(f"<{len(v4)}f", *v4)
 
 with store.open_session() as session:
     # Load existing Company documents from RavenDB's sample data:

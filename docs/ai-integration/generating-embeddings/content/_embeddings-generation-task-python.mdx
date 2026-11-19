@@ -496,6 +496,7 @@ add_ai_integration_task_result = store.maintenance.send(
 * For example, to change the expiration period of the embeddings cache of an existing task:
 
     ```python
+    from datetime import timedelta
     from ravendb import (
         GetOngoingTaskInfoOperation,
         OngoingTaskType,
@@ -578,7 +579,8 @@ add_ai_integration_task_result = store.maintenance.send(
 #### The embeddings generation task configuration:
 
 ```python
-# The 'EmbeddingsGenerationConfiguration' class inherits from 'EtlConfiguration'
+# The 'EmbeddingsGenerationConfiguration' class inherits from
+# 'AbstractAiIntegrationConfiguration' (which extends 'EtlConfiguration')
 # and provides the following specialized configurations
 # for the embeddings generation task:
 # ==============================================================================
@@ -613,7 +615,7 @@ class EmbeddingPathConfiguration:
     chunking_options: ChunkingOptions
 
 class ChunkingOptions:
-    chunking_method: ChunkingMethod  # default: ChunkingMethod.PLAIN_TEXT_SPLIT
+    chunking_method: ChunkingMethod  # default: None (the server uses PLAIN_TEXT_SPLIT)
     max_tokens_per_chunk: int        # default: 512
 
     # 'overlap_tokens' is only applicable when chunking_method is
@@ -671,7 +673,7 @@ UpdateEmbeddingsGenerationOperation(
 |--------------------|---------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **task_id**        | `int`                                 | The current ID of the embeddings generation task to update. The ID changes after each update.                                                                                                                                                                                  |
 | **configuration**  | `EmbeddingsGenerationConfiguration`   | The updated task configuration.                                                                                                                                                                                                                                                |
-| **starting_point** | `Optional[StartingPointChangeVector]` | Optional. Default: `None` (`StartingPointChangeVector.DO_NOT_CHANGE`).                                                                                                                                                                                                         |
+| **starting_point** | `Optional[StartingPointChangeVector]` | Not used by embeddings generation tasks (the server ignores it).<br/>Because it comes before `reset`, pass `reset` by keyword (`reset=True`).                                                                                                                                  |
 | **reset**          | `bool`                                | `True` - process all documents in the task's collection again. <br/> `False` (default) - keep saved processing progress. Switching between Paths and Script can still cause reprocessing; see [Modify the task - from the Client API](#modify-the-task---from-the-client-api). |
     
 </Panel>

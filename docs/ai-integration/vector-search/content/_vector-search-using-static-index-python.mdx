@@ -285,7 +285,10 @@ class Products_ByVector_Text_JS(AbstractJavaScriptIndexCreationTask):
 ```python
 index_definition = IndexDefinition(
     name="Products/ByVector/Text",
-    maps={"from p in docs.Products select new { vector_from_text = CreateVector(p.Name) }"},
+    maps={
+        "from p in docs.Products "
+        "select new { vector_from_text = CreateVector(p.Name) }"
+    },
     fields={
         "vector_from_text": IndexFieldOptions(
             vector=VectorOptions(
@@ -323,7 +326,8 @@ similar_products = list(
             minimum_similarity=0.82,
             # Optionally, specify the number of candidates for querying
             number_of_candidates=20,
-            # Optionally, specify whether the vector search should use the 'exact search method'
+            # Optionally, specify whether the vector search
+            # should use the 'exact search method'
             is_exact=True,
         )
         # Waiting for not-stale results is not mandatory
@@ -417,7 +421,8 @@ class Categories_ByPreMadeTextEmbeddings_JS(AbstractJavaScriptIndexCreationTask)
                 vector=VectorOptions(
                     # Vector options can be customized
                     # in the same way as the above index example,
-                    # but 'source_embedding_type' must match the quantization set in the task
+                    # but 'source_embedding_type' must match
+                    # the quantization set in the task
                     # (default: VectorEmbeddingType.SINGLE).
                 )
             )
@@ -484,7 +489,8 @@ similar_categories = list(
             minimum_similarity=0.75,
             # Optionally, specify the number of candidates for querying
             number_of_candidates=20,
-            # Optionally, specify whether the vector search should use the 'exact search method'
+            # Optionally, specify whether the vector search
+            # should use the 'exact search method'
             is_exact=True,
         )
         # Waiting for not-stale results is not mandatory
@@ -501,7 +507,9 @@ similar_categories = list(
                 "from index 'Categories/ByPreMadeTextEmbeddings' "
                 # Optionally, wrap the 'vector.search' query with 'exact()'
                 # to perform an exact search
-                "where exact(vector.search(vector_from_text_embeddings, $searchTerm, 0.75, 20))"
+                "where exact(vector.search("
+                    "vector_from_text_embeddings, "
+                    "$searchTerm, 0.75, 20))"
             ),
             object_type=Category,
         )
@@ -612,7 +620,8 @@ class Products_ByCategoryVector_JS(AbstractJavaScriptIndexCreationTask):
                 vector=VectorOptions(
                     # Vector options can be customized
                     # in the same way as the above index examples,
-                    # but 'source_embedding_type' must match the quantization set in the task
+                    # but 'source_embedding_type' must match
+                    # the quantization set in the task
                     # (default: VectorEmbeddingType.SINGLE).
                 )
             )
@@ -934,7 +943,10 @@ class Movies_ByVector_Int8(AbstractIndexCreationTask):
         # (arrays of 8-bit integer values).
         self.map = (
             "from m in docs.Movies "
-            "select new { vector_from_int8_arrays = CreateVector(m.tags_embedded_as_int8) }"
+            "select new "
+            "{"
+            "   vector_from_int8_arrays = CreateVector(m.tags_embedded_as_int8)"
+            "}"
         )
 
         # Customize the vector field using VectorOptions:
@@ -1030,7 +1042,7 @@ similar_movies = list(
             # Provide the vector for the similarity comparison
             # (Note: provide a single vector)
             # The provided vector MUST be in the same format as was stored in your document
-            # Call 'VectorQuantizer.to_int8' to transform the rawData to the Int8 format
+            # Call 'VectorQuantizer.to_int8' to transform the raw data to the Int8 format
             VectorQuantizer.to_int8([0.1, 0.2]),
         )
         .wait_for_non_stale_results()
@@ -1087,7 +1099,8 @@ class Movies_ByVectorFromPhoto(AbstractIndexCreationTask):
             VectorOptions(
                 source_embedding_type=VectorEmbeddingType.SINGLE,
                 destination_embedding_type=VectorEmbeddingType.SINGLE,
-                # Dimensions should match the embedding size, 6 is only for our simple example...
+                # Dimensions should match the embedding size,
+                # 6 is only for our simple example...
                 dimensions=6,
             ),
         )

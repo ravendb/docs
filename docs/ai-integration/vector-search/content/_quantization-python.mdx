@@ -614,11 +614,6 @@ class VectorQuantizer:
     @staticmethod
     def to_int8(raw_embedding: List[float]) -> List[int]:
         ...
-
-    # Quantizes to Binary, packing one bit per dimension into a byte array
-    @staticmethod
-    def to_int1(raw_embedding: List[float]) -> List[int]:
-        ...
 ```
 
 </Panel>
