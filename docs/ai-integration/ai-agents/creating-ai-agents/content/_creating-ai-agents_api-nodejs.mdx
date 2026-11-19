@@ -1148,7 +1148,7 @@ const result = await documentStore.ai.deleteAgent("reward-productive-employee");
     
 ### Agent configuration
     
-`AiAgentConfiguration`
+`AiAgentConfiguration`:
     
 <TabItem>
 ```js
@@ -1199,8 +1199,10 @@ const result = await documentStore.ai.deleteAgent("reward-productive-employee");
 }
 ```    
 </TabItem> 
-    
-`AiAgentToolQuery`
+
+<br />
+
+`AiAgentToolQuery`:
     
 <TabItem>
 ```js
@@ -1229,8 +1231,10 @@ const result = await documentStore.ai.deleteAgent("reward-productive-employee");
 }
 ```    
 </TabItem>    
-    
-`AiAgentToolQueryOptions`
+
+<br />
+
+`AiAgentToolQueryOptions`:
     
 <TabItem>
 ```js
@@ -1250,7 +1254,9 @@ const result = await documentStore.ai.deleteAgent("reward-productive-employee");
 ```    
 </TabItem> 
 
-`AiAgentToolAction`
+<br />
+
+`AiAgentToolAction`:
     
 <TabItem>
 ```js
@@ -1275,8 +1281,10 @@ const result = await documentStore.ai.deleteAgent("reward-productive-employee");
 }
 ```    
 </TabItem>
-    
-`AiAgentParameter`
+
+<br />
+
+`AiAgentParameter`:
     
 <TabItem>
 ```js
@@ -1298,7 +1306,9 @@ const result = await documentStore.ai.deleteAgent("reward-productive-employee");
 ```    
 </TabItem>
 
-`AiAgentChatTrimmingConfiguration`
+<br />
+
+`AiAgentChatTrimmingConfiguration`:
     
 <TabItem>
 ```js
@@ -1314,13 +1324,27 @@ const result = await documentStore.ai.deleteAgent("reward-productive-employee");
 }
 ```    
 </TabItem>
-    
-`AiAgentSummarizationByTokens`
+
+<br />
+
+`AiAgentSummarizationByTokens`:
     
 <TabItem>
 ```js
 // The chat summarization configuration object
 {
+    // The instructions RavenDB sends to the LLM at the beginning of a summarization request.
+    // If not set, RavenDB uses the value of the SummarizationTaskBeginningPrompt configuration key.
+    summarizationTaskBeginningPrompt, // string
+    
+    // The prompt RavenDB sends to the LLM at the end of a summarization request.
+    // If not set, RavenDB uses the value of the SummarizationTaskEndPrompt configuration key.
+    summarizationTaskEndPrompt, // string
+    
+    // The prefix text RavenDB places before the conversation's summary.
+    // If not set, RavenDB uses the value of the SummarizationResultPrefix configuration key.
+    resultPrefix, // string
+    
     // Summarization will be triggered when the total number of tokens used in the conversation
     // exceeds this limit.
     maxTokensBeforeSummarization, // number
@@ -1332,8 +1356,10 @@ const result = await documentStore.ai.deleteAgent("reward-productive-employee");
 }
 ```    
 </TabItem>
-    
-`AiAgentHistoryConfiguration`
+
+<br />
+
+`AiAgentHistoryConfiguration`:
     
 <TabItem>
 ```js
@@ -1390,7 +1416,7 @@ documentStore.ai.conversation(agentId, conversationId, creationOptions, changeVe
 | **creationOptions** | `object` | Conversation creation options. |
 | **changeVector**    | `string` | An optional change vector for concurrency control. |
     
-`AiConversationCreationOptions`
+`AiConversationCreationOptions`:
     
 <TabItem>
 ```js

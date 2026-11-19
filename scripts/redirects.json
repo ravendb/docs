@@ -176,7 +176,7 @@
     {
         "key": "/ai-integration/ai-agents/ai-agents_configuration",
         "value": {
-            "targetUrl": "/ai-integration/configuration",
+            "targetUrl": "/ai-integration/ai-agents/configuration",
             "minimumVersion": "7.2"
         }
     },

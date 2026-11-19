@@ -2222,7 +2222,7 @@ class AiAgentSummarizationByTokens
 | Property | Type | Description |
 |----------|------|-------------|
 | **SummarizationTaskBeginningPrompt** | `string` | Instruction text prepended to the conversation when requesting a summary. Sent with the `system` role. Customize it to influence the structure, tone, or depth of the generated summary. |
-| **SummarizationTaskEndPrompt** | `string` | The user-role message that triggers the summarization process. Sent immediately after the system prompt. |
+| **SummarizationTaskEndPrompt** | `string` | The user-role message that triggers the summarization process. Sent at the end of the [summarization request](../../../../ai-integration/ai-agents/configuration.mdx#aiagenttrimmingsummarizationsummarizationtaskbeginningprompt), after the conversation's messages. |
 | **ResultPrefix** | `string` | Text prefix that appears before the generated summary of the previous conversation. |
 | **MaxTokensBeforeSummarization** | `long?` | Maximum number of tokens allowed before summarization is triggered. |
 | **MaxTokensAfterSummarization** | `long?` | Maximum number of tokens allowed in the generated summary. Default: `1024`. |
