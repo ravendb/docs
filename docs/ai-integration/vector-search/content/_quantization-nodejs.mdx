@@ -84,7 +84,7 @@ In the following example:
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
 ```js
-const similarProducts = await session.query({collection: "Products"})
+const similarProducts = await session.query({ collection: "Products" })
     .vectorSearch(
         field => field
              // Specify the source text field for the embeddings
@@ -137,7 +137,7 @@ where vector.search(embedding.text_i8(Name), $searchTerm)
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
 ```js
-const similarMovies = await session.query({collection: "Movies"})
+const similarMovies = await session.query({ collection: "Movies" })
     .vectorSearch(
         field => field
              // Specify the source field and its type
@@ -308,7 +308,7 @@ In the following example:
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
 ```js
-const similarCategories = await session.query({collection: "Categories"})
+const similarCategories = await session.query({ collection: "Categories" })
     .vectorSearch(
         field => field
             .withText("Name")

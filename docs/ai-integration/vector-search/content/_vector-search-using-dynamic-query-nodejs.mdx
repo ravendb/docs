@@ -237,7 +237,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
 ```js
-const similarProducts = await session.query({collection: "Products"})
+const similarProducts = await session.query({ collection: "Products" })
      // Perform a vector search
      // Call the 'vectorSearch' method
     .vectorSearch(
@@ -313,7 +313,7 @@ where vector.search(embedding.text(Name), "italian food", 0.82, 20)
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
 ```js
-const similarCategories = await session.query({collection: "Categories"})
+const similarCategories = await session.query({ collection: "Categories" })
     .vectorSearch(
         field => field
              // Call 'withText'
@@ -355,8 +355,12 @@ const similarCategories = await session.advanced
 // Query the Categories collection
 from "Categories"
 // Call 'vector.search'
-// Specify the identifier of the task that generated the embeddings inside the 'ai.task' method
-where vector.search(embedding.text(Name, ai.task('id-for-task-open-ai')), $searchTerm, 0.75)
+// Specify the identifier of the task that generated the embeddings
+// inside the 'ai.task' method
+where vector.search(
+    embedding.text(Name, ai.task('id-for-task-open-ai')),
+    $searchTerm,
+    0.75)
 {"searchTerm": "candy"}
 ```
 </TabItem>
@@ -518,7 +522,7 @@ These examples search for Movie documents with vectors similar to the one provid
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
 ```js
-const similarMovies = await session.query({collection: "Movies"})
+const similarMovies = await session.query({ collection: "Movies" })
     // Perform a vector search
     // Call the 'vectorSearch' method
     .vectorSearch(
@@ -570,7 +574,7 @@ where vector.search(tagsEmbeddedAsSingle, $queryVector, 0.85, 10)
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
 ```js
-const similarMovies = await session.query({collection: "Movies"})
+const similarMovies = await session.query({ collection: "Movies" })
     .vectorSearch(
         // Call 'withEmbedding', specify:
         // * The source field that contains the embeddings in the document
@@ -592,7 +596,8 @@ const similarMovies = await session.query({collection: "Movies"})
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Movies"
-// Wrap the source document field name with 'embedding.i8' to indicate the source data type
+// Wrap the source document field name with 'embedding.i8'
+// to indicate the source data type
 where vector.search(embedding.i8(tagsEmbeddedAsInt8), $queryVector)
 { "queryVector" : [64, 127, -51, -52, 76, 62] }
 ```
@@ -608,7 +613,7 @@ where vector.search(embedding.i8(tagsEmbeddedAsInt8), $queryVector)
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
 ```js
-const similarMovies = await session.query({collection: "Movies"})
+const similarMovies = await session.query({ collection: "Movies" })
     .vectorSearch(
         // Call 'withBase64', specify:
         // * The source field that contains the embeddings in the document
@@ -627,7 +632,8 @@ const similarMovies = await session.query({collection: "Movies"})
 from "Movies"
 // * Wrap the source document field name using 'embedding.<format>' to specify
 //   the source data type from which the Base64 string was generated.
-// * If the document field is Not wrapped, 'single' is assumed as the default source type. 
+// * If the document field is Not wrapped,
+//   'single' is assumed as the default source type.
 where vector.search(tagsEmbeddedAsBase64, $queryVectorBase64)
 { "queryVectorBase64" : "zczMPc3MTD6amZk+" }
 ```
@@ -658,7 +664,7 @@ where vector.search(tagsEmbeddedAsBase64, $queryVectorBase64)
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
 ```js
-const similarProducts = await session.query({collection: "Products"})
+const similarProducts = await session.query({ collection: "Products" })
      // Perform a vector search
      // Call the 'vectorSearch' method
     .vectorSearch(
@@ -739,11 +745,11 @@ vectorSearch(
 )
 ```
 
-| Parameter        | Type                                      | Description                                                                                                                        |
-|------------------|-------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
-| **fieldName**    | `string \| (factory) => (vector field)`   | Either the name/path of the field to search,<br/> or a factory callback that describes the vector field.                           |
-| **valueFactory** | `number[] \| string \| (factory) => void` | The queried value(s): can be a numeric embedding,<br/>a base64 string, or a callback that specifies how to supply the query value. |
-| **options**      | `object`                                  | Optional vector search options.                                                                                                    |
+| Parameter        | Type                                      | Description                                                                                                                                                                                         |
+|------------------|-------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **fieldName**    | `string \| (factory) => (vector field)`   | Either the name/path of the field to search,<br/> or a factory callback that describes the vector field.                                                                                            |
+| **valueFactory** | `number[] \| string \| (factory) => void` | The queried value(s): can be a numeric embedding,<br/>a string (search text or a Base64-encoded embedding, depending on the field),<br/>or a callback that specifies how to supply the query value. |
+| **options**      | `object`                                  | Optional vector search options.                                                                                                                                                                     |
 
 ```js
 // Shape of the options object
@@ -806,15 +812,14 @@ embeddingField
 
 | Parameter                              | Type     | Description                                                                                                                                                                                                       |
 |----------------------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **targetEmbeddingQuantization**        | `string` | The desired target quantization format.                                                                                                                                                                           |
+| **targetEmbeddingQuantization**        | `string` | The desired target quantization format.<br/>If not set, no further quantization is applied.                                                                                                                       |
 | **embeddingsGenerationTaskIdentifier** | `string` | The identifier of an embeddings generation task.<br/>Used to locate the embeddings generated by the task in the [Embedding collections](../../../ai-integration/generating-embeddings/embedding-collections.mdx). |
 
 ```js
 // Values for `storedEmbeddingQuantization` and `targetEmbeddingQuantization`:
-"Single"  // float32 embeddings (default)
+"Single"  // float32 embeddings
 "Int8"    // 8-bit quantized embeddings
 "Binary"  // 1-bit (binary) quantized embeddings
-"Text"    // text input (embeddings generated from text)
 ```
 
 ---
