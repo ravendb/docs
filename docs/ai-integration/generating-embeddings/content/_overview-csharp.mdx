@@ -66,9 +66,9 @@ import Panel from '@site/src/components/Panel';
   * Embeddings generation tasks are [Ongoing Tasks](../../../studio/database/tasks/ongoing-tasks/general-info.mdx) that process documents as they change.  
     Before contacting the provider after a document change, the task first checks the cache to see if a matching embedding already exists, avoiding unnecessary requests.
   * The requests to generate embeddings from the source text are sent to the provider in batches.  
-    The batch size is configurable, see the [Ai.Embeddings.MaxBatchSize](../../../ai-integration/configuration.mdx#aiembeddingsmaxbatchsize) configuration key.  
+    The batch size is configurable, see the [Ai.Embeddings.MaxBatchSize](../../../ai-integration/generating-embeddings/configuration.mdx#aiembeddingsmaxbatchsize) configuration key.  
   * If an embeddings generation task fails, RavenDB waits before retrying it.
-    The maximum delay between retries is set by the [Ai.Embeddings.MaxFallbackTimeInSec](../../../ai-integration/configuration.mdx#aiembeddingsmaxfallbacktimeinsec) configuration key.
+    The maximum delay between retries is set by the [Ai.Embeddings.MaxFallbackTimeInSec](../../../ai-integration/generating-embeddings/configuration.mdx#aiembeddingsmaxfallbacktimeinsec) configuration key.
 
 ---   
     

@@ -1,0 +1,103 @@
+---
+title: "Embeddings generation configuration"
+description: "Configure the batch size, maximum concurrent batches, and maximum fallback delay for RavenDB embeddings generation tasks."
+sidebar_label: "Configuration"
+sidebar_position: 5
+see_also:
+     - title: "Generating Embeddings - overview"
+       link: "ai-integration/generating-embeddings/overview"
+       source: "docs"
+       path: "AI Integration > Generating Embeddings"
+     - title: "The Embeddings Generation Task"
+       link: "ai-integration/generating-embeddings/embeddings-generation-task"
+       source: "docs"
+       path: "AI Integration > Generating Embeddings"
+     - title: "Vector search configuration"
+       link: "ai-integration/vector-search/configuration"
+       source: "docs"
+       path: "AI Integration > Vector Search"
+     - title: "AI features configuration options"
+       link: "ai-integration/configuration"
+       source: "docs"
+       path: "AI Integration"
+---
+
+import Admonition from '@theme/Admonition';
+import ContentFrame from '@site/src/components/ContentFrame';
+
+<Admonition type="note" title="">
+
+* For an overview of configuration keys and the different ways to set them,
+  see the [Configuration overview](../../server/configuration/configuration-options.mdx) article.
+
+* The following configuration keys are available for **embeddings generation**:
+
+    * Server-wide or per database scope:  
+      [Ai.Embeddings.MaxBatchSize](#aiembeddingsmaxbatchsize)  
+      [Ai.Embeddings.MaxConcurrentBatches](#aiembeddingsmaxconcurrentbatches)  
+      [Ai.Embeddings.MaxFallbackTimeInSec](#aiembeddingsmaxfallbacktimeinsec)  
+
+* If your embeddings generation task uses the **bge-micro-v2 (Embedded)** connection string,   
+  see also [Indexing.Corax.VectorSearch.MaxNumberOfThreadsForLocalEmbeddingsGeneration](../../ai-integration/vector-search/configuration.mdx#indexingcoraxvectorsearchmaxnumberofthreadsforlocalembeddingsgeneration),  
+  which sets the maximum number of threads used to compute each embedding (server-wide only).
+
+</Admonition>
+
+---
+
+## Server-wide or per database scope
+
+<ContentFrame>
+
+### Ai.Embeddings.MaxBatchSize
+    
+* The maximum number of source documents an embeddings generation task processes in one batch.  
+    
+* RavenDB uses this value as a threshold for the number of text chunks it sends to the embedding model in a single call. 
+  This applies to text from source documents and to search terms embedded using the task's model.  
+  All uncached chunks from a single text value stay together, even if that puts the call over the threshold.    
+    
+* Larger batches may improve throughput, but they can use more resources and make provider rate limits easier to reach.    
+
+---
+
+- **Type**: `int`
+- **Default**: `128`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+<ContentFrame>
+
+### Ai.Embeddings.MaxConcurrentBatches
+
+* The default maximum number of batches RavenDB can send to the embedding model concurrently.  
+  For each embeddings generation task, RavenDB applies this limit separately to batches for source documents and batches for search terms.
+    
+* To override the limit, set `EmbeddingsMaxConcurrentBatches` in the provider settings of the task's AI connection string.
+
+* Higher values may improve throughput, but they can increase resource usage and make external provider rate limits easier to reach.
+
+---
+
+- **Type**: `int`
+- **Default**: `4`
+- **Min value**: `1`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+<ContentFrame>
+
+### Ai.Embeddings.MaxFallbackTimeInSec
+
+* The maximum delay, in seconds, before an embeddings generation task in fallback mode automatically retries a failed batch.
+  For example, the task enters fallback mode if it can't reach the AI provider or receives a rate-limit error.  
+    
+* The delay can increase after consecutive failures, up to this limit.
+
+---
+
+- **Type**: `int`
+- **Default**: `900` (15 minutes)
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
