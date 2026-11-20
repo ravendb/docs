@@ -132,6 +132,14 @@ so you can keep `read_ahead_kb` low without a large startup penalty.
 
 For random-access SSD/NVMe workloads, values in the 8-64 KB range are worth experimenting with, versus the common 128 KB default.
 
+<Admonition type="warning" title="Linux kernel 6.16 and newer" id="linux-kernel-616-and-newer" href="#linux-kernel-616-and-newer">
+
+From kernel 6.16, ext4 caches file data in large folios of up to `read_ahead_kb`.  
+Modifying one 8 KB page writes the whole folio back to disk, so the 128 KB default considerably increases disk writes.  
+On these kernels, set `read_ahead_kb` to `32` on the devices that hold RavenDB's data.
+
+</Admonition>
+
 Check the current value (`<device>` is e.g. `sda` or `nvme0n1`):
 
 ```bash
@@ -175,7 +183,7 @@ If other workloads share the machine, scope it to the disks RavenDB actually use
 
 <Admonition type="note" title="When to tune read_ahead_kb">
 
-The common 128 KB default works well for the majority of deployments - it is what RavenDB instances typically run with - 
+On kernels older than 6.16, the common 128 KB default works well for the majority of deployments - it is what RavenDB instances typically run with - 
 and a lower value is worth pursuing only when heavy random-access load (many databases or large datasets on one host) 
 shows up as high I/O wait or memory pressure.  
 There is no universally correct `read_ahead_kb`.  
@@ -183,7 +191,7 @@ It depends on your disk, workload, and available memory, so test candidate value
 their effect on request/response times under real load before committing to one.  
 RavenDB raises a startup warning when a block device's `read_ahead_kb` is above 
 [`Storage.ReadAheadKbAlertThresholdInKb`](../../server/configuration/storage-configuration.mdx#storagereadaheadkbalertthresholdinkb) 
-(default 128 KB), since an unusually high read-ahead causes the I/O amplification described above.
+(default 32 KB on Linux kernel 6.16 and newer, 128 KB on older kernels), since an unusually high read-ahead causes the I/O amplification described above.
 
 </Admonition>
 
