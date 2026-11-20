@@ -143,7 +143,7 @@ Options for the **non-generic** version of the subscription creation options obj
 | **Disabled**                       | `bool`                                   | `true` - task will be disabled.<br/>`false` - task will be enabled.                                                                                                                                                                                                                                                                                                                                  |
 | **MentorNode**                     | `string`                                 | Allows to define a node in the cluster that will be responsible to handle the subscription. Useful when you prefer a specific server due to its stronger hardware, closer geographic proximity to clients, or other reasons.                                                                                                                                                                        |
 | **PinToMentorNode**                | `bool`                                   | `true` - the selected responsible node will be pinned to handle the task.<br/>`false` - Another node will execute the task if the responsible node is down.                                                                                                                                                                                                                                          |
-| **ArchivedDataProcessingBehavior** | `ArchivedDataProcessingBehavior?`        | Define whether [archived documents](../../../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-subscriptions) will be included in the subscription.                                                                                                                                                                                                                                                     |
+| **ArchivedDataProcessingBehavior** | `ArchivedDataProcessingBehavior?`        | Define the subscription's handling of [archived documents](../../../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-subscriptions).<br/>Values: `ExcludeArchived`, `IncludeArchived`, `ArchivedOnly`.<br/>If not set, the subscription takes the value of the [Subscriptions.ArchivedDataProcessingBehavior](../../../../server/configuration/subscription-configuration.mdx#subscriptionsarchiveddataprocessingbehavior) configuration key when the subscription is created.                                                                                                                                                                                                                                                     |
 
 <Admonition type="note" title="">
 
@@ -151,7 +151,7 @@ Options for the **non-generic** version of the subscription creation options obj
 
 * The _ChangeVector_ property allows you to define a starting point from which the subscription will begin processing changes.
 * This is useful for ad-hoc processes that need to process only recent changes. In such cases, you can:
-  * Set the field to _"LastDocument"_ to start processing from the latest document in the collection.
+  * Set the field to _"LastDocument"_ to send only documents created or modified after the subscription's creation.
   * Or, provide an actual Change Vector to begin processing from a specific point.
 * By default, the subscription will send all documents matching the RQL query, regardless of their creation time.
 
@@ -203,8 +203,22 @@ and adds two additional fields:
 
 | Parameter     | Type    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 |---------------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Id**        | `long?` | The unique ID that was assigned to the subscription by the server at creation time.<br/>You can retrieve it by [getting the subscription status](../../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#getting-subscription-status).<br/>When updating, the `Id` can be used instead of the `Name` field, and takes precedence over it. This allows you to modify the subscription's name: provide the Id and submit a new name in the Name field. |
+| **Id**        | `long?` | The unique ID that was assigned to the subscription by the server at creation time.<br/>You can retrieve it by [getting the subscription status](../../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#getting-subscription-status).<br/>When updating, the `Id` can be used instead of the `Name` field, and takes precedence over it. |
 | **CreateNew** | `bool`  | Determines the behavior when the subscription you wish to update does Not exist.<br/>`true` - a new subscription is created with the provided option parameters.<br/>`false` - an exception will be thrown.<br/>Default: `false`                                                                                                                                                                                                                                            |
+
+<Admonition type="note" title="Archived documents">
+
+<br />
+
+The `Update` method does not change the subscription's handling of [archived documents](../../../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-subscriptions),
+even if you set `ArchivedDataProcessingBehavior` in the `SubscriptionUpdateOptions` object.  
+To change an existing subscription's handling of archived documents, edit the [subscription task](../../../../studio/database/tasks/ongoing-tasks/subscription-task.mdx)
+in Studio and set the task's **Archived Data Processing Behavior** option.
+
+On a [sharded database](../../../../sharding/subscriptions.mdx#unsupported-features), a subscription **ignores** both `ArchivedDataProcessingBehavior` and the
+**Archived Data Processing Behavior** option set in Studio, and uses the handling set by the `Subscriptions.ArchivedDataProcessingBehavior` configuration key.  
+Unlike on a non-sharded database, a later change to the configuration key **does** affect existing subscriptions.
+</Admonition>
 
 
 
@@ -218,8 +232,13 @@ All subscriptions are eventually translated to an RQL-like statement. These stat
 * From statement, defining the documents source, ex: `from Orders`. The from statement can only address collections, therefore, indexes are not supported.    
 
 * Where statement describing the criteria according to which it will be decided to either 
-  send the documents to the worker or not. Those statements support either RQL like `equality` operations (`=`, `==`) ,  
-  plain JavaScript expressions or declared function calls, allowing to perform complex filtering logic.  
+  send the documents to the worker or not. Those statements support:
+   * RQL comparison operators: `=`, `==`, `!=`, `<`, `>`, `<=`, `>=`
+   * RQL logical operators: `and`, `or`, `and not`
+   * The RQL `in` operator, e.g., `o.Company in ('companies/1-A', 'companies/2-A')`
+   * The RQL methods `startsWith`, `endsWith`, `regex`, `exists`, and `intersect`
+   * Plain JavaScript expressions and declared function calls, allowing to perform complex filtering logic
+
   The subscriptions RQL does not support any of the known RQL searching keywords.
 
 * Select statement, that defines the projection to be performed. 
@@ -228,7 +247,7 @@ All subscriptions are eventually translated to an RQL-like statement. These stat
 * Include statement allowing to define include path in document.  
 
 <Admonition type="info" title="Keywords" id="keywords" href="#keywords">
-Although subscription's query syntax has an RQL-like structure, it supports only the `declare`, `select` and `where` keywords, usage of all other RQL keywords is not supported.  
+Although subscription's query syntax has an RQL-like structure, it supports only the `declare`, `from`, `as`, `load`, `where`, `select`, and `include` keywords; usage of all other RQL keywords is not supported.  
 Usage of JavaScript ES5 syntax is supported.
 </Admonition>
 

@@ -23,7 +23,10 @@ export default function OngoingTasksFeaturesGrid() {
         {
             title: "Subscriptions",
             icon: "subscriptions",
-            url: `/${activeVersion.label}/client-api/data-subscriptions/what-are-data-subscriptions`,
+            url:
+                activeVersion.label >= "7.2"
+                    ? `/${activeVersion.label}/data-subscriptions/overview`
+                    : `/${activeVersion.label}/client-api/data-subscriptions/what-are-data-subscriptions`,
             description: "Subscribe to defined documents, trigger your worker routines on field updates",
             minimumSupportedVersion: "3.0",
         },

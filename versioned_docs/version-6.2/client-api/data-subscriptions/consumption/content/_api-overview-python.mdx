@@ -135,40 +135,31 @@ node is currently responsible for data subscriptions.
     This class should be used only inside the subscription's run delegate,
     using it outside this scope might cause unexpected behavior.
     """
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="SubscriptionBatch_definition" label="SubscriptionBatch_definition">
-<CodeBlock language="python">
-{`class SubscriptionBatch(Generic[_T]):
-
-def __init__(self):
-    self._result: Optional[_T_Item] = None
-    self._exception_message: Optional[str] = None
-    self._key: Optional[str] = None
-    self._change_vector: Optional[str] = None
-    self._projection: Optional[bool] = None
-    self._revision: Optional[bool] = None
-    self.raw_result: Optional[Dict] = None
-    self.raw_metadata: Optional[Dict] = None
-    self._metadata: Optional[MetadataAsDictionary] = None
+    result: _T_Item
+    key: str
+    change_vector: str
+    is_projection: bool
+    is_revision: bool
+    raw_result: Dict
+    raw_metadata: Dict
+    metadata: MetadataAsDictionary
 `}
 </CodeBlock>
 </TabItem>
 
 | `SubscriptionBatch[_T].item` Member   | Type                   | Description                                                                           |
 |---------------------------------------|------------------------|---------------------------------------------------------------------------------------| 
-| **\_result** (Optional)               | `_T_Item`              | Current batch item                                                                    |
-| **\_exception_message** (Optional)    | `str`                  | Message of the exception thrown during current document processing in the server side |
-| **\_key** (Optional)                  | `str`                  | Current batch item underlying document ID                                             |
-| **\_change_vector** (Optional)        | `str`                  | Current batch item underlying document change vector of the current document          |
-| **\_projection** (Optional)           | `bool`                 | indicates whether the value id a projection                                           |
+| **result** (Optional)               | `_T_Item`              | Current batch item                                                                    |
+| **key** (Optional)                  | `str`                  | Current batch item underlying document ID                                             |
+| **change_vector** (Optional)        | `str`                  | Current batch item underlying document change vector of the current document          |
+| **is_projection** (Optional)           | `bool`                 | indicates whether the value id a projection                                           |
+| **is_revision** (Optional)           | `bool`                 | `True` when the item is a document revision, for a subscription that streams revisions. |
 | **raw_result** (Optional)             | `Dict`                 | Current batch item before serialization to `T`                                        |
-| **raw_metadata** (Optional)           | `Dict`                 | Current batch item underlying document metadata                                       |
-| **\_metadata** (Optional)             | `MetadataAsDictionary` | Current batch item underlying metadata values                                         |
+| **raw_metadata** (Optional)           | `Dict`                 | The item's metadata, as a raw JSON object. |
+| **metadata** (Optional)             | `MetadataAsDictionary` | The item's metadata, as a dictionary.<br />For an item that holds a document: the document's metadata.<br />For a projected item: the metadata of the projected object.<br />For a revision item: only a few properties RavenDB sets for the item. |
 
 <Admonition type="warning" title="">
-Usage of `raw_result`, `raw_metadata`, and `_metadata` values outside of the document processing delegate 
+Usage of `raw_result`, `raw_metadata`, and `metadata` values outside of the document processing delegate 
 is not supported.
 </Admonition>
 
