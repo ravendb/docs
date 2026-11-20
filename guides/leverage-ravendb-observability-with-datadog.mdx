@@ -17,6 +17,9 @@ see_also:
     link: "monitoring/integrations/prometheus"
     source: "docs"
     path: "Server > Monitoring > Integrations"
+  - title: "Monitoring RavenDB with the Datadog Integration"
+    link: "./monitoring-ravendb-with-the-datadog-integration"
+    source: "guides"
 proficiency_level: "Beginner"
 author: "Paweł Lachowski"
 ---
@@ -28,6 +31,12 @@ import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 import Image from "@theme/IdealImage";
+
+<Admonition type="tip" title="Datadog now has an official RavenDB integration">
+
+It needs no RavenDB configuration, comes with a ready-made dashboard, and covers clusters, secured servers and logs. See [Monitoring RavenDB with the Datadog Integration](./monitoring-ravendb-with-the-datadog-integration). This guide still works if you prefer to send metrics over OpenTelemetry.
+
+</Admonition>
 
 ## Why monitor RavenDB with Datadog?
 
@@ -170,7 +179,7 @@ On the left bar, find the ‘Monitors’ section. In there, you can click on the
 
 ```text
 {{#is_alert}} CPU usage above 90% {{/is_alert}}
-{{#is_alert_to_warning}} CPU usage above 75% {{/is_alert_to_warning}}
+{{#is_warning}} CPU usage above 75% {{/is_warning}}
 {{#is_alert_to_warning}} CPU usage under 90% but still high {{/is_alert_to_warning}}
 {{#is_alert_recovery}} CPU usage is back to normal {{/is_alert_recovery}}
 ```
