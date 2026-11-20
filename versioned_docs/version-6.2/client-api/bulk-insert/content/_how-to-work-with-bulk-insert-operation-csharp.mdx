@@ -96,8 +96,12 @@ The following methods can be used when creating a bulk insert.
      [session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx)
      may be a better option.  
      Note that if `session` is used, all of the data is processed in a single transaction,
-     so the server must have sufficient resources to handle the entire data-set included
+     so the server must have sufficient resources to handle the entire dataset included
      in the transaction.  
+* Bulk insert **does not [fail over](../../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#failover-behavior)**
+  to another node.  
+  The entire operation runs on a single node: if this node goes down mid-way, the operation
+  will **fail** rather than continue on another node.  
 * Bulk insert is **not thread-safe**.  
   A single bulk insert should not be accessed concurrently.  
    * The use of multiple bulk inserts concurrently on the same client is supported.  
