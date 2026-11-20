@@ -194,7 +194,8 @@ You can apply the prefix in a script at three levels:
 	embeddings.generate({
     
 	    // Per field - on a chunked value:
-	    // Prepend the document's category to every chunk generated from the Content field.
+	    // Prepend the document's category to every chunk
+	    // generated from the Content field.
 	    Content: text.splitParagraphs(this.Content, 512).withContextPrefix(this.Category),
 
 	    // No field-level prefix is defined here,

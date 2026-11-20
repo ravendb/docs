@@ -313,7 +313,8 @@ var similarProducts = await asyncSession.Advanced
 var similarProducts = session.Advanced
     .RawQuery<Product>(@"
         from 'Products'
-        where (PricePerUnit > $minPrice) and (vector.search(embedding.text(Name), $searchTerm, 0.75, 16))")
+        where (PricePerUnit > $minPrice)
+        and (vector.search(embedding.text(Name), $searchTerm, 0.75, 16))")
     .AddParameter("minPrice", 35.0)
     .AddParameter("searchTerm", "italian food")
     .WaitForNonStaleResults()
@@ -325,7 +326,8 @@ var similarProducts = session.Advanced
 var similarProducts = await asyncSession.Advanced
     .AsyncRawQuery<Product>(@"
         from 'Products'
-        where (PricePerUnit > $minPrice) and (vector.search(embedding.text(Name), $searchTerm, 0.75, 16))")
+        where (PricePerUnit > $minPrice)
+        and (vector.search(embedding.text(Name), $searchTerm, 0.75, 16))")
     .AddParameter("minPrice", 35.0)
     .AddParameter("searchTerm", "italian food")
     .WaitForNonStaleResults()
@@ -418,7 +420,8 @@ var similarProducts = await asyncSession.Advanced
 var similarProducts = session.Advanced
     .RawQuery<Product>(@"
         from index 'Products/ByMultipleFields'
-        where (PricePerUnit > $minPrice) and (vector.search(VectorFromText, $searchTerm, 0.75, 16))")
+        where (PricePerUnit > $minPrice)
+        and (vector.search(VectorFromText, $searchTerm, 0.75, 16))")
     .AddParameter("minPrice", 35.0)
     .AddParameter("searchTerm", "italian food")
     .WaitForNonStaleResults()
@@ -430,7 +433,8 @@ var similarProducts = session.Advanced
 var similarProducts = await asyncSession.Advanced
     .AsyncRawQuery<Product>(@"
         from index 'Products/ByMultipleFields'
-        where (PricePerUnit > $minPrice) and (vector.search(VectorFromText, $searchTerm, 0.75, 16))")
+        where (PricePerUnit > $minPrice)
+        and (vector.search(VectorFromText, $searchTerm, 0.75, 16))")
     .AddParameter("minPrice", 35.0)
     .AddParameter("searchTerm", "italian food")
     .WaitForNonStaleResults()
@@ -533,7 +537,7 @@ var companies = session.Advanced
     .OpenSubclause()
     .VectorSearch( // Search for companies that sell dairy products or similar
         field => field.WithText(x => x.Name),
-        v => v.ByText("dairy"),
+        searchTerm => searchTerm.ByText("dairy"),
         minimumSimilarity: 0.80f
     )
     .CloseSubclause()
@@ -772,7 +776,7 @@ or vector.search(VectorFromText, $searchTerm2, 0.80)
     [Store chunk text](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#store-chunk-text).
     
   * Wait for the task to finish processing the relevant documents, including any requested reprocessing.  
-    Monitor the embeddings generation task's progress in the [Studio's AI Tasks view](../../../ai-integration/ai-tasks-list-view) and wait until it is up to date, including after reprocessing existing documents.
+    Monitor the embeddings generation task's progress in the [Studio's AI Tasks view](../../../ai-integration/ai-tasks-list-view.mdx) and wait until it is up to date, including after reprocessing existing documents.
     `WaitForNonStaleResults` in the examples waits for indexing; it does not wait for the embeddings generation task to finish.
     
   * The index must store the vectors in the same quantization format as the task.  
@@ -942,7 +946,7 @@ include highlight(Notes, 500, 3)
 public class Employees_ByNotesVector :
     AbstractIndexCreationTask<Employee, Employees_ByNotesVector.IndexEntry>
 {
-    public class IndexEntry()
+    public class IndexEntry
     {
         // This index-field will hold the embeddings
         // that the task generated for the 'Notes' field
@@ -1287,8 +1291,7 @@ include highlight(VectorFromNotes, 500, 3)
   * Searches on raw text without a task (`embedding.text(<field>)` without `ai.task`).
   * Searches on numerical embeddings stored in your documents,  
     or on index fields defined with `CreateVector`.
-  * Searches for similar documents (`embedding.forDoc`),  
-    or searches with a raw vector (`embedding.forRaw`).
+  * Searches for similar documents (`embedding.forDoc`).
 
 * **Documents without stored chunk text**:  
   Documents that the task processed while `StoreChunkText` was disabled have no stored chunk text,  

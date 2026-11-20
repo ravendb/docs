@@ -147,7 +147,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * **Source data format**  
   RavenDB supports performing vector search on TEXTUAL values or NUMERICAL arrays.  
-  the source data can be formatted as `Text`, `Single`, `Int8`, or `Binary`.
+  The source data can be formatted as `Text`, `Single`, `Int8`, or `Binary`.
 
 * **Target quantization**  
   You can specify the quantization encoding for the embeddings that will be created from source data.  
@@ -171,7 +171,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
   In approximate search, increasing this value can improve accuracy but requires more computation.
 
   The number of documents returned may be:  
-    * **lower** than the number of candidates - when several matching vectors belong to the same document.  
+    * **lower** than the number of candidates - when several matching vectors belong to the same document,  
+      or when fewer vectors meet the minimum similarity.  
     * **higher** than the number of candidates - when the same vector is shared between multiple documents,  
       or when results from several searches are combined.
 
@@ -300,7 +301,8 @@ var similarProducts = await asyncSession.Advanced
 var similarProducts = session.Advanced
     .RawQuery<Product>(@"
         from 'Products'
-        // Wrap the document field 'Name' with 'embedding.text' to indicate the source data type
+        // Wrap the document field 'Name' with 'embedding.text'
+        // to indicate the source data type
         where vector.search(embedding.text(Name), $searchTerm, 0.82, 20)")
     .AddParameter("searchTerm", "italian food")
     .WaitForNonStaleResults()
@@ -312,7 +314,8 @@ var similarProducts = session.Advanced
 var similarProducts = await asyncSession.Advanced
     .AsyncRawQuery<Product>(@"
         from 'Products'
-        // Wrap the document field 'Name' with 'embedding.text' to indicate the source data type
+        // Wrap the document field 'Name' with 'embedding.text'
+        // to indicate the source data type
         where vector.search(embedding.text(Name), $searchTerm, 0.82, 20)")
     .AddParameter("searchTerm", "italian food")
     .WaitForNonStaleResults()
@@ -426,7 +429,8 @@ var similarCategories = await asyncSession.Advanced
 var similarCategories = session.Advanced
     .RawQuery<Category>(@"
         from 'Categories'
-        // Specify the identifier of the task that generated the embeddings inside 'ai.task'
+        // Specify the identifier of the task that generated the embeddings
+        // inside 'ai.task'
         where vector.search(
             embedding.text(Name, ai.task('id-for-task-open-ai')),
             $searchTerm,
@@ -441,7 +445,8 @@ var similarCategories = session.Advanced
 var similarCategories = await asyncSession.Advanced
     .AsyncRawQuery<Category>(@"
         from 'Categories'
-        // Specify the identifier of the task that generated the embeddings inside 'ai.task'
+        // Specify the identifier of the task that generated the embeddings
+        // inside 'ai.task'
         where vector.search(
             embedding.text(Name, ai.task('id-for-task-open-ai')),
             $searchTerm,
@@ -456,8 +461,12 @@ var similarCategories = await asyncSession.Advanced
 // Query the Categories collection
 from "Categories"
 // Call 'vector.search'
-// Specify the identifier of the task that generated the embeddings inside the 'ai.task' method
-where vector.search(embedding.text(Name, ai.task('id-for-task-open-ai')), $searchTerm, 0.75)
+// Specify the identifier of the task that generated the embeddings
+// inside the 'ai.task' method
+where vector.search(
+    embedding.text(Name, ai.task('id-for-task-open-ai')),
+    $searchTerm,
+    0.75)
 {"searchTerm": "candy"}
 ```
 </TabItem>
@@ -487,7 +496,7 @@ where vector.search(embedding.text(Name, ai.task('id-for-task-open-ai')), $searc
   See an example of this in: [Configuring quantization in dynamic queries](../../../ai-integration/vector-search/quantization.mdx#configuring-quantization-in-dynamic-queries).  
 
 * Raw data that is already formatted as _Int8_ or _Binary_ **cannot** be quantized to lower-form (e.g. Int8 -&gt; Int1).  
-  When storing data in these formats in your documents, you should use [RavenDB’s `vectorQuantizer` methods](../../../ai-integration/vector-search/quantization.mdx#vectorquantizer-reference).
+  When storing data in these formats in your documents, you should use [RavenDB's `VectorQuantizer` methods](../../../ai-integration/vector-search/quantization.mdx#vectorquantizer-reference).
 
 #### Sample data:
 
@@ -495,7 +504,8 @@ where vector.search(embedding.text(Name, ai.task('id-for-task-open-ai')), $searc
 <TabItem value="Class" label="Class">
 ```csharp
 // Sample class representing a document with various formats of numerical vectors
-// The embedding vectors for these fields here are generated externally by you (not by RavenDB).
+// The embedding vectors for these fields here are generated externally by you
+// (not by RavenDB).
 public class Movie
 {
     public string Id { get; set; }
@@ -563,7 +573,10 @@ using (var session = store.OpenSession())
         {
             8.800000190734863f, 9.899999618530273f
         }),
-        TagsEmbeddedAsBase64 = new List<string>() {"zcxMPs3MTD9mZmY/", "zcxMPpqZmT4zMzM/"},
+        TagsEmbeddedAsBase64 = new List<string>()
+        {
+            "zcxMPs3MTD9mZmY/", "zcxMPpqZmT4zMzM/"
+        },
         TagsEmbeddedAsInt8 = new sbyte[][]
         {
             VectorQuantizer.ToInt8(new float[] { 0.5f, 0.6f }),
@@ -654,7 +667,10 @@ var similarMovies = session.Query<Movie>()
         // Call 'ByEmbedding'
         // Provide the vector for the similarity comparison
         queryVector => queryVector.ByEmbedding(
-            new RavenVector<float>(new float[] { 6.599999904632568f, 7.699999809265137f })),
+            new RavenVector<float>(new float[]
+            {
+                6.599999904632568f, 7.699999809265137f
+            })),
         // It is recommended to specify the minimum similarity level
         0.85f,
         // Optionally, specify the number of candidates for the search
@@ -670,7 +686,10 @@ var similarMovies = await asyncSession.Query<Movie>()
         field => field.WithEmbedding(
             x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single),
         queryVector => queryVector.ByEmbedding(
-            new RavenVector<float>(new float[] { 6.599999904632568f, 7.699999809265137f })),
+            new RavenVector<float>(new float[]
+            {
+                6.599999904632568f, 7.699999809265137f
+            })),
         0.85f,
         10)
     .Customize(x => x.WaitForNonStaleResults())
@@ -685,7 +704,10 @@ var similarMovies = session.Advanced
         field => field.WithEmbedding(
             x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single),
         queryVector => queryVector.ByEmbedding(
-            new RavenVector<float>(new float[] { 6.599999904632568f, 7.699999809265137f })),
+            new RavenVector<float>(new float[]
+            {
+                6.599999904632568f, 7.699999809265137f
+            })),
         0.85f,
         10)
     .WaitForNonStaleResults()
@@ -700,7 +722,10 @@ var similarMovies = await asyncSession.Advanced
         field => field.WithEmbedding(
             x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single),
         queryVector => queryVector.ByEmbedding(
-            new RavenVector<float>(new float[] { 6.599999904632568f, 7.699999809265137f })),
+            new RavenVector<float>(new float[]
+            {
+                6.599999904632568f, 7.699999809265137f
+            })),
         0.85f,
         10)
     .WaitForNonStaleResults()
@@ -709,7 +734,7 @@ var similarMovies = await asyncSession.Advanced
 </TabItem>
 <TabItem value="RawQuery" label="RawQuery">
 ```csharp
-var similarProducts = session.Advanced
+var similarMovies = session.Advanced
     .RawQuery<Movie>(@"
         from 'Movies' 
         where vector.search(TagsEmbeddedAsSingle, $queryVector, 0.85, 10)")
@@ -723,7 +748,7 @@ var similarProducts = session.Advanced
 </TabItem>
 <TabItem value="RawQuery_async" label="RawQuery_async">
 ```csharp
-var similarProducts = await asyncSession.Advanced
+var similarMovies = await asyncSession.Advanced
     .AsyncRawQuery<Movie>(@"
         from 'Movies' 
         where vector.search(TagsEmbeddedAsSingle, $queryVector, 0.85, 10)")
@@ -765,8 +790,10 @@ var similarMovies = session.Query<Movie>()
         // Provide the vector for the similarity comparison
         // (provide a single vector from the vector list in the TagsEmbeddedAsInt8 field)
         queryVector => queryVector.ByEmbedding(
-            // The provided vector MUST be in the same format as was stored in your document
-            // Call 'VectorQuantizer.ToInt8' to transform the raw data to the Int8 format  
+            // The provided vector MUST be in the same format as was stored
+            // in your document
+            // Call 'VectorQuantizer.ToInt8' to transform the raw data
+            // to the Int8 format
             VectorQuantizer.ToInt8(new float[] { 0.1f, 0.2f })))
     .Customize(x => x.WaitForNonStaleResults())
     .ToList();
@@ -775,7 +802,8 @@ var similarMovies = session.Query<Movie>()
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Movies"
-// Wrap the source document field name with 'embedding.i8' to indicate the source data type
+// Wrap the source document field name with 'embedding.i8'
+// to indicate the source data type
 where vector.search(embedding.i8(TagsEmbeddedAsInt8), $queryVector)
 { "queryVector" : [64, 127, -51, -52, 76, 62] }
 ```
@@ -797,7 +825,8 @@ var similarMovies = session.Query<Movie>()
         // * The source field that contains the embeddings in the document
         // * The source embedding type
         //   (the type from which the Base64 string was constructed)
-        field => field.WithBase64(x => x.TagsEmbeddedAsBase64, VectorEmbeddingType.Single),
+        field => field.WithBase64(
+            x => x.TagsEmbeddedAsBase64, VectorEmbeddingType.Single),
         // Call 'ByBase64'
         // Provide the Base64 string that represents the vector to query against
         queryVector => queryVector.ByBase64("zczMPc3MTD6amZk+"))
@@ -810,7 +839,8 @@ var similarMovies = session.Query<Movie>()
 from "Movies"
 // * Wrap the source document field name using 'embedding.<format>' to specify
 //   the source data type from which the Base64 string was generated.
-// * If the document field is Not wrapped, 'single' is assumed as the default source type. 
+// * If the document field is Not wrapped,
+//   'single' is assumed as the default source type.
 where vector.search(TagsEmbeddedAsBase64, $queryVectorBase64)
 { "queryVectorBase64" : "zczMPc3MTD6amZk+" }
 ```
@@ -836,7 +866,7 @@ where vector.search(TagsEmbeddedAsBase64, $queryVectorBase64)
 
    * RavenDB retrieves the embedding that was indexed for the queried field in the specified document and uses it as the query vector for the similarity comparison.
 
-   * The results will include documents whose indexed embeddings are most similar to the one stored in the referenced document’s index-entry.
+   * The results will include documents whose indexed embeddings are most similar to the one stored in the referenced document's index-entry.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -927,7 +957,7 @@ where vector.search(embedding.text(Name), embedding.forDoc($documentID), 0.82)
 </TabItem>
 </Tabs>
 
-Running the above example on RavenDB’s sample data returns the following documents that have similar content in their _Name_ field:
+Running the above example on RavenDB's sample data returns the following documents that have similar content in their _Name_ field:
 (Note: the results include the referenced document itself, _Products/7-A_)
 
 
@@ -995,7 +1025,7 @@ public IRavenQueryable<T> VectorSearch<T>(
 | **isExact**               | `bool`                                                    | `false` - vector search will be performed in an approximate manner.<br/>`true` - vector search will be performed in an exact manner. |
 
 The default value for `minimumSimilarity` is defined by this configuration key:  
-[Indexing.Corax.VectorSearch.DefaultMinimumSimilarity ](../../../ai-integration/vector-search/configuration.mdx#indexingcoraxvectorsearchdefaultminimumsimilarity).
+[Indexing.Corax.VectorSearch.DefaultMinimumSimilarity](../../../ai-integration/vector-search/configuration.mdx#indexingcoraxvectorsearchdefaultminimumsimilarity).
 
 The default value for `numberOfCandidates` is defined by this configuration key:  
 [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../../ai-integration/vector-search/configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforquerying).
@@ -1009,11 +1039,13 @@ public interface IVectorFieldFactory<T>
     // ==============================
     
     public IVectorEmbeddingTextField WithText(string documentFieldName);
-    public IVectorEmbeddingTextField WithText(Expression<Func<T, object>> propertySelector);
+    public IVectorEmbeddingTextField WithText(
+        Expression<Func<T, object>> propertySelector);
     
     public IVectorEmbeddingField WithEmbedding(string documentFieldName, 
         VectorEmbeddingType storedEmbeddingQuantization = VectorEmbeddingType.Single);
-    public IVectorEmbeddingField WithEmbedding(Expression<Func<T, object>> propertySelector,
+    public IVectorEmbeddingField WithEmbedding(
+        Expression<Func<T, object>> propertySelector,
         VectorEmbeddingType storedEmbeddingQuantization = VectorEmbeddingType.Single);
     
     public IVectorEmbeddingField WithBase64(string documentFieldName,
@@ -1059,7 +1091,7 @@ public interface IVectorEmbeddingField
 | Parameter                              | Type                  | Description                                                                                                                                                                                               |
 |----------------------------------------|-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **targetEmbeddingQuantization**        | `VectorEmbeddingType` | The desired target quantization format.                                                                                                                                                                   |
-| **embeddingsGenerationTaskIdentifier** | `string `             | The identifier of an embeddings generation task.<br/>Used to locate the embeddings generated by the task in the [Embedding collections](../../../ai-integration/generating-embeddings/embedding-collections.mdx). |
+| **embeddingsGenerationTaskIdentifier** | `string`              | The identifier of an embeddings generation task.<br/>Used to locate the embeddings generated by the task in the [Embedding collections](../../../ai-integration/generating-embeddings/embedding-collections.mdx). |
 
 ```csharp
 public enum VectorEmbeddingType
@@ -1082,13 +1114,17 @@ public interface IVectorEmbeddingTextFieldValueFactory
     public void ByTexts(IEnumerable<string> texts);
 
     // Defines the queried text(s) and the embedding generation task to use.
-    // These overloads should be used only when querying a static-index where vector fields contain 
-    // numerical embeddings that were not generated by RavenDB's built-in embedding tasks.
-    // The text is embedded at query time using the specified task identifier and compared to the indexed vectors.
+    // These overloads should be used only when querying a static-index
+    // where vector fields contain numerical embeddings that were not generated
+    // by RavenDB's built-in embedding tasks.
+    // The text is embedded at query time using the specified task identifier
+    // and compared to the indexed vectors.
     public void ByText(string text, string embeddingsGenerationTaskIdentifier);
-    public void ByTexts(IEnumerable<string> texts, string embeddingsGenerationTaskIdentifier);
+    public void ByTexts(IEnumerable<string> texts,
+        string embeddingsGenerationTaskIdentifier);
     
-    // Query by the embedding(s) indexed from the specified document for the queried field 
+    // Query by the embedding(s) indexed from the specified document
+    // for the queried field
     public void ForDocument(string documentId);
 }
 
@@ -1099,14 +1135,15 @@ public interface IVectorEmbeddingFieldValueFactory
     
     // 'embeddings' is an enumerable containing embedding values
     public void ByEmbedding<T>(IEnumerable<T> embedding) where T : unmanaged, INumber<T>;
-    public void ByEmbedding<T>(IEnumerable<IEnumerable<T>> embeddings) where T : unmanaged, INumber<T>;
+    public void ByEmbedding<T>(IEnumerable<IEnumerable<T>> embeddings)
+        where T : unmanaged, INumber<T>;
     
     
     // 'embeddings' is an array containing embedding values
     public void ByEmbedding<T>(T[] embedding) where T : unmanaged, INumber<T>;
     public void ByEmbeddings<T>(T[][] embeddings) where T : unmanaged, INumber<T>;
     
-    // 'embedding` is a `RavenVector` containing embedding values
+    // 'embedding' is a 'RavenVector' containing embedding values
     public void ByEmbedding<T>(RavenVector<T> embedding) where T : unmanaged, INumber<T>;
     
     // 'base64Embedding' is encoded as base64 string(s).

@@ -82,7 +82,7 @@ The examples below skip remote attachments.
 public class Companies_ByVector_FromTextAttachment :
     AbstractIndexCreationTask<Company, Companies_ByVector_FromTextAttachment.IndexEntry>
 {
-    public class IndexEntry()
+    public class IndexEntry
     {
         // This index-field will hold embeddings
         // generated from the TEXT in the attachments.
@@ -408,7 +408,7 @@ public class Companies_ByVector_FromNumericalAttachment :
     AbstractIndexCreationTask<Company,
         Companies_ByVector_FromNumericalAttachment.IndexEntry>
 {
-    public class IndexEntry()
+    public class IndexEntry
     {
         // This index-field will hold precomputed embedding vectors
         // read from the attachments.
@@ -769,7 +769,7 @@ where vector.search(VectorFromAttachment, $queryVector)
 public class Companies_ByVector_AllAttachments :
     AbstractIndexCreationTask<Company, Companies_ByVector_AllAttachments.IndexEntry>
 {
-    public class IndexEntry()
+    public class IndexEntry
     {
         // This index-field will hold precomputed embedding vectors
         // read from ALL local attachments.

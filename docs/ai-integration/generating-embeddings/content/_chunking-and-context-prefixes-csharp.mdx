@@ -20,7 +20,7 @@ import Panel from '@site/src/components/Panel';
 
 * A token is the fundamental unit that Large Language Models (LLMs) use to process text.  
   AI service providers that generate embeddings from text enforce token limits for each processed text part.  
-  If a text exceeds the provider’s limit, it may be truncated or rejected.
+  If a text exceeds the provider's limit, it may be truncated or rejected.
 
 ---
     
@@ -177,36 +177,37 @@ so chunks returned by [Retrieving matching chunk text](../../../ai-integration/v
 **Where to apply the prefix**:  
 You can apply the prefix in a script at three levels:
 
-	* **Per chunked field**:  
-	  Chain `withContextPrefix(...)` onto any chunking method result to prepend the prefix to every chunk generated from that field.
+  * **Per chunked field**:  
+  Chain `withContextPrefix(...)` onto any chunking method result to prepend the prefix to every chunk generated from that field.
 
-	* **Per non-chunked field**:  
-	  Chain `withContextPrefix(...)` directly onto a raw string or string array.  
-	  The string, or each string in the array, is emitted without chunking and with the prefix prepended.
+  * **Per non-chunked field**:  
+  Chain `withContextPrefix(...)` directly onto a raw string or string array.  
+  The string, or each string in the array, is emitted without chunking and with the prefix prepended.
 
-	* **For all generated fields**:  
-	  Chain `withContextPrefix(...)` onto the `embeddings.generate({...})` call to apply the same prefix to every generated field.
-	  A field-level prefix takes priority and is not overwritten by this object-wide prefix.    
-    
+  * **For all generated fields**:  
+  Chain `withContextPrefix(...)` onto the `embeddings.generate({...})` call to apply the same prefix to every generated field.
+  A field-level prefix takes priority and is not overwritten by this object-wide prefix.    
+
 **Example**:  
 
-	```js
-	embeddings.generate({
-    
-	    // Per field - on a chunked value:
-	    // Prepend the document's category to every chunk generated from the Content field.
-	    Content: text.splitParagraphs(this.Content, 512).withContextPrefix(this.Category),
+```js
+embeddings.generate({
 
-	    // No field-level prefix is defined here,
-	    // so the object-wide prefix below will apply to this field.
-	    Summary: text.splitParagraphs(this.Summary, 512),
+    // Per field - on a chunked value:
+    // Prepend the document's category to every chunk
+    // generated from the Content field.
+    Content: text.splitParagraphs(this.Content, 512).withContextPrefix(this.Category),
 
-	    // Per field - on a non-chunked value:
-	    // Emit the Title field without chunking, with a literal prefix prepended.
-	    Title: this.Title.withContextPrefix('Article title:')
-    
-	}).withContextPrefix(this.Title); // Object-wide prefix
-	```
+    // No field-level prefix is defined here,
+    // so the object-wide prefix below will apply to this field.
+    Summary: text.splitParagraphs(this.Summary, 512),
+
+    // Per field - on a non-chunked value:
+    // Emit the Title field without chunking, with a literal prefix prepended.
+    Title: this.Title.withContextPrefix('Article title:')
+
+}).withContextPrefix(this.Title); // Object-wide prefix
+```
 ---    
    
 #### SCRIPT vs PATHS context prefixes

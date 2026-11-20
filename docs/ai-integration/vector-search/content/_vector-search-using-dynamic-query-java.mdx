@@ -165,7 +165,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
   In approximate search, increasing this value can improve accuracy but requires more computation.
 
   The number of documents returned may be:  
-    * **lower** than the number of candidates - when several matching vectors belong to the same document.  
+    * **lower** than the number of candidates - when several matching vectors belong to the same document,  
+      or when fewer vectors meet the minimum similarity.  
     * **higher** than the number of candidates - when the same vector is shared between multiple documents,  
       or when results from several searches are combined.
 

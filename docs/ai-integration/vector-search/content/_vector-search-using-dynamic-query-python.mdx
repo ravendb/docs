@@ -171,7 +171,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
   In approximate search, increasing this value can improve accuracy but requires more computation.
 
   The number of documents returned may be:  
-    * **lower** than the number of candidates - when several matching vectors belong to the same document.  
+    * **lower** than the number of candidates - when several matching vectors belong to the same document,  
+      or when fewer vectors meet the minimum similarity.  
     * **higher** than the number of candidates - when the same vector is shared between multiple documents,  
       or when results from several searches are combined.
 
@@ -355,8 +356,12 @@ similar_categories = list(
 // Query the Categories collection
 from "Categories"
 // Call 'vector.search'
-// Specify the identifier of the task that generated the embeddings inside the 'ai.task' method
-where vector.search(embedding.text(Name, ai.task('id-for-task-open-ai')), $searchTerm, 0.75)
+// Specify the identifier of the task that generated the embeddings
+// inside the 'ai.task' method
+where vector.search(
+    embedding.text(Name, ai.task('id-for-task-open-ai')),
+    $searchTerm,
+    0.75)
 {"searchTerm": "candy"}
 ```
 </TabItem>
@@ -595,7 +600,8 @@ similar_movies = list(
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Movies"
-// Wrap the source document field name with 'embedding.i8' to indicate the source data type
+// Wrap the source document field name with 'embedding.i8'
+// to indicate the source data type
 where vector.search(embedding.i8(tags_embedded_as_int8), $queryVector)
 { "queryVector" : [63, 127, -51, -52, 76, 62] }
 ```
@@ -630,7 +636,8 @@ similar_movies = list(
 from "Movies"
 // * Wrap the source document field name using 'embedding.<format>' to specify
 //   the source data type from which the Base64 string was generated.
-// * If the document field is Not wrapped, 'single' is assumed as the default source type. 
+// * If the document field is Not wrapped,
+//   'single' is assumed as the default source type.
 where vector.search(tags_embedded_as_base_64, $queryVectorBase64)
 { "queryVectorBase64" : "zczMPc3MTD6amZk+" }
 ```
@@ -672,7 +679,7 @@ similar_products = list(
             ),
             object_type=Product,
         )
-        .add_parameter("documentID", "Products/7-A")
+        .add_parameter("$documentID", "Products/7-A")
         .wait_for_non_stale_results()
     )
 ```
