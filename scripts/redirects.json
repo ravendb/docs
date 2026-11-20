@@ -370,6 +370,34 @@
         }
     },
     {
+        "key": "/server/extensions/refresh",
+        "value": {
+            "targetUrl": "/documents/document-refresh/client-api",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/studio/database/settings/document-refresh",
+        "value": {
+            "targetUrl": "/documents/document-refresh/document-refresh-view",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/server/extensions/expiration",
+        "value": {
+            "targetUrl": "/documents/document-expiration/client-api",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
+        "key": "/studio/database/settings/document-expiration",
+        "value": {
+            "targetUrl": "/documents/document-expiration/document-expiration-view",
+            "minimumVersion": "7.2"
+        }
+    },
+    {
         "key": "/client-api/data-subscriptions",
         "value": {
             "targetUrl": "/client-api/data-subscriptions/what-are-data-subscriptions",

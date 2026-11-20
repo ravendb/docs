@@ -16,14 +16,20 @@ export default function BackgroundTasksFeaturesGrid() {
         {
             title: "Expiration",
             icon: "document-expiration",
-            url: `/${activeVersion.label}/server/extensions/expiration`,
+            url:
+                activeVersion.label >= "7.2"
+                    ? `/${activeVersion.label}/documents/document-expiration/client-api`
+                    : `/${activeVersion.label}/server/extensions/expiration`,
             description: "Automatically scheduled documents cleanup",
             minimumSupportedVersion: "4.0",
         },
         {
             title: "Refresh",
             icon: "document-refresh",
-            url: `/${activeVersion.label}/server/extensions/refresh`,
+            url:
+                activeVersion.label >= "7.2"
+                    ? `/${activeVersion.label}/documents/document-refresh/client-api`
+                    : `/${activeVersion.label}/server/extensions/refresh`,
             description: "Automatically re-trigger your documents",
             minimumSupportedVersion: "4.2",
         },
