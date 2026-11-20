@@ -47,8 +47,8 @@ import CodeBlock from '@theme/CodeBlock';
 
 * The conventions set on a Document Store will apply to ALL [sessions](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) and [operations](../../../client-api/operations/what-are-operations.mdx) associated with that store.
  
-* Customizing the conventions can only be set **before** calling `documentStore.initialize()`.  
-  Trying to do so after calling _initialize()_ will throw an exception.
+* Set the conventions **before** calling `documentStore.initialize()`.  
+  Setting most conventions after calling `initialize()` throws an exception.
 
 <TabItem value="conventions_1" label="conventions_1">
 <CodeBlock language="js">
@@ -63,7 +63,7 @@ documentStore.initialize();
 // * Here you can interact with the RavenDB store:
 //   open sessions, create or query for documents, perform operations, etc.
 
-// * Conventions CANNOT be set here after calling initialize()
+// * Do not set conventions here, but before calling initialize()
 `}
 </CodeBlock>
 </TabItem>
