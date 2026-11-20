@@ -483,7 +483,7 @@ store.maintenance().send(new PutIndexesOperation(indexDefinition));
 
 #### Explicit vector options 
 
-`new FieldVectorOptions()` defaults both source and destination types to `Single`.  
+If `sourceEmbeddingType` and `destinationEmbeddingType` are not set (e.g., `new FieldVectorOptions()`), RavenDB uses `Single` for both.  
 For a task that stores `Int8` or `Binary`, set both types to the format stored by the embeddings generation task.
 
 </Admonition>

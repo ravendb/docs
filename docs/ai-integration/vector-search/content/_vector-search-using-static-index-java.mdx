@@ -102,7 +102,7 @@ Specify the number of edges that will be created for a vector during indexing.
 If not specified, the default value is taken from the following configuration key: [Indexing.Corax.VectorSearch.DefaultNumberOfEdges](../../../ai-integration/vector-search/configuration.mdx#indexingcoraxvectorsearchdefaultnumberofedges).
 
 **Number of candidates for indexing time** -   
-The  number of candidates (potential neighboring vectors) that RavenDB evaluates during vector indexing.  
+The number of candidates (potential neighboring vectors) that RavenDB evaluates during vector indexing.  
 If not specified, the default value is taken from the following configuration key: [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForIndexing](../../../ai-integration/vector-search/configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforindexing).   
 (Note, this param differs from the number of candidates for query time).
 
@@ -1227,6 +1227,7 @@ List<Movie> similarMovies = session.advanced()
             "null)")
     .addParameter("searchTerm", "NASA")
     .addParameter("embeddingTaskId", "id-of-embedding-generation-task")
+    .waitForNonStaleResults()
     .toList();
 ```
 </TabItem>
@@ -1539,7 +1540,9 @@ Because these are now regular documents, you can freely define vector fields and
 
 * The following methods create vector fields in a static index.
     
-* In Java, you call these methods within the index's map expression, which is written in C# and supplied as a string.  
+* In Java, you call these methods within the index's map expression, which is supplied as a string:  
+  a C# LINQ expression in `AbstractIndexCreationTask` and `IndexDefinition`,  
+  or a JavaScript function in `AbstractJavaScriptIndexCreationTask`.  
   RavenDB compiles this expression on the server, so the method signatures below are shown in C#.  
     
 * For the query-time API (`vectorSearch`), see the [Syntax section](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#syntax) in the dynamic-query article.

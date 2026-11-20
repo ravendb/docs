@@ -553,7 +553,8 @@ AddEmbeddingsGenerationOperationResult addAiIntegrationTaskResult =
 #### The embeddings generation task configuration:
 
 ```java
-// The 'EmbeddingsGenerationConfiguration' class inherits from 'EtlConfiguration'
+// The 'EmbeddingsGenerationConfiguration' class inherits from
+// 'AbstractAiIntegrationConfiguration', which extends 'EtlConfiguration',
 // and provides the following specialized configurations
 // for the embeddings generation task:
 // ==============================================================================
@@ -576,17 +577,17 @@ public final class EmbeddingsGenerationConfiguration
 }
 ```
 
-| Parameter                                | Type                               | Description                                                                                                                                                                                                                                                                   |
-|------------------------------------------|------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **identifier**                           | `String`                           | The identifier of the embeddings generation task.                                                                                                                                                                                                                             |
-| **collection**                           | `String`                           | The name of the source collection from which documents are processed for embeddings generation.                                                                                                                                                                               |
-| **embeddingsPathConfigurations**         | `List<EmbeddingPathConfiguration>` | A list of properties inside documents that contain text to be embedded, along with their chunking settings.                                                                                                                                                                   |
-| **embeddingsTransformation**             | `EmbeddingsTransformation`         | An object that contains a script defining the transformations and processing applied to the source text before generating embeddings.                                                                                                                                         |
-| **quantization**                         | `VectorEmbeddingType`              | The quantization type for the generated embeddings.                                                                                                                                                                                                                           |
-| **chunkingOptionsForQuerying**           | `ChunkingOptions`                  | The chunking method, maximum token limit, and overlap tokens used when processing search terms in vector search queries.                                                                                                                                                      |
-| **embeddingsCacheExpiration**            | `Duration`                         | The expiration period for documents in the [Embedding cache collection](../../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-cache-collection) that contain embeddings generated from source documents.                                     |
-| **embeddingsCacheForQueryingExpiration** | `Duration`                         | The expiration period for documents in the embedding cache collection that contain embeddings generated from search terms in vector search queries.                                                                                                                           |
-| **storeChunkText**                       | `boolean`                          | Whether to also store the text of each chunk in the source document's [embeddings document](../../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-collections). Default: `false`. <br/> Learn more in [Store chunk text](#store-chunk-text). |
+| Parameter                                | Type                                             | Description                                                                                                                                                                                                                                                                   |
+|------------------------------------------|--------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **identifier**                           | `String`                                         | The identifier of the embeddings generation task.                                                                                                                                                                                                                             |
+| **collection**                           | `String`                                         | The name of the source collection from which documents are processed for embeddings generation.                                                                                                                                                                               |
+| **embeddingsPathConfigurations**         | `List<EmbeddingPathConfiguration>`               | A list of properties inside documents that contain text to be embedded, along with their chunking settings.                                                                                                                                                                   |
+| **embeddingsTransformation**             | `EmbeddingsTransformation`                       | An object that contains a script defining the transformations and processing applied to the source text before generating embeddings.                                                                                                                                         |
+| **quantization**                         | `VectorEmbeddingType`                            | The quantization type for the generated embeddings.                                                                                                                                                                                                                           |
+| **chunkingOptionsForQuerying**           | `ChunkingOptions`                                | The chunking method, maximum token limit, and overlap tokens used when processing search terms in vector search queries.                                                                                                                                                      |
+| **embeddingsCacheExpiration**            | `Duration` (setter) <br/> `long` (getter, in ms) | The expiration period for documents in the [Embedding cache collection](../../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-cache-collection) that contain embeddings generated from source documents.                                     |
+| **embeddingsCacheForQueryingExpiration** | `Duration` (setter) <br/> `long` (getter, in ms) | The expiration period for documents in the embedding cache collection that contain embeddings generated from search terms in vector search queries.                                                                                                                           |
+| **storeChunkText**                       | `boolean`                                        | Whether to also store the text of each chunk in the source document's [embeddings document](../../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-collections). Default: `false`. <br/> Learn more in [Store chunk text](#store-chunk-text). |
 
 ```java
 // Each field has a getter and a setter.
@@ -597,7 +598,8 @@ public class EmbeddingPathConfiguration {
 }
 
 public class ChunkingOptions {
-    private ChunkingMethod chunkingMethod; // Default is PLAIN_TEXT_SPLIT
+    // Not set (null) by default - the server then uses PLAIN_TEXT_SPLIT
+    private ChunkingMethod chunkingMethod;
     private int maxTokensPerChunk = 512;
 
     // 'overlapTokens' is only applicable when chunkingMethod is
@@ -658,10 +660,10 @@ public UpdateEmbeddingsGenerationOperation(
     boolean reset);
 ```
 
-| Parameter         | Type                                | Description                                                                                                                                                                                                                                                                    |
-|-------------------|-------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **taskId**        | `long`                              | The current ID of the embeddings generation task to update. The ID changes after each update.                                                                                                                                                                                  |
-| **configuration** | `EmbeddingsGenerationConfiguration` | The updated task configuration.                                                                                                                                                                                                                                                |
-| **reset**         | `boolean`                           | `true` - process all documents in the task's collection again. <br/> `false` (default) - keep saved processing progress. Switching between Paths and Script can still cause reprocessing; see [Modify the task - from the Client API](#modify-the-task---from-the-client-api). |
+| Parameter         | Type                                | Description                                                                                                                                                                                                                                                                                                          |
+|-------------------|-------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **taskId**        | `long`                              | The current ID of the embeddings generation task to update. The ID changes after each update.                                                                                                                                                                                                                        |
+| **configuration** | `EmbeddingsGenerationConfiguration` | The updated task configuration.                                                                                                                                                                                                                                                                                      |
+| **reset**         | `boolean`                           | `true` - process all documents in the task's collection again. <br/> `false` (default, used by the two-argument constructor) - keep saved processing progress. Switching between Paths and Script can still cause reprocessing; see [Modify the task - from the Client API](#modify-the-task---from-the-client-api). |
     
 </Panel>

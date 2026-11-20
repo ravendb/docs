@@ -141,7 +141,7 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * **Source data format**  
   RavenDB supports performing vector search on TEXTUAL values or NUMERICAL arrays.  
-  the source data can be formatted as `Text`, `Single`, `Int8`, or `Binary`.
+  The source data can be formatted as `Text`, `Single`, `Int8`, or `Binary`.
 
 * **Target quantization**  
   You can specify the quantization encoding for the embeddings that will be created from source data.  
@@ -350,8 +350,12 @@ List<Category> similarCategories = session.advanced()
 // Query the Categories collection
 from "Categories"
 // Call 'vector.search'
-// Specify the identifier of the task that generated the embeddings inside the 'ai.task' method
-where vector.search(embedding.text(Name, ai.task('id-for-task-open-ai')), $searchTerm, 0.75)
+// Specify the identifier of the task that generated the embeddings
+// inside the 'ai.task' method
+where vector.search(
+    embedding.text(Name, ai.task('id-for-task-open-ai')),
+    $searchTerm,
+    0.75)
 {"searchTerm": "candy"}
 ```
 </TabItem>
@@ -586,11 +590,13 @@ List<Movie> similarMovies = session.query(Movie.class)
             "tagsEmbeddedAsInt8", VectorEmbeddingType.INT8),
         // Call 'byEmbedding'
         // Provide the vector for the similarity comparison
-        // (provide a single vector from the vector list in the tagsEmbeddedAsInt8 field)
+        // (provide a single vector from the vector list
+        // in the tagsEmbeddedAsInt8 field)
         queryVector -> queryVector.byEmbedding(
             // The provided vector MUST be in the same format
             // as was stored in your document
-            // Call 'VectorQuantizer.toInt8' to transform the raw data to the Int8 format
+            // Call 'VectorQuantizer.toInt8' to transform the raw data
+            // to the Int8 format
             // 'byEmbedding' takes a boxed array, so convert the int[] to Integer[]
             Arrays.stream(VectorQuantizer.toInt8(new float[] { 0.1f, 0.2f }))
                 .boxed()
@@ -602,7 +608,8 @@ List<Movie> similarMovies = session.query(Movie.class)
 <TabItem value="RQL" label="RQL">
 ```sql
 from "Movies"
-// Wrap the source document field name with 'embedding.i8' to indicate the source data type
+// Wrap the source document field name with 'embedding.i8'
+// to indicate the source data type
 where vector.search(embedding.i8(tagsEmbeddedAsInt8), $queryVector)
 { "queryVector" : [64, 127, -51, -52, 76, 62] }
 ```
@@ -637,7 +644,8 @@ List<Movie> similarMovies = session.query(Movie.class)
 from "Movies"
 // * Wrap the source document field name using 'embedding.<format>' to specify
 //   the source data type from which the Base64 string was generated.
-// * If the document field is Not wrapped, 'single' is assumed as the default source type. 
+// * If the document field is Not wrapped,
+//   'single' is assumed as the default source type.
 where vector.search(tagsEmbeddedAsBase64, $queryVectorBase64)
 { "queryVectorBase64" : "zczMPc3MTD6amZk+" }
 ```
@@ -850,7 +858,8 @@ public interface IVectorEmbeddingTextFieldValueFactory {
     void byText(String text, String embeddingsGenerationTaskIdentifier);
     void byTexts(String[] texts, String embeddingsGenerationTaskIdentifier);
 
-    // Query by the embedding(s) indexed from the specified document for the queried field
+    // Query by the embedding(s) indexed from the specified document
+    // for the queried field
     void forDocument(String documentId);
 }
 
@@ -867,7 +876,8 @@ public interface IVectorEmbeddingFieldValueFactory {
     // 'base64Embedding' is encoded as base64 string.
     void byBase64(String base64Embedding);
 
-    // Query by the embedding(s) indexed from the specified document for the queried field
+    // Query by the embedding(s) indexed from the specified document
+    // for the queried field
     void forDocument(String documentId);
 }
 ```

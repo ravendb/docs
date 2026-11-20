@@ -334,7 +334,7 @@ List<Company> companies = session.query(Company.class)
     .openSubclause()
     .vectorSearch( // Search for companies that sell dairy products or similar
         field -> field.withText("Name"),
-        v -> v.byText("dairy"),
+        searchTerm -> searchTerm.byText("dairy"),
         0.80f, null, null
     )
     .closeSubclause()
@@ -486,7 +486,7 @@ or vector.search(VectorFromText, $searchTerm2, 0.80)
     [Store chunk text](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#store-chunk-text).
     
   * Wait for the task to finish processing the relevant documents, including any requested reprocessing.  
-    Monitor the embeddings generation task's progress in the [Studio's AI Tasks view](../../../ai-integration/ai-tasks-list-view) and wait until it is up to date, including after reprocessing existing documents.
+    Monitor the embeddings generation task's progress in the [Studio's AI Tasks view](../../../ai-integration/ai-tasks-list-view.mdx) and wait until it is up to date, including after reprocessing existing documents.
     `waitForNonStaleResults` in the examples waits for indexing; it does not wait for the embeddings generation task to finish.
     
   * The index must store the vectors in the same quantization format as the task.  
@@ -545,9 +545,9 @@ List<Employee> employees = session.advanced()
     .rawQuery(Employee.class,
         "from 'Employees' " +
         "where vector.search(" +
-        "    embedding.text(Notes, ai.task('id-for-task-employee-notes')), " +
-        "    $searchTerm, " +
-        "    0.75) " +
+            "embedding.text(Notes, ai.task('id-for-task-employee-notes')), " +
+            "$searchTerm, " +
+            "0.75) " +
         // Highlight the document field that the vector search queries
         "include highlight(Notes, 500, 3)")
     .addParameter("searchTerm", "speaks foreign languages")
