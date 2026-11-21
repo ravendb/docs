@@ -55,7 +55,26 @@ In either case, the number of nodes will represent the `Replication Factor`.
 Once the database is created by getting a [Consensus](../../../server/clustering/rachis/consensus-operations.mdx),  
 the [Cluster Observer](../../../server/clustering/distribution/cluster-observer.mdx) begins monitoring the _Database Group_ in order to maintain this Replication Factor.
 
+<Admonition type="note" title="">
 
+**Sizing the database group**
+
+For high availability, use a database group of at least three nodes so the
+database survives losing a node, and rely on
+[internal replication](../replication/replication-overview.mdx#internal-replication)
+to keep the remaining nodes in sync.
+
+If the database also uses
+[cluster-wide transactions](../cluster-transactions.mdx),
+prefer an odd group size (3, 5, or 7).  
+A cluster-wide transaction commits only after a majority of the database group's
+voting members have accepted it, and an odd group size means that majority is always
+a clean (n/2 + 1) - never a tie.
+
+For the full reasoning, see
+[Cluster: Best Practices](../cluster-best-practice-and-configuration.mdx#clusters-should-have-an-odd-number-of-at-least-3-nodes).
+
+</Admonition>
 
 ## Database Topology
 
