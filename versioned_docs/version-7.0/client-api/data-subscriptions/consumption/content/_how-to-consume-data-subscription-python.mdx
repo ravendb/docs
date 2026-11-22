@@ -53,14 +53,11 @@ When an unexpected error arises, the worker will attempt to **reconnect to the s
 
 However, there are several conditions under which the worker will stop its operation but will Not attempt to reconnect:
 
-* The subscription does not exist (e.g., it was deleted).  
 * The subscription is in use by another worker, or another worker took it over
   (see [Worker strategies](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies)).  
 * The subscription was disabled, or the worker's connection was dropped.  
-* The worker cannot reach any of the servers.  
 * The worker failed to connect for longer than `max_erroneous_period`.  
 * An authorization error occurred.  
-* The database does not exist.  
 * Your batch-processing code raised an exception, and `ignore_subscriber_errors` is not set
   (see [Batch processing execution failures](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#batch-processing-execution-failures)).  
 * The worker runs with `close_when_no_docs_left` and no documents are left

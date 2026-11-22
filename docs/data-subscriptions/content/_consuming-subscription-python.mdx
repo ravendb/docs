@@ -136,15 +136,12 @@ subscription, until the period set in `max_erroneous_period` passes
 
 The worker stops without reconnecting in these cases:
 
-* The subscription does not exist (e.g., it was deleted).  
 * The subscription is in use by another worker, or another worker took it over
   (see [Worker strategies](../../data-subscriptions/consuming-subscription.mdx#worker-strategies)).  
 * The subscription was disabled, or the worker's connection was dropped
   (see [Dropping connections](../../data-subscriptions/maintenance-operations.mdx#dropping-connections)).  
-* The worker cannot reach any of the servers.  
 * The worker failed to connect for longer than `max_erroneous_period`.  
 * An authorization error occurred.  
-* The database does not exist.  
 * Your batch-processing code raised an exception, and `ignore_subscriber_errors` is not set
   (see [Errors while processing a batch](../../data-subscriptions/consuming-subscription.mdx#errors-while-processing-a-batch)).  
 * The worker runs with `close_when_no_docs_left` and no documents are left
@@ -200,7 +197,7 @@ When your batch-processing code raises an exception, the worker's response depen
 
 ### Reconnection and timeouts
 
-These `SubscriptionWorkerOptions` properties govern reconnection after a failure:
+These `SubscriptionWorkerOptions` properties govern reconnection and connection timeouts:
 
 * **`time_to_wait_before_connection_retry`**  
   How long the worker waits before each reconnect attempt.  
@@ -209,6 +206,14 @@ These `SubscriptionWorkerOptions` properties govern reconnection after a failure
   How long the worker may keep failing to reconnect, counted from the first failure since its last successful
   connection, before the worker stops retrying.  
   Default: 5 minutes.  
+* **`connection_stream_timeout`**  
+  How long the worker waits for data from the server, or for a write to the server to complete,
+  before the worker treats its connection to the server as broken and tries to reconnect.  
+  Default: 30 seconds. Minimum: 15 seconds.  
+
+  <Admonition type="info" title="">
+  To set `connection_stream_timeout`, use Python client version 7.2.7 or later.
+  </Admonition>
 
 </ContentFrame>
 
@@ -292,7 +297,8 @@ while True:
         subscription_worker.run(_process_documents_callback).result()
 
         # run completes normally if you have disposed the subscription
-        return
+        break
+
     except Exception as e:
         print(f"Failure in subscription {subscription_name}: {e}")
         exception_type = type(e)
@@ -308,7 +314,7 @@ while True:
 
         if exception_type is SubscriptionClosedException:
             # Subscription probably closed explicitly by admin
-            return
+            break
 
         if exception_type is SubscriberErrorException:
             # For UnsupportedCompanyException we want to raise, otherwise continue processing
@@ -320,7 +326,8 @@ while True:
         if exception_type is SubscriptionInUseException:
             continue
 
-        return
+        break
+
     finally:
         subscription_worker.close(False)
 ```
@@ -349,7 +356,7 @@ worker_w_batch.run(lambda batch: ...)
 ### Example: Processing documents in a session
 
 In this example, the subscription sends to the worker `Orders` that have no shipping date.  
-The worker sets each document's `shipped_at` field and saves it back through a session.
+The worker sets each document's `ShippedAt` field and saves it back through a session.
 
 <Admonition type="info" title="">
 Open the session using `batch.open_session`, not `store.open_session`.
@@ -369,7 +376,7 @@ def _transfer_order_callback(batch):
     with batch.open_session() as session:
         for order in (item.result for item in batch.items):
             transfer_order_to_shipment_company(order)  # call your custom method
-            order.shipped_at = datetime.utcnow()        # update the document field
+            order.ShippedAt = datetime.utcnow()         # update the document field
 
         # Save the updated Order documents
         session.save_changes()
@@ -408,7 +415,7 @@ subscription_worker = store.subscriptions.get_subscription_worker_by_name(subscr
 def _raise_notification_callback(batch):
     for item in batch.items:
         # Access the dynamic field in the document
-        raise_notification(item.result.dynamic_field)  # call your custom method
+        raise_notification(item.result["dynamic_field"])  # call your custom method
 
 subscription_worker.run(_raise_notification_callback)
 ```
@@ -698,6 +705,7 @@ When you create a worker using `SubscriptionWorkerOptions`, the only required pr
 | **close_when_no_docs_left** | `bool` | Whether the connection closes when no new documents remain. `True` processes all available documents and then throws a `SubscriptionClosedException` (useful for one-time processing); `False` (default) keeps the worker waiting for new documents. |
 | **time_to_wait_before_connection_retry** | `timedelta` | The wait before each reconnection attempt.<br />Default: 5 seconds. |
 | **max_erroneous_period** | `timedelta` | How long the worker may keep failing to reconnect, counted from the first failure since its last successful connection, before the worker stops retrying.<br />Default: 5 minutes. |
+| **connection_stream_timeout** | `timedelta` | How long the worker waits for data from the server, or for a write to the server to complete, before the worker treats its connection to the server as broken.<br />Default: 30 seconds. Minimum: 15 seconds.<br />To set `connection_stream_timeout`, use Python client version 7.2.7 or later. |
 | **strategy** | `SubscriptionOpeningStrategy` | How the server handles this worker's connection attempt. Default: `OPEN_IF_FREE`. |
 
 </TabItem>

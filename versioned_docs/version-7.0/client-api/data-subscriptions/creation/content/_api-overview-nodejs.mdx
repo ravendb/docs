@@ -265,7 +265,9 @@ All subscriptions are eventually translated to an RQL-like statement. These stat
    * The RQL methods `startsWith`, `endsWith`, `regex`, `exists`, and `intersect`
    * Plain JavaScript expressions and declared function calls, allowing to perform complex filtering logic
 
-  The subscriptions RQL does not support any of the known RQL searching keywords.
+  The subscriptions RQL does **not** support:  
+  The `search`, `boost`, `lucene`, `exact`, `moreLikeThis`, and `vector.search` methods.  
+  Spatial methods.
 
 * Select statement, that defines the projection to be performed. 
   The select statements can contain function calls, allowing complex transformations.

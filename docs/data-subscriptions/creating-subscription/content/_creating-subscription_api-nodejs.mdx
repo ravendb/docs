@@ -16,6 +16,8 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * In this article:
    * [Creating a subscription](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#creating-a-subscription)
+      * [create with a document type or with a raw RQL query](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#create-with-a-document-type-or-with-a-raw-rql-query)
+      * [create vs update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#create-vs-update)
    * [Subscription name](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#subscription-name)
    * [Responsible node](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#responsible-node)
    * [Starting point](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#starting-point)
@@ -57,19 +59,10 @@ import ContentFrame from "@site/src/components/ContentFrame";
 To create a subscription, define the documents that the server should send to the worker, then register
 this definition with the server using `documentStore.subscriptions.create`.
 
-`create` is meant to be called **once** per subscription.
+<ContentFrame>
 
-* Calling `create` **without a name** creates a new subscription, and the server sets the subscription's name to the subscription's ID.
-* Calling `create` **with a new name** creates a subscription with this name.
-* Calling `create` **with the name of an existing subscription** throws an exception.
-  <br /><br />
-  <Admonition type="info" title="">
-  A subscription can also be created using the `update` method, by setting `createNew` to `true` in the update options object passed to `update`.  
-  `update` then creates the subscription if it does not exist yet, and updates the subscription if it already exists and its definition has changed.  
-  See [Creating a subscription via update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#creating-a-subscription-via-update).
-  </Admonition>
+### `create` with a document type or with a raw RQL query
 
-<br />
 You can use `create` in two ways:
 
 * **By document type**  
@@ -85,7 +78,33 @@ The simplest definition sends an entire collection:
 const subscriptionName = await documentStore.subscriptions.create(Order);
 ```
 
-<br />
+</ContentFrame>
+
+<ContentFrame>
+
+### `create` vs `update`
+
+* [create](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#create)
+  is meant to be called **once** per subscription.
+   * Calling `create` **without providing a name** creates a **new** subscription.  
+     The server sets the subscription's name to the subscription's ID.
+   * Calling `create` with a **new name** creates a subscription that carries this name.
+   * Calling `create` with the name **of an existing subscription** throws an exception.
+
+* [update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#update)
+  is meant to **modify** an existing subscription's definition, but can also **create** a subscription.  
+  The method's behavior depends on the `createNew` property of the [update options object](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes)
+  you pass to `update`:
+   * Set `createNew` to `true` to **create** the subscription if it doesn't exist yet,
+     and **modify** the subscription if it already exists and its definition has changed.
+   * Set `createNew` to `false` (the default) to **modify** an existing subscription.  
+     If the subscription doesn't exist, `update` throws an exception.
+
+  See [Creating a subscription via update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#creating-a-subscription-via-update).
+
+</ContentFrame>
+
+---
 
 For filtering and includes, see the [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples) below.  
 For projections, see [Projections](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#projections).  
@@ -190,7 +209,7 @@ To change the starting point of an existing subscription, see [Updating a subscr
 
 ### Changing a subscription's definition
 
-You can change an existing subscription's definition using the [update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#methods) method.  
+You can change an existing subscription's definition using the [update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#update) method.  
 Pass an [update options](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes) object, which extends the creation options with two
 additional fields, `id` and `createNew`:
 
@@ -237,20 +256,32 @@ to `true`, updating a subscription that does not exist creates the subscription 
 set in the update options object.
 
 Creating a subscription via `update` is useful when your application defines a subscription and passes the definition to
-`update` each time the application starts.  
-The first time the application starts, `update` **creates** the subscription.  
-On later starts, `update` **modifies** the subscription if the definition your application passes differs from the
-subscription's current definition (e.g., after you deploy a new version of the application with a changed query).  
-If there is no change in the subscription's definition, `update` leaves the subscription as it is.
+`update` each time the application starts:
+
+* The first time the application starts, `update` **creates** the subscription.
+* On later starts, `update` **modifies** the subscription if the definition your application passes differs from the
+  subscription's current definition (e.g., after you deploy a new version of the application with a changed query).  
+  If there is no change in the subscription's definition, `update` leaves the subscription as it is.
+
+  <Admonition type="info" title="">
+  To keep the subscription's processing progress when your application restarts, do not set `changeVector` in the
+  options your application passes to `update`.  
+  A set `changeVector` counts as a change in the subscription's definition, so `update` moves the subscription's
+  [starting point](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#starting-point) to the `changeVector` value each time the application starts.  
+  For example, with `changeVector` set to `"BeginningOfTime"`, the subscription sends all matching documents again
+  each time the application starts.
+  </Admonition>
+
+See [Example: Creating a subscription via update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-creating-a-subscription-via-update).
+
+---
 
 <Admonition type="note" title="">
-If your application calls [create](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#methods) rather than `update` when the application starts:
+If your application calls [create](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#create) rather than `update` when the application starts:
 
 * Passing the subscription's name to `create` **would fail on every start after the first**, since the server attempts to create a subscription that already exists.
 * Not passing a name to `create` **would create a new subscription on every start**, and each new subscription would send the matching documents from the beginning.
 </Admonition>
-
-See [Example: Creating a subscription via update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-creating-a-subscription-via-update).
 
 </ContentFrame>
 
@@ -288,7 +319,7 @@ A subscription query can have these parts:
    * **JavaScript**: plain JavaScript expressions and calls to declared functions, so you can express complex filtering.
 * **A `select` clause** defining the [projection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#projections).  
   This clause can call functions, allowing complex transformations.  
-* **An `include` clause** defining paths to include.  
+* **An `include` clause** defining documents (by path), counters, or time series to include.  
 
 To learn about the JavaScript that subscription functions can use, see [JavaScript engine](../../../server/kb/javascript-engine.mdx).
 
@@ -300,13 +331,17 @@ To learn about the JavaScript that subscription functions can use, see [JavaScri
 
 A subscription query does not support:
 
-* The `order by`, `group by`, and `update` clauses, or `select distinct`.
+* The `order by`, `group by`, and `update` clauses.  
+  `select distinct`.
 * Querying an index. The `from` clause can name only a collection.
-* The `search`, `boost`, `lucene`, and `exact` methods, spatial methods, or vector search.
+* The `search`, `boost`, `lucene`, `exact`, `moreLikeThis`, and `vector.search` methods.  
+  Spatial methods.
 * The `now()` and `today()` functions.
 * The `between` operator. Use `>=` and `<=` instead.
 * Query parameters (e.g., `$min`).
-* Including compare-exchange items (`include cmpxchg(...)`).
+* Including any object other than documents, counters, or time series.  
+  For example, [compare-exchange items](../../../compare-exchange/overview.mdx) (`include cmpxchg(...)`) and revisions
+  (`include revisions(...)`) cannot be included.
 
 The subscription does not apply `limit` and `filter` clauses, although it accepts a query that includes them.
 
@@ -667,7 +702,7 @@ The subscription keeps the key's value from the time the subscription is created
 does not affect existing subscriptions.
 
 <Admonition type="note" title="">
-* The [update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#methods) method does not change the subscription's handling of archived documents, even if you set
+* The [update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#update) method does not change the subscription's handling of archived documents, even if you set
   `archivedDataProcessingBehavior` in the update options object.  
   To change an existing subscription's handling of archived documents, edit the subscription task in Studio's
   [Ongoing Tasks view](../../../studio/database/tasks/ongoing-tasks/general-info.mdx#the-ongoing-tasks-list), and set the task's **Archived Data Processing Behavior** option.  
@@ -1039,8 +1074,8 @@ const subscriptionName = await documentStore.subscriptions.create({
 For the syntax of the builder's methods that include counters, see
 [Include builder: counters](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#include-builder-counters).
 
-The include builder's methods can be chained.  
-The following subscription includes several counters and a related document:
+Include builder methods can be **chained**.  
+e.g., the following subscription includes several counters and a related document.
 
 ```js
 const options = {
@@ -1179,6 +1214,8 @@ const subscriptionName = await documentStore.subscriptions.update({
 <Tabs groupId='syntaxMethods'>
 <TabItem value="create" label="create">
 
+#### create
+
 Create a subscription on the server.
 
 ```js
@@ -1202,6 +1239,8 @@ create(documentType);
 
 </TabItem>
 <TabItem value="update" label="update">
+
+#### update
 
 Update an existing subscription's definition.
 
@@ -1298,6 +1337,8 @@ receives the include builder, whose methods add includes to the subscription.
 Calls to the builder's methods can be chained.  
 See, for instance, the chained calls in [Example: Including counters](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-counters).
 
+---
+
 #### Include builder: documents
 
 ```js
@@ -1312,6 +1353,8 @@ includeDocuments(path);
 | **path** | `string` | The path to the field holding the ID or IDs of the documents to include, e.g., `"Employee"` or `"Lines[].Product"`. |
 
 See [Example: Including documents](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-documents).
+
+---
 
 #### Include builder: counters
 
@@ -1334,6 +1377,8 @@ includeAllCounters();
 | **names** | `string[]` | An array of counter names. |
 
 See [Example: Including counters](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-counters).
+
+---
 
 #### Include builder: time series
 

@@ -63,7 +63,10 @@ in what they process, what the server-side query can see, and what reaches the w
 * **Data sent to the worker**  
   Unless the query [projects specific fields](../../data-subscriptions/revisions-support.mdx#projecting-fields-from-revisions),
   each item in the batch contains both the processed revision (`Result.Current`) and its preceding
-  revision (`Result.Previous`). For a document's first revision, `Result.Previous` is `null`.
+  revision (`Result.Previous`).  
+  One of the two fields is `null` in these cases:
+   * For a document's first revision, `Result.Previous` is `null`.
+   * For the revision created when the document is deleted, `Result.Current` is `null`.
 
 <br />
 
@@ -399,8 +402,10 @@ await worker.Run(batch =>
             var previousRevision = item.Result.Previous;
             var currentRevision = item.Result.Current;
 
-            // Skip a document's first revision, and revisions that did not change the employee
-            if (previousRevision == null || previousRevision.Employee == currentRevision.Employee)
+            // Skip a document's first revision, the revision created when the document was deleted,
+            // and revisions that did not change the employee
+            if (previousRevision == null || currentRevision == null ||
+                previousRevision.Employee == currentRevision.Employee)
                 continue;
 
             // Calling Load will not generate a request to the server,
@@ -444,6 +449,7 @@ await worker.Run(batch =>
     {
         // Read a metadata property you set yourself from the revision being processed
         if (item.RawResult.TryGet("Current", out BlittableJsonReaderObject currentRevision) &&
+            currentRevision != null &&
             currentRevision.TryGet("@metadata", out BlittableJsonReaderObject metadata) &&
             metadata.TryGet("trace.id", out string traceId))
         {
@@ -480,7 +486,7 @@ public sealed class Revision<T> where T : class
 | Field | Type | Description |
 |-------|------|-------------|
 | **Previous** | `T` | The preceding revision. `null` when `Current` is the document's first revision. |
-| **Current** | `T` | The revision being processed. |
+| **Current** | `T` | The revision being processed. `null` for the revision created when the document is deleted. |
 
 </TabItem>
 </Tabs>

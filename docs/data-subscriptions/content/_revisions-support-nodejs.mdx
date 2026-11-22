@@ -63,7 +63,10 @@ in what they process, what the server-side query can see, and what reaches the w
 * **Data sent to the worker**  
   Unless the query [projects specific fields](../../data-subscriptions/revisions-support.mdx#projecting-fields-from-revisions),
   each item in the batch contains both the processed revision (`result.current`) and its preceding
-  revision (`result.previous`). For a document's first revision, `result.previous` is `null`.
+  revision (`result.previous`).  
+  One of the two fields is `null` in these cases:
+   * For a document's first revision, `result.previous` is `null`.
+   * For the revision created when the document is deleted, `result.current` is `null`.
 
 <br />
 
@@ -353,8 +356,10 @@ worker.on("batch", async (batch, callback) => {
             const previousRevision = item.result.previous;
             const currentRevision = item.result.current;
 
-            // Skip a document's first revision, and revisions that did not change the employee
-            if (!previousRevision || previousRevision.Employee === currentRevision.Employee) {
+            // Skip a document's first revision, the revision created when the document was deleted,
+            // and revisions that did not change the employee
+            if (!previousRevision || !currentRevision ||
+                previousRevision.Employee === currentRevision.Employee) {
                 continue;
             }
 
@@ -400,7 +405,8 @@ worker.on("batch", (batch, callback) => {
     try {
         for (const item of batch.items) {
             // Read a metadata property you set yourself from the revision being processed
-            const traceId = item.rawResult.current["@metadata"]["trace.id"];
+            // (`current` is null for the revision created when the document was deleted)
+            const traceId = item.rawResult.current?.["@metadata"]["trace.id"];
             if (traceId) {
                 // your processing logic here
             }
@@ -438,7 +444,7 @@ interface Revision<T> {
 | Field | Type | Description |
 |-------|------|-------------|
 | **previous** | `T` | The preceding revision. `null` when `current` is the document's first revision. |
-| **current** | `T` | The revision being processed. |
+| **current** | `T` | The revision being processed. `null` for the revision created when the document is deleted. |
 
 </TabItem>
 </Tabs>

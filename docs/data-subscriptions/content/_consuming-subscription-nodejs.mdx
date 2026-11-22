@@ -177,11 +177,22 @@ The worker stops without reconnecting in these cases:
 * The worker runs with `closeWhenNoDocsLeft` and no documents are left
   (see [End when no documents are left](../../data-subscriptions/consuming-subscription.mdx#example-end-when-no-documents-are-left)).  
 
----
-
-When the worker stops instead of reconnecting, the worker emits the error through its `error` event.  
 To follow the worker's connection and reconnection attempts,
 see [Worker status](../../data-subscriptions/consuming-subscription.mdx#worker-status).
+
+---
+
+#### The worker's `error` event
+
+* When the worker stops instead of reconnecting, the worker emits an `error` event.  
+  The `error` event's handler receives an error that names the reason for stopping
+  (e.g., a `SubscriptionDoesNotExistException` when the subscription was deleted).  
+* Always handle the worker's `error` event.
+
+  <Admonition type="warning" title="">
+  If the worker stops on an error while its `error` event has no handler, Node.js will end your application's process,
+  and the worker's `end` event will not fire.
+  </Admonition>
 
 </ContentFrame>
 
@@ -439,7 +450,9 @@ async function setupReconnectingWorker(subscriptionName) {
                     // and report an error to let external logic handle the specific case
                     if (orderDocument.Company && orderDocument.Company === "companies/46-A") {
                         // The error reported here will be wrapped by `SubscriberErrorException`
-                        callback(new Error("Company ID can't be 'companies/46-A', please fix"));
+                        const error = new Error("Company ID can't be 'companies/46-A', please fix");
+                        error.name = "UnsupportedCompanyError";
+                        callback(error);
                         return;
                     }
 
@@ -468,6 +481,13 @@ async function setupReconnectingWorker(subscriptionName) {
             if (error.name === "SubscriptionClosedException") {
                 // Subscription probably closed explicitly by admin
                 return closeWorker(subscriptionWorker);
+            }
+
+            // For UnsupportedCompanyError, stop and rethrow;
+            // for any other error the batch handler reported, try reconnecting
+            if (error.name === "SubscriberErrorException" &&
+                error.cause && error.cause.name === "UnsupportedCompanyError") {
+                throw error;
             }
 
             // Otherwise, try reconnecting

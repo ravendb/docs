@@ -129,7 +129,7 @@ def _transfer_order_callback(batch: SubscriptionBatch[Order]):
     with batch.open_session() as session:
         for order in (item.result for item in batch.items):
             transfer_order_to_shipment_company(order)
-            order.shipped_at = datetime.utcnow()
+            order.ShippedAt = datetime.utcnow()
 
         # we know that we have at least one order to ship,
         # because the subscription query above has that in it's WHERE clause

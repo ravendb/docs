@@ -16,6 +16,9 @@ import ContentFrame from "@site/src/components/ContentFrame";
 
 * In this article:
    * [Creating a subscription](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#creating-a-subscription)
+      * [Create and CreateAsync](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#create-and-createasync)
+      * [Create with typed expressions or with a raw RQL query](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#create-with-typed-expressions-or-with-a-raw-rql-query)
+      * [Create vs Update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#create-vs-update)
    * [Subscription name](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#subscription-name)
    * [Responsible node](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#responsible-node)
    * [Starting point](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#starting-point)
@@ -59,21 +62,42 @@ import ContentFrame from "@site/src/components/ContentFrame";
 <Panel heading="Creating a subscription">
 
 To create a subscription, define the documents that the server should send to the worker, then register
-this definition with the server using `store.Subscriptions.Create`.
+this definition with the server using `store.Subscriptions.Create` or its asynchronous counterpart, `store.Subscriptions.CreateAsync`.  
 
-`Create` is meant to be called **once** per subscription.
+<ContentFrame>
 
-* Calling `Create` **without a name** creates a new subscription, and the server sets the subscription's name to the subscription's ID.
-* Calling `Create` **with a new name** creates a subscription with this name.
-* Calling `Create` **with the name of an existing subscription** throws an exception.
-  <br /><br />
-  <Admonition type="info" title="">
-  A subscription can also be created using the `Update` method, by setting `CreateNew` to `true` in the `SubscriptionUpdateOptions` object passed to `Update`.  
-  `Update` then creates the subscription if it does not exist yet, and updates the subscription if it already exists and its definition has changed.  
-  See [Creating a subscription via update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#creating-a-subscription-via-update).
-  </Admonition>
+### `Create` and `CreateAsync`
 
-<br />
+[Create](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#create) and [CreateAsync](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#createasync) take the same arguments and an optional cancellation token.  
+The examples on this page call `Create`. To create a subscription asynchronously, await `CreateAsync`.
+
+<Tabs groupId='CreateAndCreateAsync'>
+<TabItem value="Create" label="Create">
+
+```csharp
+// The server sends every document in the 'Orders' collection
+// to any client that connects to this subscription.
+subscriptionName = store.Subscriptions.Create<Order>();
+```
+
+</TabItem>
+<TabItem value="CreateAsync" label="CreateAsync">
+
+```csharp
+// Creates the same subscription as the Create example,
+// without blocking the calling thread while the server creates the subscription
+subscriptionName = await store.Subscriptions.CreateAsync<Order>();
+```
+
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+<ContentFrame>
+
+### `Create` with typed expressions or with a raw RQL query
+
 You can use `Create` in two ways:
 
 * **Typed expressions**  
@@ -88,7 +112,7 @@ You can use `Create` in two ways:
      });
      ```
 
-   * Pass a lambda predicate directly to [Create&lt;T&gt;](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#methods).
+   * Pass a lambda predicate directly to [Create&lt;T&gt;](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#create).
 
      ```csharp
      subscriptionName = store.Subscriptions.Create<Order>(x => x.Freight > 100);
@@ -104,17 +128,33 @@ You can use `Create` in two ways:
   });
   ```
 
-<br />
+</ContentFrame>
 
-The simplest definition sends an entire collection:
+<ContentFrame>
 
-```csharp
-// The server sends every document in the 'Orders' collection
-// to any client that connects to this subscription.
-subscriptionName = store.Subscriptions.Create<Order>();
-```
+### `Create` vs `Update`
 
-<br />
+* [Create](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#create)
+  is meant to be called **once** per subscription.
+   * Calling `Create` **without providing a name** creates a **new** subscription.  
+     The server sets the subscription's name to the subscription's ID.
+   * Calling `Create` with a **new name** creates a subscription that carries this name.
+   * Calling `Create` with the name **of an existing subscription** throws an exception.
+
+* [Update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#update)
+  is meant to **modify** an existing subscription's definition, but can also **create** a subscription.  
+  The method's behavior depends on the `CreateNew` property of the [SubscriptionUpdateOptions](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes)
+  object you pass to `Update`:
+   * Set `CreateNew` to `true` to **create** the subscription if it doesn't exist yet,
+     and **modify** the subscription if it already exists and its definition has changed.
+   * Set `CreateNew` to `false` (the default) to **modify** an existing subscription.  
+     If the subscription doesn't exist, `Update` throws an exception.
+
+  See [Creating a subscription via update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#creating-a-subscription-via-update).
+
+</ContentFrame>
+
+---
 
 For filtering and includes, see the [Examples](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#examples) below.  
 For projections, see [Projections](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#projections).  
@@ -219,7 +259,8 @@ To change the starting point of an existing subscription, see [Updating a subscr
 
 ### Changing a subscription's definition
 
-You can change an existing subscription's definition using the [Update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#methods) method.  
+You can change an existing subscription's definition using the [Update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#update) method or its asynchronous counterpart,
+[UpdateAsync](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#updateasync).  
 Pass a [SubscriptionUpdateOptions](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes) object, which extends the creation options with two
 additional fields, `Id` and `CreateNew`:
 
@@ -304,20 +345,32 @@ to `true`, updating a subscription that does not exist creates the subscription 
 set in the `SubscriptionUpdateOptions` object.
 
 Creating a subscription via `Update` is useful when your application defines a subscription and passes the definition to
-`Update` each time the application starts.  
-The first time the application starts, `Update` **creates** the subscription.  
-On later starts, `Update` **modifies** the subscription if the definition your application passes differs from the
-subscription's current definition (e.g., after you deploy a new version of the application with a changed query).  
-If there is no change in the subscription's definition, `Update` leaves the subscription as it is.
+`Update` each time the application starts:
+
+* The first time the application starts, `Update` **creates** the subscription.
+* On later starts, `Update` **modifies** the subscription if the definition your application passes differs from the
+  subscription's current definition (e.g., after you deploy a new version of the application with a changed query).  
+  If there is no change in the subscription's definition, `Update` leaves the subscription as it is.
+
+  <Admonition type="info" title="">
+  To keep the subscription's processing progress when your application restarts, do not set `ChangeVector` in the
+  options your application passes to `Update`.  
+  A set `ChangeVector` counts as a change in the subscription's definition, so `Update` moves the subscription's
+  [starting point](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#starting-point) to the `ChangeVector` value each time the application starts.  
+  For example, with `ChangeVector` set to `"BeginningOfTime"`, the subscription sends all matching documents again
+  each time the application starts.
+  </Admonition>
+
+See [Example: Creating a subscription via update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-creating-a-subscription-via-update).
+
+---
 
 <Admonition type="note" title="">
-If your application calls [Create](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#methods) rather than `Update` when the application starts:
+If your application calls [Create](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#create) rather than `Update` when the application starts:
 
 * Passing the subscription's name to `Create` **would fail on every start after the first**, since the server attempts to create a subscription that already exists.
 * Not passing a name to `Create` **would create a new subscription on every start**, and each new subscription would send the matching documents from the beginning.
 </Admonition>
-
-See [Example: Creating a subscription via update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-creating-a-subscription-via-update).
 
 </ContentFrame>
 
@@ -355,7 +408,7 @@ A subscription query can have these parts:
    * **JavaScript**: plain JavaScript expressions and calls to declared functions, so you can express complex filtering.
 * **A `select` clause** defining the [projection](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#projections).  
   This clause can call functions, allowing complex transformations.  
-* **An `include` clause** defining paths to include.  
+* **An `include` clause** defining documents (by path), counters, or time series to include.  
 
 To learn about the JavaScript that subscription functions can use, see [JavaScript engine](../../../server/kb/javascript-engine.mdx).
 
@@ -367,13 +420,17 @@ To learn about the JavaScript that subscription functions can use, see [JavaScri
 
 A subscription query does not support:
 
-* The `order by`, `group by`, and `update` clauses, or `select distinct`.
+* The `order by`, `group by`, and `update` clauses.  
+  `select distinct`.
 * Querying an index. The `from` clause can name only a collection.
-* The `search`, `boost`, `lucene`, and `exact` methods, spatial methods, or vector search.
+* The `search`, `boost`, `lucene`, `exact`, `moreLikeThis`, and `vector.search` methods.  
+  Spatial methods.
 * The `now()` and `today()` functions.
 * The `between` operator. Use `>=` and `<=` instead.
 * Query parameters (e.g., `$min`).
-* Including compare-exchange items (`include cmpxchg(...)`).
+* Including any object other than documents, counters, or time series.  
+  For example, [compare-exchange items](../../../compare-exchange/overview.mdx) (`include cmpxchg(...)`) and revisions
+  (`include revisions(...)`) cannot be included.
 
 The subscription does not apply `limit` and `filter` clauses, although it accepts a query that includes them.
 
@@ -832,7 +889,7 @@ The subscription keeps the key's value from the time the subscription is created
 does not affect existing subscriptions.
 
 <Admonition type="note" title="">
-* The [Update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#methods) method does not change the subscription's handling of archived documents, even if you set
+* The [Update](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#update) method does not change the subscription's handling of archived documents, even if you set
   `ArchivedDataProcessingBehavior` in the `SubscriptionUpdateOptions` object.  
   To change an existing subscription's handling of archived documents, edit the subscription task in Studio's
   [Ongoing Tasks view](../../../studio/database/tasks/ongoing-tasks/general-info.mdx#the-ongoing-tasks-list), and set the task's **Archived Data Processing Behavior** option.  
@@ -1355,8 +1412,8 @@ subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
 For the syntax of the builder's methods that include counters, see
 [Include builder: counters](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#include-builder-counters).
 
-The include builder's methods can be chained.  
-The following subscription includes several counters and a related document:
+Include builder methods can be **chained**.  
+e.g., the following subscription includes several counters and a related document.
 
 ```csharp
 subscriptionName = store.Subscriptions.Create<Order>(new SubscriptionCreationOptions<Order>()
@@ -1551,6 +1608,8 @@ subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
 <Tabs groupId='syntaxMethods'>
 <TabItem value="create" label="Create">
 
+#### Create
+
 Create a subscription on the server.
 
 ```csharp
@@ -1566,7 +1625,15 @@ string Create<T>(SubscriptionCreationOptions<T> options,
 string Create<T>(Expression<Func<T, bool>> predicate,
                  PredicateSubscriptionCreationOptions options = null,
                  string database = null);
+```
 
+<br />
+
+#### CreateAsync
+
+Create a subscription on the server asynchronously.
+
+```csharp
 Task<string> CreateAsync(SubscriptionCreationOptions options,
                          string database = null,
                          CancellationToken token = default);
@@ -1592,20 +1659,30 @@ Task<string> CreateAsync<T>(Expression<Func<T, bool>> predicate,
 | **predicate** | `Expression<Func<T, bool>>` | A lambda expression returning a boolean that defines the subscription's filter. |
 | **options** | `SubscriptionCreationOptions<T>`, `SubscriptionCreationOptions`, or `PredicateSubscriptionCreationOptions` | The subscription creation options. See the [Classes](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes) below. |
 | **database** | `string` | The database where the subscription is created. If `null`, the document store's default database is used. |
-| **token** | `CancellationToken` | A token used to cancel the creation operation. |
+| **token** | `CancellationToken` | `CreateAsync` only.<br />A token used to cancel the creation operation. |
 
 | Return value | |
 |-----------|-------------|
-| `string` | The name of the created subscription. If a name was provided in the options it is returned; otherwise the server generates a unique name. |
+| `string` (`Task<string>` for `CreateAsync`) | The name of the created subscription. If a name was provided in the options it is returned; otherwise the server generates a unique name. |
 
 </TabItem>
 <TabItem value="update" label="Update">
+
+#### Update
 
 Update an existing subscription's definition.
 
 ```csharp
 string Update(SubscriptionUpdateOptions options, string database = null);
+```
 
+<br />
+
+#### UpdateAsync
+
+Update an existing subscription's definition asynchronously.
+
+```csharp
 Task<string> UpdateAsync(SubscriptionUpdateOptions options, string database = null,
                          CancellationToken token = default);
 ```
@@ -1616,11 +1693,11 @@ Task<string> UpdateAsync(SubscriptionUpdateOptions options, string database = nu
 |-----------|------|-------------|
 | **options** | `SubscriptionUpdateOptions` | The subscription update options. See the [Classes](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#classes) below. |
 | **database** | `string` | The database where the subscription resides. If `null`, the document store's default database is used. |
-| **token** | `CancellationToken` | A token used to cancel the update operation. |
+| **token** | `CancellationToken` | `UpdateAsync` only.<br />A token used to cancel the update operation. |
 
 | Return value | |
 |-----------|-------------|
-| `string` | The name of the updated subscription. |
+| `string` (`Task<string>` for `UpdateAsync`) | The name of the updated subscription. |
 
 </TabItem>
 <TabItem value="to-subscription-creation-options" label="ToSubscriptionCreationOptions">
@@ -1752,6 +1829,8 @@ receives an `ISubscriptionIncludeBuilder<T>` object, whose methods add includes 
 Calls to the builder's methods can be chained.  
 See, for instance, the chained calls in [Example: Including counters](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-counters).
 
+---
+
 #### Include builder: documents
 
 ```csharp
@@ -1776,6 +1855,8 @@ ISubscriptionIncludeBuilder<T> IncludeDocuments<TInclude>(Expression<Func<T, IEn
 
 See [Example: Including documents](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-documents).
 
+---
+
 #### Include builder: counters
 
 ```csharp
@@ -1797,6 +1878,8 @@ ISubscriptionIncludeBuilder<T> IncludeAllCounters();
 | **names** | `string[]` | An array of counter names. |
 
 See [Example: Including counters](../../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#example-including-counters).
+
+---
 
 #### Include builder: time series
 

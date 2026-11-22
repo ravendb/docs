@@ -98,6 +98,7 @@ A generic version of the subscription creation options object.
 | **Includes**     | `Action<ISubscriptionIncludeBuilder<T>>` | An action that defines include clauses for the subscription. [Included documents](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-documents) and/or [included counters](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters) will be part of the batch sent by the subscription. Include methods can be chained. |
 | **ChangeVector** | `string`                                 | Allows to define a change vector from which the subscription will start processing. Useful for ad-hoc processes that need to process only recent changes. In such cases, you can set the field to _"LastDocument"_ to send only documents created or modified after the subscription's creation.                                                                                                                  |
 | **MentorNode**   | `string`                                 | Allows to define a specific node in the cluster to handle the subscription. Useful when you prefer a specific server due to its stronger hardware, closer geographic proximity to clients, or other reasons.                                                                                                                                                                                       |
+| **ArchivedDataProcessingBehavior** | `ArchivedDataProcessingBehavior?`        | Define the subscription's handling of [archived documents](../../../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-subscriptions).<br/>Values: `ExcludeArchived`, `IncludeArchived`, `ArchivedOnly`.<br/>If not set, the subscription takes the value of the [Subscriptions.ArchivedDataProcessingBehavior](../../../../server/configuration/subscription-configuration.mdx#subscriptionsarchiveddataprocessingbehavior) configuration key when the subscription is created.                                                                                                                                                                                                                                                     |
 
 
 
@@ -111,6 +112,7 @@ A non-generic version of the subscription creation options object.
 | **Query**        | `string` | RQL query that defines the subscription. This RQL comes with additional support to JavaScript functions inside the `where` clause and special semantics for subscriptions on documents revisions.                                                                                 |
 | **ChangeVector** | `string` | Allows to define a change vector from which the subscription will start processing. Useful for ad-hoc processes that need to process only recent changes. In such cases, you can set the field to _"LastDocument"_ to send only documents created or modified after the subscription's creation. |
 | **MentorNode**   | `string` | Allows to define a specific node in the cluster to handle the subscription. Useful when you prefer a specific server due to its stronger hardware, closer geographic proximity to clients, or other reasons.                                                                       |
+| **ArchivedDataProcessingBehavior** | `ArchivedDataProcessingBehavior?`        | Define the subscription's handling of [archived documents](../../../../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-subscriptions).<br/>Values: `ExcludeArchived`, `IncludeArchived`, `ArchivedOnly`.<br/>If not set, the subscription takes the value of the [Subscriptions.ArchivedDataProcessingBehavior](../../../../server/configuration/subscription-configuration.mdx#subscriptionsarchiveddataprocessingbehavior) configuration key when the subscription is created.                                                                                                                                                                                                                                                     |
 
 
 
@@ -194,7 +196,9 @@ All subscriptions are eventually translated to an RQL-like statement. These stat
    * The RQL methods `startsWith`, `endsWith`, `regex`, `exists`, and `intersect`
    * Plain JavaScript expressions and declared function calls, allowing to perform complex filtering logic
 
-  The subscriptions RQL does not support any of the known RQL searching keywords.
+  The subscriptions RQL does **not** support:  
+  The `search`, `boost`, `lucene`, `exact`, and `moreLikeThis` methods.  
+  Spatial methods.
 
 * Select statement, that defines the projection to be performed. 
   The select statements can contain function calls, allowing complex transformations.

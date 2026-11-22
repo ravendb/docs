@@ -3,6 +3,7 @@ title: "Data subscriptions: Revisions support"
 sidebar_label: "Revisions support"
 description: "Subscribe to a collection's document revisions instead of its documents, so a worker receives consecutive revision pairs and can filter and project over the changes."
 sidebar_position: 5
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -12,9 +13,7 @@ import RevisionsSupportCsharp from './content/_revisions-support-csharp.mdx';
 import RevisionsSupportJava from './content/_revisions-support-java.mdx';
 import RevisionsSupportNodejs from './content/_revisions-support-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
-
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <RevisionsSupportCsharp />

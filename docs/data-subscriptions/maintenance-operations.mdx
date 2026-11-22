@@ -3,6 +3,7 @@ title: "Data subscriptions: Maintenance operations"
 sidebar_label: "Maintenance operations"
 description: "Manage existing data subscriptions from the client API: delete, enable or disable, drop a connection, list subscriptions, and read a subscription's state."
 sidebar_position: 6
+supported_languages: ["csharp", "java", "nodejs"]
 ---
 
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
@@ -12,9 +13,7 @@ import MaintenanceOperationsCsharp from './content/_maintenance-operations-cshar
 import MaintenanceOperationsJava from './content/_maintenance-operations-java.mdx';
 import MaintenanceOperationsNodejs from './content/_maintenance-operations-nodejs.mdx';
 
-export const supportedLanguages = ["csharp", "java", "nodejs"];
-
-<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
 <LanguageContent language="csharp">
    <MaintenanceOperationsCsharp />
