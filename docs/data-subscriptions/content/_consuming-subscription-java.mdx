@@ -290,8 +290,9 @@ Changing a document's metadata changes the document. If the changed document mat
 the subscription sends the document to the worker along with the changed metadata held in the item's `metadata` property.
 
 <Admonition type="note" title="">
-* When a subscription's query applies a projection,
-  the `metadata` property of each item holds the metadata **of the item's projected object**, not the metadata of the source document.
+* When a subscription's query applies a [projection](../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#processing-projected-objects),
+  the `rawMetadata` property of each item holds the metadata **of the item's projected object**, not the metadata of the source document.  
+  Reading the `metadata` property of a projected item throws a `NotImplementedException`.
 * When a subscription sends [document revisions](../../data-subscriptions/revisions-support.mdx), each item holds two revisions of a
   document, each revision carrying its own metadata.  
   The item's `metadata` property holds only a few properties RavenDB sets for the item itself, like `@id` and `@change-vector`, 
@@ -813,7 +814,7 @@ The batch passed to your `run` delegate (see [Running the worker](#running-the-w
 | Method | Return value | Description |
 |--------|--------------|-------------|
 | **getNumberOfIncludes()** | `int` | `1` if the server sent included documents with the batch, `0` if it did not. |
-| **openSession()** | `IDocumentSession` | Opens a session that tracks the batch's documents and included documents.<br />Projected items and revisions are not tracked. |
+| **openSession()** | `IDocumentSession` | Opens a session that tracks the batch's documents and included documents.<br />Projected items and revisions are not tracked (see [Processing projected objects](../../data-subscriptions/creating-subscription/creating-subscription_api.mdx#processing-projected-objects)). |
 | **openSession(SessionOptions options)** | `IDocumentSession` | Opens a session with the given [session options](../../client-api/session/opening-a-session.mdx#options). |
 
 <Admonition type="note" title="">
@@ -851,8 +852,8 @@ If `T` is `ObjectNode`, no deserialization takes place.
 | **projection** | `boolean` | `true` when the item is a projection produced by the subscription query rather than a full document. |
 | **revision** | `boolean` | `true` when the item is a document revision, for a subscription that streams revisions. |
 | **rawResult** | `ObjectNode` | The item before deserialization to `T`. |
-| **rawMetadata** | `ObjectNode` | The item's metadata, as a raw JSON object. |
-| **metadata** | `IMetadataDictionary` | The item's metadata, as a dictionary.<br />For an item that holds a document: the document's metadata.<br />For a projected item: the metadata of the projected object.<br />For a revision item: only a few properties RavenDB sets for the item.<br />See [Reading document metadata](../../data-subscriptions/consuming-subscription.mdx#reading-document-metadata). |
+| **rawMetadata** | `ObjectNode` | The item's metadata, as a raw JSON object.<br />For a projected item: the metadata of the projected object. |
+| **metadata** | `IMetadataDictionary` | The item's metadata, as a dictionary.<br />For an item that holds a document: the document's metadata.<br />For a projected item: reading `metadata` throws a `NotImplementedException`. Read `rawMetadata` instead.<br />For a revision item: only a few properties RavenDB sets for the item.<br />See [Reading document metadata](../../data-subscriptions/consuming-subscription.mdx#reading-document-metadata). |
 
 </TabItem>
 </Tabs>
