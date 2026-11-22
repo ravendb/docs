@@ -50,12 +50,12 @@ If the exception is recoverable, the client retries creating the worker.
                     )
                 process_order(item.result)
 
-        # Pass the callback to worker.run(), and block on the returned future
-        # so processing exceptions surface here
+        # Pass the callback to run(), and wait for the future that run() returns,
+        # so an exception raised while processing a batch reaches the except block
         subscription_worker.run(_process_documents_callback).result()
 
-        # Run will complete normally if you have disposed the subscription
-        return
+        # The future that run() returns completes normally if you close the worker
+        break
 
     except Exception as e:
         logger.error(f"Failure in subscription: \{subscription_name\}", exc_info=e)
@@ -70,7 +70,7 @@ If the exception is recoverable, the client retries creating the worker.
 
         if exception_type is SubscriptionClosedException:
             # closed explicitely by admin, probably
-            return
+            break
 
         if exception_type is SubscriberErrorException:
             # for UnsupportedCompanyException type, we want to throw an exception, otherwise
@@ -85,7 +85,7 @@ If the exception is recoverable, the client retries creating the worker.
         if exception_type is SubscriptionInUseException:
             continue
 
-        return
+        break
     finally:
         subscription_worker.close(False)
 `}
@@ -167,9 +167,9 @@ store.subscriptions.create_for_class(
 
 subscription_worker = store.subscriptions.get_subscription_worker_by_name(subscription_name)
 
-def _raise_notification_callback(batch: SubscriptionBatch[Order]):
+def _raise_notification_callback(batch):
     for item in batch.items:
-        raise_notification(item.result.dynamic_field)
+        raise_notification(item.result["dynamic_field"])
 
 _ = subscription_worker.run(_raise_notification_callback)
 `}
@@ -237,8 +237,8 @@ def _process_orders_and_products_callback(batch):
     with batch.open_session() as session:
         for order in (item.result for item in batch.items):
             for order_line in order.lines:
-                # Calling load will not generate a request to the server,
-                # since order_line["Product"] was included in the batch
+                # Calling load() will not generate a request to the server,
+                # since the Product document that order_line["Product"] refers to was included in the batch
                 product = session.load(order_line["Product"], Product)
 
                 process_order_and_product(order, product)  # call your custom method
@@ -281,7 +281,7 @@ The primary worker:
 <TabItem value="waiting_subscription_1" label="waiting_subscription_1">
 <CodeBlock language="python">
 {`while True:
-    # Create a new worker for each attempt: a worker cannot run again once run was called
+    # Create a new worker for each attempt: a worker cannot run again once run() was called
     primary_worker = store.subscriptions.get_subscription_worker(
         SubscriptionWorkerOptions(subscription_name, strategy=SubscriptionOpeningStrategy.TAKE_OVER),
         Order,
@@ -301,7 +301,7 @@ The secondary worker:
 <TabItem value="waiting_subscription_2" label="waiting_subscription_2">
 <CodeBlock language="python">
 {`while True:
-    # Create a new worker for each attempt: a worker cannot run again once run was called
+    # Create a new worker for each attempt: a worker cannot run again once run() was called
     secondary_worker = store.subscriptions.get_subscription_worker(
         SubscriptionWorkerOptions(subscription_name, strategy=SubscriptionOpeningStrategy.WAIT_FOR_FREE),
         Order,

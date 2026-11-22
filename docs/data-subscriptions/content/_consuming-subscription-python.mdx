@@ -293,10 +293,11 @@ while True:
                     )
                 process_order(item.result)
 
-        # Block on the run future so processing exceptions surface here
+        # Pass the callback to run(), and wait for the future that run() returns,
+        # so an exception raised while processing a batch reaches the except block
         subscription_worker.run(_process_documents_callback).result()
 
-        # run completes normally if you have disposed the subscription
+        # The future that run() returns completes normally if you close the worker
         break
 
     except Exception as e:
@@ -546,8 +547,8 @@ def _process_orders_and_products_callback(batch):
     with batch.open_session() as session:
         for order in (item.result for item in batch.items):
             for order_line in order.lines:
-                # Calling load will not generate a request to the server,
-                # since order_line["Product"] was included in the batch
+                # Calling load() will not generate a request to the server,
+                # since the Product document that order_line["Product"] refers to was included in the batch
                 product = session.load(order_line["Product"], Product)
 
                 process_order_and_product(order, product)  # call your custom method
@@ -589,7 +590,7 @@ The primary worker:
 
 ```python
 while True:
-    # Create a new worker for each attempt: a worker cannot run again once run was called
+    # Create a new worker for each attempt: a worker cannot run again once run() was called
     primary_worker = store.subscriptions.get_subscription_worker(
         SubscriptionWorkerOptions(subscription_name, strategy=SubscriptionOpeningStrategy.TAKE_OVER),
         Order,
@@ -609,7 +610,7 @@ The secondary worker:
 
 ```python
 while True:
-    # Create a new worker for each attempt: a worker cannot run again once run was called
+    # Create a new worker for each attempt: a worker cannot run again once run() was called
     secondary_worker = store.subscriptions.get_subscription_worker(
         SubscriptionWorkerOptions(subscription_name, strategy=SubscriptionOpeningStrategy.WAIT_FOR_FREE),
         Order,

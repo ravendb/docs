@@ -67,7 +67,7 @@ If the exception is recoverable, the client retries creating the worker.
         \}).get();
 
 
-        // Run will complete normally if you have disposed the subscription
+        // The future that run() returns completes normally if you close the worker
         return;
     \} catch (Exception e) \{
         logger.error("Failure in subscription: " + subscriptionName, e);
@@ -124,7 +124,7 @@ This is useful for ad-hoc, single-use processing where the user needs to ensure 
 {`SubscriptionWorkerOptions options = new SubscriptionWorkerOptions(subsId);
 
 // Here we ask the worker to stop when there are no documents left to send.
-// Will throw SubscriptionClosedException when it finishes it's job
+// When the worker stops, the future that run() returns completes with a SubscriptionClosedException
 options.setCloseWhenNoDocsLeft(true);
 SubscriptionWorker<OrderAndCompany> highValueOrdersWorker = store
     .subscriptions().getSubscriptionWorker(OrderAndCompany.class, options);
@@ -277,7 +277,7 @@ The primary worker:
 <TabItem value="waiting_subscription_1" label="waiting_subscription_1">
 <CodeBlock language="java">
 {`while (true) \{
-    // Create a new worker for each attempt: a worker cannot run again once run was called
+    // Create a new worker for each attempt: a worker cannot run again once run() was called
     SubscriptionWorkerOptions primaryWorkerOptions = new SubscriptionWorkerOptions(subscriptionName);
     primaryWorkerOptions.setStrategy(SubscriptionOpeningStrategy.TAKE_OVER);
     SubscriptionWorker<Order> primaryWorker =
@@ -302,7 +302,7 @@ The secondary worker:
 <TabItem value="waiting_subscription_2" label="waiting_subscription_2">
 <CodeBlock language="java">
 {`while (true) \{
-    // Create a new worker for each attempt: a worker cannot run again once run was called
+    // Create a new worker for each attempt: a worker cannot run again once run() was called
     SubscriptionWorkerOptions secondaryWorkerOptions = new SubscriptionWorkerOptions(subscriptionName);
     secondaryWorkerOptions.setStrategy(SubscriptionOpeningStrategy.WAIT_FOR_FREE);
     SubscriptionWorker<Order> secondaryWorker =

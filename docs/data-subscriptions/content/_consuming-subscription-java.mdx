@@ -342,7 +342,7 @@ while (true) {
             }
         }).get();
 
-        // run completes normally if you have disposed the subscription
+        // The future that run() returns completes normally if you close the worker
         return;
     } catch (Exception e) {
         System.out.println("Failure in subscription " + subscriptionName + ": " + e.getMessage());
@@ -647,7 +647,7 @@ The primary worker:
 
 ```java
 while (true) {
-    // Create a new worker for each attempt: a worker cannot run again once run was called
+    // Create a new worker for each attempt: a worker cannot run again once run() was called
     SubscriptionWorkerOptions primaryWorkerOptions = new SubscriptionWorkerOptions(subscriptionName);
     primaryWorkerOptions.setStrategy(SubscriptionOpeningStrategy.TAKE_OVER);
     SubscriptionWorker<Order> primaryWorker =
@@ -671,7 +671,7 @@ The secondary worker:
 
 ```java
 while (true) {
-    // Create a new worker for each attempt: a worker cannot run again once run was called
+    // Create a new worker for each attempt: a worker cannot run again once run() was called
     SubscriptionWorkerOptions secondaryWorkerOptions = new SubscriptionWorkerOptions(subscriptionName);
     secondaryWorkerOptions.setStrategy(SubscriptionOpeningStrategy.WAIT_FOR_FREE);
     SubscriptionWorker<Order> secondaryWorker =

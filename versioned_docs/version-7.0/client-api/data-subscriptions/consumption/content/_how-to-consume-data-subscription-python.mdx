@@ -113,10 +113,10 @@ object control the behavior of a worker attempting to reconnect with the server:
 
 <Admonition type="info" title="`add_on_unexpected_subscription_error`" id="on_unexpected_subscription_error" href="#on_unexpected_subscription_error">
 
-`add_on_unexpected_subscription_error` is the event that is triggered when a connection failure occurs between the subscription worker and the server,
-resulting in an unexpected exception.  
-When this happens, the worker will automatically attempt to reconnect.  
-This event is useful for logging these unexpected exceptions.  
+To log errors the worker does not recognize (e.g., a dropped connection to the server), register a handler
+using the worker's `add_on_unexpected_subscription_error` method.  
+The worker calls the handler with the error each time such an error occurs.  
+After calling the handler, the worker attempts to reconnect, unless the period set in `max_erroneous_period` has passed.  
 To learn about the worker's other events, see [Events](../../../../client-api/data-subscriptions/consumption/api-overview.mdx#events).
 
 </Admonition>
