@@ -91,9 +91,9 @@ email document to its worker only after the document is refreshed.
      and to the destinations of [external replication](../../../server/ongoing-tasks/external-replication.mdx) tasks.
    * An [ETL task](../../../server/ongoing-tasks/etl/basics.mdx) whose transformation script handles the document's collection
      runs the script over the document.
-   * A [data subscription](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx) whose query matches the
+   * A [data subscription](../../../data-subscriptions/overview.mdx) whose query matches the
      updated document sends the document to the subscription's worker (or to one of its workers, for a
-     [concurrent subscription](../../../client-api/data-subscriptions/concurrent-subscriptions.mdx)).
+     [concurrent subscription](../../../data-subscriptions/concurrent-subscriptions.mdx)).
    * If [revisions](../../../document-extensions/revisions/overview.mdx) are enabled for the document's collection, a new revision
      of the document is created.
 
