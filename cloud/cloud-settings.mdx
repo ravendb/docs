@@ -65,6 +65,9 @@ The factors to consider when adjusting the max indexing batch size:
 RavenDB Cloud sets batch sizes with the following default formula:  
   `Indexing.MapBatchSize = max(PowerOf2(iops * 5), 1024);`  
 
+`iops` is the IOPS of the disk that holds your data: the [data disk](../cloud/cloud-scaling.mdx#data-disks) when
+your product has one, otherwise the operating system disk.
+
 Explanation of the configuration value:
 
 <Admonition type="note" title="In an instance with IOPS of 500" id="in-an-instance-with-iops-of-500" href="#in-an-instance-with-iops-of-500">

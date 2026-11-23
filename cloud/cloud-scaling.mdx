@@ -105,9 +105,13 @@ depending on the cloud provider in question. Pick either to change your current 
 ![Scaling storage](./portal/assets/portal-product-details-edit-storage.png)
 
 **Switching between Standard and Premium** keeps your current capacity, even when it is larger than your
-instance type offers for new disks. This applies to AWS and Azure products whose data is on the main
-disk; products with a separate data disk cannot switch the storage type, and neither can Serverless
-products, which use Standard storage only.
+instance type offers for new disks. This applies to AWS and Azure products, including those with a separate
+[data disk](#data-disks), with two exceptions: an Azure **Premium SSD v2** disk cannot switch to another storage
+type, and Serverless products use Standard storage only.
+
+On Azure, switching a data disk from Standard to Premium in a region that supports
+[Premium SSD v2](#azure-premium-ssd-v2) makes it a **Premium SSD v2** disk, which cannot be switched back. The
+storage form warns you about this before you save.
 
 * The other type starts at its default performance for that capacity.
 * Switching back to your current type restores your current IOPS, throughput and *Performance Tier*.
@@ -202,12 +206,15 @@ Switching to **Premium SSD v2** is a **one-way operation**:
 Plan the change carefully — once a product is on **Premium SSD v2**, it cannot be moved back.
 </Admonition>
 
-There are two ways to start using **Premium SSD v2**:
+In a region that supports **Premium SSD v2**, you start using it in one of these ways:
 
-1. **Migrate the storage to a Data Disk** — when the product's region supports **Premium SSD v2**,
-   the new data disk is automatically created as **Premium SSD v2**. The migration modal indicates
-   when this is the case. See [Data disks](#data-disks).
-2. **Upgrade an existing Premium Single Data disk to Premium SSD v2** — if your product already
+1. **Create a product with Premium storage**: its data disk is created as **Premium SSD v2**.
+2. **Switch a Standard data disk to Premium**: see
+   [Switching between Standard and Premium](#scaling---change-storage).
+3. **Migrate the storage of a Premium product to a Data Disk**: the new data disk is created as
+   **Premium SSD v2**. A Standard product's data disk stays Standard. The migration modal shows which
+   type the data disk will have. See [Data disks](#data-disks).
+4. **Upgrade an existing Premium Single Data disk to Premium SSD v2** — if your product already
    runs on a **Premium** *Single Data Disk* and is eligible, the **Upgrade to Premium V2** button
    is shown in the *Storage* section of the product page. See
    [Managing an Existing Product](../cloud/portal/cloud-portal-products-tab.mdx#change-instance-type-and-storage)
@@ -226,19 +233,39 @@ For up-to-date rates, see the [Pricing page](https://cloud.ravendb.net/pricing).
 
 ### Data disks {#data-disks}
 
-**Data Disks** are dedicated storage volumes used exclusively for RavenDB data. They are available for instances running in the *Production Tier*. These disks are entirely separate from the operating system disk, which remains isolated to ensure system stability and optimal performance.
+**Data Disks** are dedicated storage volumes used exclusively for RavenDB data. These disks are entirely separate from the operating system disk, which remains isolated to ensure system stability and optimal performance.
+
+New **Development** and **Production** products are always created with a data disk, so there is nothing to select.
+Only **Free** products, **Performance** (PN) instance types and **Serverless** products keep their data on the
+operating system disk.
 
 The use of a data disk is mandatory for deployments requiring more than 1TB of storage.
 
-**Data Disk** can be selected during instance creation or migrated to on already existing instances.
+An existing Development or Production product whose data is still on the operating system disk can be migrated to a
+Data Disk with the **Migrate disk** button. The migration keeps the product's storage type.
 
 ![Migrate to data disk modal showing Premium SSD v2 information](./assets/portal-product-details-migrate-to-data-disk-premium-v2.png)
 
 <Admonition type="info" title="Azure: data disk created as Premium SSD v2">
-On **Azure**, when the product's region supports **Premium SSD v2**, migrating to a Data Disk
-automatically creates the new data disk as **Premium SSD v2**. The migration modal indicates this.
+On **Azure**, when the product's region supports **Premium SSD v2**, migrating a **Premium** product to a Data Disk
+creates the new data disk as **Premium SSD v2**. A **Standard** product's data disk stays Standard. The migration
+modal shows which type the data disk will have.
 See [Azure Premium SSD v2](#azure-premium-ssd-v2) for capabilities and constraints.
 </Admonition>
+
+#### Data disks larger than 4 TB {#data-disks-larger-than-4-tb}
+
+On the largest Production instance types, **P50**, **P60** and **P70**, a data disk can grow up to **16,384 GB**.
+Above 4 TB, these sizes are offered:
+
+| Disk type | Sizes above 4 TB |
+|---|---|
+| AWS, GCP and Azure **Premium SSD v2** | 6,144, 8,192, 12,288 and 16,384 GB |
+| Azure **Standard SSD** and **Premium SSD** (v1) | 8,192 and 16,384 GB |
+
+Azure bills Standard SSD and Premium SSD (v1) disks by the whole tier that covers their size, so the sizes in between
+are not offered for them. Smaller instance types keep their current maximum disk size.
+
 ### GCP Disks
 
 <Admonition type="info" title="">

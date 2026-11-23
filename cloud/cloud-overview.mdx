@@ -213,8 +213,10 @@ If sign-in cannot be completed you stay on the login page with an explanation. T
 | Your Microsoft sign-in could not be processed | The token was internally inconsistent. This needs [Support](../cloud/cloud-support.mdx) to look at it. |
 | *Provider* authentication failed | Authorization failed or was cancelled at the provider. Retry, or use a magic link. |
 | This sign-in method is currently unavailable | That provider is temporarily not configured. Use another provider or a magic link. |
+| Your account doesn't allow sign-in with *method*. Sign in another way. | Your account has [blocked that sign-in method](../cloud/portal/cloud-portal-account-tab.mdx#sign-in-methods). Use a method it allows, or ask the account owner. |
 
-You can always fall back to the [magic link](../cloud/cloud-overview.mdx#login-to-your-account) sign-in.
+You can fall back to the [magic link](../cloud/cloud-overview.mdx#login-to-your-account) sign-in, unless your account
+has [blocked it](../cloud/portal/cloud-portal-account-tab.mdx#sign-in-methods).
 
 <Admonition type="info" title="2FA">
 Users are responsible for enabling and maintaining Two-Factor Authentication (2FA) at the provider they sign in with - Google, GitHub or Microsoft.
