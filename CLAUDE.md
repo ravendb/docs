@@ -255,7 +255,7 @@ Each folder contains `_category_.json`:
 - The portal shows only the newest entry, the way the list page shows it - `title`, the date and the excerpt above `{/* truncate */}`, images included - with a Read more link to the full entry here; the history stays in the docs. It picks the newest entry and treats it as new by its date. Nothing below the truncate marker reaches the portal. Date the entry on the deployment day, never in the future (a future-dated entry stays the one the portal shows), and merge it only after that Cloud deployment reached PROD: merging earlier announces features customers do not have yet.
 - One entry per day: a second entry with the same date does not show as new to someone who saw the first.
 - When copying the previous entry, change the folder name, `title` and `slug`, and replace its images. `slug` is the folder name without the date; without it the URL carries the date. A repeated `slug` puts two entries on one URL.
-- `title` is `<deployment> - <the headline change>`, e.g. `October II 2026 - ...`. `description` is one sentence for search results and the feed's `summary`; the portal shows the excerpt instead.
+- `title` is `<deployment> - <the headline change>`, e.g. `October II 2026 - ...`. Don't reuse the headline as a feature name: the entry page shows the title right above the first `##` section, so the same words appear twice. Name that feature after the product feature instead (`October 2026 - Sign in with your own identity provider` over `## External SSO & User Management`). `description` is one sentence for search results and the feed's `summary`; the portal shows the excerpt instead.
 - Excerpt: an optional lead image, then a bullet list with one item per feature released in the deployment - `- **<feature name>:** <one line on what the customer can now do>`. The feed carries each bullet as a `feature` block (its `name` and `text`), and the list page and the Cloud Portal both render the bullets. Put the colon inside the bold so the name reads as a label; the feed drops it from `name`. Keep the feature name in bold (not a `##`/`###` heading), so the entry's table of contents lists only the `##` sections below the marker.
 - Below the truncate marker: a `##` section per feature, named like its bold line, with the details and a link to the Cloud page.
 - Images go in the entry's folder and are referenced as `./<file>.webp`, so two deployments in one month never mix them. Use `.webp`, keep each file lean (re-encode at quality ~80), and name the lead image `cover-<month><year>.webp` (e.g. `cover-oct2026.webp`) so two deployments never collide on one `cover` file. They are copied from `cloud/assets` or `cloud/portal/assets` or shot for the entry, never referenced from there: an entry records one deployment and must not change when the docs re-shoot a figure.
@@ -266,18 +266,18 @@ Each folder contains `_category_.json`:
 ```yaml
 ---
 title: "October 2026 - Sign in with your own identity provider"
-description: "Sign in with your own identity provider, change storage without losing what you've tuned, a simpler profile, and more."
+description: "Sign in through your own identity provider, switch storage type without losing your tuning, turn on 2FA with one switch, set product access in one place, and more."
 slug: october-2026
 ---
 
 ![Sign in with Google, GitHub, Microsoft or your own identity provider](./cover-oct2026.webp)
 
-- **Sign in with your own identity provider:** Let your team sign in with the work accounts they already use, and let your identity provider manage who gets in.
-- **A simpler profile:** Your profile is now three pages, with two-factor authentication behind a single switch.
+- **External SSO & User Management:** Your team signs in with the work accounts it already has, and your identity provider decides who gets in.
+- **A simpler profile:** Organizations, Invitations and Security each have their own page, and two-factor authentication is now a single switch.
 
 {/* truncate */}
 
-## Sign in with your own identity provider
+## External SSO & User Management
 ```
 
 ---
@@ -609,7 +609,7 @@ related_resources:
 Account management, instance configuration, security (TLS, MFA, certificates), pricing/billing, scaling, backup/restore, migration, AWS/Azure Marketplace setup, and the cloud portal UI (home, products, billing, backups, support tabs).
 
 ### `cloud-whats-new/` - Cloud What's New entries
-One entry per Cloud deployment, served at `/cloud/whats-new` by the `cloud-whats-new` blog instance, with a JSON feed for the Cloud Portal. Sidebar link in `sidebarsCloud.js`. See "Cloud What's New" above.
+One entry per Cloud deployment, served at `/cloud/whats-new` by the `cloud-whats-new` blog instance, with a JSON feed for the Cloud Portal. Linked as "What's new" at the bottom of the Cloud sidebar, above Community (`footer` of `getSidebarNav` in `src/typescript/pathUtils.ts`). See "Cloud What's New" above.
 
 ### `quill/` — Quill documentation (~1 file)
 Docs for Quill, served at `/quill` by its own `content-docs` instance (versionless, same wiring as `cloud/`). Sidebar in `sidebarsQuill.js`.

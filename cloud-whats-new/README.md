@@ -57,7 +57,7 @@ deployment named February 2026 that reached PROD on 12 March 2026 goes to `2026-
 ```yaml
 ---
 title: "October 2026 - Sign in with your own identity provider"
-description: "Sign in with your own identity provider, change storage without losing what you've tuned, and more."
+description: "Sign in through your own identity provider, switch storage type without losing your tuning, and more."
 slug: october-2026
 ---
 ```
@@ -78,8 +78,8 @@ one item per feature: the feature name in bold, a colon, and one line on what th
 ```mdx
 ![Sign in with Google, GitHub, Microsoft or your own identity provider](./cover-oct2026.webp)
 
-- **Sign in with your own identity provider:** Let your team sign in with the work accounts they already use, and let your identity provider manage who gets in.
-- **A simpler profile:** Your profile is now three pages, with two-factor authentication behind a single switch.
+- **External SSO & User Management:** Your team signs in with the work accounts it already has, and your identity provider decides who gets in.
+- **A simpler profile:** Organizations, Invitations and Security each have their own page, and two-factor authentication is now a single switch.
 
 {/* truncate */}
 ```
@@ -88,6 +88,9 @@ one item per feature: the feature name in bold, a colon, and one line on what th
   `name` and `text`), and the list page and the portal both render them as bullets.
 - Put the colon inside the bold (`**Name:**`) so the name reads as a label; the feed drops it from `name`.
 - Keep each line to one sentence. The details belong below the marker, behind Read more.
+- Don't name a feature after the title's headline. The entry page shows the title right above the first section, so
+  the same words would appear twice. Use the product feature's own name instead: the October 2026 title says *Sign in
+  with your own identity provider*, and its first feature is **External SSO & User Management**.
 
 ### Below the truncate marker
 
