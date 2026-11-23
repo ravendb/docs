@@ -90,6 +90,6 @@ session.saveChanges();
 
 | Return value | |
 |--------------|-|
-| `IMetadataDictionary` | The entity's metadata.<br />If the session does not track the entity, the method throws an exception. |
+| `IMetadataDictionary` | **The entity's metadata.**<br />`getMetadataFor` throws:<ul><li>`IllegalStateException` if the session does not track the entity and the entity has no document ID.</li><li>`NonUniqueObjectException` if the session does not track the entity but tracks a different entity with the same document ID.</li><li>`IllegalArgumentException` if `instance` is `null`, or if the session does not track the entity in any other case.</li></ul> |
 
 </Panel>

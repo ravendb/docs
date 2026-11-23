@@ -209,7 +209,7 @@ try (IDocumentSession session = store.openSession()) {
   Set the `@expires` property to a `java.util.Date` value (e.g., `new Date(System.currentTimeMillis() + 60 * 60 * 1000)`).  
   The client sends a `Date` value in UTC with a `Z` suffix, which marks the time as UTC, so the server reads the intended time
   correctly.  
-  e.g., `"@expires": "2026-12-01T08:00:00.000Z"`
+  e.g., `"@expires": "2026-12-01T08:00:00.0000000Z"`
 
   <Admonition type="note" title="">
   Do not set the property to a date string without a time zone designator (e.g., `"2026-12-01T08:00:00"`).  
@@ -330,10 +330,11 @@ ConfigureExpirationOperationResult result =
 **Defines the *document expiration* configuration of a database.**
 
 ```java
-class ExpirationConfiguration
-{
-    boolean disabled
-    Long deleteFrequencyInSec
+public class ExpirationConfiguration {
+    private boolean disabled;
+    private Long deleteFrequencyInSec;
+
+    // Getters and setters
 }
 ```
 <br />
@@ -351,9 +352,10 @@ class ExpirationConfiguration
 **The result of sending a `ConfigureExpirationOperation` operation to the server.**
 
 ```java
-class ConfigureExpirationOperationResult
-{
-    Long raftCommandIndex
+public class ConfigureExpirationOperationResult {
+    private Long raftCommandIndex;
+
+    // Getters and setters
 }
 ```
 <br />

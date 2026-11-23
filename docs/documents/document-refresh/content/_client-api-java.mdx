@@ -207,7 +207,7 @@ try (IDocumentSession session = store.openSession()) {
   Set the `@refresh` property to a `java.util.Date` value (e.g., `new Date(System.currentTimeMillis() + 60 * 60 * 1000)`).  
   The client sends a `Date` value in UTC with a `Z` suffix, which marks the time as UTC, so the server reads the intended time
   correctly.  
-  e.g., `"@refresh": "2026-12-01T08:00:00.000Z"`
+  e.g., `"@refresh": "2026-12-01T08:00:00.0000000Z"`
 
   <Admonition type="note" title="">
   Do not set the property to a date string without a time zone designator (e.g., `"2026-12-01T08:00:00"`).  
@@ -301,10 +301,11 @@ ConfigureRefreshOperationResult result =
 **Defines the *document refresh* configuration of a database.**
 
 ```java
-class RefreshConfiguration
-{
-    boolean disabled
-    Long refreshFrequencyInSec
+public class RefreshConfiguration {
+    private boolean disabled;
+    private Long refreshFrequencyInSec;
+
+    // Getters and setters
 }
 ```
 <br />
@@ -322,9 +323,10 @@ class RefreshConfiguration
 **The result of sending a `ConfigureRefreshOperation` operation to the server.**
 
 ```java
-class ConfigureRefreshOperationResult
-{
-    Long raftCommandIndex
+public class ConfigureRefreshOperationResult {
+    private Long raftCommandIndex;
+
+    // Getters and setters
 }
 ```
 <br />
