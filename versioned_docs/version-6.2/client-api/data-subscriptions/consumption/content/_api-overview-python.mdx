@@ -61,8 +61,8 @@ All other parameters are optional and will default to their respective default v
 | **ignore_subscriber_errors**             | `bool`                                  | Determines if subscription processing is aborted when the worker's batch-handling code throws an unhandled exception.<br/><br/>`True` – subscription processing will continue.<br/><br/>`False` (Default) – subscription processing will be aborted.                                                                                                                                                                  |
 | **max_docs_per_batch**                   | `int`                                   | The maximum number of documents that the server will try to retrieve and send to the client in a batch. If the server doesn't find as many documents as specified, it will send the documents it has found without waiting. Default: 4096.                                                                                                                                                                        |
 | **close_when_no_docs_left**              | `bool`                                  | Determines whether the subscription connection closes when no new documents are available.<br/><br/>`True` – The subscription worker processes all available documents and stops when none remain, at which point the `run` method throws a `SubscriptionClosedException`.<br/>Useful for ad-hoc, one-time processing.<br/><br/>`False` (Default) – The subscription worker remains active, waiting for new documents. |
-| **send_buffer_size_in_bytes**            | `int`                                   | The size in bytes of the TCP socket buffer used for _sending_ data.<br/>Default: 32,768 bytes (32 KiB).                                                                                                                                                                                                                                                                                                            |
-| **receive_buffer_size_in_bytes**         | `int`                                   | The size in bytes of the TCP socket buffer used for _receiving_ data.<br/>Default: 4096 (4 KiB).                                                                                                                                                                                                                                                                                                                   |
+| **send_buffer_size**                     | `int`                                   | The size in bytes of the TCP socket buffer used for _sending_ data.<br/>Default: 32,768 bytes (32 KiB).                                                                                                                                                                                                                                                                                                            |
+| **receive_buffer_size**                  | `int`                                   | The size in bytes of the TCP socket buffer used for _receiving_ data.<br/>Default: 32,768 bytes (32 KiB).                                                                                                                                                                                                                                                                                                          |
 | **strategy**                             | `SubscriptionOpeningStrategy`<br/>(enum) | Configures how the server handles connection attempts from workers to a specific subscription task.<br/>Learn more in [worker strategies](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies).<br/>Default: `OPEN_IF_FREE`.                                                                                                                                      |
 
 <Admonition type="note" title="">
@@ -135,40 +135,31 @@ node is currently responsible for data subscriptions.
     This class should be used only inside the subscription's run delegate,
     using it outside this scope might cause unexpected behavior.
     """
-`}
-</CodeBlock>
-</TabItem>
-<TabItem value="SubscriptionBatch_definition" label="SubscriptionBatch_definition">
-<CodeBlock language="python">
-{`class SubscriptionBatch(Generic[_T]):
-
-def __init__(self):
-    self._result: Optional[_T_Item] = None
-    self._exception_message: Optional[str] = None
-    self._key: Optional[str] = None
-    self._change_vector: Optional[str] = None
-    self._projection: Optional[bool] = None
-    self._revision: Optional[bool] = None
-    self.raw_result: Optional[Dict] = None
-    self.raw_metadata: Optional[Dict] = None
-    self._metadata: Optional[MetadataAsDictionary] = None
+    result: _T_Item
+    key: str
+    change_vector: str
+    is_projection: bool
+    is_revision: bool
+    raw_result: Dict
+    raw_metadata: Dict
+    metadata: MetadataAsDictionary
 `}
 </CodeBlock>
 </TabItem>
 
 | `SubscriptionBatch[_T].item` Member   | Type                   | Description                                                                           |
 |---------------------------------------|------------------------|---------------------------------------------------------------------------------------| 
-| **\_result** (Optional)               | `_T_Item`              | Current batch item                                                                    |
-| **\_exception_message** (Optional)    | `str`                  | Message of the exception thrown during current document processing in the server side |
-| **\_key** (Optional)                  | `str`                  | Current batch item underlying document ID                                             |
-| **\_change_vector** (Optional)        | `str`                  | Current batch item underlying document change vector of the current document          |
-| **\_projection** (Optional)           | `bool`                 | indicates whether the value id a projection                                           |
+| **result** (Optional)               | `_T_Item`              | Current batch item                                                                    |
+| **key** (Optional)                  | `str`                  | Current batch item underlying document ID                                             |
+| **change_vector** (Optional)        | `str`                  | Current batch item underlying document change vector of the current document          |
+| **is_projection** (Optional)           | `bool`                 | indicates whether the value id a projection                                           |
+| **is_revision** (Optional)           | `bool`                 | `True` when the item is a document revision, for a subscription that streams revisions. |
 | **raw_result** (Optional)             | `Dict`                 | Current batch item before serialization to `T`                                        |
-| **raw_metadata** (Optional)           | `Dict`                 | Current batch item underlying document metadata                                       |
-| **\_metadata** (Optional)             | `MetadataAsDictionary` | Current batch item underlying metadata values                                         |
+| **raw_metadata** (Optional)           | `Dict`                 | The item's metadata, as a raw JSON object. |
+| **metadata** (Optional)             | `MetadataAsDictionary` | The item's metadata, as a dictionary.<br />For an item that holds a document: the document's metadata.<br />For a projected item: the metadata of the projected object.<br />For a revision item: only a few properties RavenDB sets for the item. |
 
 <Admonition type="warning" title="">
-Usage of `raw_result`, `raw_metadata`, and `_metadata` values outside of the document processing delegate 
+Usage of `raw_result`, `raw_metadata`, and `metadata` values outside of the document processing delegate 
 is not supported.
 </Admonition>
 
@@ -185,15 +176,15 @@ is not supported.
 
 | Event                     | Type\Return type                          | Description                                                                      |
 |---------------------------|-------------------------------------------|----------------------------------------------------------------------------------| 
-| **after\_acknowledgment** | `Callable[[SubscriptionBatch[_T]], None]` | Event invoked after each time the server acknowledges batch processing progress. |
+| **add\_after\_acknowledgment** | `Callable[[SubscriptionBatch[_T]], None]` | Registers a handler that the worker calls each time the server acknowledges the processing of a batch. |
 
-| `after_acknowledgment` Parameters  |                         |                                          |
+| Handler parameters                 |                         |                                          |
 |------------------------------------|-------------------------|------------------------------------------|
-| **batch**                          | `SubscriptionBatch[_T]` | The batch process which was acknowledged |
+| **batch**                          | `SubscriptionBatch[_T]` | The batch whose processing the server acknowledged |
 
-| Return value   |                                                              |
-|----------------|--------------------------------------------------------------|
-| `Future[None]` | The worker waits for the task to finish the event processing |
+| Handler return value |                                                                    |
+|----------------------|--------------------------------------------------------------------|
+| `None`               | The worker waits for the handler to return before it continues processing. |
 
 ### Properties:
 

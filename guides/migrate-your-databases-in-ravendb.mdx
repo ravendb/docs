@@ -158,7 +158,7 @@ Find the Ongoing Tasks menu in the source database's 'Tasks' section and create 
 
 ### Step 3: Managing subscriptions
 
-Now, if any [Subscriptions](/7.2/client-api/data-subscriptions/what-are-data-subscriptions) are active on your database and their processing routines are idempotent, you need to create a delay for your app, allowing it to switch to the target database without losing any data.
+Now, if any [Subscriptions](/7.2/data-subscriptions/overview) are active on your database and their processing routines are idempotent, you need to create a delay for your app, allowing it to switch to the target database without losing any data.
 
 1. First, replicate most of the data from the source to the target using External Replication. Once the database on the target is up to date, disable the External Replication task on the source.
 

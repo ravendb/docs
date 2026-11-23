@@ -51,11 +51,13 @@ import CodeBlock from '@theme/CodeBlock';
   If the document has just been created, the previous revision will be `null`. 
 <Admonition type="warning" title="">
 
-* In order for the revisions subscription to work,  
-  [Revisions must be configured](../../../../document-extensions/revisions/overview.mdx#defining-a-revisions-configuration) and enabled for the collection the subscription manages.
+* For a revisions subscription to work, [Revisions must be configured](../../../../document-extensions/revisions/overview.mdx#defining-a-revisions-configuration) and enabled for the collection the subscription manages.
 
-* A document that has no revisions will Not be processed,
-  so make sure that your revisions configuration does not purge revisions before the subscription has a chance to process them.
+* A document that has no revisions is not processed, so make sure your revisions configuration does not purge revisions
+  before the subscription has had a chance to process them.
+
+* A revisions subscription **ignores** the [processing behavior for archived documents](../../../../server/configuration/subscription-configuration.mdx#subscriptionsarchiveddataprocessingbehavior)
+  and selects the revisions of archived and non-archived documents alike.
 
 </Admonition>
 
