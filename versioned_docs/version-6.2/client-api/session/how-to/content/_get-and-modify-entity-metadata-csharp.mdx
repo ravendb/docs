@@ -1,70 +1,98 @@
 import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
 
-When a document is downloaded from the server, it contains various metadata information like ID or current change-vector. This information is stored in a session and is available for each entity using the `GetMetadataFor` method from the `Advanced` session operations.
-## Get the Metadata
-
-<TabItem value="get_metadata_1" label="get_metadata_1">
-<CodeBlock language="csharp">
-{`IMetadataDictionary GetMetadataFor<T>(T instance);
-`}
-</CodeBlock>
-</TabItem>
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **instance** | T | Instance of an entity for which metadata will be returned. |
-
-| Return Value | |
-| ------------- | ----- |
-| IMetadataDictionary | Returns the metadata for the specified entity. Throws an exception if the `instance` is not tracked by the session. |
-
-### Example
-
-<TabItem value="get_metadata_2" label="get_metadata_2">
-<CodeBlock language="csharp">
-{`var employee = session.Load<Employee>("employees/1-A");
-var metadata = session.Advanced.GetMetadataFor(employee);
-`}
-</CodeBlock>
-</TabItem>
-
-
-## Modify the Metadata
-After getting the metadata from `session.Advanced.GetMetadataFor` you can modify it just like any other dictionary.
 <Admonition type="note" title="">
-Keys in the metadata that starting with @ are reserved for RavenDB use
+
+* When you load a document from the server, the session also stores the document's metadata, like the document's ID and
+  current change vector.  
+  To get or modify the metadata of an entity, use the `GetMetadataFor` method of the session's `Advanced` operations.
+
+* In this article:
+   * [Get the metadata](../../../../client-api/session/how-to/get-and-modify-entity-metadata.mdx#get-the-metadata)
+   * [Modify the metadata](../../../../client-api/session/how-to/get-and-modify-entity-metadata.mdx#modify-the-metadata)
+   * [Syntax](../../../../client-api/session/how-to/get-and-modify-entity-metadata.mdx#syntax)
+
 </Admonition>
 
-### Example I
-<TabItem value="modify_metadata_1" label="modify_metadata_1">
-<CodeBlock language="csharp">
-{`var user = new User
-\{
+<Panel heading="Get the metadata">
+
+To get an entity's metadata, pass the entity to `session.Advanced.GetMetadataFor`.  
+The session must track the entity: load or store the entity using the session before getting the entity's metadata.  
+e.g., the following code loads an `Employee` document and gets the document's metadata.
+
+```csharp
+var employee = session.Load<Employee>("employees/1-A");
+var metadata = session.Advanced.GetMetadataFor(employee);
+```
+
+</Panel>
+
+<Panel heading="Modify the metadata">
+
+`session.Advanced.GetMetadataFor` returns the metadata as a dictionary.  
+To add a metadata property, set a value for a new key.  
+To change an existing metadata property, set a new value for the property's key.  
+The change will be saved to the database as part of the document when you call `SaveChanges`.
+
+<Admonition type="note" title="">
+Metadata keys that start with `@` are reserved for RavenDB use.
+</Admonition>
+
+<ContentFrame>
+
+### Example: Adding metadata to a new entity
+
+The following code stores a new `User` document, adds a `Permissions` property to the document's metadata, and saves the
+document.
+
+```csharp
+var user = new User
+{
     Name = "Idan"
-\};
+};
 
 session.Store(user);
 var metadata = session.Advanced.GetMetadataFor(user);
 metadata["Permissions"] = "ReadOnly";
 session.SaveChanges();
-`}
-</CodeBlock>
-</TabItem>
+```
 
-### Example II
-<TabItem value="modify_metadata_2" label="modify_metadata_2">
-<CodeBlock language="csharp">
-{`var user = session.Load<User>("users/1-A");
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Modifying the metadata of a loaded entity
+
+The following code loads a `User` document, sets the `Permissions` property of the document's metadata, and saves the
+change.
+
+```csharp
+var user = session.Load<User>("users/1-A");
 var metadata = session.Advanced.GetMetadataFor(user);
 
 metadata["Permissions"] = "ReadAndWrite";
 
 session.SaveChanges();
-`}
-</CodeBlock>
-</TabItem>
+```
 
+</ContentFrame>
 
+</Panel>
+
+<Panel heading="Syntax">
+
+```csharp
+IMetadataDictionary GetMetadataFor<T>(T instance);
+```
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **instance** | `T` | The entity whose metadata to get. The session must track the entity. |
+
+| Return value | |
+|--------------|-|
+| `IMetadataDictionary` | The entity's metadata.<br />If the session does not track the entity, the method throws an exception. |
+
+</Panel>

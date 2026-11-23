@@ -197,7 +197,7 @@ They run in this order:
 
 | Hook | Runs | Use it for |
 |---|---|---|
-| `preConfigureDatabase(databaseRecord)` | Before the database is created | Anything in the `DatabaseRecord`: [revisions](https://docs.ravendb.net/document-extensions/revisions/overview), [expiration](https://docs.ravendb.net/server/extensions/expiration), settings |
+| `preConfigureDatabase(databaseRecord)` | Before the database is created | Anything in the `DatabaseRecord`: [revisions](https://docs.ravendb.net/document-extensions/revisions/overview), [expiration](https://docs.ravendb.net/documents/document-expiration/client-api), settings |
 | `preInitialize(store)` | Before the store is initialized | [Conventions](https://docs.ravendb.net/client-api/configuration/conventions), which are frozen once the store initializes |
 | `setupDatabase(store)` | After the store is initialized | Deploying indexes, seeding documents, sending maintenance operations |
 

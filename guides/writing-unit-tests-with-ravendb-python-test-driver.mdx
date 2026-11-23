@@ -192,7 +192,7 @@ Subclass the driver and override the hooks. They run in this order:
 
 | Hook | Runs | Use it for |
 |---|---|---|
-| `pre_configure_database(database_record)` | Before the database is created | Anything in the `DatabaseRecord`: [revisions](https://docs.ravendb.net/document-extensions/revisions/overview), [expiration](https://docs.ravendb.net/server/extensions/expiration), settings |
+| `pre_configure_database(database_record)` | Before the database is created | Anything in the `DatabaseRecord`: [revisions](https://docs.ravendb.net/document-extensions/revisions/overview), [expiration](https://docs.ravendb.net/documents/document-expiration/client-api), settings |
 | `pre_initialize(document_store)` | Before `store.initialize()` | [Conventions](https://docs.ravendb.net/client-api/configuration/conventions), which are frozen once the store initializes |
 | `setup_database(document_store)` | After the store is initialized, and after the dump import if you configured one | Deploying indexes, seeding documents, sending maintenance operations |
 

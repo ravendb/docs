@@ -1,0 +1,94 @@
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+<Admonition type="note" title="">
+
+* When you load a document from the server, the session also stores the document's metadata, like the document's ID and
+  current change vector.  
+  To get or modify the metadata of an entity, use the `get_metadata_for` method of the session's `advanced` operations.
+
+* In this article:
+   * [Get the metadata](../../../../client-api/session/how-to/get-and-modify-entity-metadata.mdx#get-the-metadata)
+   * [Modify the metadata](../../../../client-api/session/how-to/get-and-modify-entity-metadata.mdx#modify-the-metadata)
+   * [Syntax](../../../../client-api/session/how-to/get-and-modify-entity-metadata.mdx#syntax)
+
+</Admonition>
+
+<Panel heading="Get the metadata">
+
+To get an entity's metadata, pass the entity to `session.advanced.get_metadata_for`.  
+The session must track the entity: load or store the entity using the session before getting the entity's metadata.  
+e.g., the following code loads an `Employee` document and gets the document's metadata.
+
+```python
+employee = session.load("employees/1-A", Employee)
+metadata = session.advanced.get_metadata_for(employee)
+```
+
+</Panel>
+
+<Panel heading="Modify the metadata">
+
+`session.advanced.get_metadata_for` returns the metadata as a `MetadataAsDictionary` object.  
+To add a metadata property, set a value for a new key.  
+To change an existing metadata property, set a new value for the property's key.  
+The change will be saved to the database as part of the document when you call `save_changes`.
+
+<Admonition type="note" title="">
+Metadata keys that start with `@` are reserved for RavenDB use.
+</Admonition>
+
+<ContentFrame>
+
+### Example: Adding metadata to a new entity
+
+The following code stores a new `User` document, adds a `Permissions` property to the document's metadata, and saves the
+document.
+
+```python
+user = User(name="Idan")
+
+session.store(user)
+
+metadata = session.advanced.get_metadata_for(user)
+metadata["Permissions"] = "READ_ONLY"
+session.save_changes()
+```
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Example: Modifying the metadata of a loaded entity
+
+The following code loads a `User` document, sets the `Permissions` property of the document's metadata, and saves the
+change.
+
+```python
+user = session.load("users/1-A", User)
+metadata = session.advanced.get_metadata_for(user)
+metadata["Permissions"] = "READ_AND_WRITE"
+session.save_changes()
+```
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Syntax">
+
+```python
+def get_metadata_for(self, entity: object) -> MetadataAsDictionary: ...
+```
+<br />
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **entity** | `object` | The entity whose metadata to get. The session must track the entity. |
+
+| Return value | |
+|--------------|-|
+| `MetadataAsDictionary` | The entity's metadata.<br />If the session does not track the entity, the method raises a `ValueError`. |
+
+</Panel>
