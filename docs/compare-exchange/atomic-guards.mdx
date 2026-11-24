@@ -3,7 +3,7 @@ title: "Atomic Guards"
 sidebar_label: Atomic Guards
 description: "Use atomic guards in RavenDB cluster transactions to ensure document operations maintain consistency across cluster nodes."
 sidebar_position: 11
-supported_languages: ["csharp", "python", "php", "nodejs"]
+supported_languages: ["csharp", "java", "python", "php", "nodejs"]
 see_also:
      - title: "Cluster-Wide Session"
        link: "client-api/session/cluster-transaction/overview"
@@ -27,6 +27,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 import AtomicGuardsCsharp from './content/_atomic-guards-csharp.mdx';
+import AtomicGuardsJava from './content/_atomic-guards-java.mdx';
 import AtomicGuardsPython from './content/_atomic-guards-python.mdx';
 import AtomicGuardsPhp from './content/_atomic-guards-php.mdx';
 import AtomicGuardsNodejs from './content/_atomic-guards-nodejs.mdx';
@@ -36,6 +37,10 @@ import AtomicGuardsNodejs from './content/_atomic-guards-nodejs.mdx';
 
 <LanguageContent language="csharp">
    <AtomicGuardsCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <AtomicGuardsJava />
 </LanguageContent>
 
 <LanguageContent language="python">
