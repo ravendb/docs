@@ -543,7 +543,7 @@ add_ai_integration_task_result = store.maintenance.send(
 * Learn more about updating a task in [Modify the task - from Studio](#modify-the-task---from-studio)
   and [Modify the task - from the Client API](#modify-the-task---from-the-client-api).
 
-* For example, assume the _GetEmployeeNotesEmbeddings_ task was created earlier with `store_chunk_text=False`.
+* For example, the _GetEmbeddingsFromOpenAI_ task from the PATHS example above was created with `store_chunk_text=False`.
   The following update enables chunk text storage and reprocesses its documents:
 
     ```python
@@ -555,7 +555,7 @@ add_ai_integration_task_result = store.maintenance.send(
 
     # Get the existing task by its name
     get_task_op = GetOngoingTaskInfoOperation(
-        "GetEmployeeNotesEmbeddings", OngoingTaskType.EMBEDDINGS_GENERATION
+        "GetEmbeddingsFromOpenAI", OngoingTaskType.EMBEDDINGS_GENERATION
     )
     task = store.maintenance.send(get_task_op)
 
@@ -604,7 +604,7 @@ class EmbeddingsGenerationConfiguration(AbstractAiIntegrationConfiguration):
 | **collection**                               | `str`                              | The name of the source collection from which documents are processed for embeddings generation.                                                                                                                                                                               |
 | **embeddings_path_configurations**           | `List[EmbeddingPathConfiguration]` | A list of properties inside documents that contain text to be embedded, along with their chunking settings.                                                                                                                                                                   |
 | **embeddings_transformation**                | `EmbeddingsTransformation`         | An object that contains a script defining the transformations and processing applied to the source text before generating embeddings.                                                                                                                                         |
-| **quantization**                             | `VectorEmbeddingType`              | The quantization type for the generated embeddings.                                                                                                                                                                                                                           |
+| **quantization**                             | `VectorEmbeddingType`              | The quantization type for the generated embeddings. <br/> Cannot be `VectorEmbeddingType.TEXT`.                                                                                                                                                                               |
 | **chunking_options_for_querying**            | `ChunkingOptions`                  | The chunking method, maximum token limit, and overlap tokens used when processing search terms in vector search queries.                                                                                                                                                      |
 | **embeddings_cache_expiration**              | `timedelta`                        | The expiration period for documents in the [Embedding cache collection](../../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-cache-collection) that contain embeddings generated from source documents.                                     |
 | **embeddings_cache_for_querying_expiration** | `timedelta`                        | The expiration period for documents in the embedding cache collection that contain embeddings generated from search terms in vector search queries.                                                                                                                           |

@@ -182,7 +182,7 @@ const getDatabaseRecordOp = new GetDatabaseRecordOperation("yourDatabaseName");
 const dbRecord = await documentStore.maintenance.server.send(getDatabaseRecordOp);
 
 // Access the list of embeddings generation tasks
-const tasks = dbRecord.embeddingsGenerations;
+const tasks = dbRecord.embeddingsGenerations ?? [];
 
 if (tasks.length > 0) {
     // Access the first task

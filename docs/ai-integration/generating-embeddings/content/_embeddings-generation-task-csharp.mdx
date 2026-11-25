@@ -196,6 +196,9 @@ var connectionString = new AiConnectionString
     // Connection string name & identifier
     Name = "ConnectionStringToOpenAI", 
     Identifier = "id-for-open-ai-connection-string",
+
+    // Model type
+    ModelType = AiModelType.TextEmbeddings,
         
     // OpenAI connection settings
     OpenAiSettings = new OpenAiSettings(
@@ -525,13 +528,13 @@ var addAiIntegrationTaskResult = store.Maintenance.Send(addEmbeddingsGenerationT
 * Learn more about updating a task in [Modify the task - from Studio](#modify-the-task---from-studio)
   and [Modify the task - from the Client API](#modify-the-task---from-the-client-api).
 
-* For example, assume the _GetEmployeeNotesEmbeddings_ task was created earlier with `StoreChunkText = false`.
+* For example, the _GetEmbeddingsFromOpenAI_ task from the PATHS example above was created with `StoreChunkText = false`.
   The following update enables chunk text storage and reprocesses its documents:
 
     ```csharp
     // Get the existing task by its name
     var getTaskOp = new GetOngoingTaskInfoOperation(
-        "GetEmployeeNotesEmbeddings", OngoingTaskType.EmbeddingsGeneration);
+        "GetEmbeddingsFromOpenAI", OngoingTaskType.EmbeddingsGeneration);
     var task = (EmbeddingsGeneration)store.Maintenance.Send(getTaskOp);
     
     // Enable 'StoreChunkText' in the task's current configuration
@@ -582,7 +585,7 @@ public sealed class EmbeddingsGenerationConfiguration :
 | **Collection**                           | `string`                           | The name of the source collection from which documents are processed for embeddings generation.                                                                                                                                    |
 | **EmbeddingsPathConfigurations**         | `List<EmbeddingPathConfiguration>` | A list of properties inside documents that contain text to be embedded, along with their chunking settings. <br/> Each entry must include `ChunkingOptions`.                                                                                                                        |
 | **EmbeddingsTransformation**             | `EmbeddingsTransformation`         | An object that contains a script defining the transformations and processing applied to the source text before generating embeddings.                                                                                              |
-| **Quantization**                         | `VectorEmbeddingType`              | The quantization type for the generated embeddings.                                                                                                                                                                                |
+| **Quantization**                         | `VectorEmbeddingType`              | The quantization type for the generated embeddings. <br/> Cannot be `VectorEmbeddingType.Text`.                                                                                                                                    |
 | **ChunkingOptionsForQuerying**           | `ChunkingOptions`                  | Required. The chunking method, maximum token limit, and overlap tokens used when processing search terms in vector search queries.                                                                                                                            |
 | **EmbeddingsCacheExpiration**            | `TimeSpan`                         | The expiration period for documents in the [Embedding cache collection](../../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-cache-collection) that contain embeddings generated from source documents. |
 | **EmbeddingsCacheForQueryingExpiration** | `TimeSpan`                         | The expiration period for documents in the embedding cache collection that contain embeddings generated from search terms in vector search queries.                                                                                |

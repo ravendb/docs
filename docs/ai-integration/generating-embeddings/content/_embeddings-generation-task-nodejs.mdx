@@ -197,6 +197,9 @@ const connectionString = new AiConnectionString();
 connectionString.name = "ConnectionStringToOpenAI";
 connectionString.identifier = "id-for-open-ai-connection-string";
 
+// Model type
+connectionString.modelType = "TextEmbeddings";
+
 // OpenAI connection settings
 connectionString.openAiSettings = new OpenAiSettings(
     "your-api-key",
@@ -430,7 +433,7 @@ const addAiIntegrationTaskResult =
 * **Regenerate embeddings for all documents**:  
   This toggle appears only when editing a task.  
   If it is ON when you save the task, the task processes all documents in its collection again,  
-  the same as resetting the task with `ResetEtlOperation` in the [Client API](#modify-the-task---from-the-client-api).
+  the same as [resetting the task with `ResetEtlOperation`](#reprocess-existing-documents) in the Client API.
   * The Studio turns the toggle ON automatically the first time you change any of the following settings:  
     the collection, the embeddings source (_Paths_ or _Script_), the list of paths, the script,  
     the script's default chunking method or default max tokens per chunk, or the quantization.
@@ -526,27 +529,28 @@ const addAiIntegrationTaskResult =
 * Learn more about updating a task in [Modify the task - from Studio](#modify-the-task---from-studio)
   and [Modify the task - from the Client API](#modify-the-task---from-the-client-api).
 
-* For example, assume the _GetEmployeeNotesEmbeddings_ task was created earlier with `storeChunkText = false`.
+* For example, the _GetEmbeddingsFromOpenAI_ task from the PATHS example above was created with `storeChunkText = false`.
   The following update enables chunk text storage and reprocesses its documents:
 
     ```js
     // Get the existing task by its name
     const getTaskOp = new GetOngoingTaskInfoOperation(
-        "GetEmployeeNotesEmbeddings", "EmbeddingsGeneration");
+        "GetEmbeddingsFromOpenAI", "EmbeddingsGeneration");
     const task = await documentStore.maintenance.send(getTaskOp);
 
     // Enable 'storeChunkText' in the configuration defined for the task
-    employeeNotesTaskConfiguration.storeChunkText = true;
+    // ('embeddingsTaskConfiguration' from the PATHS example above)
+    embeddingsTaskConfiguration.storeChunkText = true;
 
     // Update the task
     const updateTaskOp = new UpdateEmbeddingsGenerationOperation(
-        task.taskId, employeeNotesTaskConfiguration);
+        task.taskId, embeddingsTaskConfiguration);
     await documentStore.maintenance.send(updateTaskOp);
 
     // Reset the task to process all documents in the collection again
     // ('embeddings-from-paths' is the transformation name of a PATHS-based task)
     const resetTaskOp = new ResetEtlOperation(
-        "GetEmployeeNotesEmbeddings", "embeddings-from-paths");
+        "GetEmbeddingsFromOpenAI", "embeddings-from-paths");
     await documentStore.maintenance.send(resetTaskOp);
     ```
 
@@ -569,7 +573,7 @@ class EmbeddingsGenerationConfiguration extends AbstractAiIntegrationConfigurati
     collection;                           // string
     embeddingsPathConfigurations;         // EmbeddingPathConfiguration[]
     embeddingsTransformation;             // EmbeddingsTransformation
-    quantization;                         // VectorEmbeddingType
+    quantization;                         // VectorEmbeddingType, default: "Single"
     chunkingOptionsForQuerying;           // ChunkingOptions
     embeddingsCacheExpiration;            // number (ms), default: 90 days
     embeddingsCacheForQueryingExpiration; // number (ms), default: 14 days
@@ -583,7 +587,7 @@ class EmbeddingsGenerationConfiguration extends AbstractAiIntegrationConfigurati
 | **collection**                           | `string`                       | The name of the source collection from which documents are processed for embeddings generation.                                                                                                                                                                               |
 | **embeddingsPathConfigurations**         | `EmbeddingPathConfiguration[]` | A list of properties inside documents that contain text to be embedded, along with their chunking settings.                                                                                                                                                                   |
 | **embeddingsTransformation**             | `EmbeddingsTransformation`     | An object that contains a script defining the transformations and processing applied to the source text before generating embeddings.                                                                                                                                         |
-| **quantization**                         | `VectorEmbeddingType`          | The quantization type for the generated embeddings.                                                                                                                                                                                                                           |
+| **quantization**                         | `VectorEmbeddingType`          | The quantization type for the generated embeddings: `"Single"`, `"Int8"`, or `"Binary"`. Default: `"Single"`. <br/> Cannot be `"Text"`.                                                                                                                                       |
 | **chunkingOptionsForQuerying**           | `ChunkingOptions`              | The chunking method, maximum token limit, and overlap tokens used when processing search terms in vector search queries.                                                                                                                                                      |
 | **embeddingsCacheExpiration**            | `number` (ms)                  | The expiration period for documents in the [Embedding cache collection](../../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-cache-collection) that contain embeddings generated from source documents.                                     |
 | **embeddingsCacheForQueryingExpiration** | `number` (ms)                  | The expiration period for documents in the embedding cache collection that contain embeddings generated from search terms in vector search queries.                                                                                                                           |
@@ -598,12 +602,12 @@ class EmbeddingsGenerationConfiguration extends AbstractAiIntegrationConfigurati
 
 // ChunkingOptions
 {
-    chunkingMethod,    // ChunkingMethod, default: "PlainTextSplit"
-    maxTokensPerChunk, // number, default: 512
+    chunkingMethod,    // ChunkingMethod, server default: "PlainTextSplit"
+    maxTokensPerChunk, // number, server default: 512
 
     // 'overlapTokens' is only applicable when chunkingMethod is
     // 'PlainTextSplitParagraphs' or 'MarkDownSplitParagraphs'
-    overlapTokens,     // number, default: 0
+    overlapTokens,     // number, server default: 0
 
     // Text prepended to each produced chunk before it is sent
     // to the embedding model.

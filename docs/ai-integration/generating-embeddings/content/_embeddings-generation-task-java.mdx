@@ -197,6 +197,9 @@ AiConnectionString connectionString = new AiConnectionString();
 connectionString.setName("ConnectionStringToOpenAI");
 connectionString.setIdentifier("id-for-open-ai-connection-string");
 
+// Model type
+connectionString.setModelType(AiModelType.TextEmbeddings);
+
 // OpenAI connection settings
 connectionString.setOpenAiSettings(new OpenAiSettings(
     "your-api-key",
@@ -524,13 +527,13 @@ AddEmbeddingsGenerationOperationResult addAiIntegrationTaskResult =
 * Learn more about updating a task in [Modify the task - from Studio](#modify-the-task---from-studio)
   and [Modify the task - from the Client API](#modify-the-task---from-the-client-api).
 
-* For example, assume the _GetEmployeeNotesEmbeddings_ task was created earlier with `storeChunkText` set to `false`.
+* For example, the _GetEmbeddingsFromOpenAI_ task from the PATHS example above was created with `storeChunkText` set to `false`.
   The following update enables chunk text storage and reprocesses its documents:
 
     ```java
     // Get the existing task by its name
     GetOngoingTaskInfoOperation getTaskOp = new GetOngoingTaskInfoOperation(
-        "GetEmployeeNotesEmbeddings", OngoingTaskType.EMBEDDINGS_GENERATION);
+        "GetEmbeddingsFromOpenAI", OngoingTaskType.EMBEDDINGS_GENERATION);
     OngoingTaskEmbeddingsGeneration task =
         (OngoingTaskEmbeddingsGeneration) store.maintenance().send(getTaskOp);
 
@@ -584,7 +587,7 @@ public final class EmbeddingsGenerationConfiguration
 | **collection**                           | `String`                                         | The name of the source collection from which documents are processed for embeddings generation.                                                                                                                                                                               |
 | **embeddingsPathConfigurations**         | `List<EmbeddingPathConfiguration>`               | A list of properties inside documents that contain text to be embedded, along with their chunking settings.                                                                                                                                                                   |
 | **embeddingsTransformation**             | `EmbeddingsTransformation`                       | An object that contains a script defining the transformations and processing applied to the source text before generating embeddings.                                                                                                                                         |
-| **quantization**                         | `VectorEmbeddingType`                            | The quantization type for the generated embeddings.                                                                                                                                                                                                                           |
+| **quantization**                         | `VectorEmbeddingType`                            | The quantization type for the generated embeddings. <br/> Cannot be `VectorEmbeddingType.TEXT`.                                                                                                                                                                               |
 | **chunkingOptionsForQuerying**           | `ChunkingOptions`                                | The chunking method, maximum token limit, and overlap tokens used when processing search terms in vector search queries.                                                                                                                                                      |
 | **embeddingsCacheExpiration**            | `Duration` (setter) <br/> `long` (getter, in ms) | The expiration period for documents in the [Embedding cache collection](../../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-cache-collection) that contain embeddings generated from source documents.                                     |
 | **embeddingsCacheForQueryingExpiration** | `Duration` (setter) <br/> `long` (getter, in ms) | The expiration period for documents in the embedding cache collection that contain embeddings generated from search terms in vector search queries.                                                                                                                           |
