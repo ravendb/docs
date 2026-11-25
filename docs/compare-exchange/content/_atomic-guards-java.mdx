@@ -207,7 +207,7 @@ Atomic guards are removed **automatically** in the following scenarios:
 
 * This is especially important if a document (originally created in a cluster-wide transaction) was deleted **outside** of a cluster-wide session -
   as when using a [single-node session](../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction)
-  or the [DeleteByQueryOperation](../../client-api/operations/common/delete-by-query.mdx).  
+  or [DeleteByQueryOperation](../../client-api/operations/common/delete-by-query.mdx).  
   In these cases, the document is deleted, but the atomic guard remains (it is not automatically removed).  
   If you attempt to re-create such a document without loading it first,
   RavenDB will fail to save it because the session is unaware of the existing atomic guard’s latest Raft index.

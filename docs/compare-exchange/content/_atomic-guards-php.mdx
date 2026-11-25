@@ -226,12 +226,12 @@ Atomic guards are removed **automatically** in the following scenarios:
   we recommend that you always **`load` the document into the session before storing it** -  
   even if the document is expected to be new.
 
-* This is especially important if a document (originally created in a cluster-wide transaction) was deleted **outside** of a cluster-wide session -
-  as when using a [single-node session](../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction)
-  or the [DeleteByQueryOperation](../../client-api/operations/common/delete-by-query.mdx).  
+* Note that a document originally created in a cluster-wide transaction may be deleted **outside** of a cluster-wide session,
+  e.g., when you use a [single-node session](../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction)
+  or [DeleteByQueryOperation](../../client-api/operations/common/delete-by-query.mdx).  
   In these cases, the document is deleted, but the atomic guard remains (it is not automatically removed).  
-  If you attempt to re-create such a document without loading it first,
-  RavenDB will fail to save it because the session is unaware of the existing atomic guard’s latest Raft index.
+  Re-creating the deleted document in a cluster-wide session will fail,
+  even if you call `load` with the document's ID before storing it.
   
 * In this example, the document is loaded into the session BEFORE creating or modifying it:
   <Tabs groupId='languageSyntax'>
@@ -285,11 +285,10 @@ When _loading_ a document in a cluster-wide session, RavenDB attempts to retriev
     If another session has already updated the document (and incremented the atomic guard’s Raft index), the save will fail with a `ConcurrencyException`.
 
 * **If no document is found**:  
-  RavenDB will check whether a matching atomic guard exists (as in the case when the document was deleted outside of a cluster-wide session).
-  * **If an atomic guard exists**,
-    the client constructs a change vector for the document using the atomic guard’s Raft index, and the document will be saved with this change vector.
+  * **If an atomic guard exists** (e.g., when a document with this ID was deleted outside of a cluster-wide session),
+    saving a new document with this ID will fail with a `ConcurrencyException`.
   * **If no atomic guard exists**,
-    the document is treated as a brand new document and will be saved as usual.
+    saving a new document with this ID will succeed.
 
 </Admonition>
 
