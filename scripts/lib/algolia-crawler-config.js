@@ -2,8 +2,10 @@
 
 const { ALGOLIA_APP_ID, ALGOLIA_INDEX_NAME } = require("./algolia.js");
 const indexSettings = require("./algolia-index-settings.json");
+const { LEGACY_VERSIONS } = require("./version-policy.js");
 
 const recordExtractor = ({ url, $, helpers }) => {
+    const ALGOLIA_MAX_RECORDS_PER_URL = 750;
     const LANDING_PAGES = ["", "/7.2", "/6.2", "/cloud", "/guides", "/samples", "/quill"];
     const SECTION_LABELS = {
         guides: "Guides",
@@ -48,8 +50,16 @@ const recordExtractor = ({ url, $, helpers }) => {
         recordVersion: "v3",
     });
 
-    return records.map((record) => ({ ...record, breadcrumb }));
+    const tooManyRecords = records.length > ALGOLIA_MAX_RECORDS_PER_URL;
+    const isLvl5Heading = (record) => record.type === "lvl5";
+
+    return records
+        .filter((record) => !(tooManyRecords && isLvl5Heading(record)))
+        .map((record) => ({ ...record, breadcrumb }));
 };
+
+const MARKDOWN_COPIES = "https://docs.ravendb.net/**/*.md";
+const LEGACY_VERSION_PAGES = LEGACY_VERSIONS.map((version) => `https://docs.ravendb.net/${version}/**`);
 
 const CRAWLER_CONFIG = {
     appId: ALGOLIA_APP_ID,
@@ -64,6 +74,7 @@ const CRAWLER_CONFIG = {
     // Older versions canonicalize to the current one; without this they would not be indexed.
     ignoreCanonicalTo: true,
     discoveryPatterns: ["https://docs.ravendb.net/**"],
+    exclusionPatterns: [MARKDOWN_COPIES, ...LEGACY_VERSION_PAGES],
     ignoreRobotsTxtRules: true,
     // Language switcher ?lang= links serve the same HTML; index each page once.
     ignoreQueryParams: ["lang"],
