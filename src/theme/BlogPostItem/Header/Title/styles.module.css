@@ -1,0 +1,26 @@
+.title {
+    font-size: 3rem;
+}
+
+.listTitle {
+    font-size: 2rem;
+}
+
+.listTitle a {
+    color: var(--ifm-heading-color);
+}
+
+.listTitle a:hover {
+    color: var(--ifm-color-primary);
+    text-decoration: none;
+}
+
+@media (max-width: 576px) {
+    .title {
+        font-size: 2rem;
+    }
+
+    .listTitle {
+        font-size: 1.5rem;
+    }
+}
