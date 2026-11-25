@@ -58,7 +58,7 @@ versions.json                # Active version list
 - `versioned_docs/` are per-version snapshots managed by Docusaurus, but **editable, not read-only**: maintained versions (current + `ACTIVE_VERSIONS`) get bugfixes and content changes like any other docs; legacy versions may be fixed too when there's a good reason (e.g., malformed markup that breaks or clutters the build).
 - `versions.json` lists all active versions.
 - CI uses `onlyIncludeVersions` env var to build specific versions (e.g., 6.2, 7.1, current).
-- **Version policy** lives in `scripts/lib/version-policy.js` (`CURRENT_VERSION`, `ACTIVE_VERSIONS`, `LEGACY_VERSIONS`). When a version ages out of support, move it into `LEGACY_VERSIONS` — `docusaurus.config.ts`, sitemaps, robots.txt, the canonical rewriter, and the edge handler all derive from that single list.
+- **Version policy** lives in `scripts/lib/version-policy.js` (`CURRENT_VERSION`, `ACTIVE_VERSIONS`, `LEGACY_VERSIONS`). When a version ages out of support, move it into `LEGACY_VERSIONS`: `docusaurus.config.ts`, sitemaps, robots.txt, the canonical rewriter, the edge handler and the Algolia crawler's `exclusionPatterns` all derive from that single list.
 
 ---
 
