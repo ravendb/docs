@@ -222,6 +222,10 @@ Each direction also has a **grace period**: a cooldown counted from the moment t
 resize you made yourself. The cluster does not scale up until the upscaling grace period has passed since then, and
 does not scale down until the downscaling grace period has passed.
 
+A grace period must be at least as long as the longest duration of its direction, rounded up to whole minutes. With
+the default downscaling durations of 1800 seconds, for example, the downscaling grace period cannot be shorter than
+30 minutes. If you set a shorter one, the form tells you the minimum.
+
 ### Autoscaling range
 
 **Lowest type** and **Highest type** bound the resizing. Autoscaling never moves your instance below the lowest or above
@@ -232,33 +236,41 @@ the highest type, and both bounds are inclusive.
 Click the **Configure** button in the *Autoscaling* feature row to open the Autoscaling Configuration view, which is
 split into upscaling and downscaling parameters.
 
+At the top of the view, two sentences sum up in plain English when your cluster scales up and when it scales down, for
+example: *Your cluster scales up when the node has a load average of 60% or more, 7% or less available memory, or IO
+wait above 30% for 5 minutes. It waits at least 30 minutes after the last resize before scaling up.* While you edit the
+parameters, the sentences follow your changes.
+
 ![Autoscaling Configuration](./assets/product-features-autoscaling-configuration.png)
 
 #### Upscaling parameters
 
-| Parameter                            | Range       | Description                                                                                          |
-|--------------------------------------|-------------|------------------------------------------------------------------------------------------------------|
-| Upscaling grace period               | 3–1440 min  | The minimum time after the last resize, including a manual one, before the cluster can scale up again. |
-| High load average threshold          | 50–90%      | The average load percentage, over the *high load average threshold duration*, that triggers upscaling. |
-| High load average threshold duration | 180–600 sec | How long the average load must stay above the threshold before upscaling is triggered.               |
-| Low available memory threshold       | 1–15%       | The available memory percentage below which upscaling is triggered.                                  |
-| Low available memory duration        | 180–600 sec | How long available memory must stay below the threshold before upscaling is triggered.               |
-| IO wait max value                    | 25–95%      | The IO wait percentage above which upscaling is triggered.                                           |
-| IO wait max duration                 | 180–600 sec | How long IO wait must stay above the maximum before upscaling is triggered.                          |
-| Upscaling step                       | 1–3         | How many instance sizes to move in one go. With a step of 2, a *Dev10* scales up to *Dev30*.          |
+| Parameter                            | Range        | Default  | Description                                                                                          |
+|--------------------------------------|--------------|----------|------------------------------------------------------------------------------------------------------|
+| Upscaling grace period               | 3–1440 min   | 30 min   | The minimum time after the last resize, including a manual one, before the cluster can scale up again. |
+| High load average threshold          | 50–90%       | 60%      | The average load percentage, over the *high load average threshold duration*, that triggers upscaling. |
+| High load average threshold duration | 180–3600 sec | 300 sec  | How long the average load must stay above the threshold before upscaling is triggered.               |
+| Low available memory threshold       | 1–15%        | 7%       | The available memory percentage below which upscaling is triggered.                                  |
+| Low available memory duration        | 180–3600 sec | 300 sec  | How long available memory must stay below the threshold before upscaling is triggered.               |
+| IO wait max value                    | 25–95%       | 30%      | The IO wait percentage above which upscaling is triggered.                                           |
+| IO wait max duration                 | 180–3600 sec | 300 sec  | How long IO wait must stay above the maximum before upscaling is triggered.                          |
+| Upscaling step                       | 1–3          | 1        | How many instance sizes to move in one go. With a step of 2, a *Dev10* scales up to *Dev30*.          |
 
 #### Downscaling parameters
 
-| Parameter                           | Range       | Description                                                                                           |
-|-------------------------------------|-------------|-------------------------------------------------------------------------------------------------------|
-| Downscaling grace period            | 3–1440 min  | The minimum time after the last resize, including a manual one, before the cluster can scale down again. |
-| Low load average threshold          | 1–35%       | The average load percentage, over the *low load average threshold duration*, that triggers downscaling. |
-| Low load average threshold duration | 180–600 sec | How long the average load must stay below the threshold before downscaling is triggered.              |
-| High available memory threshold     | 20–90%      | The available memory percentage above which downscaling is allowed.                                   |
-| High available memory duration      | 180–600 sec | How long available memory must stay above the threshold before downscaling is triggered.              |
-| IO wait min value                   | 0–15%       | The IO wait percentage below which the node is considered idle enough to allow downscaling.           |
-| IO wait min duration                | 180–600 sec | How long IO wait must stay below the minimum before downscaling is triggered.                         |
-| Downscaling step                    | 1–3         | How many instance sizes to move in one go. With a step of 2, a *Dev30* scales down to *Dev10*.         |
+| Parameter                           | Range        | Default  | Description                                                                                           |
+|-------------------------------------|--------------|----------|-------------------------------------------------------------------------------------------------------|
+| Downscaling grace period            | 3–1440 min   | 30 min   | The minimum time after the last resize, including a manual one, before the cluster can scale down again. |
+| Low load average threshold          | 1–35%        | 10%      | The average load percentage, over the *low load average threshold duration*, that triggers downscaling. |
+| Low load average threshold duration | 180–3600 sec | 1800 sec | How long the average load must stay below the threshold before downscaling is triggered.              |
+| High available memory threshold     | 20–90%       | 60%      | The available memory percentage above which downscaling is allowed.                                   |
+| High available memory duration      | 180–3600 sec | 1800 sec | How long available memory must stay above the threshold before downscaling is triggered.              |
+| IO wait min value                   | 0–15%        | 0%       | The IO wait percentage below which the node is considered idle enough to allow downscaling.           |
+| IO wait min duration                | 180–3600 sec | 1800 sec | How long IO wait must stay below the minimum before downscaling is triggered.                         |
+| Downscaling step                    | 1–3          | 1        | How many instance sizes to move in one go. With a step of 2, a *Dev30* scales down to *Dev10*.         |
+
+The defaults scale up quickly and down slowly: the cluster grows after 5 minutes of sustained load, but shrinks only
+after 30 minutes of low load.
 
 <Admonition type="note" title="Which limit drives which direction">
 Load average and IO wait follow utilisation, so their **low** limits belong to downscaling and their **high** limits to
