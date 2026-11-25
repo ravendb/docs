@@ -7,18 +7,17 @@ import CodeBlock from '@theme/CodeBlock';
 
 * **Atomic Guards** are [compare-exchange key/value items](../../../../client-api/operations/compare-exchange/overview.mdx)
   that RavenDB creates and manages **automatically** to guarantee
-  [ACID](../../../../server/clustering/cluster-transactions.mdx#cluster-transaction-properties) transactions in cluster-wide sessions.
+  [ACID](../../../../server/clustering/cluster-transactions.mdx#cluster-transactions-properties) transactions in cluster-wide sessions.
 
-* Each document is associated with its own unique atomic guard item.  
-  Atomic guards coordinate between sessions that attempt to write to the same document concurrently.  
-  Saving a document will be prevented if another session has modified the document.
+* When a document is created in a cluster-wide session, RavenDB associates it with a unique atomic guard item.  
+  Atomic guards coordinate concurrent writes by different sessions to the same document.
 
 * In this article:
   * [Atomic guard creation and update](../../../../client-api/session/cluster-transaction/atomic-guards.mdx#atomic-guard-creation-and-update)
   * [Atomic guard usage example](../../../../client-api/session/cluster-transaction/atomic-guards.mdx#atomic-guard-usage-example)
   * [Atomic guard database scope](../../../../client-api/session/cluster-transaction/atomic-guards.mdx#atomic-guard-database-scope)
   * [Disabling atomic guards](../../../../client-api/session/cluster-transaction/atomic-guards.mdx#disabling-atomic-guards)  
-  * [When are atomic guards removed](../../../../client-api/session/cluster-transaction/atomic-guards.mdx#when-are-atomic-guards-removed)
+  * [Atomic guard removal](../../../../client-api/session/cluster-transaction/atomic-guards.mdx#atomic-guard-removal)
   * [Best practice when storing a document in a cluster-wide transaction](../../../../client-api/session/cluster-transaction/atomic-guards.mdx#best-practice-when-storing-a-document-in-a-cluster-wide-transaction)
 
 </Admonition>
@@ -31,19 +30,21 @@ Atomic guards are created and managed **only when the session's transaction mode
   A new atomic guard is created when a new document is successfully saved.
 
 * **When modifying an existing document that already has an atomic guard**:
-    * The atomic guard’s Raft index is incremented when the document is successfully saved after being modified.  
-      This allows RavenDB to detect that the document has changed.
-    * If another session had loaded the document before the document's version changed, it will not be able to save its changes
-      unless it first reloads the updated version. Otherwise, a `ConcurrencyException` is thrown.
+  * The atomic guard’s Raft index is incremented when the document is successfully saved after being modified.  
+    This allows RavenDB to detect that the document has changed.
+  * If another session had loaded the document before the document's version changed, it will not be able to save its changes
+    unless it first reloads the updated version. Otherwise, a `ClusterTransactionConcurrencyException` is thrown.
 
-* **When modifying an existing document that doesn't have an atomic guard**:
-    * A new atomic guard is created when modifying an existing document that does not yet have one.
-    * The absence of the atomic guard may be because the document was created in a single-node session,  
-      or because its atomic guard was manually removed (which is not recommended).
+* **When modifying an existing document that doesn't have an atomic guard**:  
+  A document has no atomic guard if it was created outside a cluster-wide session (e.g., in a single-node session)
+  or in a cluster-wide session with [atomic guards disabled](../../../../client-api/session/cluster-transaction/atomic-guards.mdx#disabling-atomic-guards).
+  * A new atomic guard is created when modifying an existing document that does not yet have one.
+  * If the document's atomic guard was manually removed, saving the modified document will fail.  
+    To learn how to restore the atomic guard, see [Atomic guard removal](../../../../client-api/session/cluster-transaction/atomic-guards.mdx#atomic-guard-removal).
 
 * **When saving a document fails**:
-    * If a session's `saveChanges()` fails, the entire session is rolled back and the atomic guard is Not created.
-    * Ensure your business logic is designed to re-execute the session in case saving changes fails for any reason.
+  * If a session's `saveChanges()` fails, the entire session is rolled back and the atomic guard is **not** created.
+  * Ensure your business logic is designed to re-execute the session in case saving changes fails for any reason.
 
 
 
@@ -51,13 +52,12 @@ Atomic guards are created and managed **only when the session's transaction mode
 
 In the code sample below, an atomic guard is automatically created when a new document is saved.  
 It is then used to detect and prevent conflicting writes: when two sessions load and modify the same document,  
-only the first save succeeds, and the second fails with a _ConcurrencyException_.
+only the first save succeeds, and the second fails with a `ClusterTransactionConcurrencyException`.
 
 <TabItem value="atomic_guards_enabled" label="atomic_guards_enabled">
 <CodeBlock language="js">
 {`const user = \{
-    firstName: "John",
-    lastName: "Doe"
+    name: "John Doe"
 \};
 
 // Open a cluster-wide session:
@@ -67,7 +67,7 @@ const session = documentStore.openSession(\{
 
 await session.store(user, "users/johndoe");
 await session.saveChanges();
-// An atomic-guard is now automatically created for the new document "users/johndoe".
+// An atomic guard is now automatically created for the new document "users/johndoe".
 
 // Open two concurrent cluster-wide sessions:
 const session1 = documentStore.openSession(\{
@@ -84,36 +84,35 @@ loadedUser1.name = "jindoe";
 const loadedUser2 = await session2.load("users/johndoe");
 loadedUser2.name = "jandoe";
 
-// session1 saves its changes first —
-// this increments the Raft index of the associated atomic guard.
+// session1 saves its changes first, incrementing the Raft index of the associated atomic guard.
 await session1.saveChanges();
 
 // session2 tries to save using an outdated atomic guard version
-// and fails with a ConcurrencyException.
+// and fails with a ClusterTransactionConcurrencyException.
 await session2.saveChanges();
 `}
 </CodeBlock>
 </TabItem>
-After running the above example, you can view the automatically created atomic guard in the Studio’s  
+After running the above example, you can view the automatically created atomic guard in Studio’s  
 [Compare-Exchange view](../../../../studio/database/documents/compare-exchange-view.mdx#the-compare-exchange-view):
 
 ![Atomic Guard](../assets/atomic-guard.png)
 
 1. These are **custom compare-exchange items** that were manually created by you,  
    e.g., via the [Put compare exchange operation](../../../../client-api/operations/compare-exchange/put-compare-exchange-value.mdx) - for any purpose you needed.  
-   They are NOT the automatically created atomic guards.
+   They are **not** the automatically created atomic guards.
 
 2. This is the **atomic guard** that was generated by running the example above.
 
-      The generated atomic guard **key** is: `rvn-atomic/users/johndoe`.  
-      It is composed of:
-       * The prefix `rvn-atomic/`.
-       * The ID of the associated document.
+   The generated atomic guard **key** is: `rvn-atomic/users/johndoe`.  
+   It is composed of:
+   * The prefix `rvn-atomic/`.
+   * The ID of the associated document.
 
-      <Admonition type="warning" title="">
-       * Although this Studio view allows editing compare-exchange items, **do not delete or modify atomic guard entries**.
-       * Doing so will interfere with RavenDB's ability to track document versioning through atomic guards.
-      </Admonition>
+<Admonition type="warning" title="">
+ * Although this Studio view allows editing compare-exchange items, **do not delete or modify atomic guard entries**.
+ * Doing so will interfere with RavenDB's ability to track document versioning through atomic guards.
+</Admonition>
 
 
 
@@ -122,7 +121,7 @@ After running the above example, you can view the automatically created atomic g
 * Atomic guards are local to the database on which they were defined.
 
 * Since atomic guards are implemented as compare-exchange items,  
-  they are Not externally replicated to other databases by any ongoing replication task.  
+  they are **not** externally replicated to other databases by any ongoing replication task.  
   Learn more in [why compare-exchange items are not replicated](../../../../client-api/operations/compare-exchange/overview.mdx#why-compare-exchange-items-are-not-replicated-to-external-databases).
 
 
@@ -137,20 +136,24 @@ After running the above example, you can view the automatically created atomic g
   as shown in this [example](../../../../client-api/operations/compare-exchange/overview.mdx#example-i---email-address-reservation).
 
 * To disable the automatic creation and use of atomic guards in a cluster-wide session,
-  set the session's `DisableAtomicDocumentWritesInClusterWideTransaction` configuration option to `true`.
+  set the session's `disableAtomicDocumentWritesInClusterWideTransaction` configuration option to `true`.
 
 <TabItem value="atomic_guards_disabled" label="atomic_guards_disabled">
 <CodeBlock language="js">
-{`// Open a cluster-wide session
+{`const user = \{
+    name: "John Doe"
+\};
+
+// Open a cluster-wide session
 const session = documentStore.openSession(\{
     transactionMode: "ClusterWide",
-    // Disable atomic-guards
+    // Disable atomic guards
     disableAtomicDocumentWritesInClusterWideTransaction: true
 \});
 
 await session.store(user, "users/johndoe");
 
-// No atomic-guard will be created upon saveChanges
+// No atomic guard will be created upon saveChanges()
 await session.saveChanges();
 `}
 </CodeBlock>
@@ -158,31 +161,35 @@ await session.saveChanges();
 
 
 
-## When are atomic guards removed
+## Atomic guard removal
 
 Atomic guards are removed **automatically** in the following scenarios:  
 (you don't need to clean them up manually)
 
 * **Document deleted via a cluster-wide session**:
-    * Create a document using a cluster wide session (an associated atomic guard is created).
-    * Delete the document using a cluster wide session - its atomic guard will be removed automatically.
+  * Create a document using a cluster-wide session (an associated atomic guard is created).
+  * Delete the document using a cluster-wide session - its atomic guard will be removed automatically.
 
 * **Document expires via the expiration feature**:
-    * Create a document using a cluster wide session (an associated atomic guard is created).
-    * Add the `@expires` metadata property to the document, as described in [Document expiration](../../../../studio/database/settings/document-expiration.mdx).
-    * When the expiration time is reached, the document and its atomic guard will both be removed automatically.
-    * Since different cleanup tasks handle the removal of **expired** documents and the removal of their associated atomic guards,
-      it may happen that atomic guards of removed documents would linger in the compare exchange entries list a short while longer before they are removed.
-      You do Not need to remove such atomic guards yourself, they will be removed by the cleanup task.
+  * Create a document using a cluster-wide session (an associated atomic guard is created).
+  * Add the `@expires` metadata property to the document, as described in [Document expiration](../../../../studio/database/settings/document-expiration.mdx).
+  * When the expiration time is reached, the document and its atomic guard will both be removed automatically.
+  * Since different cleanup tasks handle the removal of **expired** documents and the removal of their associated atomic guards,
+    atomic guards of removed documents may linger in the compare-exchange entries list a short while longer before they are removed.
+    You do **not** need to remove such atomic guards yourself: the cleanup task will remove them.
 <Admonition type="warning" title="">
 
-* **Do not delete or modify atomic guards manually while they are in use by an active session**.  
-  If a session attempts to save a document whose atomic guard has been removed or changed,  
-  it will fail with an error.
+* **Do not delete or modify atomic guards manually**.  
+  If a session attempts to save a document whose atomic guard was removed or modified, the save will fail with an error.
 
-* If you accidentally remove an atomic guard that is associated with an existing document,  
-  you can restore it by re-saving the document in a cluster-wide session,  
-  this will re-create the atomic guard automatically.
+* **If you accidentally remove an atomic guard, you can restore it**.  
+  To restore an atomic guard whose document still exists, store the document again in a cluster-wide session, without loading the document first.  
+  The stored entity replaces the existing document, so make sure the entity holds the document's full content.  
+  Saving the document will re-create the atomic guard.
+
+  If you load the document before storing it, saving the document will fail,
+  because the loaded document's [change vector](../../../../server/clustering/replication/change-vector.mdx) still holds the Raft index of the removed atomic guard.  
+  If this happens, store the document again in a new cluster-wide session, this time without loading the document.
 
 </Admonition>
 
@@ -191,11 +198,11 @@ Atomic guards are removed **automatically** in the following scenarios:
 
 * When working with a cluster-wide session,  
   we recommend that you always **`load` the document into the session before storing it** -  
-  even if the document is expected to be a new document.
+  even if the document is expected to be new.
 
 * This is especially important if a document (originally created in a cluster-wide transaction) was deleted **outside** of a cluster-wide session -
   e.g., when using a [single-node session](../../../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs-single-node-transaction)
-  or the [DeleteByQueryOperation](../../../../client-api/operations/common/delete-by-query.mdx).  
+  or [DeleteByQueryOperation](../../../../client-api/operations/common/delete-by-query.mdx).  
   In these cases, the document is deleted, but the atomic guard remains (it is not automatically removed).  
   If you attempt to re-create such a document without loading it first,
   RavenDB will fail to save it because the session is unaware of the existing atomic guard’s latest Raft index.
@@ -211,7 +218,8 @@ In this example, the document is loaded into the session BEFORE creating or modi
     transactionMode: "ClusterWide"
 \});
 
-// Load the user document BEFORE creating or updating
+// Load "users/johndoe" BEFORE creating or modifying it,
+// even if you expect no document with this ID to exist
 const user = await session.load("users/johndoe");
 
 if (!user) \{
@@ -241,19 +249,19 @@ await session.saveChanges();
 
 <Admonition type="note" title="">
 
-When _loading_ a document in a cluster-wide session, RavenDB attempts to retrieve the document from the document store:
+When _loading_ a document in a cluster-wide session, RavenDB attempts to retrieve the document from the document store.
 
-* **If the document is found**, it is loaded into the session,
-  and modifications will be saved successfully as long as no other session has modified the document in the meantime.
-  Specifically, if the document’s [change vector](../../../../server/clustering/replication/change-vector.mdx) matches the one currently stored on the server,
-  the save will proceed - after which the Raft index of the associated atomic guard will be incremented as expected.  
-  Otherwise, RavenDB will fail the operation with a _ConcurrencyException_.
+* **If the document is found**:  
+  The document is loaded into the session, and modifications will be saved successfully as long as no other session has modified the document in the meantime.  
+  * RavenDB checks whether the Raft index of the atomic guard associated with the document matches the version tracked by the current session.
+    If another session has already updated the document (and incremented the atomic guard’s Raft index), the save will fail with a `ClusterTransactionConcurrencyException`.
 
-* **If no document is found**, RavenDB will check whether a matching atomic guard exists (as in the case when the document was deleted outside of a cluster-wide session):
-    * **If an atomic guard exists**,
-      the client constructs a change vector for the document using the atomic guard’s Raft index, and the document will be saved with this change vector.
-    * **If no atomic guard exists**,
-      the document is treated as a brand new document and will be saved as usual.
+* **If no document is found**:  
+  RavenDB will check whether a matching atomic guard exists (as in the case when the document was deleted outside of a cluster-wide session).
+  * **If an atomic guard exists**,
+    the client constructs a change vector for the document using the atomic guard’s Raft index, and the document will be saved with this change vector.
+  * **If no atomic guard exists**,
+    the document is treated as a brand new document and will be saved as usual.
 
 </Admonition>
 
