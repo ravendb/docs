@@ -36,10 +36,14 @@ This is an optimized time-saving approach with few drawbacks that will be descri
 
 ## Limitations
 
-There are a couple limitations to the API:
+There are a few limitations to the API:
 
 * The bulk insert operation is broken into batches, each batch is treated in its own transaction 
   so the whole operation isn't treated under a single transaction.
+* Bulk insert **does not [fail over](../../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#failover-behavior)**
+  to another node.  
+  The entire operation runs on a single node: if this node goes down mid-way, the operation
+  will **fail** rather than continue on another node.  
 
 ## Example
 

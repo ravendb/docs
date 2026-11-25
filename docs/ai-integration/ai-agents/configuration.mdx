@@ -1,0 +1,120 @@
+---
+title: "AI agents: Configuration"
+sidebar_label: "Configuration options"
+description: "Configuration keys of AI agents: the tool-response token threshold and the prompts used to summarize a conversation."
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Panel from "@site/src/components/Panel";
+import ContentFrame from "@site/src/components/ContentFrame";
+
+# AI agents: Configuration
+<Admonition type="note" title="">
+
+* This page explains configuration options related to **AI agents**.  
+  Learn more about AI agents and how to use them in the
+  [AI agents overview](../../ai-integration/ai-agents/overview.mdx) article.  
+
+* Learn how to set these keys in the
+  [configuration overview](../../server/configuration/configuration-options.mdx).  
+
+* In this article:
+   * [AI Agents configuration keys](../../ai-integration/ai-agents/configuration.mdx#ai-agents-configuration-keys)
+      * [Ai.Agent.Tools.TokenUsageThreshold](../../ai-integration/ai-agents/configuration.mdx#aiagenttoolstokenusagethreshold)
+      * [Ai.Agent.Trimming.Summarization.SummarizationResultPrefix](../../ai-integration/ai-agents/configuration.mdx#aiagenttrimmingsummarizationsummarizationresultprefix)
+      * [Ai.Agent.Trimming.Summarization.SummarizationTaskBeginningPrompt](../../ai-integration/ai-agents/configuration.mdx#aiagenttrimmingsummarizationsummarizationtaskbeginningprompt)
+      * [Ai.Agent.Trimming.Summarization.SummarizationTaskEndPrompt](../../ai-integration/ai-agents/configuration.mdx#aiagenttrimmingsummarizationsummarizationtaskendprompt)
+
+</Admonition>
+
+<Panel heading="AI Agents configuration keys">
+
+* Each key below can be set server-wide or per database.  
+  A per-database value applies to the database's agents, overriding the server-wide value.  
+
+* The three `Ai.Agent.Trimming.Summarization` keys apply to agents configured to summarize their conversations
+  using [chat trimming](../../ai-integration/ai-agents/overview.mdx#define-a-chat-trimming-configuration).  
+  When you create or update an agent, RavenDB copies the current values of the summarization keys into the agent's
+  configuration, unless the agent's configuration sets values of its own.  
+  An agent created or updated before you change a summarization key will keep its copied values until you update the agent again.  
+  To set the summarization values for a specific agent, use the [API](../../ai-integration/ai-agents/creating-ai-agents/creating-ai-agents_api.mdx#set-chat-trimming-configuration).  
+
+---
+
+<ContentFrame>
+
+### Ai.Agent.Tools.TokenUsageThreshold
+
+A Warning [alert](../../monitoring/alerts-and-notifications/notification-center.mdx#alerts) is raised when a request
+an agent sends to the LLM after a tool call contains more tokens than the set number.  
+
+- **Type**: `int`
+- **Default**: `10000`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Ai.Agent.Trimming.Summarization.SummarizationResultPrefix
+
+The prefix text RavenDB places before a conversation's summary.  
+This text and the summary replace the summarized messages in the conversation.  
+
+- **Type**: `string`
+- **Default**: `"Summary of previous conversation: "`
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Ai.Agent.Trimming.Summarization.SummarizationTaskBeginningPrompt
+
+The instructions RavenDB sends to the LLM at the beginning of a summarization request.  
+
+<Admonition type="note" title="">
+
+RavenDB builds a summarization request from the following parts:
+
+1. A system message: the instructions set by this key, followed by the conversation's original system prompt.  
+2. The conversation's other messages.  
+3. A user message: the prompt set by [SummarizationTaskEndPrompt](../../ai-integration/ai-agents/configuration.mdx#aiagenttrimmingsummarizationsummarizationtaskendprompt).  
+
+</Admonition>
+
+- **Type**: `string`
+- **Default**:
+  ```text
+  Summarize the following AI conversation into a concise, linear narrative that retains all critical information. Ensure the summary:
+  - Includes key identifiers, usernames, timestamps, and any reference codes
+  - Preserves the original intent of both the user and the assistant in each exchange
+  - Reflects decisions made, suggestions given, preferences expressed, and any changes in direction
+  - Captures tone when relevant (e.g., sarcastic, formal, humorous, concerned)
+  - Omits general filler or small talk unless it contributes to context or tone Format the output in a structured manner (such as bullet points or labeled sections) suitable for fitting into a limited context window. Do not discard any information that contributes to understanding the conversation's flow and outcome.
+  - If the transcript ends with tool output, your summary must explicitly include the key results from those tool calls - extract the key facts (IDs, names, prices, dates, etc.) and include them in a Results Cache block inside your summary, so they are preserved for the next turns and the conversation can continue without re-running the same tools.
+  ```
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+
+<ContentFrame>
+
+### Ai.Agent.Trimming.Summarization.SummarizationTaskEndPrompt
+
+The prompt RavenDB sends to the LLM as a user message, at the end of a
+[summarization request](../../ai-integration/ai-agents/configuration.mdx#aiagenttrimmingsummarizationsummarizationtaskbeginningprompt).  
+
+- **Type**: `string`
+- **Default**:
+  ```text
+  Reminder:
+  - Go over the entire previous conversation and summarize that according to the original instructions.
+  - Make sure the final summary message contains the essential tool results already obtained, so they are available for future turns.
+  ```
+- **Scope**: Server-wide or per database
+
+</ContentFrame>
+
+</Panel>
