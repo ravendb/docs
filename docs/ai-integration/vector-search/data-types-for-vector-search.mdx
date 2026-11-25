@@ -2,8 +2,8 @@
 title: "Data Types for Vector Search"
 sidebar_label: Data Types for Vector Search
 description: "Store and index vector data in RavenDB using supported embedding formats and data types for efficient vector search operations."
-sidebar_position: 5
-supported_languages: ["csharp", "nodejs"]
+sidebar_position: 7
+supported_languages: ["csharp", "java", "nodejs", "python"]
 see_also:
      - title: "Vector search overview"
        link: "ai-integration/vector-search/overview"
@@ -31,7 +31,9 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 import DataTypesForVectorSearchCsharp from './content/_data-types-for-vector-search-csharp.mdx';
+import DataTypesForVectorSearchJava from './content/_data-types-for-vector-search-java.mdx';
 import DataTypesForVectorSearchNodejs from './content/_data-types-for-vector-search-nodejs.mdx';
+import DataTypesForVectorSearchPython from './content/_data-types-for-vector-search-python.mdx';
 
 <LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
 
@@ -39,8 +41,16 @@ import DataTypesForVectorSearchNodejs from './content/_data-types-for-vector-sea
    <DataTypesForVectorSearchCsharp />
 </LanguageContent>
 
+<LanguageContent language="java">
+   <DataTypesForVectorSearchJava />
+</LanguageContent>
+
 <LanguageContent language="nodejs">
    <DataTypesForVectorSearchNodejs />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <DataTypesForVectorSearchPython />
 </LanguageContent>
 
 

@@ -3,7 +3,7 @@ title: "The Embeddings Generation Task"
 sidebar_label: "The Embeddings Generation Task"
 description: "Configure and deploy an embeddings generation task in RavenDB to automatically create vector embeddings for specified document collections."
 sidebar_position: 2
-supported_languages: ["csharp", "nodejs", "python"]
+supported_languages: ["csharp", "java", "nodejs", "python"]
 see_also:
      - title: "Vector search overview"
        link: "ai-integration/vector-search/overview"
@@ -23,6 +23,10 @@ see_also:
        path: "AI Integration > Generating Embeddings"
      - title: "The Embedding Collections"
        link: "ai-integration/generating-embeddings/embedding-collections"
+       source: "docs"
+       path: "AI Integration > Generating Embeddings"
+     - title: "Chunking and Context Prefixes"
+       link: "ai-integration/generating-embeddings/chunking-and-context-prefixes"
        source: "docs"
        path: "AI Integration > Generating Embeddings"
      - title: "Connection strings - overview"
@@ -63,6 +67,7 @@ import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
 import EmbeddingsGenerationTaskCsharp from './content/_embeddings-generation-task-csharp.mdx';
+import EmbeddingsGenerationTaskJava from './content/_embeddings-generation-task-java.mdx';
 import EmbeddingsGenerationTaskNodejs from './content/_embeddings-generation-task-nodejs.mdx';
 import EmbeddingsGenerationTaskPython from './content/_embeddings-generation-task-python.mdx';
 
@@ -71,6 +76,10 @@ import EmbeddingsGenerationTaskPython from './content/_embeddings-generation-tas
 
 <LanguageContent language="csharp">
    <EmbeddingsGenerationTaskCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <EmbeddingsGenerationTaskJava />
 </LanguageContent>
 
 <LanguageContent language="python">

@@ -1,163 +1,183 @@
 import Admonition from '@theme/Admonition';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import ContentFrame from '@site/src/components/ContentFrame';
 import Panel from '@site/src/components/Panel';
 
 <Admonition type="note" title="">
 
-* In RavenDB, you can define AI tasks to automatically generate embeddings from your document content.
-  These embeddings are then stored in [dedicated collections](../../../ai-integration/generating-embeddings/embedding-collections.mdx) within the database,
+* In RavenDB, you can define AI tasks to automatically generate embeddings from your document content.  
+  These embeddings are then stored in [dedicated collections](../../../ai-integration/generating-embeddings/embedding-collections.mdx) within the database,  
   enabling [Vector search](../../../ai-integration/vector-search/overview.mdx) on your documents.
 
-* This article explains how to configure such a task.
-  It is recommended to first refer to this [Overview](../../../ai-integration/generating-embeddings/overview.mdx#embeddings-generation---overview)
+* This article explains how to configure such a task.  
+  It is recommended to first refer to this [Overview](../../../ai-integration/generating-embeddings/overview.mdx#embeddings-generation-overview)
   to understand the embeddings generation process flow.
 
-* In this article:
-    * [Configuring an embeddings generation task - from the Studio](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configuring-an-embeddings-generation-task-from-the-studio)
-    * [Configuring an embeddings generation task - from the Client API](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configuring-an-embeddings-generation-task-from-the-client-api)
-      * [Define source using PATHS](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configure-an-embeddings-generation-task---define-source-using-paths)
-      * [Define source using SCRIPT](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configure-an-embeddings-generation-task---define-source-using-script)
-    * [Chunking methods and tokens](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#chunking-methods-and-tokens)
-    * [Adding a context prefix to chunks](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#adding-a-context-prefix-to-chunks)
-    * [Syntax](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#syntax)
+* To learn how the task splits text into chunks and how to add a context prefix to each chunk,  
+  see [Chunking and context prefixes](../../../ai-integration/generating-embeddings/chunking-and-context-prefixes.mdx).
 
+* In this article:
+    * [Configuring an embeddings generation task - from Studio](#configuring-an-embeddings-generation-task-from-studio)
+    * [Configuring an embeddings generation task - from the Client API](#configuring-an-embeddings-generation-task-from-the-client-api)
+      * [Define source using PATHS](#configure-an-embeddings-generation-task---define-source-using-paths)
+      * [Define source using SCRIPT](#configure-an-embeddings-generation-task---define-source-using-script)
+      * [Store chunk text](#store-chunk-text)
+    * [Updating an existing embeddings generation task](#updating-an-existing-embeddings-generation-task)
+      * [Modify the task - from Studio](#modify-the-task---from-studio)
+      * [Modify the task - from the Client API](#modify-the-task---from-the-client-api)
+      * [Reprocess existing documents](#reprocess-existing-documents)
+    * [Syntax](#syntax)
+    
 </Admonition>
 
-<Panel heading="Configuring an embeddings generation task - from the Studio">
+<Panel heading="Configuring an embeddings generation task - from Studio">
 
 * **Define the general task settings**:
 
      ![Create embeddings generation task - general](../assets/add-ai-task-3.png)
 
-  1. **Name**
+  1. **Name**  
      Enter a name for the task.
-  2. **Identifier**
-     Enter a unique identifier for the task.
-     Each AI task in the database must have a distinct identifier.
+  2. **Identifier**  
+     Enter a unique identifier for the task.  
+     Each AI task in the database must have a distinct identifier.  
 
-        If not specified, or when clicking the "Regenerate" button,
-        RavenDB automatically generates the identifier based on the task name. For example:
+        If not specified, or when clicking the "Regenerate" button,  
+        RavenDB automatically generates the identifier based on the task name. For example:     
         * If the task name is: _"Generate embeddings from OpenAI"_
         * The generated identifier will be: _"generate-embeddings-from-openai"_
-
-        Allowed characters: only lowercase letters (a-z), numbers (0-9), and hyphens (-).
-
-        **This identifier is used:**
-        * When querying embeddings generated by the task via a dynamic query.
+      
+        Allowed characters: only lowercase letters (a-z), numbers (0-9), and hyphens (-).  
+        The identifier cannot contain consecutive hyphens or end with a hyphen.
+  
+        **This identifier is used:**  
+        * When querying embeddings generated by the task via a dynamic query.  
           An example is available in [Querying pre-made embeddings](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#querying-pre-made-embeddings-generated-by-tasks).
-        * When indexing the embeddings generated by the task.
-          An example is available in [Indexing pre-made text-embeddings](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-pre-made-text-embeddings).
-        * In documents in the [Embeddings collection](../../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-collection),
+        * When indexing the embeddings generated by the task.  
+          An example is available in [Indexing pre-made text-embeddings](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-vector-data-text).
+        * In documents in the [Embeddings collection](../../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-collections),  
           where the task identifier is used to identify the origin of each embedding.
-
-        See how this identifier is used in the [Embeddings collection](../../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-collection)
-        documents that reference the generated embeddings.
-
-  3. **Regenerate**
+     
+  3. **Regenerate**  
      Click "Regenerate" to automatically create an identifier based on the task name.
-  4. **Task state**
+  4. **Task state**  
      Enable/Disable the task.
-  5. **Responsible node**
+  5. **Responsible node**  
      Select a node from the [Database group](../../../studio/database/settings/manage-database-group.mdx) to be the responsible node for this task.
-  6. **Connection string**
+  6. **Connection string**  
      Select a previously defined [AI connection string](../../../ai-integration/connection-strings/overview.mdx) or create a new one.
-  7. **Enable document expiration**
+  7. **Enable document expiration**  
      This toggle appears only if the [Document expiration feature](../../../documents/document-expiration/document-expiration-view.mdx) is Not enabled in the database.
      Enabling document expiration ensures that embeddings in the `@embeddings-cache` collection are automatically deleted when they expire.
-  8. **Save**
+  8. **Save**  
      Click _Save_ to store the task definition or _Cancel_.
 
-* **Define the embeddings source - using PATHS**:
+---
 
+* **Define the embeddings source - using PATHS**:
+  
     ![Create embeddings generation task - source by paths](../assets/add-ai-task-4.png)
 
-  1. **Collection**
+  1. **Collection**  
      Enter or select the source document collection from the dropdown.
-  2. **Embeddings source**
+  2. **Embeddings source**  
      Select `Paths` to define the source content by document properties.
-  3. **Path configuration**
-     Specify which document properties to extract text from, and how the text should be chunked into embeddings.
+  3. **Path configuration**  
+     Specify which document properties to extract text from, and how the text should be chunked into embeddings. 
 
-     * **Source text path**
-       Enter the property name from the document that contains the text for embedding generation.
-     * **Chunking method**
-       Select the method for splitting the source text into chunks.
-       Learn more in [Chunking methods and tokens](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#chunking-methods-and-tokens).
-     * **Max tokens per chunk**
-       Enter the maximum number of tokens allowed per chunk (this depends on the service provider).
-     * **Overlap tokens**
-       Enter the number of tokens to repeat at the start of each chunk from the end of the previous one.
-       This helps preserve context between chunks by carrying over some tokens from one to the next.
+     * **Source text path**  
+       Enter the property name from the document that contains the text for embedding generation.  
+     * **Chunking method**  
+       Select the method for splitting the source text into chunks.  
+       Learn more in [Chunking methods and tokens](../../../ai-integration/generating-embeddings/chunking-and-context-prefixes.mdx#chunking-methods-and-tokens).  
+     * **Max tokens per chunk**  
+       Enter the maximum number of tokens per chunk. Choose a value below the model's input token limit,  
+       since RavenDB's token counts may differ from the model's.
+     * **Overlap tokens**  
+       Enter the number of tokens to repeat at the start of each chunk from the end of the previous one.  
+       This helps preserve context between chunks by carrying over some tokens from one to the next.  
        Applies only to the _"Plain Text: Split Paragraphs"_ and _"Markdown: Split Paragraphs"_ chunking methods.
 
-  4. **Add path configuration**
-     Click to add the specified to the list.
-  5. **List of paths**
+  4. **Add path configuration**  
+     Click to add the path configuration to the list.
+  5. **List of paths**  
      This table displays the document properties you added for embedding generation.
 
-* **Define the embeddings source - using SCRIPT**:
+---
 
+* **Define the embeddings source - using SCRIPT**:
+  
     ![Create embeddings generation task - source by script](../assets/add-ai-task-4-script.png)
 
-  1. **Embeddings source**
+  1. **Embeddings source**  
      Select `Script` to define the source content and chunking methods using a JavaScript script.
-  2. **Script**
-     Refer to section [Chunking methods and tokens](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#chunking-methods-and-tokens) for available JavaScript methods.
-  3. **Default chunking method**
-     The selected chunking method will be used by default when no method is specified in the script.
+  2. **Script**  
+     Refer to section [Chunking methods and tokens](../../../ai-integration/generating-embeddings/chunking-and-context-prefixes.mdx#chunking-methods-and-tokens) for available JavaScript methods.
+  3. **Default chunking method**  
+     The selected chunking method is used for values supplied as plain strings or string arrays in the script.
      e.g., when the script contains: `Name: this.Name`.
-  4. **Default max tokens per chunk**:
-     Enter the default value to use when no specific value is set for the chunking method in the script.
-     This is the maximum number of tokens allowed per chunk (depends on the service provider).
-  5. **Default overlap tokens**
-     Enter the default value to use when no specific value is set for the chunking method in the script.
-     This is the number of tokens to repeat at the start of each chunk from the end of the previous one.
+  4. **Default max tokens per chunk**:  
+     Enter the maximum number of tokens per chunk for values that use the default chunking method.  
+     Choose a value below the selected model's input token limit.
+  5. **Default overlap tokens**  
+     Enter the default number of overlap tokens for values supplied as plain strings or string arrays in the script.  
+     This is the number of tokens to repeat at the start of each chunk from the end of the previous one.  
      Applies only to the _"Plain Text: Split Paragraphs"_ and _"Markdown: Split Paragraphs"_ chunking methods.
 
-* **Define quantization and expiration -
+---
+
+* **Define quantization and expiration -  
   for the generated embeddings from the source documents**:
 
     ![Create embeddings generation task - quantization and expiration](../assets/add-ai-task-5.png)
 
-  1. **Quantization**
-     Select the quantization method that RavenDB will apply to embeddings received from the service provider.
-     Available options:
+  1. **Quantization**  
+     Select the quantization method that RavenDB will apply to embeddings received from the service provider.  
+     Available options:  
      * Single (no quantization)
      * Int8
      * Binary
-  2. **Embeddings cache expiration**
-     Set the expiration period for documents stored in the `@embeddings-cache` collection.
-     These documents contain embeddings generated from the source documents, serving as a cache for these embeddings.
-     The default initial period is `90` days. This period may be extended when the source documents change.
+  2. **Embeddings cache expiration**  
+     Set the expiration period for documents stored in the `@embeddings-cache` collection.  
+     These documents contain embeddings generated from the source documents, serving as a cache for these embeddings.  
+     The default initial period is `90` days. This period may be extended when the source documents change.  
      Learn more in [The embeddings cache collection](../../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-cache-collection).
-  3. **Regenerate embeddings**
-     This toggle is visible only when editing an existing task.
+  3. **Regenerate embeddings**  
+     This toggle is visible only when editing an existing task.  
      Toggle ON to regenerate embeddings for all documents in the collection, as specified by the _Paths_ or _Script_.
 
-* **Define chunking method & expiration -
+---
+
+* **Define chunking method & expiration -  
   for the embedding generated from a search term in a vector search query**:
 
     ![Create embeddings generation task - for the query](../assets/add-ai-task-6.png)
 
-  1. **Querying**
-     This label indicates that this section configures parameters only for embeddings
+  1. **Querying**  
+     This label indicates that this section configures parameters only for embeddings  
      generated by the task for **search terms in vector search queries**.
-  2. **Chunking method**
-     Select the method for splitting the search term into chunks.
-     Learn more in [Chunking methods and tokens](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#chunking-methods-and-tokens).
-  3. **Max tokens per chunk**
-     Enter the maximum number of tokens allowed per chunk (this depends on the service provider).
-  4. **Overlap tokens**
-     Enter the number of tokens to repeat at the start of each chunk from the end of the previous one.
-     This helps preserve context between chunks by carrying over some tokens from one to the next.
+  2. **Chunking method**  
+     Select the method for splitting the search term into chunks.  
+     Learn more in [Chunking methods and tokens](../../../ai-integration/generating-embeddings/chunking-and-context-prefixes.mdx#chunking-methods-and-tokens).
+  3. **Max tokens per chunk**  
+     Enter the maximum number of tokens per chunk. Choose a value below the model's input token limit,  
+     since RavenDB's token counts may differ from the model's.
+  4. **Overlap tokens**  
+     Enter the number of tokens to repeat at the start of each chunk from the end of the previous one.  
+     This helps preserve context between chunks by carrying over some tokens from one to the next.  
      Applies only to the _"Plain Text: Split Paragraphs"_ and _"Markdown: Split Paragraphs"_ chunking methods.
-  5. **Embeddings cache expiration**
-     Set the expiration period for documents stored in the `@embeddings-cache` collection.
-     These documents contain embeddings generated from the search terms, serving as a cache for these embeddings.
+  5. **Embeddings cache expiration**  
+     Set the expiration period for documents stored in the `@embeddings-cache` collection.  
+     These documents contain embeddings generated from the search terms, serving as a cache for these embeddings.  
      The default period is `14` days. Learn more in [The embeddings cache collection](../../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-cache-collection).
+
+---
+
+<Admonition type="note" title="">
+
+The `store_chunk_text` option, which stores the text of each chunk, cannot currently be set in Studio.  
+Set it through the Client API, as described in [Store chunk text](#store-chunk-text).
+
+</Admonition>
 
 </Panel>
 
@@ -167,7 +187,6 @@ import Panel from '@site/src/components/Panel';
 
 #### Configure an embeddings generation task - define source using PATHS:
 
-<TabItem value="create_embeddings_task_1" label="create_embeddings_task_1">
 ```python
 from datetime import timedelta
 from ravendb.documents.operations.ai import (
@@ -181,13 +200,16 @@ from ravendb.documents.operations.ai import (
 )
 from ravendb.documents.indexes.vector.embedding import VectorEmbeddingType
 from ravendb.documents.operations.ai.open_ai_settings import OpenAiSettings
-from ravendb.documents.operations.connection_string.put_connection_string_operation import PutConnectionStringOperation
+from ravendb import PutConnectionStringOperation
 
 # Define a connection string that will be used in the task definition:
 # ====================================================================
 connection_string = AiConnectionString(
+    # Connection string name & identifier
     name="ConnectionStringToOpenAI",
     identifier="id-for-open-ai-connection-string",
+
+    # OpenAI connection settings
     openai_settings=OpenAiSettings(
         api_key="your-api-key",
         endpoint="https://api.openai.com/v1",
@@ -244,14 +266,22 @@ embeddings_task_configuration = EmbeddingsGenerationConfiguration(
         max_tokens_per_chunk=2048,
     ),
     embeddings_cache_for_querying_expiration=timedelta(days=14),
+
+    # Chunk text storage:
+    # Default is 'False'. Set to 'True' to also store the text of each chunk
+    # in the embeddings document (see "Store chunk text" below).
+    store_chunk_text=False,
 )
 
 # Deploy the embeddings generation task to the server:
 # ====================================================
-add_embeddings_generation_task_op = AddEmbeddingsGenerationOperation(embeddings_task_configuration)
-add_ai_integration_task_result = store.maintenance.send(add_embeddings_generation_task_op)
+add_embeddings_generation_task_op = AddEmbeddingsGenerationOperation(
+    embeddings_task_configuration
+)
+add_ai_integration_task_result = store.maintenance.send(
+    add_embeddings_generation_task_op
+)
 ```
-</TabItem>
 
 </ContentFrame>
 
@@ -259,311 +289,289 @@ add_ai_integration_task_result = store.maintenance.send(add_embeddings_generatio
 
 #### Configure an embeddings generation task - define source using SCRIPT:
 
-* To configure the source content using a script -
-  use the `EmbeddingsTransformation` object instead of the `embeddings_path_configurations` list.
+* To configure the source content using a script -  
+  use the `embeddings_transformation` object instead of the `embeddings_path_configurations` object.
 
 * The rest of the configuration properties are the same as in the example above.
 
-* Call `embeddings.generate(object)` within the script and apply the appropriate text-splitting methods to each field inside the object.
-  Each KEY in the object represents a document field, and the VALUE is a text-splitting function that processes the field's content before generating embeddings.
+* Call `embeddings.generate(object)` within the script.  
+  Each KEY names a field in the generated embeddings document.  
+  For each VALUE, provide a string or string array to use the task's default chunking settings,  
+  or call a text-splitting method to specify how that text should be split.
 
-* These methods ensure that the text chunks derived from document fields stay within the token limits required by the provider, preventing request rejection.
-  Learn more in [Chunking methods and tokens](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#chunking-methods-and-tokens).
+* Set the maximum number of tokens per chunk to a value below the selected model's input token limit.  
+  Learn how the methods count or estimate tokens in [Chunking methods and tokens](../../../ai-integration/generating-embeddings/chunking-and-context-prefixes.mdx#chunking-methods-and-tokens).
+ 
+* For example:  
 
-* For example:
+    ```python
+    from ravendb.documents.operations.ai import EmbeddingsTransformation
 
-  <TabItem value="create_embeddings_task_2" label="create_embeddings_task_2">
-  ```python
-  from ravendb.documents.operations.ai import EmbeddingsTransformation
+    # Source collection:
+    collection="Categories",
 
-  # Source collection:
-  collection="Categories",
+    # Use 'EmbeddingsTransformation':
+    embeddings_transformation=EmbeddingsTransformation(
+        # Define the script:
+        script="""embeddings.generate({
 
-  # Use 'EmbeddingsTransformation':
-  embeddings_transformation=EmbeddingsTransformation(
-      # Define the script:
-      script="""embeddings.generate({
+            // Process the document 'Name' field using method text.split().
+            // Use a token budget of 2048 for each chunk.
+            Name: text.split(this.Name, 2048),
 
-          // Process the document 'Name' field using method text.split().
-          // The text content will be split into chunks of up to 2048 tokens.
-          Name: text.split(this.Name, 2048),
+            // Process the document 'Description' field
+            // using method text.splitParagraphs().
+            // Use an estimated token budget of 2048 for each chunk,
+            // with an estimated overlap budget of 128 tokens.
+            Description: text.splitParagraphs(this.Description, 2048, 128)
+        });"""
+    ),
+    ```
 
-          // Process the document 'Description' field using method text.splitParagraphs().
-          // The text content will be split into chunks of up to 2048 tokens.
-          // 128 overlapping tokens will be repeated at the start of each chunk
-          // from the end of the previous one.
-          Description: text.splitParagraphs(this.Description, 2048, 128)
-      });"""
-  ),
-  ```
-  </TabItem>
+* For values supplied as plain strings or string arrays, the task uses `embeddings_transformation.chunking_options`.  
+  By default, this uses `PLAIN_TEXT_SPLIT` with a token budget of `256`.  
+  To set different defaults:
 
-* If no chunking method is provided in the script, you can set default values as follows:
+    ```python
+    from ravendb.documents.operations.ai import (
+        ChunkingOptions,
+        ChunkingMethod,
+        EmbeddingsTransformation,
+    )
 
-  <TabItem value="create_embeddings_task_3" label="create_embeddings_task_3">
-  ```python
-  from ravendb.documents.operations.ai import ChunkingOptions, ChunkingMethod, EmbeddingsTransformation
+    collection="Categories",
+    embeddings_transformation=EmbeddingsTransformation(
+        script="""embeddings.generate({
 
-  collection="Categories",
-  embeddings_transformation=EmbeddingsTransformation(
-      script="""embeddings.generate({
+            // No chunking method is specified here
+            Name: this.Name,
+            Description: this.Description
+        });""",
 
-          // No chunking method is specified here
-          Name: this.Name,
-          Description: this.Description
-      });""",
+        # Specify the default chunking options to use in the script
+        chunking_options=ChunkingOptions(
+            chunking_method=ChunkingMethod.PLAIN_TEXT_SPLIT,
+            max_tokens_per_chunk=2048,
+        ),
+    ),
+    ```
 
-      # Specify the default chunking options to use in the script
-      chunking_options=ChunkingOptions(
-          chunking_method=ChunkingMethod.PLAIN_TEXT_SPLIT,
-          max_tokens_per_chunk=2048,
-      ),
-  ),
-  ```
-  </TabItem>
+</ContentFrame>
+
+<ContentFrame>
+
+#### Store chunk text:
+
+* By default, the task stores only the embeddings generated for the text chunks, as attachments of the source document's [embeddings document](../../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-collections).
+  The text of the chunks is not stored.
+
+* Set `store_chunk_text` to `True` to also store the text of each chunk in the embeddings document  
+  (`embeddings/<source-document-id>`).  
+  * The text is stored as it was sent to the embedding model,
+    including the [context prefix](../../../ai-integration/generating-embeddings/chunking-and-context-prefixes.mdx#adding-a-context-prefix-to-chunks), if one is defined.  
+  * The embeddings are still stored as attachments.  
+  * Storing the text makes the embeddings documents larger.
+
+* Storing chunk text lets you [retrieve the text of matching chunks](../../../ai-integration/vector-search/more-querying-options.mdx#retrieving-matching-chunk-text)
+  for each document returned by a vector search.
+
+* The option is **not retroactive**. It applies only to documents the task processes after the option is enabled,  
+  such as new or modified documents.
+  To store the chunk text of documents the task has already processed, [reprocess the existing documents](#reprocess-existing-documents).
+
+* `store_chunk_text` cannot currently be set in Studio. Set it through the Client API.
+
+* For example, the following task generates embeddings from the `Notes` field of _Employee_ documents  
+  and stores the text of each chunk:
+
+    ```python
+    employee_notes_task_configuration = EmbeddingsGenerationConfiguration(
+        name="GetEmployeeNotesEmbeddings",
+        identifier="id-for-task-employee-notes",
+        # The connection string defined in the PATHS example above
+        connection_string_name="ConnectionStringToOpenAI",
+
+        collection="Employees",
+        embeddings_path_configurations=[
+            EmbeddingPathConfiguration(
+                path="Notes",
+                chunking_options=ChunkingOptions(
+                    # Split the notes into small chunks,
+                    # so each chunk covers a short part of the text
+                    chunking_method=ChunkingMethod.PLAIN_TEXT_SPLIT_LINES,
+                    max_tokens_per_chunk=64,
+                ),
+            ),
+        ],
+
+        chunking_options_for_querying=ChunkingOptions(
+            chunking_method=ChunkingMethod.PLAIN_TEXT_SPLIT,
+            max_tokens_per_chunk=2048,
+        ),
+
+        # Store the text of each chunk in the embeddings document
+        store_chunk_text=True,
+    )
+
+    add_employee_notes_task_op = AddEmbeddingsGenerationOperation(
+        employee_notes_task_configuration
+    )
+    add_employee_notes_task_result = store.maintenance.send(
+        add_employee_notes_task_op
+    )
+    ```
 
 </ContentFrame>
 
 </Panel>
 
-<Panel heading="Chunking methods and tokens">
+<Panel heading="Updating an existing embeddings generation task">
 
-**Tokens and processing limits**:
+<ContentFrame>
 
-* A token is the fundamental unit that Large Language Models (LLMs) use to process text.
-  AI service providers that generate embeddings from text enforce token limits for each processed text part.
-  If a text exceeds the provider's limit, it may be truncated or rejected.
+#### Modify the task - from Studio:
 
-**Using chunking methods**:
+* To modify a task, click _Edit_ next to the task in the [AI Tasks list view](../../../ai-integration/ai-tasks-list-view.mdx#ai-tasks---list-view).  
+  The task opens in the same view used to [create it](#configuring-an-embeddings-generation-task-from-studio),
+  with the following differences:
 
-* To handle lengthy text, you can define chunking strategies in the task definition and specify the desired number of tokens per chunk.
-  Chunking splits large input texts into smaller, manageable chunks, each containing no more than the specified maximum number of tokens.
+* **Locked fields**:  
+  The task name and the connection string cannot be modified.
+    
+      ![Edit embeddings generation task 1](../assets/add-ai-task-7.png)
 
-* The maximum number of tokens per chunk depends on the AI service provider and the specific model defined in the [connection string](../../../ai-integration/connection-strings/overview.mdx).
-  While RavenDB does not tokenize text, it estimates the number of tokens for chunking purposes by dividing the text length by 4.
+* **Regenerate embeddings for all documents**:  
+  This toggle appears only when editing a task.  
+  If it is ON when you save the task, the task processes all documents in its collection again,  
+  the same as passing `reset=True` in the [Client API](#modify-the-task---from-the-client-api).
+  * The Studio turns the toggle ON automatically the first time you change any of the following settings:  
+    the collection, the embeddings source (_Paths_ or _Script_), the list of paths, the script,  
+    the script's default chunking method or default max tokens per chunk, or the quantization.
+  * You can turn the toggle OFF before saving.
+  * The Client API never turns reset on automatically: `reset` defaults to `False`.
+  * For reprocessing when switching between _Paths_ and _Script_, see the [Client API explanation](#modify-the-task---from-the-client-api) below.    
+    ![Edit embeddings generation task 2](../assets/add-ai-task-8.png)
 
-* The AI provider generates a single embedding for each chunk.
-  Depending on the maximum tokens per chunk setting, a single input text may result in multiple embeddings.
+* **Store chunk text**:  
+  Currently, Studio has no control for `store_chunk_text`.  
+  Saving the task in Studio keeps the `store_chunk_text` value that was set through the Client API.
 
-**Available chunking methods**:
+</ContentFrame>
 
-RavenDB offers several chunking methods that can be applied per source type.
-These methods determine how input text is split before being sent to the provider.
+<ContentFrame>
 
-<Admonition type="note" title="">
+#### Modify the task - from the Client API:
 
-* `PlainText: Split`
-  Splits a plain text string into multiple chunks based on the specified maximum token count.
-  Estimates token lengths based on an average of 4 characters per token and applies a 0.75 ratio to determine chunk sizes.
-  Ensures that words are not split mid-way when forming chunks.
+* To modify a task, get its current configuration, change the settings you need,  
+  and send the configuration with `UpdateEmbeddingsGenerationOperation`.  
+  The configuration you send replaces the task's existing configuration.
 
-     **Applies to**:
-     Fields containing plain text strings.
-     **Return Value**:
-     A list of text chunks (strings), where each chunk approximates the specified maximum token count without breaking words.
+* **Task ID vs. identifier**:  
+  `UpdateEmbeddingsGenerationOperation` takes the task's **ID** (`task_id`), a number that RavenDB assigns to the task.
+  The task's ID is not the task's `identifier`, which is the string you define in the configuration and use in queries and indexes.  
 
-* `PlainText: Split Lines`
-  Uses the Semantic Kernel _SplitPlainTextLines_ method.
-  Splits a plain text string into individual lines based on line breaks and whitespace while ensuring that each line does not exceed the specified maximum token limit.
+  The task ID changes each time the task is updated, including when the task is saved in Studio.  
+  The update operation returns the new ID in `UpdateEtlOperationResult.task_id`.  
+  To get the current task ID, use `GetOngoingTaskInfoOperation` as shown in the example below.
 
-     **Applies to**:
-     Fields containing an array of plain text strings.
-     **Return value**:
-     A list of text segments (lines) derived from the original input, preserving line structure while ensuring token constraints.
+* **The `reset` parameter**:  
+  * `False` (default) - Continue from the task's saved processing position.  
+    Changing the settings does not cause already-processed documents to be processed again.  
+    The updated settings apply to documents the task processes next, including new or modified documents.
+  * `True` - The task processes all documents in its collection again.  
+    Learn more in [Reprocess existing documents](#reprocess-existing-documents).
 
-* `PlainText: Split Paragraphs`
-  Uses the Semantic Kernel _SplitPlainTextParagraphs_ method.
-  Combines consecutive lines to form paragraphs while ensuring each paragraph is as complete as possible without exceeding the specified token limit.
-  Optionally, set an overlap between chunks using the _overlapTokens_ parameter, which repeats the last _n_ tokens from one chunk at the start of the next.
-  This helps preserve context continuity across paragraph boundaries.
+  The _Paths_ and _Script_ source modes have separate saved progress.
+  Switching to a mode that has no saved progress causes existing documents to be processed even when `reset` is `False`.
 
-     **Applies to**:
-     Fields containing an array of plain text strings.
-     **Return value**:
-     A list of paragraphs, where each paragraph consists of grouped lines that preserve readability without exceeding the token limit.
+* **Update restrictions**:  
+  Changes to the connection settings that affect how the embeddings are generated are rejected.
+  * The update is rejected if the new connection string differs from the current one in its AI provider,  
+    identifier, model, embedding dimensions, or deployment (e.g., the Azure OpenAI deployment name).  
+    Since each AI connection string in a database has a unique [identifier](../../../ai-integration/connection-strings/overview.mdx#identifier),
+    the task cannot switch to another connection string.
+  * To change only the endpoint or the API key, update the connection string itself.  
+    This is allowed while tasks use it.
+  * To generate embeddings with a different provider or model, delete the task and create a new one.
 
-* `Markdown: Split Lines`
-  Uses the Semantic Kernel _SplitMarkDownLines_ method.
-  Splits markdown content into individual lines at line breaks while ensuring that each line remains within the specified token limit.
-  Preserves markdown syntax, ensuring each line remains an independent, valid segment.
+* For example, to change the expiration period of the embeddings cache of an existing task:
 
-     **Applies to**:
-     Fields containing strings with markdown content.
-     **Return value**:
-     A list of markdown lines, each respecting the token limit while maintaining the original formatting.
+    ```python
+    from datetime import timedelta
+    from ravendb import (
+        GetOngoingTaskInfoOperation,
+        OngoingTaskType,
+        UpdateEmbeddingsGenerationOperation,
+    )
 
-* `Markdown: Split Paragraphs`
-  Uses the Semantic Kernel _SplitMarkdownParagraphs_ method.
-  Groups lines into coherent paragraphs at designated paragraph breaks while ensuring each paragraph remains within the specified token limit.
-  Markdown formatting is preserved.
-  Optionally, set an overlap between chunks using the _overlapTokens_ parameter, which repeats the last _n_ tokens from one chunk at the start of the next.
-  This helps preserve context continuity across paragraph boundaries.
+    # Get the existing task by its name
+    get_task_op = GetOngoingTaskInfoOperation(
+        "GetEmbeddingsFromOpenAI", OngoingTaskType.EMBEDDINGS_GENERATION
+    )
+    task = store.maintenance.send(get_task_op)
 
+    # Modify the task's current configuration
+    configuration = task.configuration
+    configuration.embeddings_cache_expiration = timedelta(days=180)
 
-     **Applies to**:
-     Fields containing an array of strings with markdown content.
-     **Return value**:
-     A list of markdown paragraphs, each respecting the token limit and maintaining structural integrity.
+    # Update the task
+    # 'reset' is not passed (default: False),
+    # so documents the task already processed are not processed again
+    update_task_op = UpdateEmbeddingsGenerationOperation(task.task_id, configuration)
+    store.maintenance.send(update_task_op)
+    ```
 
-* `HTML: Strip`
-  Removes HTML tags from the content and splits the resulting plain text into chunks based on a specified token limit.
+</ContentFrame>
 
-     **Applies to**:
-     Fields containing strings with HTML.
-     **Return value**:
-     A list of text chunks derived from the stripped content, ensuring each chunk remains within the token limit.
+<ContentFrame>
 
-</Admonition>
+#### Reprocess existing documents:
 
-**Chunking method syntax for the server-side JavaScript scripts**:
+* Enabling `store_chunk_text` in an existing task does not add chunk text to documents the task has already processed.
+  To store their chunk text, update the task with `UpdateEmbeddingsGenerationOperation` and pass `reset=True`.
+  The task then processes all documents in its collection again.
 
-<TabItem value="javascript" label="javascript">
-```js
-// Available text-splitting methods:
-// =================================
+* Before requesting an embedding from the provider, the task checks the [embeddings cache collection](../../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-cache-collection).  
+  Chunks whose embeddings are still cached are not sent to the provider again.
 
-// Plain text methods:
-text.split(text | [text], maxTokensPerLine);
-text.splitLines(text | [text], maxTokensPerLine);
-text.splitParagraphs(line | [line], maxTokensPerLine, overlapTokens?);
+* If you enable `store_chunk_text` without resetting the task or changing its source mode, the task continues from its saved progress.
+  Only documents it processes from that point on, such as new or modified documents, get stored chunk text.
 
-// Markdown methods:
-markdown.splitLines(text | [text], maxTokensPerLine);
-markdown.splitParagraphs(line | [line], maxTokensPerLine, overlapTokens?);
+* You can also reprocess the documents from Studio: edit the task and toggle ON [Regenerate embeddings](#configuring-an-embeddings-generation-task-from-studio).  
+  Saving the task in Studio keeps the `store_chunk_text` value that was set through the Client API.
 
-// HTML processing:
-html.strip(htmlText | [htmlText], maxTokensPerChunk);
+* Learn more about updating a task in [Modify the task - from Studio](#modify-the-task---from-studio)
+  and [Modify the task - from the Client API](#modify-the-task---from-the-client-api).
 
-// Optional: prepend context before embedding:
-text.splitParagraphs(...).withContextPrefix(contextPrefix);
-stringOrStringArray.withContextPrefix(contextPrefix);
-embeddings.generate({ ... }).withContextPrefix(contextPrefix);
-```
-</TabItem>
+* For example, the _GetEmbeddingsFromOpenAI_ task from the PATHS example above was created with `store_chunk_text=False`.
+  The following update enables chunk text storage and reprocesses its documents:
 
-| Parameter                                | Type      | Description                                                       |
-|------------------------------------------|-----------|------------------------------------------------------------------ |
-| **text**                                 | `string`  | A plain text or markdown string to split.                         |
-| **line**                                 | `string`  | A single line or paragraph of text.                               |
-| **[text] / [line]**                      | `string[]`| An array of text or lines to split into chunks.                   |
-| **htmlText**                             | `string`  | A string containing HTML content to process.                      |
-| **maxTokensPerChunk / maxTokensPerLine** | `number`  | The maximum number of tokens allowed per chunk.<br/>Default is `512`. |
-| **overlapTokens**                        | `number` (optional) | The number of tokens to overlap between consecutive chunks. Helps preserve context continuity across chunks (e.g., between paragraphs).<br/>Default is `0`. |
-| **contextPrefix**                        | `string`  | Text that is prepended to chunks before they are sent to the embedding model. Required when `withContextPrefix(...)` is used. Cannot be empty or whitespace-only.<br/>Learn more in [Adding a context prefix to chunks](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#adding-a-context-prefix-to-chunks). |
+    ```python
+    from ravendb import (
+        GetOngoingTaskInfoOperation,
+        OngoingTaskType,
+        UpdateEmbeddingsGenerationOperation,
+    )
 
-</Panel>
+    # Get the existing task by its name
+    get_task_op = GetOngoingTaskInfoOperation(
+        "GetEmbeddingsFromOpenAI", OngoingTaskType.EMBEDDINGS_GENERATION
+    )
+    task = store.maintenance.send(get_task_op)
 
-<Panel heading="Adding a context prefix to chunks">
+    # Enable 'store_chunk_text' in the task's current configuration
+    configuration = task.configuration
+    configuration.store_chunk_text = True
 
-Use `withContextPrefix(contextPrefix)` in a [SCRIPT-based](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configure-an-embeddings-generation-task---define-source-using-script) embeddings task to prepend context to the text sent to the embedding model.
-This is useful when individual chunks omit identifying document information, such as a title, category, or company name.
+    # Update the task
+    # Pass 'reset=True' to process all documents in the collection again
+    update_task_op = UpdateEmbeddingsGenerationOperation(
+        task.task_id, configuration, reset=True
+    )
+    store.maintenance.send(update_task_op)
+    ```
 
-In a script, `contextPrefix` can be a string literal, a document field such as `this.Title`, or any string expression produced by the script.
-RavenDB trims trailing whitespace from the prefix and inserts a single space between the prefix and the chunk content.
-
-You can apply the prefix in a script at three levels:
-
-* **Per chunked field**:  
-  Chain `withContextPrefix(...)` onto any chunking method result to prepend the prefix to every chunk generated from that field.
-
-* **Per non-chunked field**:  
-  Chain `withContextPrefix(...)` directly onto a raw string or string array.
-  The string, or each string in the array, is emitted without chunking and with the prefix prepended.
-
-* **For all generated fields**:  
-  Chain `withContextPrefix(...)` onto the `embeddings.generate({...})` call to apply the same prefix to every generated field.
-  A field-level prefix takes priority and is not overwritten by this object-wide prefix.
-
-```js
-embeddings.generate({
-    // Per field - on a chunked value:
-    // Prepend the document's category to every chunk generated from the Content field.
-    Content: text.splitParagraphs(this.Content, 512).withContextPrefix(this.Category),
-
-    // No field-level prefix is defined here,
-    // so the object-wide prefix below will apply to this field.
-    Summary: text.splitParagraphs(this.Summary, 512),
-
-    // Per field - on a non-chunked value:
-    // Emit the Title field without chunking, with a literal prefix prepended.
-    Title: this.Title.withContextPrefix('Article title:')
-
-}).withContextPrefix(this.Title); // Object-wide prefix
-```
-<br/>
-
----
-
-#### SCRIPT vs PATHS context prefixes
-
-Use the [SCRIPT option](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configure-an-embeddings-generation-task---define-source-using-script)
-with `withContextPrefix(...)` when the prefix must be computed per document,
-for example from `this.Title` or `this.Category`.
-
-For source paths configured through the [PATHS option](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configure-an-embeddings-generation-task---define-source-using-paths) in the Client API,
-you can set a constant prefix with the `context_prefix` property in the `chunking_options` of the relevant `EmbeddingPathConfiguration`.
-
-Unlike the SCRIPT option, the PATHS option applies the same prefix text to every document for that path.
-It cannot use values from the document being processed, such as the document's own title or category.
-For dynamic, per-document prefixes, use the SCRIPT option.
-
-This property is currently not exposed in the Studio for path configurations. You can set it through the Client API.
-For example:
-
-```python
-EmbeddingPathConfiguration(
-    path="Description",
-    chunking_options=ChunkingOptions(
-        chunking_method=ChunkingMethod.PLAIN_TEXT_SPLIT_PARAGRAPHS,
-        max_tokens_per_chunk=2048,
-        overlap_tokens=128,
-
-        # Prepended to every chunk produced from this path.
-        # In PATHS, this is the same constant text for every processed document.
-        # Its tokens count against 'max_tokens_per_chunk'.
-        context_prefix="Category description:",
-    ),
-)
-```
-<br/>
-
----
-
-#### Context prefix and the token budget
-
-When a context prefix is applied to chunked input, its tokens count against the configured _Max tokens per chunk_.
-RavenDB also accounts for the separating space inserted between the prefix and the chunk content.
-
-This means the effective token budget available for the original chunk content is reduced by the prefix.
-Keep the prefix short and focused on the missing context, such as a title, category, or company name.
-
-If the prefix leaves no room for chunk content, the task fails with an error.
-The task also fails if _Overlap tokens_ is greater than or equal to the remaining effective chunk budget after the prefix is accounted for.
-
-This token-budget reduction does not apply when `withContextPrefix(...)` is used in a script on a non-chunked raw string or string array.
-In that case, the string, or each string in the array, is emitted without chunking and with the prefix prepended.
-
----
-
-#### When to use a context prefix
-
-Use a context prefix when important document-level information may be absent from individual chunks.
-Common examples are a title, category, company name, product name, or other identifier that appears once in the document but is needed to interpret later chunks.
-
-A context prefix is especially useful for specific queries that include, or depend on, that identifying context.
-For example, if users search for information about a particular company, adding the company name to each chunk can make matching more precise and help the relevant document rank higher.
-
-There is a trade-off.
-Because the prefix becomes part of the embedding input, it can make search results more focused, but it can also push borderline-relevant chunks lower.
-For broad category-level queries where users expect an exhaustive set of relevant results, this may reduce recall.
-
-Keep the prefix short and focused on the missing context.
-Do not use it to summarize the whole document.
-For chunked input, the prefix consumes part of the token budget and may increase the number of generated chunks.
-
-If you are unsure whether to use a prefix, test it on a small sample of your own data.  
-Create two otherwise identical embeddings generation tasks, one with a context prefix and one without,  
-then compare precision, recall, or other relevant metrics for the queries your users actually issue.  
+</ContentFrame>
 
 </Panel>
 
@@ -571,11 +579,12 @@ then compare precision, recall, or other relevant metrics for the queries your u
 
 #### The embeddings generation task configuration:
 
-<TabItem value="syntax_1" label="syntax_1">
 ```python
-# 'EmbeddingsGenerationConfiguration' inherits from 'AbstractAiIntegrationConfiguration'
-# and provides the following specialized configurations for the embeddings generation task:
-# =========================================================================================
+# The 'EmbeddingsGenerationConfiguration' class inherits from
+# 'AbstractAiIntegrationConfiguration' (which extends 'EtlConfiguration')
+# and provides the following specialized configurations
+# for the embeddings generation task:
+# ==============================================================================
 
 class EmbeddingsGenerationConfiguration(AbstractAiIntegrationConfiguration):
     identifier: str
@@ -586,28 +595,28 @@ class EmbeddingsGenerationConfiguration(AbstractAiIntegrationConfiguration):
     chunking_options_for_querying: ChunkingOptions
     embeddings_cache_expiration: timedelta  # default: timedelta(days=90)
     embeddings_cache_for_querying_expiration: timedelta  # default: timedelta(days=14)
+    store_chunk_text: bool  # default: False
 ```
-</TabItem>
 
-| Parameter                                    | Type                              | Description                                                                                                                                                                                                                        |
-|----------------------------------------------|-----------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **identifier**                               | `str`                             | The identifier of the embeddings generation task.                                                                                                                                                                                  |
-| **collection**                               | `str`                             | The name of the source collection from which documents are processed for embeddings generation.                                                                                                                                    |
-| **embeddings_path_configurations**           | `List[EmbeddingPathConfiguration]`| A list of properties inside documents that contain text to be embedded, along with their chunking settings.                                                                                                                        |
-| **embeddings_transformation**                | `EmbeddingsTransformation`        | An object that contains a script defining the transformations and processing applied to the source text before generating embeddings.                                                                                               |
-| **quantization**                             | `VectorEmbeddingType`             | The quantization type for the generated embeddings.                                                                                                                                                                                |
-| **chunking_options_for_querying**            | `ChunkingOptions`                 | The chunking method, maximum token limit, and overlap tokens used when processing search terms in vector search queries.                                                                                                            |
-| **embeddings_cache_expiration**              | `timedelta`                       | The expiration period for documents in the [Embedding cache collection](../../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-cache-collection) that contain embeddings generated from source documents. |
-| **embeddings_cache_for_querying_expiration** | `timedelta`                       | The expiration period for documents in the embedding cache collection that contain embeddings generated from search terms in vector search queries.                                                                                 |
+| Parameter                                    | Type                               | Description                                                                                                                                                                                                                                                                   |
+|----------------------------------------------|------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **identifier**                               | `str`                              | The identifier of the embeddings generation task.                                                                                                                                                                                                                             |
+| **collection**                               | `str`                              | The name of the source collection from which documents are processed for embeddings generation.                                                                                                                                                                               |
+| **embeddings_path_configurations**           | `List[EmbeddingPathConfiguration]` | A list of properties inside documents that contain text to be embedded, along with their chunking settings.                                                                                                                                                                   |
+| **embeddings_transformation**                | `EmbeddingsTransformation`         | An object that contains a script defining the transformations and processing applied to the source text before generating embeddings.                                                                                                                                         |
+| **quantization**                             | `VectorEmbeddingType`              | The quantization type for the generated embeddings. <br/> Cannot be `VectorEmbeddingType.TEXT`.                                                                                                                                                                               |
+| **chunking_options_for_querying**            | `ChunkingOptions`                  | The chunking method, maximum token limit, and overlap tokens used when processing search terms in vector search queries.                                                                                                                                                      |
+| **embeddings_cache_expiration**              | `timedelta`                        | The expiration period for documents in the [Embedding cache collection](../../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-cache-collection) that contain embeddings generated from source documents.                                     |
+| **embeddings_cache_for_querying_expiration** | `timedelta`                        | The expiration period for documents in the embedding cache collection that contain embeddings generated from search terms in vector search queries.                                                                                                                           |
+| **store_chunk_text**                         | `bool`                             | Whether to also store the text of each chunk in the source document's [embeddings document](../../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-collections). Default: `False`. <br/> Learn more in [Store chunk text](#store-chunk-text). |
 
-<TabItem value="syntax_2" label="syntax_2">
 ```python
 class EmbeddingPathConfiguration:
     path: str
     chunking_options: ChunkingOptions
 
 class ChunkingOptions:
-    chunking_method: ChunkingMethod  # default: ChunkingMethod.PLAIN_TEXT_SPLIT
+    chunking_method: ChunkingMethod  # default: None (the server uses PLAIN_TEXT_SPLIT)
     max_tokens_per_chunk: int        # default: 512
 
     # 'overlap_tokens' is only applicable when chunking_method is
@@ -630,6 +639,7 @@ class ChunkingMethod(Enum):
 
 class EmbeddingsTransformation:
     script: str
+    # default: PLAIN_TEXT_SPLIT with max_tokens_per_chunk=256
     chunking_options: ChunkingOptions
 
 class VectorEmbeddingType(Enum):
@@ -638,14 +648,33 @@ class VectorEmbeddingType(Enum):
     BINARY = "Binary"
     TEXT = "Text"
 ```
-</TabItem>
-
+    
+---
+        
 #### Deploying the embeddings generation task:
 
-<TabItem value="syntax_3" label="syntax_3">
 ```python
 AddEmbeddingsGenerationOperation(configuration: EmbeddingsGenerationConfiguration)
 ```
-</TabItem>
 
+---
+        
+#### Updating the embeddings generation task:
+
+```python
+UpdateEmbeddingsGenerationOperation(
+    task_id: int,
+    configuration: EmbeddingsGenerationConfiguration,
+    starting_point: Optional[StartingPointChangeVector] = None,
+    reset: bool = False,
+)
+```
+
+| Parameter          | Type                                  | Description                                                                                                                                                                                                                                                                    |
+|--------------------|---------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **task_id**        | `int`                                 | The current ID of the embeddings generation task to update. The ID changes after each update.                                                                                                                                                                                  |
+| **configuration**  | `EmbeddingsGenerationConfiguration`   | The updated task configuration.                                                                                                                                                                                                                                                |
+| **starting_point** | `Optional[StartingPointChangeVector]` | Not used by embeddings generation tasks (the server ignores it).<br/>Because it comes before `reset`, pass `reset` by keyword (`reset=True`).                                                                                                                                  |
+| **reset**          | `bool`                                | `True` - process all documents in the task's collection again. <br/> `False` (default) - keep saved processing progress. Switching between Paths and Script can still cause reprocessing; see [Modify the task - from the Client API](#modify-the-task---from-the-client-api). |
+    
 </Panel>

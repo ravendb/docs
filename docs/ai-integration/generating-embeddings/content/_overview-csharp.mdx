@@ -1,7 +1,6 @@
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import ContentFrame from '@site/src/components/ContentFrame';
 import Panel from '@site/src/components/Panel';
 
@@ -16,12 +15,12 @@ import Panel from '@site/src/components/Panel';
      **embeddings generation tasks** using external service providers, as explained below.
 
 * In this article:
-  * [Embeddings generation - overview](../../../ai-integration/generating-embeddings/overview.mdx#embeddings-generation-overview)
-     * [Embeddings generation - process flow](../../../ai-integration/generating-embeddings/overview.mdx#embeddings-generation---process-flow)
-     * [Supported providers](../../../ai-integration/generating-embeddings/overview.mdx#supported-providers)
-  * [Creating an embeddings generation task](../../../ai-integration/generating-embeddings/overview.mdx#creating-an-embeddings-generation-task)
-  * [Monitoring the tasks](../../../ai-integration/generating-embeddings/overview.mdx#monitoring-the-tasks)
-  * [Get embeddings generation task details](../../../ai-integration/generating-embeddings/overview.mdx#get-embeddings-generation-task-details)  
+  * [Embeddings generation - overview](#embeddings-generation-overview)
+     * [Embeddings generation - process flow](#embeddings-generation---process-flow)
+     * [Supported providers](#supported-providers)
+  * [Creating an embeddings generation task](#creating-an-embeddings-generation-task)
+  * [Monitoring the tasks](#monitoring-the-tasks)
+  * [Get embeddings generation task details](#get-embeddings-generation-task-details)  
 
 </Admonition>
 
@@ -49,7 +48,7 @@ import Panel from '@site/src/components/Panel';
   If quantization was defined in the task, RavenDB applies it to the embeddings before storing them.
 
 * **Embeddings are stored in your database**:  
-  * Each embedding is stored as an attachment in a [dedicated collection](../../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-collection).  
+  * Each embedding is stored as an attachment in a [dedicated collection](../../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-collections).  
   * RavenDB maintains an [embeddings cache](../../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-cache-collection),
     allowing reuse of embeddings for the same source content and reducing provider calls.
     Cached embeddings expire after a configurable duration.
@@ -57,7 +56,7 @@ import Panel from '@site/src/components/Panel';
 * **Perform vector search:**  
   Once the embeddings are stored, you can perform vector searches on your document content by:  
   * Running a [dynamic query](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#querying-pre-made-embeddings-generated-by-tasks), which automatically creates an auto-index for the search.  
-  * Defining a [static index](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-pre-made-text-embeddings) to store and query embeddings efficiently.  
+  * Defining a [static index](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-vector-data-text) to store and query embeddings efficiently.  
 
       The query search term is split into chunks, and each chunk is looked up in the cache.  
       If not found, RavenDB requests an embedding from the provider and caches it.  
@@ -67,9 +66,9 @@ import Panel from '@site/src/components/Panel';
   * Embeddings generation tasks are [Ongoing Tasks](../../../studio/database/tasks/ongoing-tasks/general-info.mdx) that process documents as they change.  
     Before contacting the provider after a document change, the task first checks the cache to see if a matching embedding already exists, avoiding unnecessary requests.
   * The requests to generate embeddings from the source text are sent to the provider in batches.  
-    The batch size is configurable, see the [Ai.Embeddings.MaxBatchSize](../../../server/configuration/ai-integration-configuration.mdx#aiembeddingsmaxbatchsize) configuration key.  
-  * A failed embeddings generation task will retry after the duration set in the  
-    [Ai.Embeddings.MaxFallbackTimeInSec](../../../server/configuration/ai-integration-configuration.mdx#aiembeddingsmaxfallbacktimeinsec) configuration key.
+    The batch size is configurable, see the [Ai.Embeddings.MaxBatchSize](../../../ai-integration/generating-embeddings/configuration.mdx#aiembeddingsmaxbatchsize) configuration key.  
+  * If an embeddings generation task fails, RavenDB waits before retrying it.
+    The maximum delay between retries is set by the [Ai.Embeddings.MaxFallbackTimeInSec](../../../ai-integration/generating-embeddings/configuration.mdx#aiembeddingsmaxfallbacktimeinsec) configuration key.
 
 ---   
     
@@ -86,7 +85,7 @@ import Panel from '@site/src/components/Panel';
 * The following service providers are supported for auto-generating embeddings using tasks:
 
     * [OpenAI & OpenAI-compatible providers](../../../ai-integration/connection-strings/open-ai.mdx)
-    * [Azure Open AI](../../../ai-integration/connection-strings/azure-open-ai.mdx)
+    * [Azure OpenAI](../../../ai-integration/connection-strings/azure-open-ai.mdx)
     * [Google AI](../../../ai-integration/connection-strings/google-ai.mdx)
     * [Vertex AI](../../../ai-integration/connection-strings/vertex-ai.mdx)
     * [Hugging Face](../../../ai-integration/connection-strings/hugging-face.mdx)
@@ -100,9 +99,9 @@ import Panel from '@site/src/components/Panel';
 
 <Panel heading="Creating an embeddings generation task">
 
-* An embeddings generation tasks can be created from:
+* An embeddings generation task can be created from:
     * The **AI Tasks view in the Studio**, where you can create, edit, and delete tasks. Learn more in [AI Tasks - list view](../../../ai-integration/ai-tasks-list-view.mdx).
-    * The **Client API** - see [Configuring an embeddings generation task - from the Client API](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configuring-an-embeddings-generation-task---from-the-client-api)
+    * The **Client API** - see [Configuring an embeddings generation task - from the Client API](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configuring-an-embeddings-generation-task-from-the-client-api)
 * From the Studio:  
 
      ![Add ai task 1](../assets/add-ai-task-1.png)
@@ -130,8 +129,8 @@ import Panel from '@site/src/components/Panel';
   * [5.1.11.25](../../../monitoring/integrations/snmp/overview.mdx#value-5.1.11.25) – Total number of enabled embeddings generation tasks.
   * [5.1.11.26](../../../monitoring/integrations/snmp/overview.mdx#value-5.1.11.26) – Total number of active embeddings generation tasks.
 
-* Errors raised by embeddings generation tasks, and how those errors affect each task's
-  health, are tracked in the [Task Errors view](../../../monitoring/task-errors/studio-views.mdx#task-errors-view).  
+* Errors raised by embeddings generation tasks, and how those errors affect each task's health,  
+  are tracked in the [Task Errors view](../../../monitoring/task-errors/studio-views.mdx#task-errors-view).  
   The [AI Task Errors view](../../../monitoring/task-errors/studio-views.mdx#ai-task-errors-view),
   opened from the `AI Hub`, shows the same errors pre-filtered to AI tasks only.  
   For an introduction to task error monitoring, see the
@@ -146,8 +145,8 @@ import Panel from '@site/src/components/Panel';
 
 * This is useful when issuing a vector search query that references an embeddings generation task,  
   where it's important to verify that the task exists beforehand. For example:  
-  * when [Querying pre-made embeddings generated by tasks](../../ai-integration/vector-search/vector-search-using-dynamic-query#querying-pre-made-embeddings-generated-by-tasks)
-  * or when [Indexing numerical data and querying using text input](../../ai-integration/vector-search/vector-search-using-static-index#indexing-numerical-data-and-querying-using-text-input)
+  * when [Querying pre-made embeddings generated by tasks](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#querying-pre-made-embeddings-generated-by-tasks)
+  * or when [Indexing numerical data and querying using text input](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-numerical-data-and-querying-using-text-input)
 
 * There are two ways to check if an embeddings generation task exists:
   * Using `GetOngoingTaskInfoOperation`.  
@@ -155,11 +154,11 @@ import Panel from '@site/src/components/Panel';
 
 
 <Tabs groupId='languageSyntax'>
-<TabItem value="Get_task_info_via_operataion" label="Get_task_info_via_operataion">
+<TabItem value="Get_task_info_via_operation" label="Get_task_info_via_operation">
 ```csharp
 // Define the get task operation, pass the task NAME
-var getOngoingTaskOp = 
-    new GetOngoingTaskInfoOperation("theEmbeddingsGenerationTaskName", OngoingTaskType.EmbeddingsGeneration);
+var getOngoingTaskOp = new GetOngoingTaskInfoOperation(
+    "theEmbeddingsGenerationTaskName", OngoingTaskType.EmbeddingsGeneration);
     
 // Execute the operation by passing it to Maintenance.Send
 // Explicitly cast the result to the "EmbeddingsGeneration" type 
@@ -181,7 +180,7 @@ if (task != null)
 // Define the get database record operation, pass your database name
 var getDatabaseRecordOp = new GetDatabaseRecordOperation("yourDatabaseName");
   
-// Execute the operation by passing it to Maintenance.Send
+// Execute the operation by passing it to Maintenance.Server.Send
 var dbRecord = store.Maintenance.Server.Send(getDatabaseRecordOp);
   
 // Access the list of embeddings generation tasks

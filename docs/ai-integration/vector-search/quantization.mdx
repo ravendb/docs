@@ -1,0 +1,33 @@
+---
+title: "Quantization"
+sidebar_label: "Quantization"
+description: "Configure quantization in RavenDB vector search to store indexed embeddings as Int8 or Binary, reducing storage and speeding up similarity search."
+sidebar_position: 5
+supported_languages: ["csharp", "java", "nodejs", "python"]
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import VectorSearchQuantizationCsharp from './content/_quantization-csharp.mdx';
+import VectorSearchQuantizationJava from './content/_quantization-java.mdx';
+import VectorSearchQuantizationNodejs from './content/_quantization-nodejs.mdx';
+import VectorSearchQuantizationPython from './content/_quantization-python.mdx';
+
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
+
+<LanguageContent language="csharp">
+   <VectorSearchQuantizationCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <VectorSearchQuantizationJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <VectorSearchQuantizationNodejs />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <VectorSearchQuantizationPython />
+</LanguageContent>

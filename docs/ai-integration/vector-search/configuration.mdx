@@ -1,0 +1,261 @@
+---
+title: "Vector search configuration"
+description: "Configure RavenDB vector search defaults for HNSW graph construction, minimum similarity, number of candidates, score ordering, filtered-search scanning, the vector node cache, and local embeddings generation."
+sidebar_label: "Configuration"
+sidebar_position: 9
+see_also:
+     - title: "Indexing Configuration"
+       link: "server/configuration/indexing-configuration"
+       source: "docs"
+       path: "Server > Configuration"
+     - title: "What Affects Vector Search Results"
+       link: "ai-integration/vector-search/what-affects-vector-search-results"
+       source: "docs"
+       path: "AI Integration > Vector Search"
+     - title: "AI features configuration options"
+       link: "ai-integration/configuration"
+       source: "docs"
+       path: "AI Integration"
+---
+
+import Admonition from '@theme/Admonition';
+import ContentFrame from '@site/src/components/ContentFrame';
+
+<Admonition type="note" title="">
+
+* For an overview of configuration keys and the different ways to set them,
+  see the [Configuration overview](../../server/configuration/configuration-options.mdx) article.    
+    
+* For keys that support per-index configuration, you can override their values using:
+    * Set a custom configuration per index from the [Client API](../../indexes/creating-and-deploying.mdx#customizing-configuration)
+    * Set a custom configuration per index from the [Studio](../../studio/database/indexes/create-map-index.mdx#configuration)
+    
+---    
+    
+* The following configuration keys are available for **vector search**:
+    
+    * Server-wide scope only:    
+      [Indexing.Corax.VectorSearch.MaxNumberOfThreadsForLocalEmbeddingsGeneration](#indexingcoraxvectorsearchmaxnumberofthreadsforlocalembeddingsgeneration)    
+    
+    * Server-wide, per database, or per-index scope:  
+      [Indexing.Corax.VectorSearch.CacheSizeInMb](#indexingcoraxvectorsearchcachesizeinmb)  
+      [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity](#indexingcoraxvectorsearchdefaultminimumsimilarity)  
+      [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForIndexing](#indexingcoraxvectorsearchdefaultnumberofcandidatesforindexing)  
+      [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](#indexingcoraxvectorsearchdefaultnumberofcandidatesforquerying)  
+      [Indexing.Corax.VectorSearch.DefaultNumberOfEdges](#indexingcoraxvectorsearchdefaultnumberofedges)  
+      [Indexing.Corax.VectorSearch.MaximumConcurrentBatchesForHnswAcceleration](#indexingcoraxvectorsearchmaximumconcurrentbatchesforhnswacceleration)  
+      [Indexing.Corax.VectorSearch.OrderByScoreAutomatically](#indexingcoraxvectorsearchorderbyscoreautomatically)  
+      [Indexing.Corax.VectorSearch.VectorSearchScanningThreshold](#indexingcoraxvectorsearchvectorsearchscanningthreshold)    
+
+</Admonition>
+
+---
+
+## Server-wide scope
+
+<ContentFrame>
+
+### Indexing.Corax.VectorSearch.MaxNumberOfThreadsForLocalEmbeddingsGeneration
+
+* The maximum number of threads used to compute each embedding with the built-in [bge-micro-v2](https://huggingface.co/TaylorAI/bge-micro-v2) model,  
+  which runs locally on the server.
+
+* This applies to vector search on text without an embeddings generation task (both indexing and querying),  
+  and to embeddings generation tasks that use the [bge-micro-v2 (Embedded)](../../ai-integration/connection-strings/embedded.mdx) connection string.
+
+* The default value depends on the number of logical processors available to the server:
+  * If 2 or fewer logical processors are available, 1 thread is used.
+  * If 3 to 8 logical processors are available, 2 threads are used.
+  * If 9 to 16 logical processors are available, 4 threads are used.
+  * If more than 16 logical processors are available, 6 threads are used.   
+    
+* Changes take effect only after the server restarts.
+    
+---
+    
+- **Type**: `int`
+- **Default**: Depends on the available processor count (see above)
+- **Scope**: Server-wide only
+
+</ContentFrame>
+
+---
+
+## Server-wide, per database, or per-index scope
+
+<ContentFrame>
+
+### Indexing.Corax.VectorSearch.CacheSizeInMb
+
+* The approximate amount of memory (in MB) for the HNSW node cache of each vector field in an index.  
+  Each vector field has its own cache, sized using this value.
+
+* The cache holds the graph structure (each node's connections, not the vectors).  
+  The cache is filled starting from the upper levels of the HNSW graph,  
+  then with as much of the bottom level as the budget allows, so vector queries read less from disk.        
+
+* Set to `0` to disable the cache.  
+  Changing this value does not require re-indexing.
+    
+* This setting is available from RavenDB 7.2.5.
+
+* The cache is not supported on [encrypted databases](../../server/security/encryption/database-encryption.mdx#vector-search-node-cache).  
+  Starting with RavenDB 7.2.6, this setting is ignored on encrypted databases,  
+  and vector search reads the HNSW graph from disk.
+
+---
+
+- **Type**: `int`
+- **Default**: `10`
+- **Scope**: Server-wide, per database, or per index
+
+</ContentFrame>
+<ContentFrame>
+
+### Indexing.Corax.VectorSearch.DefaultMinimumSimilarity
+
+* The default minimum similarity for vector search queries that don't specify one.
+
+* Values can be between `0.0` and `1.0`, on a normalized scale (not the raw cosine similarity).  
+  A higher value requires closer matches. The default `0.0` applies no similarity filtering.  
+  Learn more in [What affects vector search results - Query-time parameters](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#query-time-parameters).    
+    
+---
+    
+- **Type**: `float`
+- **Default**: `0.0`
+- **Scope**: Server-wide, per database, or per index
+
+</ContentFrame>
+<ContentFrame>
+
+### Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForIndexing
+    
+* The default size of the candidate pool used when inserting a vector into the HNSW graph.  
+  Used when a static-index vector field doesn't explicitly set `NumberOfCandidatesForIndexing`,  
+  and for auto-indexes created by dynamic queries.    
+
+* The value is stored when the graph is created, so changing it affects existing indexes only after they are reset.  
+  Learn more in [What affects vector search results - Indexing-time parameters](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#indexing-time-parameters).    
+
+---
+    
+- **Type**: `int`
+- **Default**: `16`
+- **Scope**: Server-wide, per database, or per index
+
+</ContentFrame>
+<ContentFrame>
+
+### Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying
+
+* The default number of candidates for vector search queries that don't specify one.  
+  It controls the size of the retained candidate pool during approximate search,    
+  and limits the number of vectors returned per query vector, in both approximate and exact search.
+
+* The number of resulting documents may be:  
+  * **Lower than the number of returned vectors** when several vectors belong to one document.
+  * **Higher than the number of returned vectors** when the same vector is shared by several documents.
+
+* Changing this value does not require re-indexing.  
+  Learn more in [What affects vector search results - Query-time parameters](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#query-time-parameters).
+    
+---
+    
+- **Type**: `int`
+- **Default**: `16`
+- **Scope**: Server-wide, per database, or per index
+
+</ContentFrame>
+<ContentFrame>
+
+### Indexing.Corax.VectorSearch.DefaultNumberOfEdges
+    
+* The default value of the HNSW _M_ parameter, which controls the number of connections (edges) between vectors in the graph.
+  Used when a static-index vector field doesn't explicitly set `NumberOfEdges`, and for auto-indexes created by dynamic queries.
+
+* The value is stored when the graph is created, so changing it affects existing indexes only after they are reset.  
+  Learn more in [What affects vector search results - Indexing-time parameters](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#indexing-time-parameters).    
+
+---
+    
+- **Type**: `int`
+- **Default**: `12`
+- **Scope**: Server-wide, per database, or per index
+
+</ContentFrame>
+<ContentFrame>
+
+### Indexing.Corax.VectorSearch.MaximumConcurrentBatchesForHnswAcceleration
+
+EXPERT ONLY:    
+    
+* The maximum number of vector insertions that RavenDB processes concurrently when building the HNSW graph.  
+  Vector loads for these insertions are batched, and their distance calculations run in parallel.
+
+* The actual concurrency grows with the number of new vectors in the indexing batch.  
+  Small batches (fewer than twice this value) are inserted one vector at a time.  
+  Set to `1` to always insert one vector at a time. The value must be at least `1`.
+
+* Parallel graph construction can improve indexing throughput, 
+  but the resulting graph is not guaranteed to be identical to a strictly sequential build. 
+  As a result, approximate vector search results may differ slightly even for the same data and insertion order.
+  Learn more in [What affects vector search results - The approximate nature of HNSW](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#the-approximate-nature-of-hnsw).
+    
+* Changing this value does not require re-indexing.  
+  It applies to subsequent indexing batches; the existing graph is not rebuilt.   
+
+---
+    
+- **Type**: `int`
+- **Default**: `512`
+- **Scope**: Server-wide, per database, or per index
+
+</ContentFrame>
+<ContentFrame>
+
+### Indexing.Corax.VectorSearch.OrderByScoreAutomatically
+
+* This setting controls automatic score ordering when `vector.search` is combined with other query conditions
+  and the query has no `order by` clause:
+  * When `true`, results are ordered by descending score (highest first).
+  * When `false`, this automatic ordering is disabled,  
+    unless boosting is involved and `Indexing.OrderByScoreAutomaticallyWhenBoostingIsInvolved` is enabled.    
+
+* A query whose only condition is a single `vector.search` clause returns results in similarity order
+  regardless of this setting, provided there is no explicit `order by` clause and no document boosting.
+
+* An explicit `order by` clause always takes precedence.
+
+* Changing this value does not require re-indexing.
+
+---
+    
+- **Type**: `bool`
+- **Default**: `true`
+- **Scope**: Server-wide, per database, or per index
+
+</ContentFrame>
+<ContentFrame>
+
+### Indexing.Corax.VectorSearch.VectorSearchScanningThreshold
+
+EXPERT ONLY:
+    
+* This setting controls when RavenDB uses exact search instead of HNSW approximate search for filtered vector queries.
+  When `vector.search` is combined with a filtering condition using _AND_,
+  exact search is used if the number of documents matching the filter is **below** this threshold.    
+
+* Exact search over the filtered documents is also used when exact search is requested,  
+  or when the requested number of candidates exceeds half the filter match count.  
+  Learn more in [How filtered vector search works](../../ai-integration/vector-search/more-querying-options.mdx#how-filtered-vector-search-works).
+
+* Changing this value does not require re-indexing.
+
+---
+
+- **Type**: `int`
+- **Default**: `1024`
+- **Scope**: Server-wide, per database, or per index
+
+</ContentFrame>

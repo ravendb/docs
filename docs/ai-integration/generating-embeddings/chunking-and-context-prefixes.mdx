@@ -1,0 +1,51 @@
+---
+title: "Chunking and Context Prefixes"
+sidebar_label: "Chunking and Context Prefixes"
+description: "Learn how the RavenDB embeddings generation task splits text into chunks before generating embeddings, and how to add a context prefix to each chunk."
+sidebar_position: 3
+supported_languages: ["csharp", "java", "nodejs", "python"]
+see_also:
+     - title: "The Embeddings Generation Task"
+       link: "ai-integration/generating-embeddings/embeddings-generation-task"
+       source: "docs"
+       path: "AI Integration > Generating Embeddings"
+     - title: "Generating Embeddings - overview"
+       link: "ai-integration/generating-embeddings/overview"
+       source: "docs"
+       path: "AI Integration > Generating Embeddings"
+     - title: "The Embedding Collections"
+       link: "ai-integration/generating-embeddings/embedding-collections"
+       source: "docs"
+       path: "AI Integration > Generating Embeddings"
+     - title: "Connection strings - overview"
+       link: "ai-integration/connection-strings/overview"
+       source: "docs"
+       path: "AI Integration > Connection Strings"
+---
+
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+import ChunkingAndContextPrefixesCsharp from './content/_chunking-and-context-prefixes-csharp.mdx';
+import ChunkingAndContextPrefixesJava from './content/_chunking-and-context-prefixes-java.mdx';
+import ChunkingAndContextPrefixesNodejs from './content/_chunking-and-context-prefixes-nodejs.mdx';
+import ChunkingAndContextPrefixesPython from './content/_chunking-and-context-prefixes-python.mdx';
+
+
+<LanguageSwitcher supportedLanguages={frontMatter.supported_languages} />
+
+<LanguageContent language="csharp">
+   <ChunkingAndContextPrefixesCsharp />
+</LanguageContent>
+
+<LanguageContent language="java">
+   <ChunkingAndContextPrefixesJava />
+</LanguageContent>
+
+<LanguageContent language="nodejs">
+   <ChunkingAndContextPrefixesNodejs />
+</LanguageContent>
+
+<LanguageContent language="python">
+   <ChunkingAndContextPrefixesPython />
+</LanguageContent>

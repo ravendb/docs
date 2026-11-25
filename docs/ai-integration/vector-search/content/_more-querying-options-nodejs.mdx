@@ -1,0 +1,916 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+import ContentFrame from '@site/src/components/ContentFrame';
+
+<Admonition type="note" title="">
+
+* This article explains how to:
+
+  * Use exact search.
+  * Combine vector search with regular filters.
+  * Combine multiple vector search clauses.
+  * Retrieve the matching chunk text of returned documents.
+
+* The examples cover both [dynamic queries](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx)
+  and [queries against static indexes](../../../ai-integration/vector-search/vector-search-using-static-index.mdx).
+
+---
+
+* In this article:
+  * [Exact search](#exact-search)
+    * [Dynamic query](#exact-search-dynamic-query)
+    * [Static index query](#exact-search-static-index-query)
+  * [Combining vector search with other `where` conditions](#combining-vector-search-with-other-where-conditions)
+    * [Dynamic query](#regular-filters-dynamic-query)
+    * [Static index query](#regular-filters-static-index-query)
+    * [How filtered vector search works](#how-filtered-vector-search-works)   
+  * [Combining multiple vector searches](#combining-multiple-vector-searches)   
+    * [Dynamic query](#multiple-vector-searches-dynamic-query)
+    * [Static index query](#multiple-vector-searches-static-index-query)
+  * [Retrieving matching chunk text](#retrieving-matching-chunk-text)
+    * [Dynamic query](#chunk-text-dynamic-query)
+    * [Static index query](#chunk-text-static-index-query)
+    * [Reading the fragments](#reading-the-fragments)
+    * [Fragment behavior](#fragment-behavior)
+    * [Supported queries and limitations](#supported-queries-and-limitations)
+
+</Admonition>
+
+<Panel heading="Exact search">
+
+* By default, vector searches use the **Approximate Nearest-Neighbor (ANN)** method,  
+  which uses the HNSW graph to find similar vectors efficiently.  
+
+* You can explicitly request **exact search** to scan the relevant vectors and find the actual closest matches.  
+  This provides greater accuracy at a higher computational cost.  
+
+* To request exact search, set `isExact: true` in the Client API,  
+  or wrap `vector.search(...)` with `exact(...)` in RQL.  
+  Exact search supports both text and numerical content.  
+
+* Learn about the accuracy and performance tradeoffs in
+  [What affects vector search results](../../../ai-integration/vector-search/what-affects-vector-search-results.mdx#using-exact-search).
+
+<ContentFrame>
+    
+### Dynamic query {/* #exact-search-dynamic-query */}    
+
+The following example performs an exact search on the `Name` field of Product documents.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+const similarProducts = await session.query({ collection: "Products" })
+    .vectorSearch(
+        field => field.withText("Name"),
+        searchTerm => searchTerm.byText("italian food"),
+        // Optionally, set the 'isExact' param to true to perform an Exact search
+        {
+            isExact: true
+        })
+    .waitForNonStaleResults()
+    .all();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const similarProducts = await session.advanced
+    .rawQuery(`
+        from 'Products'
+        // Wrap the query with the 'exact()' method
+        where exact(vector.search(embedding.text(Name), $searchTerm))`)
+    .addParameter("searchTerm", "italian food")
+    .waitForNonStaleResults()
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Products"
+// Wrap the vector.search query with the 'exact()' method
+where exact(vector.search(embedding.text(Name), "italian food"))
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Static index query {/* #exact-search-static-index-query */}
+
+* The following example performs an exact search on the `vectorFromText` field of the `Products/ByVector/Text` index.
+  The complete index definition is available in [Indexing raw text](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-raw-text).  
+    
+* Results include Product documents whose `Name` is similar to `"italian food"`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+const similarProducts = await session
+    .query({ index: Products_ByVector_Text })
+    .vectorSearch(
+        field => field.withField("vectorFromText"),
+        searchTerm => searchTerm.byText("italian food"),
+        // Optionally, set the 'isExact' param to true to perform an Exact search
+        {
+            isExact: true
+        })
+    .waitForNonStaleResults()
+    .all();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const similarProducts = await session.advanced
+    .rawQuery(`
+        from index 'Products/ByVector/Text'
+        // Wrap the query with the 'exact()' method
+        where exact(vector.search(vectorFromText, $searchTerm))`)
+    .addParameter("searchTerm", "italian food")
+    .waitForNonStaleResults()
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Products/ByVector/Text"
+// Wrap the vector.search query with the 'exact()' method
+where exact(vector.search(vectorFromText, "italian food"))
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+</Panel>
+
+<Panel heading="Combining vector search with other `where` conditions">
+
+You can perform a vector search and a regular search in the same query.  
+
+<ContentFrame>
+
+### Dynamic query {/* #regular-filters-dynamic-query */}
+
+* A single auto-index will be created for both search predicates.
+
+* Results include Product documents whose `Name` is similar to `"italian food"` **AND** whose `PricePerUnit` is greater than `35`.
+  The following auto-index will be generated:  
+  `Auto/Products/ByPricePerUnitAndVector.search(embedding.text(Name))`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+const similarProducts = await session.query({ collection: "Products" })
+    // Perform a filtering condition:
+    .whereGreaterThan("PricePerUnit", 35)
+    // Perform a vector search:
+    .vectorSearch(
+        field => field.withText("Name"),
+        searchTerm => searchTerm.byText("italian food"),
+        {
+            similarity: 0.75,
+            numberOfCandidates: 16
+        })
+    .waitForNonStaleResults()
+    .all();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const similarProducts = await session.advanced
+    .rawQuery(`
+        from 'Products'
+        where (PricePerUnit > $minPrice)
+        and (vector.search(embedding.text(Name), $searchTerm, 0.75, 16))`)
+    .addParameter("minPrice", 35.0)
+    .addParameter("searchTerm", "italian food")
+    .waitForNonStaleResults()
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Products"
+// The filtering condition:
+where (PricePerUnit > $minPrice)
+and (vector.search(embedding.text(Name), $searchTerm, 0.75, 16))
+{ "minPrice" : 35.0, "searchTerm" : "italian food" }
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Static index query {/* #regular-filters-static-index-query */}
+
+* The following example queries the `Products/ByMultipleFields` index defined in
+  [Indexing multiple field types](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-multiple-field-types).  
+  It combines a vector search on `vectorFromText` with a regular filter on `pricePerUnit`.
+    
+* Results include Product documents whose `Name` is similar to `"italian food"` **AND** whose `PricePerUnit` is greater than `35`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+const similarProducts = await session
+    .query({ index: Products_ByMultipleFields })
+    // Perform a filtering condition:
+    .whereGreaterThan("pricePerUnit", 35)
+    // Perform a vector search:
+    .vectorSearch(
+        field => field.withField("vectorFromText"),
+        searchTerm => searchTerm.byText("italian food"),
+        {
+            similarity: 0.75,
+            numberOfCandidates: 16
+        })
+    .waitForNonStaleResults()
+    .all();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const similarProducts = await session.advanced
+    .rawQuery(`
+        from index 'Products/ByMultipleFields'
+        where (pricePerUnit > $minPrice)
+        and (vector.search(vectorFromText, $searchTerm, 0.75, 16))`)
+    .addParameter("minPrice", 35.0)
+    .addParameter("searchTerm", "italian food")
+    .waitForNonStaleResults()
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Products/ByMultipleFields"
+// The filtering condition:
+where (pricePerUnit > $minPrice)
+and (vector.search(vectorFromText, $searchTerm, 0.75, 16))
+{ "minPrice" : 35.0, "searchTerm" : "italian food" }
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+<Admonition type="note" title="">
+    
+### How filtered vector search works    
+
+When a vector search query is combined with a filtering condition using **AND** (e.g., `where vector.search(...) and PricePerUnit > 35`),
+RavenDB integrates the filter into the vector search process rather than running the vector search independently and discarding non-matching results afterward.  
+
+**Internal Strategies**   
+RavenDB first evaluates the filter to determine how many documents match and then dynamically selects a strategy:    
+    
+* **Exact search over filtered documents:**  
+  This mode is triggered when any of the following conditions is true:    
+    
+  * The filter match count is **below** the scanning threshold (default: `1024`). Can be customized via the  
+    [Indexing.Corax.VectorSearch.VectorSearchScanningThreshold](../../../ai-integration/vector-search/configuration.mdx#indexingcoraxvectorsearchvectorsearchscanningthreshold) configuration key.
+  * An [Exact search](#exact-search) is explicitly requested.  
+  * The requested _number of candidates_ exceeds half the filter match count.  
+    Learn about the `numberOfCandidates` parameter in [The query parameters](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#the-dynamic-query-parameters).
+    
+  In this mode, an exact search is performed over **only** the documents that match the filter.   
+
+* **Approximate search:**  
+  When none of the conditions above apply, RavenDB uses approximate HNSW graph traversal to find the nearest vectors to the search term.
+  The filter is applied to the documents associated with the candidate vectors.  
+    
+  If fewer than the requested _number of candidates_ have matching documents,
+  RavenDB repeats the HNSW search with a larger internal candidate count while its search limits allow.  
+    
+  This process attempts to retrieve additional candidates that satisfy both the similarity requirement and the filter.  
+  The number of matching candidates returned can still be lower than requested because of the similarity threshold or internal search limits.
+    
+  Note:    
+  Re-search rounds are efficient because RavenDB caches the HNSW graph's internal state (including previously computed results), 
+  avoiding redundant distance calculations for previously visited nodes.    
+    
+</Admonition>
+
+</Panel>
+
+<Panel heading="Combining multiple vector searches">
+
+You can combine multiple vector search statements in the same query using logical operators.  
+This is useful when you want to retrieve documents that match more than one vector-based criterion.
+
+<ContentFrame>
+
+### Dynamic query {/* #multiple-vector-searches-dynamic-query */}    
+
+* The following query uses semantic similarity comparisons and returns companies in either of these cases:  
+  * `Name` is similar to `"snack"` **AND** `Address.Country` is similar to `"europe"`.
+  * `Name` is similar to `"dairy"`.
+
+* Running the query example on the RavenDB sample data will generate the following auto-index:  
+  `Auto/Companies/ByVector.search(embedding.text(Address.Country))AndVector.search(embedding.text(Name))`.  
+  This index includes two vector fields: `Address.Country` and `Name`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+const companies = await session.query({ collection: "Companies" })
+    // Use openSubclause & closeSubclause to differentiate between clauses:
+    // ====================================================================
+
+    .openSubclause()
+    .vectorSearch( // Search for companies that sell snacks or similar
+        field => field.withText("Name"),
+        searchTerm => searchTerm.byText("snack"),
+        {
+            similarity: 0.78
+        }
+    )
+     // Use 'andAlso' for an AND operation
+    .andAlso()
+    .vectorSearch( // Compare the country name with 'europe'
+        field => field.withText("Address.Country"),
+        searchTerm => searchTerm.byText("europe"),
+        {
+            similarity: 0.82
+        }
+    )
+    .closeSubclause()
+     // Use 'orElse' for an OR operation
+    .orElse()
+    .openSubclause()
+    .vectorSearch( // Search for companies that sell dairy products or similar
+        field => field.withText("Name"),
+        searchTerm => searchTerm.byText("dairy"),
+        {
+            similarity: 0.80
+        }
+    )
+    .closeSubclause()
+    .waitForNonStaleResults()
+    .all();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const companies = await session.advanced
+    .rawQuery(`
+        from Companies
+        where
+            (
+                vector.search(embedding.text(Name), $searchTerm1, 0.78)
+                and
+                vector.search(embedding.text(Address.Country), $searchTerm2, 0.82)
+            )
+            or
+            (
+                vector.search(embedding.text(Name), $searchTerm3, 0.80)
+            )
+    `)
+    .addParameter("searchTerm1", "snack")
+    .addParameter("searchTerm2", "europe")
+    .addParameter("searchTerm3", "dairy")
+    .waitForNonStaleResults()
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Companies"
+where
+(
+  vector.search(embedding.text(Name), $searchTerm1, 0.78)
+  and
+  vector.search(embedding.text(Address.Country), $searchTerm2, 0.82)
+)
+or
+(
+  vector.search(embedding.text(Name), $searchTerm3, 0.80)
+)
+{"searchTerm1" : "snack", "searchTerm2" : "europe", "searchTerm3" : "dairy"}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Static index query {/* #multiple-vector-searches-static-index-query */}
+
+* The following example queries the `Products/ByVector/Text` index defined in
+  [Indexing raw text](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-raw-text).  
+  It runs two vector searches on the same `vectorFromText` field and combines them using **OR**.
+    
+* Results include Product documents whose `Name` is similar to `"italian food"` **OR** `"seafood"`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+const similarProducts = await session
+    .query({ index: Products_ByVector_Text })
+    .vectorSearch(
+        field => field.withField("vectorFromText"),
+        searchTerm => searchTerm.byText("italian food"),
+        {
+            similarity: 0.80
+        }
+    )
+     // Use 'orElse' for an OR operation
+    .orElse()
+    .vectorSearch(
+        field => field.withField("vectorFromText"),
+        searchTerm => searchTerm.byText("seafood"),
+        {
+            similarity: 0.80
+        }
+    )
+    .waitForNonStaleResults()
+    .all();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+const similarProducts = await session.advanced
+    .rawQuery(`
+        from index 'Products/ByVector/Text'
+        where vector.search(vectorFromText, $searchTerm1, 0.80)
+        or vector.search(vectorFromText, $searchTerm2, 0.80)`)
+    .addParameter("searchTerm1", "italian food")
+    .addParameter("searchTerm2", "seafood")
+    .waitForNonStaleResults()
+    .all();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Products/ByVector/Text"
+where vector.search(vectorFromText, $searchTerm1, 0.80)
+or vector.search(vectorFromText, $searchTerm2, 0.80)
+{"searchTerm1" : "italian food", "searchTerm2" : "seafood"}
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+
+<Admonition type="info" title="">
+
+**How multiple vector search clauses are evaluated**:
+
+* The logical operators determine how matches are combined:  
+  * **OR** combines the results of separately evaluated vector searches.  
+    A document can match either clause.  
+  * **AND** requires a document to match every clause.  
+    RavenDB can use the matches from one vector clause as a filter for another.  
+
+* The `numberOfCandidates` parameter limits the number of matching vectors returned **per query vector**  
+  in each clause.
+  * A clause has **several query vectors** when you pass multiple search terms with `byTexts`,  
+    or when the embeddings generation task splits the search term into chunks.  
+    RavenDB runs a separate search for each query vector and merges the results.
+  * You can set `numberOfCandidates` separately for each clause; see [query parameters](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#the-dynamic-query-parameters).  
+  * If omitted, the value comes from [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../../ai-integration/vector-search/configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforquerying) (default: `16`).  
+
+* Increasing the _number of candidates_ expands the candidate pool and can help combined queries find more matches,
+  at the cost of additional search work.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Retrieving matching chunk text">
+
+* When an [embeddings generation task](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx) splits a long text field into chunks,
+  a vector search returns the documents that match the search term. By default, the matching chunk text is not included.
+
+* If the task stores the text of each chunk, you can also retrieve the matching chunks of each returned document
+  using the [highlighting](../../../client-api/session/querying/text-search/highlight-query-results.mdx) API.
+  The matching chunks are returned as highlight fragments, nearest to the search term first.
+
+* **Prerequisites**:  
+    
+  * The searched field must be one that an embeddings generation task generates embeddings for,  
+    and the query must provide the search term as **text**.  
+    See [Supported queries and limitations](#supported-queries-and-limitations).
+    
+  * The task must have its `storeChunkText` option enabled.  
+    This option is off by default and applies only to documents the task processes after it is enabled.  
+    It cannot currently be set in the Studio; set it through the Client API.  
+    Learn how to enable it and how to reprocess existing documents in
+    [Store chunk text](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#store-chunk-text).
+    
+  * Wait for the task to finish processing the relevant documents, including any requested reprocessing.  
+    Monitor the embeddings generation task's progress in the [Studio's AI Tasks view](../../../ai-integration/ai-tasks-list-view.mdx) and wait until it is up to date, including after reprocessing existing documents.
+    `waitForNonStaleResults` in the examples waits for indexing; it does not wait for the embeddings generation task to finish.
+    
+  * The index must store the vectors in the same quantization format as the task.  
+    See [Supported queries and limitations](#supported-queries-and-limitations) for details.
+
+* The examples below use the task defined in
+  [this example](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#store-chunk-text).  
+  The task generates embeddings from the `Notes` field of _Employee_ documents and stores the text of each chunk.
+
+<ContentFrame>
+
+### Dynamic query {/* #chunk-text-dynamic-query */}
+
+* The following example searches for _Employee_ documents whose `Notes` are similar to the search term  
+  `"speaks foreign languages"`, and retrieves the matching chunks of each returned document.
+
+* Specify the task with `usingTask` (`ai.task` in RQL),  
+  and call `highlight` on the **document field** that the vector search queries (`Notes`).
+
+* Because the query highlights `Notes`, the auto-index created for it also includes `Notes` as a full-text field with highlighting enabled.
+  Running the example creates the following auto-index:  
+  `Auto/Employees/BySearch(Notes)AndHighlight(Notes)AndVector.search(embedding.text(Notes|ai.task('id-for-task-employee-notes')))`  
+  The chunk fragments are read from the embeddings documents, not from this full-text field.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+// The highlighting results
+let notesHighlights;
+
+const employees = await session.query({ collection: "Employees" })
+    .vectorSearch(
+        field => field
+            .withText("Notes")
+            // Specify the task that generated the embeddings for 'Notes'
+            .usingTask("id-for-task-employee-notes"),
+        searchTerm => searchTerm.byText("speaks foreign languages"),
+        // Recommended: chunks below this similarity are not returned
+        {
+            similarity: 0.75
+        })
+    // Call 'highlight' on the document field that the vector search queries
+    .highlight({
+        fieldName: "Notes",
+        // Max length of each fragment (longer chunk text is cut off)
+        fragmentLength: 500,
+        // Max number of chunks to return per document
+        fragmentCount: 3
+    }, x => { notesHighlights = x; })
+    .waitForNonStaleResults()
+    .all();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+// The highlighting results of the raw query
+let highlightings;
+
+const employees = await session.advanced
+    .rawQuery(`
+        from 'Employees'
+        where vector.search(
+            embedding.text(Notes, ai.task('id-for-task-employee-notes')),
+            $searchTerm,
+            0.75)
+        // Highlight the document field that the vector search queries
+        include highlight(Notes, 500, 3)`)
+    .addParameter("searchTerm", "speaks foreign languages")
+    // Read the highlighting results from the raw query result
+    .on("afterQueryExecuted", result => { highlightings = result.highlightings; })
+    .waitForNonStaleResults()
+    .all();
+
+// Look up "Notes" and then the document ID with optional chaining.
+// See "Reading the fragments" below for safe access.
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from "Employees"
+// Specify the task that generated the embeddings inside 'ai.task'
+where vector.search(
+    embedding.text(Notes, ai.task('id-for-task-employee-notes')),
+    $searchTerm,
+    0.75)
+// Highlight the document field that the vector search queries
+include highlight(Notes, 500, 3)
+{ "searchTerm" : "speaks foreign languages" }
+```
+</TabItem>
+</Tabs>
+
+* To read the returned chunks, see [Reading the fragments](#reading-the-fragments) below.
+
+</ContentFrame>
+<ContentFrame>
+
+### Static index query {/* #chunk-text-static-index-query */}
+
+* The following index uses `loadVector` to index the embeddings that the task generated for the `Notes` field.  
+  Learn more in [Indexing text-embeddings generated by tasks](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-text-embeddings-generated-by-tasks---from-current-document).
+
+* The vector field is defined without vector options,
+  so the index stores the embeddings in the same format as the task (see _Quantization_ in [Supported queries and limitations](#supported-queries-and-limitations) below).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="JS_index" label="JS_index">
+```js
+class Employees_ByNotesVector extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        const { loadVector } = this.mapUtils();
+
+        // Index-field 'vectorFromNotes' will hold the embeddings
+        // that the task generated for the 'Notes' field
+        this.map("Employees", employee => {
+            return {
+                // Call 'loadVector' to create a VECTOR FIELD. Pass:
+                // * The document field name (as a string)
+                // * The identifier of the task that generated the embeddings
+                vectorFromNotes: loadVector("Notes", "id-for-task-employee-notes")
+            };
+        });
+
+        // No vector options are set, so the field stores
+        // the embeddings in the format stored by the task
+
+        // The index MUST use the Corax search engine
+        this.searchEngineType = "Corax";
+    }
+}
+```
+</TabItem>
+<TabItem value="IndexDefinition" label="IndexDefinition">
+```js
+const indexDefinition = new IndexDefinition();
+
+indexDefinition.name = "Employees/ByNotesVector";
+
+indexDefinition.maps = new Set([`
+    from employee in docs.Employees
+    select new
+    {
+        vectorFromNotes = LoadVector("Notes", "id-for-task-employee-notes")
+    }`
+]);
+
+indexDefinition.configuration = {
+    "Indexing.Static.SearchEngineType": "Corax"
+};
+
+await store.maintenance.send(new PutIndexesOperation(indexDefinition));
+```
+</TabItem>
+</Tabs>
+
+* When querying the index, call `highlight` on the **index field** that the vector search queries (`vectorFromNotes`),  
+  not on the source document field.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```js
+// The highlighting results
+let notesHighlights;
+
+const employees = await session.query({ index: Employees_ByNotesVector })
+    .vectorSearch(
+        field => field.withField("vectorFromNotes"),
+        searchTerm => searchTerm.byText("speaks foreign languages"),
+        {
+            similarity: 0.75
+        })
+    // Call 'highlight' on the index field that the vector search queries
+    .highlight({
+        fieldName: "vectorFromNotes",
+        // Max length of each fragment (longer chunk text is cut off)
+        fragmentLength: 500,
+        // Max number of chunks to return per document
+        fragmentCount: 3
+    }, x => { notesHighlights = x; })
+    .waitForNonStaleResults()
+    .all();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```js
+// The highlighting results of the raw query
+let highlightings;
+
+const employees = await session.advanced
+    .rawQuery(`
+        from index 'Employees/ByNotesVector'
+        where vector.search(vectorFromNotes, $searchTerm, 0.75)
+        // Highlight the index field that the vector search queries
+        include highlight(vectorFromNotes, 500, 3)`)
+    .addParameter("searchTerm", "speaks foreign languages")
+    // Read the highlighting results from the raw query result
+    .on("afterQueryExecuted", result => { highlightings = result.highlightings; })
+    .waitForNonStaleResults()
+    .all();
+
+// Look up "vectorFromNotes" and then the document ID with optional chaining.
+// See "Reading the fragments" below for safe access.
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Employees/ByNotesVector"
+where vector.search(vectorFromNotes, $searchTerm, 0.75)
+// Highlight the index field that the vector search queries
+include highlight(vectorFromNotes, 500, 3)
+{ "searchTerm" : "speaks foreign languages" }
+```
+</TabItem>
+</Tabs>
+
+</ContentFrame>
+<ContentFrame>
+
+### Reading the fragments
+
+* For the `Query` examples above -  
+  call `notesHighlights.getFragments(documentId)` to read a document's matching chunks.
+* For the `RawQuery` examples above -  
+  read the `highlightings` object captured in the `afterQueryExecuted` event.
+
+* Learn more about the `Highlightings` object in [Highlight search results](../../../client-api/session/querying/text-search/highlight-query-results.mdx#syntax).
+
+    <Tabs groupId='fragmentReading'>
+    <TabItem value="Highlight" label="Query">
+
+    `getFragments` returns the matching chunks nearest to the search term first.  
+    A document with no matching chunk text returns an empty array.
+
+    ```js
+    for (const employee of employees) {
+        // The matching chunks of this employee's notes, nearest first
+        const fragments = notesHighlights.getFragments(employee.id);
+    
+        for (const fragment of fragments) {
+            console.log(`${employee.id}: ${fragment}`);
+        }
+    }
+    ```
+    </TabItem>
+    <TabItem value="RawQuery" label="RawQuery (RQL)">
+
+    A field or document ID can be absent when no fragments were returned.  
+    Use optional chaining (`?.`) to read the entries safely.
+
+    ```js
+    // Use "vectorFromNotes" for the static-index raw-query example.
+    const fieldName = "Notes";
+    
+    for (const employee of employees) {
+        const fragments = highlightings?.[fieldName]?.[employee.id];
+        if (!fragments) {
+            continue;
+        }
+    
+        for (const fragment of fragments) {
+            console.log(`${employee.id}: ${fragment}`);
+        }
+    }
+    ```
+    </TabItem>
+    </Tabs>
+
+* The fragments are returned in the `Highlightings` section of the query result,
+  keyed by the highlighted field name (`Notes` in the dynamic-query example, `vectorFromNotes` in the static-index example), and then by document ID.
+  Each document ID maps to an array of chunk texts, nearest to the search term first:
+
+    ```json
+    "Highlightings": {
+        "Notes": {
+            "employees/2-A": [
+                "<text of the matching chunk nearest to the search term>",
+                "<text of the next matching chunk>"
+            ],
+            "employees/5-A": [
+                "<text of the matching chunk>"
+            ]
+        }
+    }
+    ```
+
+* In the Studio, run the RQL query in the [Query view](../../../studio/database/queries/query-view.mdx)  
+  and open the [Highlight tab](../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight-results-in-studio) to see the returned chunks.
+
+</ContentFrame>
+
+<Admonition type="note" title="">
+
+### Fragment behavior
+
+* **Which chunks are returned**:  
+  RavenDB compares each stored chunk of a returned document with the search term.  
+  A chunk is returned if its similarity to the search term is at or above the query's `similarity`,  
+  see [Query-time parameters](../../../ai-integration/vector-search/what-affects-vector-search-results.mdx#query-time-parameters).  
+
+  The default minimum similarity is `0`, so unless you set `similarity`,  
+  every stored chunk of a returned document qualifies.
+
+* **Order and number of chunks**:  
+  In the query results, the first element of each document's fragments array contains the chunk most similar to the search term.
+  The remaining chunks follow in decreasing order of similarity.  
+
+  `fragmentCount` ([Highlight syntax](../../../client-api/session/querying/text-search/highlight-query-results.mdx#syntax)) sets the maximum number of chunks returned per document.  
+  Set it to `0` to return all qualifying chunks.
+
+* **Fragment length**:  
+  `fragmentLength` ([Highlight syntax](../../../client-api/session/querying/text-search/highlight-query-results.mdx#syntax)) limits each fragment to that many characters from the beginning of the chunk;
+  longer chunk text is cut off. Set it to `0` to return the full chunk text.  
+  Unlike full-text highlighting, the fragment is not built around a matched term.
+
+* **Context prefix**:  
+  The stored text is the text that was sent to the embedding model,
+  so it starts with the chunk's [context prefix](../../../ai-integration/generating-embeddings/chunking-and-context-prefixes.mdx#adding-a-context-prefix-to-chunks),  
+  if one is defined. The prefix counts toward `fragmentLength`.
+
+* **No highlight tags**:  
+  Chunk fragments are returned as plain text.  
+  The `preTags` and `postTags` [highlighting options](../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---customize-tags) don't apply to them.
+
+* **Exact and approximate search**:  
+  The stored chunks of each returned document are compared with the search term directly,  
+  whether the query uses [exact search](#exact-search) or the default approximate search.
+
+* **Vector search with additional `where` conditions**:  
+  Chunks are retrieved for each document the query returns,  
+  including when the vector search is [combined with other `where` conditions](#combining-vector-search-with-other-where-conditions).
+
+* **Multiple search terms**:  
+  * When the search term produces several embeddings, each chunk is compared with the search-term embedding nearest to it.
+    For example, when several terms are passed with `byTexts`, or when the task splits a long search term into chunks.
+  * When the query runs [multiple vector searches](#combining-multiple-vector-searches) on the same field using the same task,  
+    the search terms of all these searches are used, and the lowest `similarity` among them applies.
+
+* **Full-text and vector search on the same field**:  
+  When a dynamic query runs both a full-text `search` and a vector search on the same document field and highlights that field:
+
+  * Each returned document's fragments array contains **full-text fragments first**,  
+    followed by the matching chunk fragments.
+  * Only the full-text fragments contain highlight tags.
+  * A positive `fragmentCount` limits each group separately,  
+    so the combined array can contain more than `fragmentCount` fragments.
+  * Setting `fragmentCount` to `0` returns all qualifying chunk fragments, but no full-text fragments.
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+### Supported queries and limitations
+
+* **Supported queries**:  
+  Chunk text is retrieved for vector searches on embeddings generated by an embeddings generation task,  
+  when the search term is provided as text:
+  * Dynamic queries that specify the task with `usingTask`  
+    (`embedding.text(<field>, ai.task('<task-identifier>'))` in RQL).
+  * Queries on static index fields that load the task's embeddings with `loadVector`.
+
+* **Unsupported queries**:  
+  The following vector searches run as usual, but return no chunk fragments:
+  * Searches on raw text without a task (`embedding.text(<field>)` without `ai.task`).
+  * Searches on numerical embeddings stored in your documents,  
+    or on index fields defined with `createVector`.
+  * Searches for similar documents (`embedding.forDoc`).
+
+* **Documents without stored chunk text**:  
+  Documents that the task processed while `storeChunkText` was disabled have no stored chunk text,  
+  so they return no chunk fragments. The query does not fail.
+  [Reprocess](../../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#reprocess-existing-documents) them to store their chunk text.
+
+* **Search engine**:  
+  Like all vector searches, chunk text retrieval requires the [Corax](../../../indexes/search-engine/corax.mdx) search engine.
+
+* **Sharded databases**:  
+  Highlighting is not supported in [sharded databases](../../../sharding/overview.mdx).  
+  Highlighting queries in a sharded database throw a `NotSupportedInShardingException`.
+
+* **Tasks that process several fields**:  
+  The task stores one chunk-text map per document, covering all the fields it processes.  
+  When a task generates embeddings for several fields, highlighting one of them can currently also return matching chunks of the task's other fields.
+  To retrieve chunks of a single field only, generate that field's embeddings with a task that processes only that field.
+
+* **Related documents**:  
+  When a static index uses `loadVector` to index the embeddings of a
+  [related document](../../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-text-embeddings-generated-by-tasks---from-related-document),
+  the chunk text is currently read from the embeddings document of the **returned** document, not of the related document.  
+  If the related document is in a different collection than the returned document, no chunk fragments are returned.  
+  If both are in the same collection, the fragments are taken from the returned document's own chunks,  
+  not from the related document's chunks.
+
+* **Quantization**:  
+  Chunk fragments are currently returned only when the vector field stores the embeddings in the same format as the task.  
+  If the index quantizes the task's embeddings to another format, the query returns results but no chunk fragments.  
+
+  For example, suppose a task stores `Single` embeddings.  
+  Either of these settings makes the index store them as `Int8`:
+
+  * In a dynamic query, use `targetQuantization("Int8")`.
+  * In a static index, set `destinationEmbeddingType: "Int8"` on the vector field.
+
+  In both cases, the formats differ. The query can still return matching documents, but no chunk fragments are returned.
+  See [Quantization and embeddings generation tasks](../../../ai-integration/vector-search/quantization.mdx#quantization-and-embeddings-generation-tasks).
+
+</Admonition>
+
+</Panel>

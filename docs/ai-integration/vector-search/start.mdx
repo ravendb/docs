@@ -23,8 +23,9 @@ import webinarImage from "@site/static/img/webinar.webp";
   * Match images by visual similarity 
 
 * Vector search can be done using:  
-  [Dynamic queries](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx) - suitable for ad-hoc or infrequent searches.  
-  [Querying static-indexes that index vector fields](../../ai-integration/vector-search/vector-search-using-static-index.mdx) - suitable for optimized and repeated searches.  
+  * [Dynamic queries](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx) - query a collection using automatically managed auto-indexes.  
+    RavenDB creates or reuses a matching auto-index.
+  * [Static-index queries](../../ai-integration/vector-search/vector-search-using-static-index.mdx) - define custom indexing logic and configure vector fields explicitly.
     
 * The embeddings used for vector search can be created in several ways:  
   on the fly, via background tasks, or from external sources.  
@@ -101,7 +102,7 @@ and understand how RavenDB automatically generates embeddings to power semantic 
     />
 </ColGrid>
 
-### Related lives & videos
+### Related webinars & videos
 
 <ColGrid colCount={1}>
     <CardWithImageHorizontal

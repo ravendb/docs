@@ -1,0 +1,725 @@
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Panel from '@site/src/components/Panel';
+
+<Admonition type="note" title="">
+
+* This article explains how to index attachments using a **static-index** to enable vector search on their content.  
+  Note: Vector search on attachment content is not available when making a [dynamic query](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx).  
+  
+* **Prior to this article**, refer to the [Vector search using a static index](../../../ai-integration/vector-search/vector-search-using-static-index.mdx) article for general knowledge about  
+  indexing a vector field.
+
+* In this article:
+    * [Overview](#overview)
+    * [Indexing TEXT attachments](#indexing-text-attachments)
+    * [Indexing NUMERICAL attachments](#indexing-numerical-attachments)
+      * [LINQ index](#linq-index)
+      * [JS index](#js-index)
+    * [Indexing ALL attachments](#indexing-all-attachments)
+
+</Admonition>
+
+<Panel heading="Overview">
+
+<Admonition type="note" title="">
+
+### Attachments in RavenDB
+    
+---    
+
+* Attachments in RavenDB allow you to associate binary files with your JSON documents.  
+  You can use attachments to store images, PDFs, videos, text files, or any other format.  
+
+* Attachments are stored separately from documents, reducing document size and avoiding unnecessary duplication.
+  They are stored as **binary data**, regardless of content type.
+
+* Attachments are handled as streams, allowing efficient upload and retrieval.  
+  Learn more in: [Attachments overview](../../../document-extensions/attachments/overview.mdx).
+
+</Admonition>
+
+<Admonition type="note" title="">
+
+### Indexing attachment content for vector search
+    
+---    
+
+You can index attachment content in a vector field within a static-index,    
+enabling vector search on text or numerical data that is stored in the attachments.
+
+Only **local attachments** can have their content indexed.  
+[Remote attachment](../../../document-extensions/attachments/store-attachments/store-attachments-remote.mdx) content is unavailable during indexing.  
+The examples below skip remote attachments.
+
+* **Attachments with TEXT**:  
+    * During indexing, RavenDB processes the text into a single embedding per attachment using the built-in  
+      [bge-micro-v2](https://huggingface.co/TaylorAI/bge-micro-v2) model.
+
+* **Attachments with NUMERICAL data**:  
+    * While attachments can store any file type, RavenDB does Not generate embeddings from images, videos, or other non-textual content.  
+      Each attachment must contain a **single** precomputed embedding vector, generated externally.  
+    * RavenDB indexes the embedding vector from the attachment and can apply [quantization](../../../ai-integration/vector-search/quantization.mdx)
+      (e.g., index it in _Int8_ format) if this is configured.  
+    * All embeddings indexed within the same vector-field in the static-index must be vectors of the **same dimension** to ensure consistency in indexing and search.
+      They must also be created using the **same model**.
+
+</Admonition>
+
+</Panel>
+
+<Panel heading="Indexing TEXT attachments">
+ 
+* The following index defines a **vector field** named `VectorFromAttachment`.
+
+* It indexes embeddings generated from the text content of the `description.txt` attachment.  
+  This applies to all _Company_ documents that contain an attachment with that name.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+```java
+public class Companies_ByVector_FromTextAttachment extends AbstractIndexCreationTask {
+    public Companies_ByVector_FromTextAttachment() {
+        map = "from company in docs.Companies " +
+
+            // Load the attachment and skip missing or remote attachments
+            "let attachment = LoadAttachment(company, \"description.txt\") " +
+            "where attachment != null && " +
+            "      attachment.RemoteFlags.ToString() == \"None\" " +
+
+            "select new " +
+            "{ " +
+            // Index the text content from the attachment in the vector field
+            "    VectorFromAttachment = " +
+            "        CreateVector(attachment.GetContentAsString(Encoding.UTF8)) " +
+            "}";
+
+        // Configure the vector field:
+        FieldVectorOptions vectorOptions = new FieldVectorOptions();
+
+        // Specify 'Text' as the source format
+        vectorOptions.setSourceEmbeddingType(VectorEmbeddingType.TEXT);
+
+        // Specify the desired destination format within the index
+        vectorOptions.setDestinationEmbeddingType(VectorEmbeddingType.SINGLE);
+
+        vectorOptionsStrings.put("VectorFromAttachment", vectorOptions);
+
+        searchEngineType = SearchEngineType.CORAX;
+    }
+}
+```
+</TabItem>
+<TabItem value="JS_index" label="JS_index">
+```java
+public class Companies_ByVector_FromTextAttachment_JS
+    extends AbstractJavaScriptIndexCreationTask {
+    public Companies_ByVector_FromTextAttachment_JS() {
+        setMaps(Collections.singleton(
+            "map('Companies', function (company) { " +
+
+            "    var attachment = loadAttachment(company, 'description.txt'); " +
+            "    if (!attachment || attachment.RemoteFlags !== 'None') return null; " +
+
+            "    return { " +
+            "        VectorFromAttachment: " +
+            "            createVector(attachment.getContentAsString('utf8')) " +
+            "    }; " +
+            "})"
+        ));
+
+        FieldVectorOptions vectorOptions = new FieldVectorOptions();
+        vectorOptions.setSourceEmbeddingType(VectorEmbeddingType.TEXT);
+        vectorOptions.setDestinationEmbeddingType(VectorEmbeddingType.SINGLE);
+
+        IndexFieldOptions fieldOptions = new IndexFieldOptions();
+        fieldOptions.setVector(vectorOptions);
+        getFields().put("VectorFromAttachment", fieldOptions);
+
+        searchEngineType = SearchEngineType.CORAX;
+    }
+}
+```
+</TabItem>
+<TabItem value="IndexDefinition" label="IndexDefinition">
+```java
+IndexDefinition indexDefinition = new IndexDefinition();
+indexDefinition.setName("Companies/ByVector/FromTextAttachment");
+
+indexDefinition.setMaps(Collections.singleton(
+    "from company in docs.Companies " +
+
+    "let attachment = LoadAttachment(company, \"description.txt\") " +
+    "where attachment != null && attachment.RemoteFlags.ToString() == \"None\" " +
+
+    "select new " +
+    "{ " +
+    "    VectorFromAttachment = " +
+    "        CreateVector(attachment.GetContentAsString(Encoding.UTF8)) " +
+    "}"
+));
+
+FieldVectorOptions vectorOptions = new FieldVectorOptions();
+vectorOptions.setSourceEmbeddingType(VectorEmbeddingType.TEXT);
+vectorOptions.setDestinationEmbeddingType(VectorEmbeddingType.SINGLE);
+
+IndexFieldOptions fieldOptions = new IndexFieldOptions();
+fieldOptions.setVector(vectorOptions);
+indexDefinition.getFields().put("VectorFromAttachment", fieldOptions);
+
+indexDefinition.getConfiguration().put("Indexing.Static.SearchEngineType", "Corax");
+
+store.maintenance().send(new PutIndexesOperation(indexDefinition));
+```
+</TabItem>
+<TabItem value="Storing_text_attachments" label="Storing_text_attachments">
+```java
+// Prepare text as `byte[]` to be stored as attachments:
+// =====================================================
+byte[] byteArray1 = (
+    "Supplies soft drinks, fruit juices, and flavored syrups " +
+    "to restaurants and retailers.").getBytes(StandardCharsets.UTF_8);
+byte[] byteArray2 = (
+    "Supplies fine dining restaurants with premium meats, " +
+    "cheeses, and wines across France.").getBytes(StandardCharsets.UTF_8);
+byte[] byteArray3 = (
+    "An American grocery chain known for its fresh produce, " +
+    "organic foods, and local meats.").getBytes(StandardCharsets.UTF_8);
+byte[] byteArray4 = (
+    "An Asian grocery store specializing in ingredients " +
+    "for Japanese and Thai cuisine.").getBytes(StandardCharsets.UTF_8);
+byte[] byteArray5 = (
+    "A rural general store offering homemade jams, " +
+    "fresh-baked bread, and locally crafted gifts.").getBytes(StandardCharsets.UTF_8);
+
+try (IDocumentSession session = store.openSession()) {
+    // Load existing Company documents from RavenDB's sample data:
+    // ===========================================================
+    Company company1 = session.load(Company.class, "companies/11-A");
+    Company company2 = session.load(Company.class, "companies/26-A");
+    Company company3 = session.load(Company.class, "companies/32-A");
+    Company company4 = session.load(Company.class, "companies/41-A");
+    Company company5 = session.load(Company.class, "companies/43-A");
+
+    // Store the attachments in the documents (using ByteArrayInputStream):
+    // ====================================================================
+    session.advanced().attachments().store(company1, "description.txt",
+        new ByteArrayInputStream(byteArray1), "text/plain");
+    session.advanced().attachments().store(company2, "description.txt",
+        new ByteArrayInputStream(byteArray2), "text/plain");
+    session.advanced().attachments().store(company3, "description.txt",
+        new ByteArrayInputStream(byteArray3), "text/plain");
+    session.advanced().attachments().store(company4, "description.txt",
+        new ByteArrayInputStream(byteArray4), "text/plain");
+    session.advanced().attachments().store(company5, "description.txt",
+        new ByteArrayInputStream(byteArray5), "text/plain");
+
+    session.saveChanges();
+}
+```
+</TabItem>
+</Tabs>
+
+Execute a vector search using the index:  
+Results will include _Company_ documents whose attachment contains text similar to `"chinese food"`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+List<Company> relevantCompanies = session
+    .query(Company.class, Companies_ByVector_FromTextAttachment.class)
+    .vectorSearch(
+        field -> field
+            .withField("VectorFromAttachment"),
+        searchTerm -> searchTerm
+            .byText("chinese food"), 0.8f, null, null)
+    .waitForNonStaleResults()
+    .toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Company> relevantCompanies = session.advanced()
+    .rawQuery(Company.class,
+        "from index 'Companies/ByVector/FromTextAttachment' " +
+        "where vector.search(VectorFromAttachment, $searchTerm, 0.8)")
+    .addParameter("searchTerm", "chinese food")
+    .waitForNonStaleResults()
+    .toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Companies/ByVector/FromTextAttachment"
+where vector.search(VectorFromAttachment, $searchTerm, 0.8)
+{ "searchTerm" : "chinese food" }
+```
+</TabItem>
+</Tabs>
+
+You can now extract the text from the attachments of the resulting documents:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="extract_attachment_content" label="extract_attachment_content">
+```java
+// Extract text from the attachment of the first resulting document, if any
+Company company = relevantCompanies.stream().findFirst().orElse(null);
+if (company != null) {
+    try (CloseableAttachmentResult attachmentResult =
+             session.advanced().attachments().get(company, "description.txt")) {
+        if (attachmentResult != null) {
+            // Decode the attachment content as UTF-8 text
+            String attachmentText = IOUtils.toString(
+                attachmentResult.getData(), StandardCharsets.UTF_8);
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+</Panel>
+
+<Panel heading="Indexing NUMERICAL attachments">
+
+### LINQ index
+
+* The following index defines a **vector field** named `VectorFromAttachment`.  
+
+* It indexes the precomputed embedding vector stored in the `vector.raw` attachment.  
+  This applies to all _Company_ documents that contain an attachment with that name.
+
+* Each attachment contains raw numerical data in 32-bit floating-point format.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+```java
+public class Companies_ByVector_FromNumericalAttachment
+    extends AbstractIndexCreationTask {
+    public Companies_ByVector_FromNumericalAttachment() {
+        map = "from company in docs.Companies " +
+
+            // Load the attachment and skip missing or remote attachments
+            "let attachment = LoadAttachment(company, \"vector.raw\") " +
+            "where attachment != null && " +
+            "      attachment.RemoteFlags.ToString() == \"None\" " +
+
+            "select new " +
+            "{ " +
+            // Index the attachment's content in the vector field
+            "    VectorFromAttachment = " +
+            "        CreateVector(attachment.GetContentAsStream()) " +
+            "}";
+
+        // Configure the vector field:
+        FieldVectorOptions vectorOptions = new FieldVectorOptions();
+
+        // Define the source embedding type
+        vectorOptions.setSourceEmbeddingType(VectorEmbeddingType.SINGLE);
+
+        // Define the desired destination format within the index
+        vectorOptions.setDestinationEmbeddingType(VectorEmbeddingType.SINGLE);
+
+        vectorOptionsStrings.put("VectorFromAttachment", vectorOptions);
+
+        searchEngineType = SearchEngineType.CORAX;
+    }
+}
+```
+</TabItem>
+<TabItem value="IndexDefinition" label="IndexDefinition">
+```java
+IndexDefinition indexDefinition = new IndexDefinition();
+indexDefinition.setName("Companies/ByVector/FromNumericalAttachment");
+
+indexDefinition.setMaps(Collections.singleton(
+    "from company in docs.Companies " +
+
+    "let attachment = LoadAttachment(company, \"vector.raw\") " +
+    "where attachment != null && attachment.RemoteFlags.ToString() == \"None\" " +
+
+    "select new " +
+    "{ " +
+    "    VectorFromAttachment = CreateVector(attachment.GetContentAsStream()) " +
+    "}"
+));
+
+FieldVectorOptions vectorOptions = new FieldVectorOptions();
+vectorOptions.setSourceEmbeddingType(VectorEmbeddingType.SINGLE);
+vectorOptions.setDestinationEmbeddingType(VectorEmbeddingType.SINGLE);
+
+IndexFieldOptions fieldOptions = new IndexFieldOptions();
+fieldOptions.setVector(vectorOptions);
+indexDefinition.getFields().put("VectorFromAttachment", fieldOptions);
+
+indexDefinition.getConfiguration().put("Indexing.Static.SearchEngineType", "Corax");
+
+store.maintenance().send(new PutIndexesOperation(indexDefinition));
+```
+</TabItem>
+<TabItem value="Storing_numerical_attachments" label="Storing_numerical_attachments">
+```java
+// These vectors are simple precomputed embedding vectors
+// with 32-bit floating-point values.
+// Note: In a real scenario, embeddings would be generated by a model.
+// ===================================================================
+float[] v1 = new float[] { 0.1f, 0.2f, 0.3f, 0.4f };
+float[] v2 = new float[] { 0.1f, 0.7f, 0.8f, 0.9f };
+float[] v3 = new float[] { 0.5f, 0.6f, 0.7f, 0.8f };
+
+// Prepare the embedding vectors as `byte[]` to be stored as attachments:
+// =====================================================================
+byte[] byteArray1 = new byte[v1.length * Float.BYTES];
+byte[] byteArray2 = new byte[v2.length * Float.BYTES];
+byte[] byteArray3 = new byte[v3.length * Float.BYTES];
+
+// Write the floats in little-endian byte order, as RavenDB expects
+ByteBuffer.wrap(byteArray1).order(ByteOrder.LITTLE_ENDIAN).asFloatBuffer().put(v1);
+ByteBuffer.wrap(byteArray2).order(ByteOrder.LITTLE_ENDIAN).asFloatBuffer().put(v2);
+ByteBuffer.wrap(byteArray3).order(ByteOrder.LITTLE_ENDIAN).asFloatBuffer().put(v3);
+
+try (IDocumentSession session = store.openSession()) {
+    // Load existing Company documents from RavenDB's sample data:
+    // ===========================================================
+    Company company1 = session.load(Company.class, "companies/50-A");
+    Company company2 = session.load(Company.class, "companies/51-A");
+    Company company3 = session.load(Company.class, "companies/52-A");
+
+    // Store the attachments in the documents (using ByteArrayInputStream):
+    // ====================================================================
+    session.advanced().attachments().store(company1, "vector.raw",
+        new ByteArrayInputStream(byteArray1));
+    session.advanced().attachments().store(company2, "vector.raw",
+        new ByteArrayInputStream(byteArray2));
+    session.advanced().attachments().store(company3, "vector.raw",
+        new ByteArrayInputStream(byteArray3));
+
+    session.saveChanges();
+}
+```
+</TabItem>
+</Tabs>
+
+Execute a vector search using the index:  
+Results will include _Company_ documents whose attachment contains vectors similar to the query vector.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+List<Company> similarCompanies = session
+    .query(Company.class, Companies_ByVector_FromNumericalAttachment.class)
+    .vectorSearch(
+        field -> field
+            .withField("VectorFromAttachment"),
+        queryVector -> queryVector
+            .byEmbedding(new Float[] { 0.1f, 0.2f, 0.3f, 0.4f }))
+    .waitForNonStaleResults()
+    .toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Company> similarCompanies = session.advanced()
+    .rawQuery(Company.class,
+        "from index 'Companies/ByVector/FromNumericalAttachment' " +
+        "where vector.search(VectorFromAttachment, $queryVector)")
+    .addParameter("queryVector", new float[] { 0.1f, 0.2f, 0.3f, 0.4f })
+    .waitForNonStaleResults()
+    .toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Companies/ByVector/FromNumericalAttachment"
+where vector.search(VectorFromAttachment, $queryVector)
+{ "queryVector" : [0.1, 0.2, 0.3, 0.4] }
+```
+</TabItem>
+</Tabs>
+
+---    
+    
+### JS index
+
+* The following is the JavaScript index format equivalent to the [LINQ index](#linq-index) shown above.
+
+* The main difference is that JavaScript indexes do Not support `getContentAsStream()` on attachment objects:
+  * Because of this, embedding vectors must be stored in attachments as **Base64-encoded strings**.  
+  * Use `getContentAsString()` to retrieve the attachment content as a string, as shown in this example.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="JS_index" label="JS_index">
+```java
+public class Companies_ByVector_FromNumericalAttachment_JS
+    extends AbstractJavaScriptIndexCreationTask {
+    public Companies_ByVector_FromNumericalAttachment_JS() {
+        setMaps(Collections.singleton(
+            "map('Companies', function (company) { " +
+
+            "    var attachment = loadAttachment(company, 'vector_base64.raw'); " +
+            "    if (!attachment || attachment.RemoteFlags !== 'None') return null; " +
+
+            "    return { " +
+            "        VectorFromAttachment: " +
+            "            createVector(attachment.getContentAsString('utf8')) " +
+            "    }; " +
+            "})"
+        ));
+
+        FieldVectorOptions vectorOptions = new FieldVectorOptions();
+        vectorOptions.setSourceEmbeddingType(VectorEmbeddingType.SINGLE);
+        vectorOptions.setDestinationEmbeddingType(VectorEmbeddingType.SINGLE);
+
+        IndexFieldOptions fieldOptions = new IndexFieldOptions();
+        fieldOptions.setVector(vectorOptions);
+        getFields().put("VectorFromAttachment", fieldOptions);
+
+        searchEngineType = SearchEngineType.CORAX;
+    }
+}
+```
+</TabItem>
+<TabItem value="Storing_numerical_attachments_as_base64" label="Storing_numerical_attachments_as_base64">
+```java
+// These vectors are simple precomputed embedding vectors
+// with 32-bit floating-point values.
+// Note: In a real scenario, embeddings would be generated by a model.
+// ===================================================================
+float[] v1 = new float[] { 0.1f, 0.2f, 0.3f, 0.4f };
+float[] v2 = new float[] { 0.1f, 0.7f, 0.8f, 0.9f };
+float[] v3 = new float[] { 0.5f, 0.6f, 0.7f, 0.8f };
+
+// Prepare the embedding vectors as a BASE64 string to be stored as attachments:
+// =============================================================================
+byte[] rawV1 = new byte[v1.length * Float.BYTES];
+byte[] rawV2 = new byte[v2.length * Float.BYTES];
+byte[] rawV3 = new byte[v3.length * Float.BYTES];
+
+// Write the floats in little-endian byte order, as RavenDB expects
+ByteBuffer.wrap(rawV1).order(ByteOrder.LITTLE_ENDIAN).asFloatBuffer().put(v1);
+ByteBuffer.wrap(rawV2).order(ByteOrder.LITTLE_ENDIAN).asFloatBuffer().put(v2);
+ByteBuffer.wrap(rawV3).order(ByteOrder.LITTLE_ENDIAN).asFloatBuffer().put(v3);
+
+String base64ForV1 = Base64.getEncoder().encodeToString(rawV1);
+String base64ForV2 = Base64.getEncoder().encodeToString(rawV2);
+String base64ForV3 = Base64.getEncoder().encodeToString(rawV3);
+
+// Convert to byte[] for streaming:
+// ================================
+byte[] byteArray1 = base64ForV1.getBytes(StandardCharsets.UTF_8);
+byte[] byteArray2 = base64ForV2.getBytes(StandardCharsets.UTF_8);
+byte[] byteArray3 = base64ForV3.getBytes(StandardCharsets.UTF_8);
+
+try (IDocumentSession session = store.openSession()) {
+    // Load existing Company documents from RavenDB's sample data:
+    // ===========================================================
+    Company company1 = session.load(Company.class, "companies/60-A");
+    Company company2 = session.load(Company.class, "companies/61-A");
+    Company company3 = session.load(Company.class, "companies/62-A");
+
+    // Store the attachments in the documents (using ByteArrayInputStream):
+    // ====================================================================
+    session.advanced().attachments().store(company1, "vector_base64.raw",
+        new ByteArrayInputStream(byteArray1));
+    session.advanced().attachments().store(company2, "vector_base64.raw",
+        new ByteArrayInputStream(byteArray2));
+    session.advanced().attachments().store(company3, "vector_base64.raw",
+        new ByteArrayInputStream(byteArray3));
+
+    session.saveChanges();
+}
+```
+</TabItem>
+</Tabs>
+
+Execute a vector search using the index:  
+Results will include _Company_ documents whose attachment contains vectors similar to the query vector.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Company> similarCompanies = session.advanced()
+    .rawQuery(Company.class,
+        "from index 'Companies/ByVector/FromNumericalAttachment/JS' " +
+        "where vector.search(VectorFromAttachment, $queryVector)")
+    .addParameter("queryVector", new float[] { 0.1f, 0.2f, 0.3f, 0.4f })
+    .waitForNonStaleResults()
+    .toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Companies/ByVector/FromNumericalAttachment/JS"
+where vector.search(VectorFromAttachment, $queryVector)
+{ "queryVector" : [0.1, 0.2, 0.3, 0.4] }
+```
+</TabItem>
+</Tabs>
+
+</Panel>
+
+<Panel heading="Indexing ALL attachments">
+
+* The following index defines a vector field named `VectorFromAttachment`.
+
+* It indexes the precomputed embedding vectors stored in ALL local attachments of all _Company_ documents.
+
+* This example assumes that **every local attachment** on the indexed documents contains a single embedding vector  
+  stored as raw 32-bit floating-point values. All vectors must have the same number of dimensions and be generated using the same model.  
+    
+  If the documents also contain other attachment formats, such as text, PDFs, or Base64-encoded vectors,  
+  filter the attachments by name before passing their content to `CreateVector()`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
+```java
+public class Companies_ByVector_AllAttachments extends AbstractIndexCreationTask {
+    public Companies_ByVector_AllAttachments() {
+        map = "from company in docs.Companies " +
+
+            // Load ALL local attachments from the document
+            "let attachments = LoadAttachments(company) " +
+            "    .Where(attachment => " +
+            "        attachment.RemoteFlags.ToString() == \"None\") " +
+
+            "select new " +
+            "{ " +
+            // Index the attachments' content in the vector field
+            "    VectorFromAttachment = CreateVector( " +
+            "        attachments.Select(e => e.GetContentAsStream())) " +
+            "}";
+
+        // Configure the vector field:
+        FieldVectorOptions vectorOptions = new FieldVectorOptions();
+        vectorOptions.setSourceEmbeddingType(VectorEmbeddingType.SINGLE);
+        vectorOptions.setDestinationEmbeddingType(VectorEmbeddingType.SINGLE);
+
+        vectorOptionsStrings.put("VectorFromAttachment", vectorOptions);
+
+        searchEngineType = SearchEngineType.CORAX;
+    }
+}
+```
+</TabItem>
+<TabItem value="IndexDefinition" label="IndexDefinition">
+```java
+IndexDefinition indexDefinition = new IndexDefinition();
+indexDefinition.setName("Companies/ByVector/AllAttachments");
+
+indexDefinition.setMaps(Collections.singleton(
+    "from company in docs.Companies " +
+
+    "let attachments = LoadAttachments(company) " +
+    "    .Where(attachment => attachment.RemoteFlags.ToString() == \"None\") " +
+
+    "select new " +
+    "{ " +
+    "    VectorFromAttachment = " +
+    "        CreateVector(attachments.Select(e => e.GetContentAsStream())) " +
+    "}"
+));
+
+FieldVectorOptions vectorOptions = new FieldVectorOptions();
+vectorOptions.setSourceEmbeddingType(VectorEmbeddingType.SINGLE);
+vectorOptions.setDestinationEmbeddingType(VectorEmbeddingType.SINGLE);
+
+IndexFieldOptions fieldOptions = new IndexFieldOptions();
+fieldOptions.setVector(vectorOptions);
+indexDefinition.getFields().put("VectorFromAttachment", fieldOptions);
+
+indexDefinition.getConfiguration().put("Indexing.Static.SearchEngineType", "Corax");
+
+store.maintenance().send(new PutIndexesOperation(indexDefinition));
+```
+</TabItem>
+<TabItem value="Storing_numerical_attachments" label="Storing_numerical_attachments">
+```java
+// These vectors are simple precomputed embedding vectors
+// with 32-bit floating-point values.
+// Note: In a real scenario, embeddings would be generated by a model.
+// ===================================================================
+float[] v1 = new float[] { 0.1f, 0.2f, 0.3f, 0.4f };
+float[] v2 = new float[] { 0.5f, 0.6f, 0.7f, 0.8f };
+
+float[] v3 = new float[] { -0.1f, 0.2f, -0.7f, -0.8f };
+float[] v4 = new float[] { 0.3f, -0.6f, 0.9f, -0.9f };
+
+// Prepare the embedding vectors as `byte[]` to be stored as attachments:
+// =====================================================================
+byte[] byteArray1 = new byte[v1.length * Float.BYTES];
+byte[] byteArray2 = new byte[v2.length * Float.BYTES];
+
+byte[] byteArray3 = new byte[v3.length * Float.BYTES];
+byte[] byteArray4 = new byte[v4.length * Float.BYTES];
+
+// Write the floats in little-endian byte order, as RavenDB expects
+ByteBuffer.wrap(byteArray1).order(ByteOrder.LITTLE_ENDIAN).asFloatBuffer().put(v1);
+ByteBuffer.wrap(byteArray2).order(ByteOrder.LITTLE_ENDIAN).asFloatBuffer().put(v2);
+
+ByteBuffer.wrap(byteArray3).order(ByteOrder.LITTLE_ENDIAN).asFloatBuffer().put(v3);
+ByteBuffer.wrap(byteArray4).order(ByteOrder.LITTLE_ENDIAN).asFloatBuffer().put(v4);
+
+try (IDocumentSession session = store.openSession()) {
+    // Load existing Company documents from RavenDB's sample data:
+    // ===========================================================
+    Company company1 = session.load(Company.class, "companies/70-A");
+    Company company2 = session.load(Company.class, "companies/71-A");
+
+    // Store multiple attachments in the documents (using ByteArrayInputStream):
+    // =========================================================================
+
+    session.advanced().attachments().store(company1, "vector1.raw",
+        new ByteArrayInputStream(byteArray1));
+    session.advanced().attachments().store(company1, "vector2.raw",
+        new ByteArrayInputStream(byteArray2));
+
+    session.advanced().attachments().store(company2, "vector1.raw",
+        new ByteArrayInputStream(byteArray3));
+    session.advanced().attachments().store(company2, "vector2.raw",
+        new ByteArrayInputStream(byteArray4));
+
+    session.saveChanges();
+}
+```
+</TabItem>
+</Tabs>
+
+Execute a vector search using the index:  
+Results will include _Company_ documents whose attachments contain vectors similar to the query vector.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+```java
+List<Company> similarCompanies = session
+    .query(Company.class, Companies_ByVector_AllAttachments.class)
+    .vectorSearch(
+        field -> field
+            .withField("VectorFromAttachment"),
+        queryVector -> queryVector
+            .byEmbedding(new Float[] { -0.1f, 0.2f, -0.7f, -0.8f }))
+    .waitForNonStaleResults()
+    .toList();
+```
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+```java
+List<Company> similarCompanies = session.advanced()
+    .rawQuery(Company.class,
+        "from index 'Companies/ByVector/AllAttachments' " +
+        "where vector.search(VectorFromAttachment, $queryVector)")
+    .addParameter("queryVector", new float[] { -0.1f, 0.2f, -0.7f, -0.8f })
+    .waitForNonStaleResults()
+    .toList();
+```
+</TabItem>
+<TabItem value="RQL" label="RQL">
+```sql
+from index "Companies/ByVector/AllAttachments"
+where vector.search(VectorFromAttachment, $queryVector)
+{ "queryVector" : [-0.1, 0.2, -0.7, -0.8] }
+```
+</TabItem>
+</Tabs>
+
+</Panel>
